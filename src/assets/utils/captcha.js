@@ -1,3 +1,5 @@
+const path = require("path");
+
 // Captcha propio para el panel de verificación. Si canvas no se puede cargar en
 // el servidor, se usa un captcha de texto para que el bot siga funcionando.
 const chars = "ABCDEFHJLMNPSTUVWXYZ23456789";
@@ -10,8 +12,19 @@ function randomText(length = 6) {
   return text;
 }
 
+let fontRegistered = false;
+
 function drawImage(value) {
-  const { createCanvas } = require("canvas");
+  const { createCanvas, registerFont } = require("canvas");
+
+  // Muchos hostings no tienen fuentes instaladas y el texto no se vería,
+  // así que se usa una fuente incluida en el bot (Manrope, licencia OFL)
+  if (!fontRegistered) {
+    registerFont(path.join(__dirname, "../fonts/Manrope-Bold.ttf"), {
+      family: "CaptchaFont",
+    });
+    fontRegistered = true;
+  }
   const canvas = createCanvas(400, 150);
   const ctx = canvas.getContext("2d");
 
@@ -29,7 +42,7 @@ function drawImage(value) {
   }
 
   // Letras giradas
-  ctx.font = "bold 56px sans-serif";
+  ctx.font = "56px CaptchaFont";
   ctx.textBaseline = "middle";
   [...value].forEach((char, i) => {
     ctx.save();
