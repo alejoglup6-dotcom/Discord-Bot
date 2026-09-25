@@ -48,6 +48,7 @@ module.exports = async (client, interaction, args) => {
       .join("\n");
   }
 
+  let thumbnail;
   if (player.queue.current.thumbnail)
     thumbnail = player.queue.current.thumbnail;
   else thumbnail = interaction.guild.iconURL({ size: 1024 });

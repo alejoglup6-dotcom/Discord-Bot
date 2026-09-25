@@ -15,7 +15,6 @@ module.exports = async (client, interaction, args) => {
     PREMIUM: client.emotes.badges.premium,
     SUPPORTER: client.emotes.badges.supporter,
     TEAM: client.emotes.badges.team,
-    BOOSTER: client.emotes.badges.booster,
     PARTNER: client.emotes.badges.partner,
     VOTER: client.emotes.badges.voter,
     SUPPORT: client.emotes.badges.support,
@@ -157,7 +156,7 @@ module.exports = async (client, interaction, args) => {
             },
             {
               name: "🏷️┆Insignias de Discord",
-              value: `${userFlags.length ? userFlags.map((flag) => flags[flag]).join(", ") : "Ninguna" || "Ninguna"}`,
+              value: `${userFlags.length ? userFlags.map((flag) => flags[flag]).join(", ") : "Ninguna"}`,
               inline: true,
             },
             {

@@ -26,7 +26,10 @@ module.exports = (client) => {
         for (const file of commandFiles) {
             const command = require(`${process.cwd()}/src/interactions/${dirs}/${file}`);
             client.commands.set(command.data.name, command);
-            commands.push(localize(command.data.toJSON()));
+            // Todos los comandos usan datos del servidor, así que solo se muestran en servidores
+            const json = localize(command.data.toJSON());
+            json.contexts = [0];
+            commands.push(json);
         };
     });
 

@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+require("./assets/utils/webhooks");
 const fs = require("fs");
 
 const { Connectors } = require("shoukaku");
@@ -14,8 +15,6 @@ const client = new Discord.Client({
         parse: ["users", "roles"],
         repliedUser: true,
     },
-    autoReconnect: true,
-    disabledEvents: ["TYPING_START"],
     partials: [
         Discord.Partials.Channel,
         Discord.Partials.GuildMember,
@@ -42,7 +41,6 @@ const client = new Discord.Client({
         Discord.GatewayIntentBits.GuildScheduledEvents,
         Discord.GatewayIntentBits.MessageContent,
     ],
-    restTimeOffset: 0,
 });
 
 client.player = new Kazagumo(

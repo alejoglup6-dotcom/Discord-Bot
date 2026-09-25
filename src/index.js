@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+require("./assets/utils/webhooks");
 const { Chalk } = require("chalk");
 const chalk = new Chalk();
 

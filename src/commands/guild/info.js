@@ -113,12 +113,12 @@ module.exports = async (client, interaction, args) => {
         },
         {
           name: "Hilos públicos:",
-          value: `¡${interaction.guild.channels.cache.filter((channel) => channel.type === "GUILD_PUBLIC_THREAD").size} hilos!`,
+          value: `¡${interaction.guild.channels.cache.filter((channel) => channel.type === Discord.ChannelType.PublicThread).size} hilos!`,
           inline: true,
         },
         {
           name: "Hilos privados:",
-          value: `¡${interaction.guild.channels.cache.filter((channel) => channel.type === "GUILD_PRIVATE_THREAD").size} hilos!`,
+          value: `¡${interaction.guild.channels.cache.filter((channel) => channel.type === Discord.ChannelType.PrivateThread).size} hilos!`,
           inline: true,
         },
         {

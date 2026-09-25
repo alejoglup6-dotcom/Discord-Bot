@@ -57,13 +57,7 @@ module.exports = async (client, interaction, args) => {
               async (targetData) => {
                 if (targetData) {
                   var targetMoney = targetData.Money;
-                  if (
-                    (targetData =
-                      undefined ||
-                      !targetData ||
-                      targetMoney == 0 ||
-                      targetMoney < 0)
-                  ) {
+                  if (!targetMoney || targetMoney <= 0) {
                     return client.errNormal(
                       {
                         error: `¡${user.username} no tiene nada que puedas robar!`,

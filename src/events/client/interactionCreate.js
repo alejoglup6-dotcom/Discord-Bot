@@ -13,6 +13,9 @@ const CommandsSchema = require("../../database/models/customCommandAdvanced");
  * @returns 
  */
 module.exports = async (client, interaction) => {
+  // El bot solo funciona dentro de servidores
+  if (!interaction.guild) return;
+
   // Commands
   if (interaction.isCommand() || interaction.isUserContextMenuCommand()) {
     banSchema.findOne({ User: interaction.user.id }).then(async (data) => {

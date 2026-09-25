@@ -92,7 +92,7 @@ module.exports = async (client, interaction, args) => {
           dataTime.save();
         } else {
           new Schema2({
-            Guild: message.guild.id,
+            Guild: interaction.guild.id,
             User: user.id,
             Fish: Date.now(),
           }).save();

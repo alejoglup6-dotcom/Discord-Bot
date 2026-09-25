@@ -74,7 +74,7 @@ module.exports = async (client, member) => {
 
                         await client.embed({
                             title: `👋・Adiós`,
-                            desc: `**${member.user.tag}** fue invitado por ${user.tag}`
+                            desc: `**${member.user.tag}** nos dejó`
                         }, channel).catch(() => { })
                     }
                 })

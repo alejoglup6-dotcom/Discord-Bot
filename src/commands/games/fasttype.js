@@ -125,6 +125,7 @@ module.exports = async (client, interaction, args) => {
           },
           interaction,
         );
+        inGame.delete(interaction.user.id);
         break;
       } else {
         client.errNormal(
@@ -132,15 +133,6 @@ module.exports = async (client, interaction, args) => {
             error: "¡Por desgracia no lo lograste!",
             type: "editreply",
           },
-          interaction,
-        );
-        inGame.delete(interaction.user.id);
-        break;
-      }
-
-      if (i === 25) {
-        client.succNormal(
-          { text: `¡Lo lograste!`, type: "editreply" },
           interaction,
         );
         inGame.delete(interaction.user.id);

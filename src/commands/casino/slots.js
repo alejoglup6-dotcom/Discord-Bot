@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
           );
 
         let number = [];
-        for (i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {
           number[i] = Math.floor(Math.random() * slotItems.length);
         }
 

@@ -19,7 +19,7 @@ module.exports = (client, err, command, interaction) => {
             { name: "✅┇Servidor", value: `${interaction.guild.name} (${interaction.guild.id})`},
             { name: `💻┇Comando`, value: `${command}`},
             { name: `💬┇Error`, value: `\`\`\`${err}\`\`\``},
-            { name: `📃┇Pila del error`, value: `\`\`\`${err.stack.substr(0, 1018)}\`\`\``},
+            { name: `📃┇Pila del error`, value: `\`\`\`${String(err?.stack ?? err).slice(0, 1018)}\`\`\``},
         )
         .setColor(client.config.colors.normal)
     errorlog.send({

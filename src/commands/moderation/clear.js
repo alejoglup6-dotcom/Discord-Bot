@@ -35,7 +35,7 @@ module.exports = async (client, interaction, args) => {
     );
 
   interaction.channel
-    .bulkDelete(amount + 1)
+    .bulkDelete(amount, true)
     .then(() => {
       client.succNormal(
         {

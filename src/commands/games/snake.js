@@ -15,6 +15,9 @@ module.exports = async (client, interaction, args) => {
     return result;
   };
 
+  // Botones de esta partida (antes eran globales y se mezclaban entre partidas)
+  let lock1, w, lock2, a, s, d, stopy;
+
   const id1 =
     getRandomString(20) +
     "-" +

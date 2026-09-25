@@ -138,7 +138,7 @@ module.exports = async (client, interaction, args) => {
                   i.deferUpdate();
 
                   index = result + 1;
-                  profit = money * multiplier;
+                  const profit = money * multiplier;
 
                   Schema.findOne({
                     Guild: interaction.guild.id,

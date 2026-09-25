@@ -150,7 +150,7 @@ module.exports = async (client, message) => {
         .exec()
         .then(async (data) => {
           if (data) {
-            message.guild.members.cache.get(userId).roles.add(data.Role).catch(() => {});
+            message.member?.roles.add(data.Role).catch(() => {});
           }
         });
     }
@@ -183,9 +183,7 @@ module.exports = async (client, message) => {
       .exec()
       .then(async (reward) => {
         if (reward) {
-          try {
-            message.guild.members.cache.get(userId).roles.add(reward.Role);
-          } catch {}
+          message.member?.roles.add(reward.Role).catch(() => {});
         }
       });
   }
@@ -202,7 +200,7 @@ module.exports = async (client, message) => {
         )
         .then(async (m) => {
           setTimeout(() => {
-            m.delete();
+            m?.delete().catch(() => {});
           }, 5000);
         });
 
@@ -256,7 +254,7 @@ module.exports = async (client, message) => {
             Authorization: "Bearer " + process.env.OPENAI,
           },
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4o-mini",
             messages: [
               {
                 role: "user",
@@ -265,13 +263,13 @@ module.exports = async (client, message) => {
             ],
           }),
         })
-          .catch(() => {})
-          .then((res) => {
-            res.json().then((data) => {
-              if (data.error) return;
-              message.reply({ content: data.choices[0].message.content });
-            });
-          });
+          .then((res) => res.json())
+          .then((data) => {
+            const reply = data?.choices?.[0]?.message?.content;
+            if (!reply) return;
+            return message.reply({ content: reply.slice(0, 2000) });
+          })
+          .catch(() => {});
       }
     });
 
@@ -286,14 +284,15 @@ module.exports = async (client, message) => {
       const lastStickyMessage = await message.channel.messages
         .fetch(data.LastMessage)
         .catch(() => {});
-      if (!lastStickyMessage) return;
-      await lastStickyMessage.delete({ timeout: 1000 });
+      // Si el mensaje fijo anterior se borró a mano, se vuelve a publicar igualmente
+      if (lastStickyMessage) await lastStickyMessage.delete().catch(() => {});
 
       const newMessage = await client.simpleEmbed(
         { desc: `${data.Content}` },
         message.channel,
       );
 
+      if (!newMessage) return;
       data.LastMessage = newMessage.id;
       data.save();
     });

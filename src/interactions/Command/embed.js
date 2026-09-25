@@ -337,7 +337,7 @@ module.exports = {
         if (!channel)
           return client.errNormal(
             { error: `No se encontró el canal` },
-            collected.first().channel,
+            interaction.channel,
           );
 
         channel

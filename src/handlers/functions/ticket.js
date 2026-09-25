@@ -452,23 +452,10 @@ module.exports = async (client) => {
             .replace(/\&\#x60;/g, '`') // we dont want ` to be escaped
             .replace(/```(.+?)```/gs, code => {
                 if (!replyStyle) {
-                    const split = code.slice(3, -3).split('\n');
-                    let language = split.shift().trim().toLowerCase();
-
-                    if (static.LanguageAliases[language])
-                        language = static.LanguageAliases[language];
-
-                    if (languages.includes(language)) {
-                        const joined = he.unescape(split.join("\n"));
-                        return `<div class="pre pre--multiline language-${language}">${hljs.default.highlight(joined, {
-                            language,
-                        }).value
-                            }</div>`;
-                    } else {
-                        return `<div class="pre pre--multiline nohighlight">${code
-                            .slice(3, -3)
-                            .trim()}</div>`;
-                    }
+                    // highlight.js no está instalado, así que los bloques de código van sin resaltar
+                    return `<div class="pre pre--multiline nohighlight">${code
+                        .slice(3, -3)
+                        .trim()}</div>`;
                 } else {
                     const split = code.slice(3, -3).split('\n');
                     split.shift();
