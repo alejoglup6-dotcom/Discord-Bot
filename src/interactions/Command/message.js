@@ -6,18 +6,18 @@ const model = require("../../database/models/badge");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("message")
-    .setDescription("Post preset messages")
+    .setDescription("Publica mensajes predefinidos")
     .addStringOption((option) =>
       option
         .setName("message")
-        .setDescription("Select a message")
+        .setDescription("Elige un mensaje")
         .setRequired(true)
         .addChoices(
-          { name: "Information", value: "information" },
-          { name: "Rules", value: "rules" },
-          { name: "Applications", value: "applications" },
-          { name: "Helpdesk", value: "helpdesk" },
-          { name: "Network", value: "network" },
+          { name: "Información", value: "information" },
+          { name: "Reglas", value: "rules" },
+          { name: "Solicitudes", value: "applications" },
+          { name: "Ayuda", value: "helpdesk" },
+          { name: "Red", value: "network" },
           { name: "Bot-Info", value: "botinfo" },
           { name: "Bot-Badges", value: "badges" },
           { name: "Bot-Béta", value: "beta" },
@@ -38,7 +38,7 @@ module.exports = {
 
         client.succNormal(
           {
-            text: `Message has been sent successfully!`,
+            text: `¡El mensaje se envió correctamente!`,
             type: "ephemeraledit",
           },
           interaction,
@@ -55,7 +55,7 @@ module.exports = {
             .then(() => {
               client.embed(
                 {
-                  title: `ℹ️・Information`,
+                  title: `ℹ️・Información`,
                   author: {
                     name: "TechPoint",
                     iconURL:
@@ -65,20 +65,20 @@ module.exports = {
                     "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
                   fields: [
                     {
-                      name: `👋┆Welcome to Bot Support!`,
-                      value: `Welcome to your support server! We focus on our bots Bot & Bot 2. Stay up to date, ask your questions and test out our bots.`,
+                      name: `👋┆¡Bienvenido a Bot Support!`,
+                      value: `¡Bienvenido a tu servidor de soporte! Nos centramos en nuestros bots Bot y Bot 2. Mantente al día, haz tus preguntas y prueba nuestros bots.`,
                     },
                     {
-                      name: `❓┆What can I do here?`,
-                      value: `- Read the latest bot news\n- Test bot commands\n- Ask questions\n- Get help with setting up the bot in your server`,
+                      name: `❓┆¿Qué puedo hacer aquí?`,
+                      value: `- Lee las últimas noticias del bot\n- Prueba los comandos del bot\n- Haz preguntas\n- Recibe ayuda para configurar el bot en tu servidor`,
                     },
                     {
-                      name: `🤖┆What are Bot & Bot 2?`,
-                      value: `You can find this information in the <#897221483460444170> channel.`,
+                      name: `🤖┆¿Qué son Bot y Bot 2?`,
+                      value: `Puedes encontrar esta información en el canal <#897221483460444170>.`,
                     },
                     {
-                      name: `🔗┆Other servers from us`,
-                      value: `[Tech server](https://discord.gg/bEJhVa6Ttv) - Get help with code, tech and crypto while you read the latest news\n[Ban Appeal](https://discord.gg/htf9pHNRxA) - Got banned? Request an unban`,
+                      name: `🔗┆Nuestros otros servidores`,
+                      value: `[Servidor tech](https://discord.gg/bEJhVa6Ttv) - Recibe ayuda con código, tecnología y cripto mientras lees las últimas noticias\n[Apelación de baneos](https://discord.gg/htf9pHNRxA) - ¿Te banearon? Pide que te desbaneen`,
                     },
                   ],
                   footer: {
@@ -103,7 +103,7 @@ module.exports = {
             .then(() => {
               client.embed(
                 {
-                  title: `📃・Rules`,
+                  title: `📃・Reglas`,
                   author: {
                     name: "TechPoint",
                     iconURL:
@@ -111,47 +111,47 @@ module.exports = {
                   },
                   thumbnail:
                     "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
-                  desc: `These are our server rules. Please stick to this to keep it fun for everyone. The Admins and Mods will Timeout/Kick/Ban per discretion`,
+                  desc: `Estas son las reglas del servidor. Respétalas para que todos lo pasen bien. Los administradores y moderadores podrán aislar, expulsar o banear a su criterio`,
                   fields: [
                     {
-                      name: `1. Be respectful`,
-                      value: `You must respect all users, regardless of your liking towards them. Treat others the way you want to be treated.`,
+                      name: `1. Sé respetuoso`,
+                      value: `Debes respetar a todos los usuarios, te caigan bien o no. Trata a los demás como quieres que te traten.`,
                     },
                     {
-                      name: `2. No Inappropriate Language`,
-                      value: `The use of profanity should be kept to a minimum. However, any derogatory language towards any user is prohibited.`,
+                      name: `2. Nada de lenguaje inapropiado`,
+                      value: `Mantén las groserías al mínimo. Cualquier lenguaje despectivo hacia otro usuario está prohibido.`,
                     },
                     {
-                      name: `3. No spamming`,
-                      value: `Don't send a lot of small messages right after each other. Do not disrupt chat by spamming.`,
+                      name: `3. Nada de spam`,
+                      value: `No envíes muchos mensajes cortos seguidos. No interrumpas el chat haciendo spam.`,
                     },
                     {
-                      name: `4. No pornographic/adult/other NSFW material`,
-                      value: `This is a community server and not meant to share this kind of material.`,
+                      name: `4. Nada de material pornográfico, para adultos u otro contenido NSFW`,
+                      value: `Este es un servidor de comunidad y no está pensado para compartir ese tipo de material.`,
                     },
                     {
-                      name: `5. No advertisements`,
-                      value: `We do not tolerate any kind of advertisements, whether it be for other communities or streams. You can post your content in the media channel if it is relevant and provides actual value (Video/Art)`,
+                      name: `5. Nada de publicidad`,
+                      value: `No toleramos ningún tipo de publicidad, ni de otras comunidades ni de streams. Puedes publicar tu contenido en el canal de medios si es relevante y aporta valor real (vídeo/arte)`,
                     },
                     {
-                      name: `6. No offensive names and profile pictures`,
-                      value: `You will be asked to change your name or picture if the staff deems them inappropriate.`,
+                      name: `6. Nada de nombres ni fotos de perfil ofensivos`,
+                      value: `Se te pedirá que cambies tu nombre o tu foto si el staff los considera inapropiados.`,
                     },
                     {
-                      name: `7. Server Raiding`,
-                      value: `Raiding or mentions of raiding are not allowed.`,
+                      name: `7. Raids al servidor`,
+                      value: `No se permiten los raids ni hablar de hacer raids.`,
                     },
                     {
-                      name: `8. Direct & Indirect Threats`,
-                      value: `Threats to other users of DDoS, Death, DoX, abuse, and other malicious threats are absolutely prohibited and disallowed.`,
+                      name: `8. Amenazas directas e indirectas`,
+                      value: `Las amenazas de DDoS, muerte, doxeo, abuso y cualquier otra amenaza maliciosa hacia otros usuarios están totalmente prohibidas.`,
                     },
                     {
-                      name: `9. Follow the Discord Community Guidelines`,
-                      value: `You can find them here: https://discordapp.com/guidelines`,
+                      name: `9. Sigue las Directrices de la Comunidad de Discord`,
+                      value: `Puedes encontrarlas aquí: https://discordapp.com/guidelines`,
                     },
                     {
-                      name: `10. Do not join voice chat channels without permissions of the people already in there`,
-                      value: `If you see that they have a free spot it is alright to join and ask whether they have an open spot, but leave if your presence is not wanted by whoever was there first`,
+                      name: `10. No entres a canales de voz sin permiso de quienes ya están ahí`,
+                      value: `Si ves que hay un hueco libre, puedes entrar y preguntar si hay sitio, pero vete si quienes estaban primero no quieren tu presencia`,
                     },
                   ],
                   footer: {
@@ -176,7 +176,7 @@ module.exports = {
             .then(() => {
               client.embed(
                 {
-                  title: `💼・Applications`,
+                  title: `💼・Solicitudes`,
                   author: {
                     name: "TechPoint",
                     iconURL:
@@ -184,31 +184,31 @@ module.exports = {
                   },
                   thumbnail:
                     "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
-                  desc: `What could be more fun than working at the best bot/server? We regularly have spots for new positions that you can apply for \n\nBut... what can you expect?`,
+                  desc: `¿Qué puede ser más divertido que trabajar en el mejor bot/servidor? Con frecuencia abrimos nuevos puestos a los que puedes postularte \n\nPero... ¿qué puedes esperar?`,
                   fields: [
                     {
-                      name: `👥┆A very nice team`,
-                      value: `In the Techpoint Network team there is always a pleasant atmosphere and everyone is treated equally!`,
+                      name: `👥┆Un equipo muy agradable`,
+                      value: `¡En el equipo de Techpoint Network siempre hay buen ambiente y todos reciben el mismo trato!`,
                     },
                     {
-                      name: `🥳┆Access to the beta program`,
-                      value: `Get access to unreleased Bot features with your own server! You are a real Bot tester!`,
+                      name: `🥳┆Acceso al programa beta`,
+                      value: `¡Accede a funciones de Bot aún no publicadas con tu propio servidor! ¡Serás un auténtico tester de Bot!`,
                     },
                     {
-                      name: `📛┆A nice rank and badge`,
-                      value: `You will get a nice rank in the server and a team badge in our userinfo command. Everyone can see that you contribute to the team`,
+                      name: `📛┆Un buen rango y una insignia`,
+                      value: `Recibirás un buen rango en el servidor y una insignia de equipo en nuestro comando userinfo. Todos verán que contribuyes al equipo`,
                     },
                     {
-                      name: `📖┆Learn and grow`,
-                      value: `We understand that you don't always understand everything right away! At Bot, we give you the opportunity to learn new things and get better at the position. You can also grow into the management team in the future!`,
+                      name: `📖┆Aprende y crece`,
+                      value: `¡Entendemos que no siempre se entiende todo a la primera! En Bot te damos la oportunidad de aprender cosas nuevas y mejorar en tu puesto. ¡En el futuro también podrás pasar al equipo de dirección!`,
                     },
                     {
-                      name: `📘┆What does everything mean?`,
-                      value: `**Moderator/Support** \nYou keep yourself busy with the server that everything is and remains fun for everyone! Chat with us and keep the overview and help people with their questions.\n\n**Marketing** \nWe also want to grow and we do that with a great marketing team! You know better than anyone how to make a server grow well`,
+                      name: `📘┆¿Qué significa cada cosa?`,
+                      value: `**Moderador/Soporte** \nTe encargas de que el servidor sea y siga siendo divertido para todos. Chatea con nosotros, mantén todo bajo control y ayuda a la gente con sus preguntas.\n\n**Marketing** \nTambién queremos crecer, y lo hacemos con un gran equipo de marketing. Sabes mejor que nadie cómo hacer crecer un servidor`,
                     },
                     {
-                      name: `📃┆Apply?`,
-                      value: `Create a ticket to receive your application!`,
+                      name: `📃┆¿Postularte?`,
+                      value: `¡Abre un ticket para recibir tu solicitud!`,
                     },
                   ],
                   footer: {
@@ -233,7 +233,7 @@ module.exports = {
             .then(() => {
               client.embed(
                 {
-                  title: `🎫・Helpdesk`,
+                  title: `🎫・Ayuda`,
                   author: {
                     name: "TechPoint",
                     iconURL:
@@ -241,19 +241,19 @@ module.exports = {
                   },
                   thumbnail:
                     "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
-                  desc: `What could be more fun than working at the best bot/server? We regularly have spots for new positions that you can apply for \n\nBut... what can you expect?`,
+                  desc: `¿Qué puede ser más divertido que trabajar en el mejor bot/servidor? Con frecuencia abrimos nuevos puestos a los que puedes postularte \n\nPero... ¿qué puedes esperar?`,
                   fields: [
                     {
-                      name: `❓┆I have a question!`,
-                      value: `We advise you to ask your question in <#937486956697370674> first. Here there are often already team members or other people who can help you. If it still doesn't work, create a ticket.`,
+                      name: `❓┆¡Tengo una pregunta!`,
+                      value: `Te recomendamos hacer tu pregunta primero en <#937486956697370674>. Ahí suele haber miembros del equipo u otras personas que pueden ayudarte. Si aun así no se resuelve, abre un ticket.`,
                     },
                     {
-                      name: `📄┆Ticket Rules`,
-                      value: `**1.** Be patient so don't tag unnecessarily \n**2.** Only open a maximum of 1 ticket at a time \n**3.** No inappropriate behavior in tickets \n**4.** Don't make a ticket for nonsense`,
+                      name: `📄┆Reglas de los tickets`,
+                      value: `**1.** Ten paciencia y no etiquetes sin necesidad \n**2.** Abre como máximo 1 ticket a la vez \n**3.** Nada de comportamiento inapropiado en los tickets \n**4.** No abras tickets por tonterías`,
                     },
                     {
-                      name: `⏰┆Response time`,
-                      value: `**08:00 - 16:00** - (+/- 1 hour) \n**16:00 - 22:00** - (+/- 30 minutes) \n**22:00 - 08:00** - (+/- 1+ hour)`,
+                      name: `⏰┆Tiempo de respuesta`,
+                      value: `**08:00 - 16:00** - (+/- 1 hora) \n**16:00 - 22:00** - (+/- 30 minutos) \n**22:00 - 08:00** - (+/- 1+ hora)`,
                     },
                   ],
                   footer: {
@@ -278,7 +278,7 @@ module.exports = {
             .then(() => {
               client.embed(
                 {
-                  title: `🏢・Network`,
+                  title: `🏢・Red`,
                   thumbnail:
                     "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
                   author: {
@@ -286,19 +286,19 @@ module.exports = {
                     iconURL:
                       "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
                   },
-                  desc: `Techpoint Network is a network that consists of 3 servers. Each server has its own function. One is for tech/coding/crypto and the other for support. We also have 1 extra server for ban appeals, read all information below`,
+                  desc: `Techpoint Network es una red formada por 3 servidores. Cada servidor tiene su propia función: uno es para tecnología/programación/cripto y otro para soporte. También tenemos 1 servidor extra para apelaciones de baneos. Lee toda la información abajo`,
                   fields: [
                     {
                       name: `💻┇TechPoint`,
-                      value: `This is a server that mainly focused on everything that revolves around tech. For example, think of encryption, crypt or all new gadgets. Meet new people or learn more about tech yourself!. You can join this server by clicking [this](https://discord.gg/bEJhVa6Ttv) link`,
+                      value: `Este servidor se centra en todo lo relacionado con la tecnología. Por ejemplo, cifrado, cripto o los últimos gadgets. ¡Conoce gente nueva o aprende más sobre tecnología! Puedes unirte a este servidor haciendo clic en [este](https://discord.gg/bEJhVa6Ttv) enlace`,
                     },
                     {
                       name: `🤖┇Bot Support`,
-                      value: `This is the server you are currently on. All information about this server can be found in. You can get the link from this server to click on [this](https://discord.gg/GqhD6RNbzs) link`,
+                      value: `Este es el servidor en el que estás ahora. Aquí encontrarás toda la información sobre este servidor. Puedes conseguir el enlace de este servidor haciendo clic en [este](https://discord.gg/GqhD6RNbzs) enlace`,
                     },
                     {
-                      name: `🔨┇TechPoint Ban Appeal`,
-                      value: `This server is for the people who are banned from a server or from the bots. You can create a ticket here to request an unban and to participate in the servers again or to be able to use the bots again. You can join this server by clicking [this](https://discord.gg/q9jZrDk9n6) link`,
+                      name: `🔨┇Apelaciones de baneo de TechPoint`,
+                      value: `Este servidor es para las personas baneadas de un servidor o de los bots. Aquí puedes abrir un ticket para pedir que te desbaneen y volver a participar en los servidores o usar los bots. Puedes unirte a este servidor haciendo clic en [este](https://discord.gg/q9jZrDk9n6) enlace`,
                     },
                   ],
                   footer: {
@@ -323,7 +323,7 @@ module.exports = {
             .then(() => {
               client.embed(
                 {
-                  title: `ℹ・Bot(s) Information`,
+                  title: `ℹ・Información de los bots`,
                   author: {
                     name: "TechPoint",
                     iconURL:
@@ -331,23 +331,23 @@ module.exports = {
                   },
                   thumbnail:
                     "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
-                  desc: `Outside of a community we also maintain 2 public bots. These bots are all made to make your server better!`,
+                  desc: `Además de una comunidad, también mantenemos 2 bots públicos. ¡Todos están hechos para mejorar tu servidor!`,
                   fields: [
                     {
-                      name: `🤖┆What is Bot?`,
-                      value: `Bot is a bot with which you can run your entire server! With no less than 400+ commands, we have a large bot with many options to improve your server and the best part is that it is completely in slash commands! You know what else is beautiful? All of this is **FREE** to use!`,
+                      name: `🤖┆¿Qué es Bot?`,
+                      value: `¡Bot es un bot con el que puedes gestionar todo tu servidor! Con más de 400 comandos, es un bot enorme con muchas opciones para mejorar tu servidor, y lo mejor es que funciona completamente con comandos de barra. ¿Y sabes qué más? ¡Todo es **GRATIS**!`,
                     },
                     {
-                      name: `🎶┆What is Bot 2?`,
-                      value: `Bot 2 was created for additional music. This way you never get in each other's way when someone is already listening to music. Furthermore, this bot contains a soundboard and a radio system and the best part is that it is completely in slash commands!`,
+                      name: `🎶┆¿Qué es Bot 2?`,
+                      value: `Bot 2 se creó para tener música adicional. Así nunca se estorban cuando alguien ya está escuchando música. Además, este bot incluye un soundboard y un sistema de radio, ¡y funciona completamente con comandos de barra!`,
                     },
                     {
-                      name: `📨┆How do I invite the bots?`,
-                      value: `You can invite the bots by doing \`/invite\` or by clicking on the links below\n\n**Bot Invite** - [Invite Here](https://discord.com/oauth2/authorize?&client_id=798144456528363550&scope=applications.commands+bot&permissions=8)\n**Bot 2 Invite** - [Invite Here](${client.config.discord.botInvite})`,
+                      name: `📨┆¿Cómo invito a los bots?`,
+                      value: `Puedes invitar a los bots con \`/invite\` o haciendo clic en los enlaces de abajo\n\n**Invitar a Bot** - [Invítalo aquí](https://discord.com/oauth2/authorize?&client_id=798144456528363550&scope=applications.commands+bot&permissions=8)\n**Invitar a Bot 2** - [Invítalo aquí](${client.config.discord.botInvite})`,
                     },
                     {
-                      name: `🎫┆How do I get help when needed?`,
-                      value: `You can ask your questions in the general chat or for further information you can take a look in <#897213893624102965>.`,
+                      name: `🎫┆¿Cómo consigo ayuda si la necesito?`,
+                      value: `Puedes hacer tus preguntas en el chat general o, para más información, echar un vistazo a <#897213893624102965>.`,
                     },
                   ],
                   footer: {
@@ -466,19 +466,19 @@ module.exports = {
                   },
                   thumbnail:
                     "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
-                  desc: `The Bot Beta program is a program for new updates that still contains some bugs. Because of this program there are fewer bugs at the release! Everything happens via another bot so that the current bot users are not bothered by the beta testing`,
+                  desc: `El programa beta de Bot es para actualizaciones nuevas que todavía tienen algunos bugs. ¡Gracias a este programa hay menos bugs en el lanzamiento! Todo se hace con otro bot, para que los usuarios actuales no se vean afectados por las pruebas beta`,
                   fields: [
                     {
-                      name: `📃┆Requirements for participation`,
-                      value: `- Minimum 50 members in the server \n- No test servers \n- Following the Discord and Bot TOS \n- Active server`,
+                      name: `📃┆Requisitos para participar`,
+                      value: `- Mínimo 50 miembros en el servidor \n- Nada de servidores de prueba \n- Cumplir los TOS de Discord y de Bot \n- Servidor activo`,
                     },
                     {
-                      name: `❓┆How does it work?`,
-                      value: `You are going to use a beta bot. This does mean that the bot does not work 100% on some points. Keep this in mind when you sign up!`,
+                      name: `❓┆¿Cómo funciona?`,
+                      value: `Vas a usar un bot beta. Esto significa que en algunos aspectos el bot no funciona al 100%. ¡Tenlo en cuenta al inscribirte!`,
                     },
                     {
-                      name: `💼┆I want to apply!`,
-                      value: `Nice that you want to participate in Bot! We ask you to create a ticket in us <#897213893624102965> We will send a form and possibly additional information \n\n**Pay attention!** When the update is out you will be removed from our program!`,
+                      name: `💼┆¡Quiero postularme!`,
+                      value: `¡Genial que quieras participar en Bot! Te pedimos que abras un ticket en <#897213893624102965>. Te enviaremos un formulario y posiblemente información adicional \n\n**¡Atención!** Cuando salga la actualización, se te sacará del programa`,
                     },
                   ],
                   footer: {
@@ -513,24 +513,24 @@ module.exports = {
                     "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
                   fields: [
                     {
-                      name: `ℹ️┆What are Dcredits?`,
-                      value: `Dcredits are credits you get when you perform certain actions! You can exchange this for nice benefits for you and your server`,
+                      name: `ℹ️┆¿Qué son los Dcredits?`,
+                      value: `¡Los Dcredits son créditos que recibes al realizar ciertas acciones! Puedes canjearlos por buenos beneficios para ti y tu servidor`,
                     },
                     {
-                      name: `❓┆How do you get Dcredits?`,
-                      value: `Currently you only get Dcredits when you vote on Bot. You can do this on top.gg! The credits will then be automatically added to your account!`,
+                      name: `❓┆¿Cómo se consiguen Dcredits?`,
+                      value: `Por ahora solo recibes Dcredits al votar por Bot. ¡Puedes hacerlo en top.gg! Los créditos se añadirán automáticamente a tu cuenta`,
                     },
                     {
-                      name: `💱┆What can you exchange Dcredits for?`,
-                      value: `- Bot background pack (8 credits per pack)\n- Bot logo pack (6 credits per pack)\n- Bot sticker pack (5 credits per pack)\n- Bot 1 year pack (10 credits per pack)`,
+                      name: `💱┆¿Por qué puedes canjear los Dcredits?`,
+                      value: `- Paquete de fondos de Bot (8 créditos por paquete)\n- Paquete de logos de Bot (6 créditos por paquete)\n- Paquete de stickers de Bot (5 créditos por paquete)\n- Paquete de 1 año de Bot (10 créditos por paquete)`,
                     },
                     {
-                      name: `🎁┆How do I redeem Dcredits?`,
-                      value: `For a background pack: \`/dcredits backgroundpack\`\nFor a logo pack: \`/dcredits logopack\`\nFor a sticker pack: \`/dcredits stickerpack\`\nFor a 1 year pack: \`/dcredits 1yearpack\``,
+                      name: `🎁┆¿Cómo canjeo los Dcredits?`,
+                      value: `Para un paquete de fondos: \`/dcredits backgroundpack\`\nPara un paquete de logos: \`/dcredits logopack\`\nPara un paquete de stickers: \`/dcredits stickerpack\`\nPara un paquete de 1 año: \`/dcredits 1yearpack\``,
                     },
                     {
-                      name: `🐞┆I have discovered a bug is the system`,
-                      value: `If something went wrong with your credits? Open a ticket in our <#897213893624102965> and we will solve this as soon as possible!`,
+                      name: `🐞┆Encontré un bug en el sistema`,
+                      value: `¿Algo salió mal con tus créditos? Abre un ticket en <#897213893624102965> y lo resolveremos lo antes posible`,
                     },
                   ],
                   footer: {
@@ -546,7 +546,7 @@ module.exports = {
       } else {
         return client.errNormal(
           {
-            text: "Only Bot 2 developers are allowed to do this",
+            text: "Solo los desarrolladores de Bot 2 pueden hacer esto",
             editreply: true,
           },
           interaction,

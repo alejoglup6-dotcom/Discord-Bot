@@ -5,44 +5,44 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("suggestions")
-    .setDescription("Manage the suggestions")
+    .setDescription("Gestiona las sugerencias")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
         .setDescription(
-          "Get information about the suggestions category commands",
+          "Información sobre los comandos de la categoría sugerencias",
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("accept")
-        .setDescription("Accept a suggestion")
+        .setDescription("Acepta una sugerencia")
         .addStringOption((option) =>
           option
             .setName("id")
-            .setDescription("Suggestion message ID")
+            .setDescription("ID del mensaje de la sugerencia")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("deny")
-        .setDescription("Deny a suggestion")
+        .setDescription("Rechaza una sugerencia")
         .addStringOption((option) =>
           option
             .setName("id")
-            .setDescription("Suggestion message ID")
+            .setDescription("ID del mensaje de la sugerencia")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("send")
-        .setDescription("Send a suggestion")
+        .setDescription("Envía una sugerencia")
         .addStringOption((option) =>
           option
             .setName("suggestion")
-            .setDescription("Your suggestion")
+            .setDescription("Tu sugerencia")
             .setRequired(true),
         ),
     ),

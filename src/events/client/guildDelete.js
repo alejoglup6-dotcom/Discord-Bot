@@ -54,13 +54,13 @@ module.exports = async (client, guild) => {
         const totalGuilds = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
 
         const embed = new discord.EmbedBuilder()
-            .setTitle("🔴・Removed from a server!")
+            .setTitle("🔴・¡Eliminado de un servidor!")
             .addFields(
-                { name: "Total servers:", value: `${totalGuilds}`, inline: true },
-                { name: "Server name", value: `${guild.name}`, inline: true },
-                { name: "Server ID", value: `${guild.id}`, inline: true },
-                { name: "Server members", value: `${guild.memberCount}`, inline: true },
-                { name: "Server owner", value: `<@!${guild.ownerId}> (${guild.ownerId})`, inline: true },
+                { name: "Servidores totales:", value: `${totalGuilds}`, inline: true },
+                { name: "Nombre del servidor", value: `${guild.name}`, inline: true },
+                { name: "ID del servidor", value: `${guild.id}`, inline: true },
+                { name: "Miembros del servidor", value: `${guild.memberCount}`, inline: true },
+                { name: "Dueño del servidor", value: `<@!${guild.ownerId}> (${guild.ownerId})`, inline: true },
             )
             .setThumbnail("https://cdn.discordapp.com/attachments/843487478881976381/852419424895631370/BotSadEmote.png")
             .setColor(client.config.colors.normal)

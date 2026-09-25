@@ -117,7 +117,7 @@ module.exports = async (client, interaction, args) => {
   await client
     .embed(
       {
-        title: `🧮・Calculator`,
+        title: `🧮・Calculadora`,
         desc: stringify,
         components: row,
         type: "editreply",
@@ -128,7 +128,7 @@ module.exports = async (client, interaction, args) => {
       function edit() {
         client.embed(
           {
-            title: `🧮・Calculator`,
+            title: `🧮・Calculadora`,
             desc: stringify,
             components: row,
             type: "editreply",
@@ -148,7 +148,7 @@ module.exports = async (client, interaction, args) => {
 
         client.embed(
           {
-            title: `🧮・Calculator`,
+            title: `🧮・Calculadora`,
             desc: stringify,
             components: [rows],
             type: "editreply",
@@ -198,7 +198,7 @@ module.exports = async (client, interaction, args) => {
               str = " ";
               stringify = "```\n" + str + "\n```";
             } catch (e) {
-              str = "The provided equation is invalid!";
+              str = "¡La ecuación indicada no es válida!";
               stringify = "```\n" + str + "\n```";
               edit();
               str = " ";
@@ -206,7 +206,7 @@ module.exports = async (client, interaction, args) => {
             }
           }
         } else if (btn.customId === "calDC") {
-          str = "Calculator is disabled!";
+          str = "¡La calculadora está desactivada!";
           stringify = "```\n" + str + "\n```";
           edit();
           calc.stop();
@@ -220,7 +220,7 @@ module.exports = async (client, interaction, args) => {
 
       client.embed(
         {
-          title: `🧮・Calculator`,
+          title: `🧮・Calculadora`,
           desc: stringify,
           components: row,
           type: "editreply",

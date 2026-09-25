@@ -29,10 +29,10 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.succNormal(
           {
-            text: `You've begged for some money!`,
+            text: `¡Mendigaste algo de dinero!`,
             fields: [
               {
-                name: `${client.emotes.economy.coins}┆Amount`,
+                name: `${client.emotes.economy.coins}┆Cantidad`,
                 value: `$${amount}`,
                 inline: true,
               },

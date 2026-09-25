@@ -5,22 +5,22 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("announcement")
-    .setDescription("Manage the server announcements")
+    .setDescription("Gestiona los anuncios del servidor")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
         .setDescription(
-          "Get information about the announcement category commands",
+          "Información sobre los comandos de la categoría de anuncios",
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("create")
-        .setDescription("Make an announcement")
+        .setDescription("Haz un anuncio")
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Select a channel")
+            .setDescription("Elige un canal")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText)
             .addChannelTypes(ChannelType.GuildNews),
@@ -28,24 +28,24 @@ module.exports = {
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription("Your announcement message")
+            .setDescription("El mensaje de tu anuncio")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("edit")
-        .setDescription("Edit an announcement")
+        .setDescription("Edita un anuncio")
         .addStringOption((option) =>
           option
             .setName("id")
-            .setDescription("ID of the announcement you want to change")
+            .setDescription("ID del anuncio que quieres cambiar")
             .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription("Your announcement message")
+            .setDescription("El mensaje de tu anuncio")
             .setRequired(true),
         ),
     ),

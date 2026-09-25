@@ -5,11 +5,11 @@ module.exports = async (client, user, mod) => {
     if (!logsChannel) return;
 
     client.embed({
-        title: `🔨・Member unwarned`,
-        desc: `A user has been unwarned`,
+        title: `🔨・Advertencia retirada`,
+        desc: `Se retiró una advertencia a un usuario`,
         fields: [
             {
-                name: `> User`,
+                name: `> Usuario`,
                 value: `- ${user}`
             },
             {
@@ -21,7 +21,7 @@ module.exports = async (client, user, mod) => {
                 value: `${user.id}`
             },
             {
-                name: `> Moderator`,
+                name: `> Moderador`,
                 value: `${mod} (${mod.id})`
             }
         ]

@@ -27,10 +27,10 @@ module.exports = async (client, interaction, args) => {
         }).then(() => {
           client.succNormal(
             {
-              text: `Level reward removed`,
+              text: `Recompensa de nivel eliminada`,
               fields: [
                 {
-                  name: "🆙┆Level",
+                  name: "🆙┆Nivel",
                   value: `${level}`,
                   inline: true,
                 },
@@ -43,7 +43,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         return client.errNormal(
           {
-            error: "No level reward found at this level!",
+            error: "¡No hay ninguna recompensa en este nivel!",
             type: "editreply",
           },
           interaction,

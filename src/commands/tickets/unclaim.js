@@ -33,7 +33,7 @@ module.exports = async (client, interaction, args) => {
         ) {
           client.errNormal(
             {
-              text: "Ticket not claimed!",
+              text: "¡Ticket liberado!",
               type: "ephemeral",
             },
             interaction,
@@ -47,7 +47,7 @@ module.exports = async (client, interaction, args) => {
             if (ticketCategory == undefined) {
               return client.errNormal(
                 {
-                  error: "Do the setup!",
+                  error: "¡Haz la configuración!",
                   type: "editreply",
                 },
                 interaction,
@@ -60,7 +60,7 @@ module.exports = async (client, interaction, args) => {
 
               return client.simpleEmbed(
                 {
-                  desc: `This ticket can now be claimed again!`,
+                  desc: `¡Este ticket ya se puede volver a reclamar!`,
                   type: "editreply",
                 },
                 interaction,
@@ -68,7 +68,7 @@ module.exports = async (client, interaction, args) => {
             } else {
               client.errNormal(
                 {
-                  error: "This is not a ticket!",
+                  error: "¡Esto no es un ticket!",
                   type: "editreply",
                 },
                 interaction,
@@ -77,7 +77,7 @@ module.exports = async (client, interaction, args) => {
           } else {
             client.errNormal(
               {
-                error: "You have not claimed this ticket!",
+                error: "¡No has reclamado este ticket!",
                 type: "editreply",
               },
               interaction,
@@ -87,7 +87,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         return client.errNormal(
           {
-            error: "Do the ticket setup!",
+            error: "¡Haz la configuración de tickets!",
             type: "editreply",
           },
           interaction,

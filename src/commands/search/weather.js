@@ -13,7 +13,7 @@ module.exports = async (client, interaction, args) => {
             if (result === undefined || result.length === 0)
                 return client.errNormal(
                     {
-                        error: "**Invalid** location",
+                        error: "Ubicación **no válida**",
                         type: "editreply",
                     },
                     interaction,
@@ -24,37 +24,37 @@ module.exports = async (client, interaction, args) => {
 
             client.embed(
                 {
-                    title: `☀️・Weather - ${current.skytext}`,
-                    desc: `Weather forecast for ${current.observationpoint}`,
+                    title: `☀️・Clima - ${current.skytext}`,
+                    desc: `Pronóstico del clima para ${current.observationpoint}`,
                     thumbnail: current.imageUrl,
                     fields: [
                         {
-                            name: "Timezone",
+                            name: "Zona horaria",
                             value: `UTC${location.timezone}`,
                             inline: true,
                         },
                         {
-                            name: "Degree Type",
+                            name: "Unidad",
                             value: `Celsius`,
                             inline: true,
                         },
                         {
-                            name: "Temperature",
+                            name: "Temperatura",
                             value: `${current.temperature}°`,
                             inline: true,
                         },
                         {
-                            name: "Wind",
+                            name: "Viento",
                             value: `${current.winddisplay}`,
                             inline: true,
                         },
                         {
-                            name: "Feels like",
+                            name: "Sensación térmica",
                             value: `${current.feelslike}°`,
                             inline: true,
                         },
                         {
-                            name: "Humidity",
+                            name: "Humedad",
                             value: `${current.humidity}%`,
                             inline: true,
                         },

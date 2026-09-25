@@ -12,9 +12,9 @@ module.exports = async (client, interaction, args) => {
   const feedback = interaction.options.getString("feedback");
 
   const embed = new Discord.EmbedBuilder()
-    .setTitle(`📝・New feedback!`)
+    .setTitle(`📝・¡Nuevos comentarios!`)
     .addFields({
-      name: "User",
+      name: "Usuario",
       value: `${interaction.user} (${interaction.user.tag})`,
       inline: true,
     })
@@ -27,7 +27,7 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `Feedback successfully sent to the developers`,
+      text: `Comentarios enviados correctamente a los desarrolladores`,
       type: "editreply",
     },
     interaction,

@@ -16,7 +16,7 @@ module.exports = async (client, interaction, args) => {
     if (!rawLeaderboard)
       return client.errNormal(
         {
-          error: "No data found!",
+          error: "¡No se encontraron datos!",
           type: "editreply",
         },
         interaction,
@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
     );
 
     await client.createLeaderboard(
-      `🪙・Money - ${interaction.guild.name}`,
+      `🪙・Dinero - ${interaction.guild.name}`,
       lb,
       interaction,
     );
@@ -40,7 +40,7 @@ module.exports = async (client, interaction, args) => {
     if (!rawLeaderboard)
       return client.errNormal(
         {
-          error: "No data found!",
+          error: "¡No se encontraron datos!",
           type: "editreply",
         },
         interaction,
@@ -52,7 +52,7 @@ module.exports = async (client, interaction, args) => {
     );
 
     await client.createLeaderboard(
-      `🏦・Bank - ${interaction.guild.name}`,
+      `🏦・Banco - ${interaction.guild.name}`,
       lb,
       interaction,
     );

@@ -18,7 +18,7 @@ module.exports = async (client, interaction, args) => {
   if (!channel)
     return client.errNormal(
       {
-        error: `You're not in a voice channel!`,
+        error: `¡No estás en un canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
   if (!checkVoice) {
     return client.errNormal(
       {
-        error: `You cannot edit this channel!`,
+        error: `¡No puedes editar este canal!`,
         type: "editreply",
       },
       interaction,
@@ -36,10 +36,10 @@ module.exports = async (client, interaction, args) => {
   } else {
     client.succNormal(
       {
-        text: `The channel was succesfully locked!`,
+        text: `¡El canal se bloqueó correctamente!`,
         fields: [
           {
-            name: `📘┆Channel`,
+            name: `📘┆Canal`,
             value: `${channel} (${channel.name})`,
           },
         ],

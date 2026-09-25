@@ -21,20 +21,20 @@ module.exports = async (client, interaction, args) => {
 
   if (!role || !amount)
     return client.errUsage(
-      { usage: "additem [role] [amount]", type: "editreply" },
+      { usage: "additem [rol] [cantidad]", type: "editreply" },
       interaction,
     );
 
   if (isNaN(amount))
     return client.errNormal(
-      { error: "Enter a valid number!", type: "editreply" },
+      { error: "¡Introduce un número válido!", type: "editreply" },
       interaction,
     );
 
   if (role == interaction.guild.roles.everyone)
     return client.errNormal(
       {
-        error: "You cannot add the everyone role to the store!",
+        error: "¡No puedes añadir el rol everyone a la tienda!",
         type: "editreply",
       },
       interaction,
@@ -45,7 +45,7 @@ module.exports = async (client, interaction, args) => {
     .then(async (storeData) => {
       if (storeData) {
         client.errNormal(
-          { error: `This role is already in the store!`, type: "editreply" },
+          { error: `¡Este rol ya está en la tienda!`, type: "editreply" },
           interaction,
         );
       } else {
@@ -57,15 +57,15 @@ module.exports = async (client, interaction, args) => {
 
         client.succNormal(
           {
-            text: `The role was added to the store!`,
+            text: `¡El rol se añadió a la tienda!`,
             fields: [
               {
-                name: `🛒┆Role`,
+                name: `🛒┆Rol`,
                 value: `<@&${role.id}>`,
                 inline: true,
               },
               {
-                name: `${client.emotes.economy.coins}┆Amount`,
+                name: `${client.emotes.economy.coins}┆Cantidad`,
                 value: `$${amount}`,
                 inline: true,
               },

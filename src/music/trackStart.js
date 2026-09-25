@@ -29,21 +29,21 @@ module.exports = (client, player, track) => {
     {
       title: `${client.emotes.normal.music}・${track.title}`,
       url: track.uri,
-      desc: `Music started in <#${player.voiceId}>!`,
+      desc: `¡La música empezó en <#${player.voiceId}>!`,
       thumbnail: track.thumbnail,
       fields: [
         {
-          name: `👤┆Requested By`,
+          name: `👤┆Pedida por`,
           value: `${track.requester}`,
           inline: true,
         },
         {
-          name: `${client.emotes.normal.clock}┆Ends at`,
+          name: `${client.emotes.normal.clock}┆Termina a las`,
           value: `<t:${(Date.now() / 1000 + track.duration / 1000).toFixed(0)}:f>`,
           inline: true,
         },
         {
-          name: `🎬┆Author`,
+          name: `🎬┆Autor`,
           value: `${track.author}`,
           inline: true,
         },

@@ -16,7 +16,7 @@ module.exports = async (client, interaction, args) => {
     if (!user || !user.xp)
       return client.errNormal(
         {
-          error: "This user has no levels!",
+          error: "¡Este usuario no tiene niveles!",
           type: "editreply",
         },
         interaction,
@@ -43,7 +43,7 @@ module.exports = async (client, interaction, args) => {
   } else {
     client.errNormal(
       {
-        error: "Levels are disabled in this guild!",
+        error: "¡Los niveles están desactivados en este servidor!",
         type: "editreply",
       },
       interaction,

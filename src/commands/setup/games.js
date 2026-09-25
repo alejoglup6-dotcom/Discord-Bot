@@ -15,8 +15,8 @@ module.exports = async (client, interaction, args) => {
   if (choice == "counting") {
     client.embed(
       {
-        title: `🔢・Counting`,
-        desc: `This is the start of counting! The first number is **1**`,
+        title: `🔢・Contar`,
+        desc: `¡Aquí empieza el conteo! El primer número es **1**`,
       },
       channel,
     );
@@ -27,8 +27,8 @@ module.exports = async (client, interaction, args) => {
   if (choice == "gtn") {
     client.embed(
       {
-        title: `🔢・Guess the number`,
-        desc: `Guess the number between **1** and **10.000**!`,
+        title: `🔢・Adivina el número`,
+        desc: `¡Adivina el número entre **1** y **10.000**!`,
       },
       channel,
     );
@@ -47,11 +47,11 @@ module.exports = async (client, interaction, args) => {
 
     client.embed(
       {
-        title: `💬・Guess the word`,
-        desc: `Put the letters in the right position!`,
+        title: `💬・Adivina la palabra`,
+        desc: `¡Pon las letras en la posición correcta!`,
         fields: [
           {
-            name: `🔀┆Word`,
+            name: `🔀┆Palabra`,
             value: `${shuffled.toLowerCase()}`,
           },
         ],

@@ -13,7 +13,7 @@ module.exports = async (client, interaction, args) => {
     if (!data)
       return client.errNormal(
         {
-          error: "No birthday found!",
+          error: "¡No se encontró ningún cumpleaños!",
           type: "editreply",
         },
         interaction,
@@ -25,7 +25,7 @@ module.exports = async (client, interaction, args) => {
     }).then(() => {
       client.succNormal(
         {
-          text: "Deleted your birthday",
+          text: "Tu cumpleaños se eliminó",
           type: "editreply",
         },
         interaction,

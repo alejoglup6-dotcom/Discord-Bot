@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
     if (data && data.Words.length > 0) {
       client.embed(
         {
-          title: "🤬・Blacklisted words",
+          title: "🤬・Palabras en la lista negra",
           desc: data.Words.join(", "),
           type: "editreply",
         },
@@ -19,7 +19,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       client.errNormal(
         {
-          error: `This guild has not data!`,
+          error: `¡Este servidor no tiene datos!`,
           type: "editreply",
         },
         interaction,

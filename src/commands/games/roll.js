@@ -8,8 +8,8 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `🎲・Roll`,
-      desc: `You rolled ${result}`,
+      title: `🎲・Dado`,
+      desc: `Sacaste ${result}`,
       type: "editreply",
     },
     interaction,

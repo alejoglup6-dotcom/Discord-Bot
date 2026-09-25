@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
 
         client.succNormal(
           {
-            text: `Word skipped successfully!`,
+            text: `¡Palabra saltada correctamente!`,
             type: "ephemeral",
           },
           interaction,
@@ -36,8 +36,8 @@ module.exports = async (client, interaction, args) => {
 
         return client.embed(
           {
-            title: `💬・Guess the word`,
-            desc: `Put the letters in the right position! \n\n🔀 ${shuffled.toLowerCase()}`,
+            title: `💬・Adivina la palabra`,
+            desc: `¡Pon las letras en la posición correcta! \n\n🔀 ${shuffled.toLowerCase()}`,
           },
           interaction.channel,
         );
@@ -45,7 +45,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       client.errNormal(
         {
-          error: "You are not in the right channel!",
+          error: "¡No estás en el canal correcto!",
           type: "editreply",
         },
         interaction,

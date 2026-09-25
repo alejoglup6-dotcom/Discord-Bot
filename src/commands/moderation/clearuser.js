@@ -26,10 +26,10 @@ module.exports = async (client, interaction, args) => {
           client
             .succNormal(
               {
-                text: `I have successfully deleted the messages`,
+                text: `Eliminé los mensajes correctamente`,
                 fields: [
                   {
-                    name: "👤┆User",
+                    name: "👤┆Usuario",
                     value: `${member} (${member.tag})`,
                     inline: true,
                   },
@@ -54,10 +54,10 @@ module.exports = async (client, interaction, args) => {
       client
         .succNormal(
           {
-            text: `I have successfully deleted the messages`,
+            text: `Eliminé los mensajes correctamente`,
             fields: [
               {
-                name: "💬┆Amount",
+                name: "💬┆Cantidad",
                 value: amount,
                 inline: true,
               },
@@ -76,7 +76,7 @@ module.exports = async (client, interaction, args) => {
       client.errNormal(
         {
           error:
-            "There was an error trying to delete messages in this channel!",
+            "¡Hubo un error al intentar eliminar mensajes en este canal!",
           type: "editreply",
         },
         interaction,

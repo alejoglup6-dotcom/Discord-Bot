@@ -6,7 +6,7 @@ module.exports = async (client, messageDeleted) => {
         if (messageDeleted.author.bot) return;
 
         var content = messageDeleted.content;
-        if (!content) content = "No text to be found";
+        if (!content) content = "No hay texto";
 
         if (messageDeleted.attachments.size > 0) content = messageDeleted.attachments.first()?.url;
 
@@ -14,27 +14,27 @@ module.exports = async (client, messageDeleted) => {
         if (!logsChannel) return;
 
         client.embed({
-            title: `💬・Message deleted`,
-            desc: `A message has been deleted`,
+            title: `💬・Mensaje eliminado`,
+            desc: `Se eliminó un mensaje`,
             fields: [
                 {
-                    name: `> Author`,
+                    name: `> Autor`,
                     value: `- ${messageDeleted.author} (${messageDeleted.author.tag})`
                 },
                 {
-                    name: `> Date`,
+                    name: `> Fecha`,
                     value: `- ${messageDeleted.createdAt}`
                 },
                 {
-                    name: `> Channel`,
+                    name: `> Canal`,
                     value: `- ${messageDeleted.channel} (${messageDeleted.channel.name})`
                 },
                 {
-                    name: `> Message`,
+                    name: `> Mensaje`,
                     value: `\`\`\`${content.replace(/`/g, "'")}\`\`\``
                 },
                 {
-                    name: `> Timestamp`,
+                    name: `> Fecha`,
                     value: `- <t:${Math.floor(messageDeleted.createdTimestamp / 1000)}:R>`
                 }
             ]

@@ -16,7 +16,7 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `🖼・Trump tweet`,
+      title: `🖼・Tuit de Trump`,
       image: img,
       type: "editreply",
     },

@@ -5,86 +5,86 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("serverstats")
-    .setDescription("Manage the server stats")
+    .setDescription("Gestiona las estadísticas del servidor")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
         .setDescription(
-          "Get information about the server stats category commands",
+          "Información sobre los comandos de la categoría estadísticas del servidor",
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("boosts")
-        .setDescription("Keep track of the boost count"),
+        .setDescription("Lleva la cuenta de los boosts"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("tier")
-        .setDescription("Keep track of the boost tier count"),
+        .setDescription("Lleva la cuenta del nivel de boost"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("channels")
-        .setDescription("Keep track of the channel count"),
+        .setDescription("Lleva la cuenta de los canales"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("stage-channels")
-        .setDescription("Keep track of the stage channel count"),
+        .setDescription("Lleva la cuenta de los canales de escenario"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("text-channels")
-        .setDescription("Keep track of the text channel count"),
+        .setDescription("Lleva la cuenta de los canales de texto"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("voice-channels")
-        .setDescription("Keep track of the voice channel count"),
+        .setDescription("Lleva la cuenta de los canales de voz"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("news-channels")
-        .setDescription("Keep track of the news channel count"),
+        .setDescription("Lleva la cuenta de los canales de anuncios"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("members")
-        .setDescription("Keep track of the member count"),
+        .setDescription("Lleva la cuenta de los miembros"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("bots").setDescription("Keep track of the bots count"),
+      subcommand.setName("bots").setDescription("Lleva la cuenta de los bots"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("roles")
-        .setDescription("Keep track of the role count"),
+        .setDescription("Lleva la cuenta de los roles"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("emoji")
-        .setDescription("Keep track of the emoji's count"),
+        .setDescription("Lleva la cuenta de los emojis"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("static-emoji")
-        .setDescription("Keep track of the static emoji's count"),
+        .setDescription("Lleva la cuenta de los emojis estáticos"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("animated-emoji")
-        .setDescription("Keep track of the animated emoji's count"),
+        .setDescription("Lleva la cuenta de los emojis animados"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("time")
-        .setDescription("Keep track of your current time zone")
+        .setDescription("Muestra la hora de tu zona horaria")
         .addStringOption((option) =>
           option
             .setName("timezone")
             .setDescription(
-              "The timezone you want to set (e.g. Europe/Amsterdam)",
+              "La zona horaria que quieres (ej.: America/Mexico_City)",
             )
             .setRequired(true),
         ),

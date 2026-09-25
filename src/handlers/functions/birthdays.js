@@ -27,23 +27,23 @@ module.exports = (client) => {
     }
 
     const months = {
-      1: "January",
-      2: "February",
-      3: "March",
-      4: "April",
-      5: "May",
-      6: "June",
-      7: "July",
-      8: "August",
-      9: "September",
-      10: "October",
-      11: "November",
-      12: "December",
+      1: "enero",
+      2: "febrero",
+      3: "marzo",
+      4: "abril",
+      5: "mayo",
+      6: "junio",
+      7: "julio",
+      8: "agosto",
+      9: "septiembre",
+      10: "octubre",
+      11: "noviembre",
+      12: "diciembre",
     };
 
     const convertedDay = suffixes(day);
     const convertedMonth = months[month];
-    const birthdayString = `${convertedDay} of ${convertedMonth}`;
+    const birthdayString = `${convertedDay} de ${convertedMonth}`;
 
     const results = await Schema.find({ Birthday: birthdayString });
 
@@ -61,8 +61,8 @@ module.exports = (client) => {
 
                 client.embed(
                   {
-                    title: `${client.emotes.normal.birthday}・Birthday`,
-                    desc: `Happy birthday to <@!${User}>!`,
+                    title: `${client.emotes.normal.birthday}・Cumpleaños`,
+                    desc: `¡Feliz cumpleaños, <@!${User}>!`,
                   },
                   channel,
                 );
@@ -81,13 +81,5 @@ module.exports = (client) => {
 function suffixes(number) {
   const converted = number.toString();
 
-  const lastChar = converted.charAt(converted.length - 1);
-
-  return lastChar == "1"
-    ? `${converted}st`
-    : lastChar == "2"
-      ? `${converted}nd`
-      : lastChar == "3"
-        ? `${converted}rd`
-        : `${converted}th`;
+  return converted;
 }

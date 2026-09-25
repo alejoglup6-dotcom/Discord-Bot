@@ -14,7 +14,7 @@ module.exports = async (client, interaction, args) => {
   let code = interaction.options.getString("code");
   if (code.includes("token") == true)
     return client.errNormal(
-      { error: "I'm not going to send my token!", type: "editreply" },
+      { error: "¡No voy a enviar mi token!", type: "editreply" },
       interaction,
     );
 
@@ -38,12 +38,12 @@ module.exports = async (client, interaction, args) => {
           title: `💻・Eval`,
           fields: [
             {
-              name: "📥┇Input",
+              name: "📥┇Entrada",
               value: `\`\`\`${code}\`\`\``,
               inline: false,
             },
             {
-              name: "📥┇Output",
+              name: "📥┇Salida",
               value: outputResponse.substr(0, 1024),
               inline: false,
             },
@@ -54,11 +54,11 @@ module.exports = async (client, interaction, args) => {
       );
 
       const embed2 = new Discord.EmbedBuilder()
-        .setTitle(`${interaction.user.tag} used eval command`)
+        .setTitle(`${interaction.user.tag} usó el comando eval`)
         .addFields(
-          { name: "📥┇Input", value: `\`\`\`${code}\`\`\``, inline: false },
+          { name: "📥┇Entrada", value: `\`\`\`${code}\`\`\``, inline: false },
           {
-            name: "📤┇Output",
+            name: "📤┇Salida",
             value: outputResponse.substr(0, 1024),
             inline: false,
           },
@@ -77,7 +77,7 @@ module.exports = async (client, interaction, args) => {
       var embed2 = new Discord.EmbedBuilder()
         .setAuthor(client.user.username, client.user.avatarURL())
         .addFields({
-          name: "📥┇Input",
+          name: "📥┇Entrada",
           value: `\`\`\`${code}\`\`\``,
           inline: false,
         })
@@ -93,12 +93,12 @@ module.exports = async (client, interaction, args) => {
         title: `💻・Eval`,
         fields: [
           {
-            name: "📥┇Input",
+            name: "📥┇Entrada",
             value: `\`\`\`${code}\`\`\``,
             inline: false,
           },
           {
-            name: "📥┇Error!",
+            name: "📥┇¡Error!",
             value: `\`\`\`${clean(err)}\`\`\``,
             inline: false,
           },

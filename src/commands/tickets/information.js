@@ -22,7 +22,7 @@ module.exports = async (client, interaction, args) => {
               if (ticketCategory == undefined) {
                 return client.errNormal(
                   {
-                    error: "Do the setup!",
+                    error: "¡Haz la configuración!",
                     type: "editreply",
                   },
                   interaction,
@@ -33,7 +33,7 @@ module.exports = async (client, interaction, args) => {
                 client
                   .embed(
                     {
-                      desc: `${client.emotes.animated.loading}・Loading information...`,
+                      desc: `${client.emotes.animated.loading}・Cargando información...`,
                       type: "editreply",
                     },
                     interaction,
@@ -43,30 +43,30 @@ module.exports = async (client, interaction, args) => {
 
                     return client.embed(
                       {
-                        title: `ℹ・Information`,
+                        title: `ℹ・Información`,
                         fields: [
                           {
-                            name: "Ticket name",
+                            name: "Nombre del ticket",
                             value: `\`${interaction.channel.name}\``,
                             inline: true,
                           },
                           {
-                            name: "Channel id",
+                            name: "ID del canal",
                             value: `\`${interaction.channel.id}\``,
                             inline: true,
                           },
                           {
-                            name: "Creator",
+                            name: "Creador",
                             value: `<@!${ticketData.creator}>`,
                             inline: true,
                           },
                           {
-                            name: "Claimed by",
+                            name: "Reclamado por",
                             value: `<@!${ticketData.claimed}>`,
                             inline: true,
                           },
                           {
-                            name: "Ticket id",
+                            name: "ID del ticket",
                             value: `${ticketData.TicketID}`,
                             inline: true,
                           },
@@ -79,7 +79,7 @@ module.exports = async (client, interaction, args) => {
               } else {
                 client.errNormal(
                   {
-                    error: "This is not a ticket!",
+                    error: "¡Esto no es un ticket!",
                     type: "editreply",
                   },
                   interaction,
@@ -88,7 +88,7 @@ module.exports = async (client, interaction, args) => {
             } else {
               return client.errNormal(
                 {
-                  error: "Do the setup!",
+                  error: "¡Haz la configuración!",
                   type: "editreply",
                 },
                 interaction,

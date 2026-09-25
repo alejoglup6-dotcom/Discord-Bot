@@ -32,8 +32,8 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `⏰・Reset economy`,
-      desc: `Are you sure you want to reset the economy?`,
+      title: `⏰・Reiniciar economía`,
+      desc: `¿Seguro que quieres reiniciar la economía?`,
       components: [row],
       type: "editreply",
     },
@@ -56,7 +56,7 @@ module.exports = async (client, interaction, args) => {
 
         client.succNormal(
           {
-            text: `The economy has been successfully reset in this guild!`,
+            text: `¡La economía de este servidor se reinició correctamente!`,
             components: [],
             type: "editreply",
           },
@@ -67,7 +67,7 @@ module.exports = async (client, interaction, args) => {
       if (i.customId == "eco_stop") {
         client.errNormal(
           {
-            error: `The economy reset has been cancelled!`,
+            error: `¡Se canceló el reinicio de la economía!`,
             components: [],
             type: "editreply",
           },
@@ -78,7 +78,7 @@ module.exports = async (client, interaction, args) => {
     .catch(() => {
       client.errNormal(
         {
-          error: "Time's up! Cancelled the economy reset!",
+          error: "¡Se acabó el tiempo! Se canceló el reinicio de la economía",
           type: "editreply",
         },
         interaction,

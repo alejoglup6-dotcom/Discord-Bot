@@ -6,216 +6,216 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("moderation")
-    .setDescription("Manage all server moderation")
+    .setDescription("Gestiona toda la moderación del servidor")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
         .setDescription(
-          "Get information about the moderation category commands",
+          "Información sobre los comandos de la categoría moderación",
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("ban")
-        .setDescription("Ban a user")
+        .setDescription("Banea a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addStringOption((option) =>
-          option.setName("reason").setDescription("The reason for the ban"),
+          option.setName("reason").setDescription("La razón del baneo"),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("clear")
-        .setDescription("Clear messages")
+        .setDescription("Elimina mensajes")
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Amount of messages")
+            .setDescription("Cantidad de mensajes")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("clearuser")
-        .setDescription("Clear user messages in a channel")
+        .setDescription("Elimina los mensajes de un usuario en un canal")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("demote")
-        .setDescription("Demote a user")
+        .setDescription("Degrada a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("kick")
-        .setDescription("Kick a user")
+        .setDescription("Expulsa a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addStringOption((option) =>
-          option.setName("reason").setDescription("The reason for the kick"),
+          option.setName("reason").setDescription("La razón de la expulsión"),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("lock")
-        .setDescription("Lock a channel")
+        .setDescription("Bloquea un canal")
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Select a channel")
+            .setDescription("Elige un canal")
             .addChannelTypes(ChannelType.GuildText),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("lockdown").setDescription("Lock all channels"),
+      subcommand.setName("lockdown").setDescription("Bloquea todos los canales"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("nuke").setDescription("Nuke a channel"),
+      subcommand.setName("nuke").setDescription("Destruye y recrea un canal"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("softban")
-        .setDescription("Softban a user")
+        .setDescription("Hace softban a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addStringOption((option) =>
-          option.setName("reason").setDescription("The reason for the ban"),
+          option.setName("reason").setDescription("La razón del baneo"),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("timeout")
-        .setDescription("Timeout a user")
+        .setDescription("Aísla a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("time")
-            .setDescription("Number of minutes")
+            .setDescription("Número de minutos")
             .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("reason")
-            .setDescription("Reason for the time out")
+            .setDescription("Razón del aislamiento")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("tempban")
-        .setDescription("Temp ban a user")
+        .setDescription("Banea temporalmente a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("time")
-            .setDescription("Number of minutes")
+            .setDescription("Número de minutos")
             .setRequired(true),
         )
         .addStringOption((option) =>
-          option.setName("reason").setDescription("The reason for the ban"),
+          option.setName("reason").setDescription("La razón del baneo"),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("unlock")
-        .setDescription("Unlock a channel")
+        .setDescription("Desbloquea un canal")
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Select a channel")
+            .setDescription("Elige un canal")
             .addChannelTypes(ChannelType.GuildText),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("unban")
-        .setDescription("Unban a user")
+        .setDescription("Desbanea a un usuario")
         .addStringOption((option) =>
           option
             .setName("user")
-            .setDescription("Give a user id")
+            .setDescription("Indica el ID de un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("banlist").setDescription("Get all banned users"),
+      subcommand.setName("banlist").setDescription("Mira todos los usuarios baneados"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("warn")
-        .setDescription("Warn a user")
+        .setDescription("Advierte a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("reason")
-            .setDescription("The reason for the warn")
+            .setDescription("La razón de la advertencia")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("unwarn")
-        .setDescription("Unwarn a user")
+        .setDescription("Retira una advertencia a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addIntegerOption((option) =>
           option
             .setName("case")
-            .setDescription("Give a case number")
+            .setDescription("Indica un número de caso")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("warnings")
-        .setDescription("See a users warnings")
+        .setDescription("Mira las advertencias de un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     ),

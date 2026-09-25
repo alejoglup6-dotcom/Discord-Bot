@@ -14,7 +14,7 @@ module.exports = async (client, interaction, args) => {
   if (!parsedEmoji)
     return client.errNormal(
       {
-        error: `Emoji not found in this server!`,
+        error: `¡No se encontró el emoji en este servidor!`,
         type: "editreply",
       },
       interaction,
@@ -54,16 +54,16 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: "Reaction role successfully created! Create a panel in the following way",
+          text: "¡Rol por reacción creado correctamente! Crea un panel de la siguiente forma",
           fields: [
             {
-              name: `📘┆Menu panel`,
-              value: `\`/reactionroles menu [category name]\``,
+              name: `📘┆Panel con menú`,
+              value: `\`/reactionroles menu [nombre de la categoría]\``,
               inline: true,
             },
             {
-              name: `📘┆Button panel`,
-              value: `\`/reactionroles button [category name]\``,
+              name: `📘┆Panel con botones`,
+              value: `\`/reactionroles button [nombre de la categoría]\``,
               inline: true,
             },
           ],

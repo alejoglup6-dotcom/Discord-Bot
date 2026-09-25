@@ -13,7 +13,7 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `I have generate a password and have it sent to your DM`,
+      text: `Generé una contraseña y te la envié por MD`,
       type: "editreply",
     },
     interaction,
@@ -21,15 +21,15 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `Your generated password`,
+      text: `Tu contraseña generada`,
       fields: [
         {
-          name: "🔑┇Password",
+          name: "🔑┇Contraseña",
           value: `${password}`,
           inline: true,
         },
         {
-          name: "👣┇Length",
+          name: "👣┇Longitud",
           value: `12`,
           inline: true,
         },

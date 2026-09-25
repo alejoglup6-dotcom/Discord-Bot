@@ -12,16 +12,16 @@ module.exports = async (client, interaction, args) => {
     .then((res) => {
       client.embed(
         {
-          title: `${client.emotes.normal.check}・Success!`,
-          desc: `I have translated the following`,
+          title: `${client.emotes.normal.check}・¡Listo!`,
+          desc: `Traduje lo siguiente`,
           fields: [
             {
-              name: "📥 - Input",
+              name: "📥 - Entrada",
               value: `${text}`,
               inline: false,
             },
             {
-              name: "📤 - Output",
+              name: "📤 - Salida",
               value: `${res.text}`,
               inline: false,
             },
@@ -35,7 +35,7 @@ module.exports = async (client, interaction, args) => {
       console.log(err);
       client.errNormal(
         {
-          error: "Please provide a valid ISO language code!",
+          error: "¡Indica un código de idioma ISO válido!",
           type: "editreply",
         },
         interaction,

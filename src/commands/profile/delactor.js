@@ -13,7 +13,7 @@ module.exports = async (client, interaction, args) => {
         if (!data.Actors.includes(actor)) {
           return client.errNormal(
             {
-              error: `That actor doesn't exist in the database!`,
+              error: `¡Ese actor no está en la base de datos!`,
               type: "editreply",
             },
             interaction,
@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
       }
       client.succNormal(
         {
-          text: "Removed your actor",
+          text: "Actor eliminado",
           fields: [
             {
               name: "👨‍🎤┆Actor",
@@ -43,7 +43,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

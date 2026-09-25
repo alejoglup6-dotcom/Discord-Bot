@@ -6,8 +6,8 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `🎮・Epic gamer rate`,
-      desc: `You are ${result}% epic gamer!`,
+      title: `🎮・Nivel de gamer épico`,
+      desc: `¡Eres ${result}% gamer épico!`,
       type: "editreply",
     },
     interaction,

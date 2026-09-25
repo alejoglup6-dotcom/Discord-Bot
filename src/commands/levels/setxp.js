@@ -28,15 +28,15 @@ module.exports = async (client, interaction, args) => {
 
     client.succNormal(
       {
-        text: `XP has been modified successfully`,
+        text: `La XP se modificó correctamente`,
         fields: [
           {
-            name: "🆕┆New XP",
+            name: "🆕┆Nueva XP",
             value: `${user.xp}`,
             inline: true,
           },
           {
-            name: "👤┆User",
+            name: "👤┆Usuario",
             value: `${target} (${target.tag})`,
             inline: true,
           },
@@ -48,7 +48,7 @@ module.exports = async (client, interaction, args) => {
   } else {
     client.errNormal(
       {
-        error: "Levels are disabled in this guild!",
+        error: "¡Los niveles están desactivados en este servidor!",
         type: "editreply",
       },
       interaction,

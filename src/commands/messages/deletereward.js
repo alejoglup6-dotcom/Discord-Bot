@@ -27,10 +27,10 @@ module.exports = async (client, interaction, args) => {
         }).then(() => {
           client.succNormal(
             {
-              text: `Message reward removed`,
+              text: `Recompensa por mensajes eliminada`,
               fields: [
                 {
-                  name: "💬┆Messages",
+                  name: "💬┆Mensajes",
                   value: `${messages}`,
                   inline: true,
                 },
@@ -43,7 +43,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         return client.errNormal(
           {
-            error: "No message reward found at this message amount!",
+            error: "¡No hay ninguna recompensa para esta cantidad de mensajes!",
             type: "editreply",
           },
           interaction,

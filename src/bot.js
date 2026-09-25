@@ -156,17 +156,17 @@ process.on("unhandledRejection", (error) => {
                 error.stack.slice(0, 950) + "... view console for details";
     if (!error.stack) return;
     const embed = new Discord.EmbedBuilder()
-        .setTitle(`🚨・Unhandled promise rejection`)
+        .setTitle(`🚨・Promesa rechazada sin manejar`)
         .addFields([
             {
                 name: "Error",
-                value: error ? Discord.codeBlock(error) : "No error",
+                value: error ? Discord.codeBlock(error) : "Sin error",
             },
             {
-                name: "Stack error",
+                name: "Pila del error",
                 value: error.stack
                     ? Discord.codeBlock(error.stack)
-                    : "No stack error",
+                    : "Sin pila de error",
             },
         ])
         .setColor(client.config.colors.normal);
@@ -184,10 +184,10 @@ process.on("unhandledRejection", (error) => {
 process.on("warning", (warn) => {
     console.warn("Warning:", warn);
     const embed = new Discord.EmbedBuilder()
-        .setTitle(`🚨・New warning found`)
+        .setTitle(`🚨・Nueva advertencia encontrada`)
         .addFields([
             {
-                name: `Warn`,
+                name: `Advertencia`,
                 value: `\`\`\`${warn}\`\`\``,
             },
         ])
@@ -214,14 +214,14 @@ client.on(Discord.ShardEvents.Error, (error) => {
                 error.stack.slice(0, 950) + "... view console for details";
     if (!error.stack) return;
     const embed = new Discord.EmbedBuilder()
-        .setTitle(`🚨・A websocket connection encountered an error`)
+        .setTitle(`🚨・Una conexión websocket encontró un error`)
         .addFields([
             {
                 name: `Error`,
                 value: `\`\`\`${error}\`\`\``,
             },
             {
-                name: `Stack error`,
+                name: `Pila del error`,
                 value: `\`\`\`${error.stack}\`\`\``,
             },
         ])

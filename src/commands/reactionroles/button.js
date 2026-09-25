@@ -18,7 +18,7 @@ module.exports = async (client, interaction, args) => {
       if (!data)
         return client.errNormal(
           {
-            error: `No data found!`,
+            error: `¡No se encontraron datos!`,
             type: "editreply",
           },
           interaction,
@@ -39,7 +39,7 @@ module.exports = async (client, interaction, args) => {
         .embed(
           {
             title: `${upper}・Roles`,
-            desc: `_____ \n\nChoose your roles by pressing the button! \n\n${mapped}`,
+            desc: `_____ \n\n¡Elige tus roles pulsando los botones! \n\n${mapped}`,
             components: sendComponents,
           },
           channel,
@@ -51,7 +51,7 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: "Reaction panel successfully created!",
+          text: "¡Panel de reacciones creado correctamente!",
           type: "ephemeraledit",
         },
         interaction,

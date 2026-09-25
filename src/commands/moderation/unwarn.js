@@ -26,7 +26,7 @@ module.exports = async (client, interaction, args) => {
         if (!warn) {
           client.errNormal(
             {
-              error: "This user doesn't have a warning with this case number!",
+              error: "¡Este usuario no tiene ninguna advertencia con este número de caso!",
               type: "editreply",
             },
             interaction,
@@ -38,7 +38,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: "User has no warnings!",
+            error: "¡El usuario no tiene advertencias!",
             type: "editreply",
           },
           interaction,
@@ -50,11 +50,11 @@ module.exports = async (client, interaction, args) => {
   client
     .embed(
       {
-        title: `🔨・Unwarn`,
-        desc: `You've been unwarned in **${interaction.guild.name}**`,
+        title: `🔨・Advertencia retirada`,
+        desc: `Te retiraron una advertencia en **${interaction.guild.name}**`,
         fields: [
           {
-            name: "👤┆Moderator",
+            name: "👤┆Moderador",
             value: interaction.user.tag,
             inline: true,
           },
@@ -67,10 +67,10 @@ module.exports = async (client, interaction, args) => {
   client.emit("warnRemove", member, interaction.user);
   client.succNormal(
     {
-      text: `The user's warning has been successfully removed`,
+      text: `La advertencia del usuario se eliminó correctamente`,
       fields: [
         {
-          name: "👤┆User",
+          name: "👤┆Usuario",
           value: `${member}`,
           inline: true,
         },

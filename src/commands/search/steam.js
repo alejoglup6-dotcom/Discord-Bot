@@ -12,7 +12,7 @@ module.exports = async (client, interaction, args) => {
   const s = await pop.steam(name).catch((e) => {
     return client.errNormal(
       {
-        error: "Application not found!",
+        error: "¡No se encontró la aplicación!",
         type: "editreply",
       },
       interaction,
@@ -25,27 +25,27 @@ module.exports = async (client, interaction, args) => {
       thumbnail: s.thumbnail,
       fields: [
         {
-          name: `💬┇Name`,
+          name: `💬┇Nombre`,
           value: `${s.name}`,
           inline: true,
         },
         {
-          name: `📃┇Capital`,
+          name: `📃┇Descripción`,
           value: `${s.description}`,
           inline: false,
         },
         {
-          name: "💻┇Developers",
+          name: "💻┇Desarrolladores",
           value: `${s.developers.join(", ")}`,
           inline: true,
         },
         {
-          name: "☁┇Publishers",
+          name: "☁┇Distribuidores",
           value: `${s.publishers.join(", ")}`,
           inline: true,
         },
         {
-          name: "🪙┇Price",
+          name: "🪙┇Precio",
           value: `${s.price}`,
           inline: true,
         },

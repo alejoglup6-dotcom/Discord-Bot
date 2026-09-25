@@ -5,43 +5,43 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("voice")
-    .setDescription("Manage the voice channels")
+    .setDescription("Gestiona los canales de voz")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the voice category commands"),
+        .setDescription("Información sobre los comandos de la categoría voz"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("limit")
-        .setDescription("Limit your custom voice channel")
+        .setDescription("Limita tu canal de voz personalizado")
         .addNumberOption((option) =>
           option
             .setName("limit")
-            .setDescription("Enter a limit")
+            .setDescription("Escribe un límite")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("lock")
-        .setDescription("Lock your custom voice channel"),
+        .setDescription("Bloquea tu canal de voz personalizado"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("rename")
-        .setDescription("Rename your custom voice channel")
+        .setDescription("Renombra tu canal de voz personalizado")
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("New voice name")
+            .setDescription("Nuevo nombre del canal de voz")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("unlock")
-        .setDescription("Unlock your custom voice channel"),
+        .setDescription("Desbloquea tu canal de voz personalizado"),
     ),
   /**
    * @param {Client} client

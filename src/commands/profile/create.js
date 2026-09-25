@@ -7,7 +7,7 @@ module.exports = async (client, interaction, args) => {
   Schema.findOne({ User: interaction.user.id }).then(async (data) => {
     if (data) {
       return client.errNormal(
-        { error: "You already have a Bot profile", type: "editreply" },
+        { error: "Ya tienes un perfil de Bot", type: "editreply" },
         interaction,
       );
     } else {
@@ -17,7 +17,7 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: "Profile created! View your profile by running \`profile\`",
+          text: "¡Perfil creado! Míralo con \`profile\`",
           type: "editreply",
         },
         interaction,

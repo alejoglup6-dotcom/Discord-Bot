@@ -11,7 +11,7 @@ module.exports = async (client, interaction, args) => {
   );
   if (!giveaway)
     return client.errNormal(
-      { error: "This message ID is not from this guild", type: "editreply" },
+      { error: "Este ID de mensaje no es de este servidor", type: "editreply" },
       interaction,
     );
   client.giveawaysManager
@@ -21,7 +21,7 @@ module.exports = async (client, interaction, args) => {
     .then(() => {
       client.succNormal(
         {
-          text: `Giveaway wil end in less than ${client.giveawaysManager.options.updateCountdownEvery / 1000} seconds`,
+          text: `El sorteo terminará en menos de ${client.giveawaysManager.options.updateCountdownEvery / 1000} segundos`,
           type: "editreply",
         },
         interaction,
@@ -30,7 +30,7 @@ module.exports = async (client, interaction, args) => {
     .catch((err) => {
       client.errNormal(
         {
-          error: `I can't find the giveaway for ${messageID}!`,
+          error: `¡No encuentro el sorteo con ID ${messageID}!`,
           type: "editreply",
         },
         interaction,

@@ -9,7 +9,7 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `📢・Announcement!`,
+      title: `📢・¡Anuncio!`,
       desc: message,
     },
     channel,
@@ -17,10 +17,10 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `Announcement has been sent successfully!`,
+      text: `¡El anuncio se envió correctamente!`,
       fields: [
         {
-          name: `📘┆Channel`,
+          name: `📘┆Canal`,
           value: `${channel} (${channel.name})`,
         },
       ],

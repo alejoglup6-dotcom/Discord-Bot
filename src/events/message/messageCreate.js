@@ -29,17 +29,17 @@ module.exports = async (client, message) => {
 
   if (message.channel.type === Discord.ChannelType.DM) {
     let embedLogs = new Discord.EmbedBuilder()
-      .setTitle(`💬・New DM message!`)
-      .setDescription(`Bot has received a new DM message!`)
+      .setTitle(`💬・¡Nuevo mensaje por MD!`)
+      .setDescription(`¡Bot recibió un nuevo mensaje por MD!`)
       .addFields(
         {
-          name: "👤┆Send By",
+          name: "👤┆Enviado por",
           value: `${message.author} (${message.author.tag})`,
           inline: true,
         },
         {
-          name: `💬┆Message`,
-          value: `${message.content || "None"}`,
+          name: `💬┆Mensaje`,
+          value: `${message.content || "Ninguno"}`,
           inline: true,
         },
       )
@@ -48,7 +48,7 @@ module.exports = async (client, message) => {
 
     if (message.attachments.size > 0)
       embedLogs.addFields({
-        name: `📃┆Attachments`,
+        name: `📃┆Archivos adjuntos`,
         value: `${message.attachments.first()?.url}`,
         inline: false,
       });
@@ -128,17 +128,17 @@ module.exports = async (client, message) => {
             await client.channels.cache
               .get(levelData.Channel)
               .send({
-                content: `**GG** <@!${userId}>, you are now level **${user.level}**`,
+                content: `**GG** <@!${userId}>, ahora eres nivel **${user.level}**`,
               })
               .catch(() => {});
           } else {
             message.channel.send({
-              content: `**GG** <@!${userId}>, you are now level **${user.level}**`,
+              content: `**GG** <@!${userId}>, ahora eres nivel **${user.level}**`,
             });
           }
         } catch {
           message.channel.send({
-            content: `**GG** <@!${userId}>, you are now level **${user.level}**`,
+            content: `**GG** <@!${userId}>, ahora eres nivel **${user.level}**`,
           });
         }
       }
@@ -196,7 +196,7 @@ module.exports = async (client, message) => {
       client
         .simpleEmbed(
           {
-            desc: `${message.author} is no longer afk!`,
+            desc: `¡${message.author} ya no está AFK!`,
           },
           message.channel,
         )
@@ -232,7 +232,7 @@ module.exports = async (client, message) => {
           if (!user) continue;
 
           client.simpleEmbed(
-            { desc: `${user} is currently afk! **Reason:** ${afkUser.Message}` },
+            { desc: `¡${user} está AFK ahora mismo! **Razón:** ${afkUser.Message}` },
             message.channel,
           );
         }
@@ -318,12 +318,12 @@ module.exports = async (client, message) => {
   ) {
     let row = new Discord.ActionRowBuilder().addComponents(
       new Discord.ButtonBuilder()
-        .setLabel("Invite")
+        .setLabel("Invitar")
         .setURL(client.config.discord.botInvite)
         .setStyle(Discord.ButtonStyle.Link),
 
       new Discord.ButtonBuilder()
-        .setLabel("Support server")
+        .setLabel("Servidor de soporte")
         .setURL(client.config.discord.serverInvite)
         .setStyle(Discord.ButtonStyle.Link),
     );
@@ -331,25 +331,25 @@ module.exports = async (client, message) => {
     client
       .embed(
         {
-          title: "Hi, i'm Bot",
-          desc: `Use with commands via Discord ${client.emotes.normal.slash} commands`,
+          title: "Hola, soy Bot",
+          desc: `Úsame con los comandos ${client.emotes.normal.slash} de Discord`,
           fields: [
             {
-              name: "📨┆Invite me",
-              value: `Invite Bot in your own server! [Click here](${client.config.discord.botInvite})`,
+              name: "📨┆Invítame",
+              value: `¡Invita a Bot a tu propio servidor! [Haz clic aquí](${client.config.discord.botInvite})`,
             },
             {
-              name: "❓┇I don't see any slash commands",
+              name: "❓┇No veo ningún comando de barra",
               value:
-                "The bot may not have permissions for this. Open the invite link again and select your server. The bot then gets the correct permissions",
+                "Puede que el bot no tenga permisos para esto. Abre de nuevo el enlace de invitación y selecciona tu servidor. Así el bot recibirá los permisos correctos",
             },
             {
-              name: "❓┆Need support?",
-              value: `For questions you can join our [support server](${client.config.discord.serverInvite})!`,
+              name: "❓┆¿Necesitas soporte?",
+              value: `¡Si tienes preguntas, puedes unirte a nuestro [servidor de soporte](${client.config.discord.serverInvite})!`,
             },
             {
-              name: "🐞┆Found a bug?",
-              value: `Report all bugs via: \`/report bug\`!`,
+              name: "🐞┆¿Encontraste un bug?",
+              value: `¡Reporta los bugs con: \`/report bug\`!`,
             },
           ],
           components: [row],
@@ -391,7 +391,7 @@ module.exports = async (client, message) => {
       return message.author.send({ content: cmdx.Responce }).catch((e) => {
         client.errNormal(
           {
-            error: "I can't DM you, maybe you have DM turned off!",
+            error: "No puedo enviarte MD, ¡quizá los tienes desactivados!",
           },
           message.channel,
         );

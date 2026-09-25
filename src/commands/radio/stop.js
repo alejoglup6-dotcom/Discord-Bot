@@ -15,7 +15,7 @@ module.exports = async (client, interaction, args) => {
     : null;
   if (!channel)
     return client.errNormal(
-      { error: `The channel does not exist!`, type: "editreply" },
+      { error: `¡El canal no existe!`, type: "editreply" },
       interaction,
     );
 
@@ -25,16 +25,16 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `📻・Radio stopped`,
-      desc: `Radio has stopped successfully \nTo make the bot join do: \`rplay\``,
+      title: `📻・Radio detenida`,
+      desc: `La radio se detuvo correctamente \nPara que el bot entre usa: \`rplay\``,
       fields: [
         {
-          name: "👤┆Stopped By",
+          name: "👤┆Detenida por",
           value: `${interaction.user} (${interaction.user.tag})`,
           inline: true,
         },
         {
-          name: "📺┆Channel",
+          name: "📺┆Canal",
           value: `${channel} (${channel.name})`,
           inline: true,
         },
@@ -45,21 +45,21 @@ module.exports = async (client, interaction, args) => {
   );
 
   let embed = new Discord.EmbedBuilder()
-    .setTitle(`📻・Radio stopped`)
-    .setDescription(`_______________ \n\nRadio has stopped successfully`)
+    .setTitle(`📻・Radio detenida`)
+    .setDescription(`_______________ \n\nLa radio se detuvo correctamente`)
     .addFields(
       {
-        name: "👤┆Stopped By",
+        name: "👤┆Detenida por",
         value: `${interaction.user} (${interaction.user.tag})`,
         inline: true,
       },
       {
-        name: "📺┆Channel",
+        name: "📺┆Canal",
         value: `${channel} (${channel.name})`,
         inline: true,
       },
       {
-        name: "⚙️┆Guild",
+        name: "⚙️┆Servidor",
         value: `${interaction.guild.name} (${interaction.guild.id})`,
         inline: true,
       },

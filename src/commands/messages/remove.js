@@ -29,7 +29,7 @@ module.exports = async (client, interaction, args) => {
   } else {
     return client.errNormal(
       {
-        error: `No message data found for ${user}`,
+        error: `No se encontraron datos de mensajes de ${user}`,
         type: "editreply",
       },
       interaction,
@@ -38,10 +38,10 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `Removed **${amount}** messages from ${user}`,
+      text: `Se quitaron **${amount}** mensajes a ${user}`,
       fields: [
         {
-          name: "💬┆Total messages",
+          name: "💬┆Mensajes totales",
           value: `${data.Messages}`,
           inline: true,
         },

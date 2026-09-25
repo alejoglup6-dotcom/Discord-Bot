@@ -12,12 +12,12 @@ module.exports = async (client, interaction, args) => {
     let list = ``;
 
     for (var i = 0; i < data.length; i++) {
-      list += `**${i + 1}** - Channel: ${data[i].Channel}`;
+      list += `**${i + 1}** - Canal: ${data[i].Channel}`;
     }
 
     await client.embed(
       {
-        title: `💬・Sticky messages`,
+        title: `💬・Mensajes fijos`,
         desc: list,
         type: "editreply",
       },
@@ -26,7 +26,7 @@ module.exports = async (client, interaction, args) => {
   } else {
     client.errNormal(
       {
-        error: "No data found!",
+        error: "¡No se encontraron datos!",
         type: "editreply",
       },
       interaction,

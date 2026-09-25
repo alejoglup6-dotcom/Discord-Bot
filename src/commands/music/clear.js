@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   if (!channel)
     return client.errNormal(
       {
-        error: `You're not in a voice channel!`,
+        error: `¡No estás en un canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -19,7 +19,7 @@ module.exports = async (client, interaction, args) => {
   if (player && channel.id !== player?.voiceId)
     return client.errNormal(
       {
-        error: `You're not in the same voice channel!`,
+        error: `¡No estás en el mismo canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
   if (!player || !player.queue.current)
     return client.errNormal(
       {
-        error: "There are no songs playing in this server",
+        error: "No se está reproduciendo ninguna canción en este servidor",
         type: "editreply",
       },
       interaction,
@@ -37,7 +37,7 @@ module.exports = async (client, interaction, args) => {
   if (player.queue.size <= 1)
     return client.errNormal(
       {
-        error: `There is only one song in the queue!`,
+        error: `¡Solo hay una canción en la cola!`,
         type: "editreply",
       },
       interaction,
@@ -47,7 +47,7 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: "The queue has just been **removed**!",
+      text: "¡La cola se acaba de **vaciar**!",
       type: "editreply",
     },
     interaction,

@@ -20,8 +20,8 @@ module.exports = async (client, interaction, args) => {
       .then((ch) => {
         client.embed(
           {
-            title: `🔢・Counting`,
-            desc: `This is the start of counting! The first number is **1**`,
+            title: `🔢・Contar`,
+            desc: `¡Aquí empieza el conteo! El primer número es **1**`,
           },
           ch,
         );
@@ -33,14 +33,14 @@ module.exports = async (client, interaction, args) => {
   if (choice == "gtn") {
     interaction.guild.channels
       .create({
-        name: "guess-the-number",
+        name: "adivina-el-numero",
         type: Discord.ChannelType.GuildText,
       })
       .then((ch) => {
         client.embed(
           {
-            title: `🔢・Guess the number`,
-            desc: `Guess the number between **1** and **10.000**!`,
+            title: `🔢・Adivina el número`,
+            desc: `¡Adivina el número entre **1** y **10.000**!`,
           },
           ch,
         );
@@ -52,7 +52,7 @@ module.exports = async (client, interaction, args) => {
   if (choice == "gtw") {
     interaction.guild.channels
       .create({
-        name: "guess-the-word",
+        name: "adivina-la-palabra",
         type: Discord.ChannelType.GuildText,
       })
       .then((ch) => {
@@ -66,11 +66,11 @@ module.exports = async (client, interaction, args) => {
 
         client.embed(
           {
-            title: `💬・Guess the word`,
-            desc: `Put the letters in the right position!`,
+            title: `💬・Adivina la palabra`,
+            desc: `¡Pon las letras en la posición correcta!`,
             fields: [
               {
-                name: `🔀┆Word`,
+                name: `🔀┆Palabra`,
                 value: `${shuffled.toLowerCase()}`,
               },
             ],
@@ -85,7 +85,7 @@ module.exports = async (client, interaction, args) => {
   if (choice == "wordsnake") {
     interaction.guild.channels
       .create({
-        name: "word-snake",
+        name: "serpiente-de-palabras",
         type: Discord.ChannelType.GuildText,
       })
       .then((ch) => {

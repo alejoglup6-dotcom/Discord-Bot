@@ -15,20 +15,20 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `👪・${target.username}'s Family`,
+      title: `👪・Familia de ${target.username}`,
       thumbnail: target.avatarURL({ size: 1024 }),
       fields: [
         {
-          name: `Partner`,
-          value: `${data && data.Partner ? `<@!${data.Partner}>` : `This user is not married`}`,
+          name: `Pareja`,
+          value: `${data && data.Partner ? `<@!${data.Partner}>` : `Este usuario no está casado`}`,
         },
         {
-          name: `Parent`,
-          value: `${data && data.Parent.length > 0 ? `${data.Parent.join(", ")}` : `This user has no parents`}`,
+          name: `Padres`,
+          value: `${data && data.Parent.length > 0 ? `${data.Parent.join(", ")}` : `Este usuario no tiene padres`}`,
         },
         {
-          name: `Children`,
-          value: `${data && data.Children.length > 0 ? `${data.Children.join(", ")}` : `This user has no children`}`,
+          name: `Hijos`,
+          value: `${data && data.Children.length > 0 ? `${data.Children.join(", ")}` : `Este usuario no tiene hijos`}`,
         },
       ],
       type: "editreply",

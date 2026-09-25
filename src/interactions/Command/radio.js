@@ -7,20 +7,20 @@ const Schema = require("../../database/models/music");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("radio")
-    .setDescription("Playing radio in Bot")
+    .setDescription("Reproduce la radio en Bot")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the radio category commands"),
+        .setDescription("Información sobre los comandos de la categoría radio"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("play").setDescription("Start the radio"),
+      subcommand.setName("play").setDescription("Inicia la radio"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("stop").setDescription("Stop the radio"),
+      subcommand.setName("stop").setDescription("Detén la radio"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("playing").setDescription("Show what is playing now"),
+      subcommand.setName("playing").setDescription("Muestra qué está sonando"),
     ),
 
   /**
@@ -47,7 +47,7 @@ module.exports = {
     if (!interaction.member.voice.channel)
       return client.errNormal(
         {
-          error: `You're not in a voice channel!`,
+          error: `¡No estás en un canal de voz!`,
           type: "editreply",
         },
         interaction,

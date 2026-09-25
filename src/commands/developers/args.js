@@ -8,7 +8,7 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `Message has been sent successfully!`,
+      text: `¡El mensaje se envió correctamente!`,
       type: "ephemeraledit",
     },
     interaction,
@@ -25,25 +25,25 @@ module.exports = async (client, interaction, args) => {
       .then(() => {
         client.embed(
           {
-            title: `ℹ️・Information`,
+            title: `ℹ️・Información`,
             thumbnail: client.user.avatarURL({ size: 1024 }),
             desc: `_____`,
             fields: [
               {
-                name: `👋┆Welcome to ${interaction.guild.name}!`,
-                value: `Welcome to our hangout place! Meet new people here, play some games and participate in seasonal events! We are a server where we bring everyone together and we try to make it comfortable for everyone! Please be welcome and have some fun!`,
+                name: `👋┆¡Bienvenido a ${interaction.guild.name}!`,
+                value: `¡Bienvenido a nuestro lugar de reunión! Conoce gente nueva, juega y participa en eventos de temporada. Somos un servidor que reúne a todos e intentamos que todo el mundo se sienta cómodo. ¡Estás en tu casa, diviértete!`,
               },
               {
-                name: `❓┆What can I do here?`,
-                value: `- Meet new people! \n- Play many fun games! \n- Discover the seasons! \n- Participate in events! \nAnd…. Last but not least, choose your own roles at <#847867992044994561>!`,
+                name: `❓┆¿Qué puedo hacer aquí?`,
+                value: `- ¡Conocer gente nueva! \n- ¡Jugar muchos juegos divertidos! \n- ¡Descubrir las temporadas! \n- ¡Participar en eventos! \nY por último, pero no menos importante, ¡elige tus propios roles en <#847867992044994561>!`,
               },
               {
-                name: `🎫┆How do I get help when needed?`,
-                value: `You can make a ticket in <#820308164322656327>! We are happy to help you with your questions here and offer support in your server!`,
+                name: `🎫┆¿Cómo consigo ayuda si la necesito?`,
+                value: `¡Puedes abrir un ticket en <#820308164322656327>! Con gusto responderemos tus preguntas y te daremos soporte.`,
               },
               {
-                name: `⚙️┆I want to help Bot Hangout to improve!`,
-                value: `- Go to applications and see what kind of jobs are available! \n- Or make a ticket and ask if you can help with certain things! \n\n**We wish you a very nice and happy time here!**`,
+                name: `⚙️┆¡Quiero ayudar a mejorar Bot Hangout!`,
+                value: `- ¡Ve a solicitudes y mira qué puestos hay disponibles! \n- ¡O abre un ticket y pregunta si puedes ayudar con algo! \n\n**¡Te deseamos un rato muy agradable aquí!**`,
               },
             ],
           },
@@ -63,89 +63,89 @@ module.exports = async (client, interaction, args) => {
       .then(async () => {
         await client.embed(
           {
-            title: `📃・Rules`,
+            title: `📃・Reglas`,
             thumbnail: client.user.avatarURL({ size: 1024 }),
-            desc: `_____ \n\nThese are our server rules. Please stick to this to keep it fun for everyone. The Admins and Mods will Timeout/Kick/Ban per discretion`,
+            desc: `_____ \n\nEstas son las reglas del servidor. Respétalas para que todos lo pasen bien. Los administradores y moderadores podrán aislar, expulsar o banear a su criterio`,
           },
           interaction.channel,
         );
 
         await client.embed(
           {
-            title: `1. Be respectful`,
-            desc: `You must respect all users, regardless of your liking towards them. Treat others the way you want to be treated.`,
+            title: `1. Sé respetuoso`,
+            desc: `Debes respetar a todos los usuarios, te caigan bien o no. Trata a los demás como quieres que te traten.`,
           },
           interaction.channel,
         );
 
         await client.embed(
           {
-            title: `2. No Inappropriate Language`,
-            desc: `The use of profanity should be kept to a minimum. However, any derogatory language towards any user is prohibited.`,
+            title: `2. Nada de lenguaje inapropiado`,
+            desc: `Mantén las groserías al mínimo. Cualquier lenguaje despectivo hacia otro usuario está prohibido.`,
           },
           interaction.channel,
         );
 
         await client.embed(
           {
-            title: `3. No spamming`,
-            desc: `Don't send a lot of small messages right after each other. Do not disrupt chat by spamming.`,
+            title: `3. Nada de spam`,
+            desc: `No envíes muchos mensajes cortos seguidos. No interrumpas el chat haciendo spam.`,
           },
           interaction.channel,
         );
 
         await client.embed(
           {
-            title: `4. No pornographic/adult/other NSFW material`,
-            desc: `This is a community server and not meant to share this kind of material.`,
+            title: `4. Nada de material pornográfico, para adultos u otro contenido NSFW`,
+            desc: `Este es un servidor de comunidad y no está pensado para compartir ese tipo de material.`,
           },
           interaction.channel,
         );
 
         await client.embed(
           {
-            title: `5. No advertisements`,
-            desc: `We do not tolerate any kind of advertisements, whether it be for other communities or streams. You can post your content in the media channel if it is relevant and provides actual value (Video/Art)`,
+            title: `5. Nada de publicidad`,
+            desc: `No toleramos ningún tipo de publicidad, ni de otras comunidades ni de streams. Puedes publicar tu contenido en el canal de medios si es relevante y aporta valor real (vídeo/arte)`,
           },
           interaction.channel,
         );
 
         await client.embed(
           {
-            title: `6. No offensive names and profile pictures`,
-            desc: `You will be asked to change your name or picture if the staff deems them inappropriate.`,
+            title: `6. Nada de nombres ni fotos de perfil ofensivos`,
+            desc: `Se te pedirá que cambies tu nombre o tu foto si el staff los considera inapropiados.`,
           },
           interaction.channel,
         );
 
         await client.embed(
           {
-            title: `7. Server Raiding`,
-            desc: `Raiding or mentions of raiding are not allowed.`,
+            title: `7. Raids al servidor`,
+            desc: `No se permiten los raids ni hablar de hacer raids.`,
           },
           interaction.channel,
         );
 
         await client.embed(
           {
-            title: `8. Direct & Indirect Threats`,
-            desc: `Threats to other users of DDoS, Death, DoX, abuse, and other malicious threats are absolutely prohibited and disallowed.`,
+            title: `8. Amenazas directas e indirectas`,
+            desc: `Las amenazas de DDoS, muerte, doxeo, abuso y cualquier otra amenaza maliciosa hacia otros usuarios están totalmente prohibidas.`,
           },
           interaction.channel,
         );
 
         await client.embed(
           {
-            title: `9. Follow the Discord Community Guidelines`,
-            desc: `You can find them here: https://discordapp.com/guidelines`,
+            title: `9. Sigue las Directrices de la Comunidad de Discord`,
+            desc: `Puedes encontrarlas aquí: https://discordapp.com/guidelines`,
           },
           interaction.channel,
         );
 
         await client.embed(
           {
-            title: `10. Do not join voice chat channels without permissions of the people already in there`,
-            desc: `If you see that they have a free spot it is alright to join and ask whether they have an open spot, but leave if your presence is not wanted by whoever was there first`,
+            title: `10. No entres a canales de voz sin permiso de quienes ya están ahí`,
+            desc: `Si ves que hay un hueco libre, puedes entrar y preguntar si hay sitio, pero vete si quienes estaban primero no quieren tu presencia`,
           },
           interaction.channel,
         );
@@ -163,33 +163,33 @@ module.exports = async (client, interaction, args) => {
       .then(() => {
         client.embed(
           {
-            title: `💼・Applications`,
+            title: `💼・Solicitudes`,
             thumbnail: client.user.avatarURL({ size: 1024 }),
-            desc: `_____ \n\nWhat could be more fun than working at the best bot/server? We regularly have spots for new positions that you can apply for \n\nBut... what can you expect?`,
+            desc: `_____ \n\n¿Qué puede ser más divertido que trabajar en el mejor bot/servidor? Con frecuencia abrimos nuevos puestos a los que puedes postularte \n\nPero... ¿qué puedes esperar?`,
             fields: [
               {
-                name: `👥┆A very nice team`,
-                value: `In the Bot team there is always a pleasant atmosphere and everyone is treated equally!`,
+                name: `👥┆Un equipo muy agradable`,
+                value: `¡En el equipo de Bot siempre hay buen ambiente y todos reciben el mismo trato!`,
               },
               {
-                name: `🥳┆Access to the beta program`,
-                value: `Get access to unreleased Bot features with your own server! You are a real Bot tester!`,
+                name: `🥳┆Acceso al programa beta`,
+                value: `¡Accede a funciones de Bot aún no publicadas con tu propio servidor! ¡Serás un auténtico tester de Bot!`,
               },
               {
-                name: `📛┆A nice rank and badge`,
-                value: `You will get a nice rank in the server and a team badge in our userinfo command. Everyone can see that you contribute to the team`,
+                name: `📛┆Un buen rango y una insignia`,
+                value: `Recibirás un buen rango en el servidor y una insignia de equipo en nuestro comando userinfo. Todos verán que contribuyes al equipo`,
               },
               {
-                name: `📖┆Learn and grow`,
-                value: `We understand that you don't always understand everything right away! At Bot, we give you the opportunity to learn new things and get better at the position. You can also grow into the management team in the future!`,
+                name: `📖┆Aprende y crece`,
+                value: `¡Entendemos que no siempre se entiende todo a la primera! En Bot te damos la oportunidad de aprender cosas nuevas y mejorar en tu puesto. ¡En el futuro también podrás pasar al equipo de dirección!`,
               },
               {
-                name: `📘┆What does everything mean?`,
-                value: `**Moderator** \nYou keep yourself busy with the server that everything is and remains fun for everyone! Chat with us and keep the overview \n\n**Marketing** \nWe also want to grow and we do that with a great marketing team! You know better than anyone how to make a server grow well \n\n**Organization** \nYou will ensure an even nicer atmosphere in the server! Together with a team you work on new and fun events to make the server even more fun!`,
+                name: `📘┆¿Qué significa cada cosa?`,
+                value: `**Moderador** \nTe encargas de que el servidor sea y siga siendo divertido para todos. Chatea con nosotros y mantén todo bajo control \n\n**Marketing** \nTambién queremos crecer, y lo hacemos con un gran equipo de marketing. Sabes mejor que nadie cómo hacer crecer un servidor \n\n**Organización** \n¡Te encargarás de que el ambiente del servidor sea aún mejor! Junto a un equipo, preparas eventos nuevos y divertidos para que el servidor sea todavía más entretenido`,
               },
               {
-                name: `📃┆Apply?`,
-                value: `Create a ticket to receive your application!`,
+                name: `📃┆¿Postularte?`,
+                value: `¡Abre un ticket para recibir tu solicitud!`,
               },
             ],
           },
@@ -209,53 +209,53 @@ module.exports = async (client, interaction, args) => {
       .then(() => {
         client.embed(
           {
-            title: `💎・Booster Perks`,
+            title: `💎・Beneficios para boosters`,
             thumbnail: client.user.avatarURL({ size: 1024 }),
-            desc: `_____ \n\nMore options in the server? Become a real Bot Booster and get nice benefits for a nice experience. But what do you actually get?`,
+            desc: `_____ \n\n¿Quieres más opciones en el servidor? Conviértete en un verdadero booster de Bot y consigue buenos beneficios. Pero ¿qué recibes exactamente?`,
             fields: [
               {
-                name: `😛┆Use external stickers`,
-                value: `Use stickers from other servers in our server`,
+                name: `😛┆Usar stickers externos`,
+                value: `Usa stickers de otros servidores en nuestro servidor`,
               },
               {
-                name: `🔊┆Send TTS messages`,
-                value: `Send messages that have a sound attached`,
+                name: `🔊┆Enviar mensajes TTS`,
+                value: `Envía mensajes con sonido`,
               },
               {
-                name: `🤔┆Access to the hidden lounge`,
-                value: `Get access to a private lounge and chat with other boosters!`,
+                name: `🤔┆Acceso a la sala oculta`,
+                value: `¡Accede a una sala privada y chatea con otros boosters!`,
               },
               {
-                name: `📛┆Change your nickname`,
-                value: `Change your name in the server. This is how you stand out in the server`,
+                name: `📛┆Cambiar tu apodo`,
+                value: `Cambia tu nombre en el servidor. Así destacarás`,
               },
               {
-                name: `💭┆Create public/private threads`,
-                value: `Create a thread in our text channels`,
+                name: `💭┆Crear hilos públicos/privados`,
+                value: `Crea un hilo en nuestros canales de texto`,
               },
               {
-                name: `🎉┆Private giveaways`,
-                value: `Get access to fun exclusive giveaways`,
+                name: `🎉┆Sorteos privados`,
+                value: `Accede a sorteos exclusivos y divertidos`,
               },
               {
-                name: `📂┆Send files in any channel`,
-                value: `Send files in all channels where you can talk`,
+                name: `📂┆Enviar archivos en cualquier canal`,
+                value: `Envía archivos en todos los canales donde puedas hablar`,
               },
               {
-                name: `📊┆Get access to a special promotional channel`,
-                value: `Get the opportunity to promote your own server in a special channel`,
+                name: `📊┆Acceso a un canal especial de promoción`,
+                value: `Ten la oportunidad de promocionar tu propio servidor en un canal especial`,
               },
               {
-                name: `😜┆Custom role of your choice`,
-                value: `Create your own role that you can set yourself`,
+                name: `😜┆Un rol personalizado a tu elección`,
+                value: `Crea tu propio rol y configúralo tú mismo`,
               },
               {
-                name: `💎┆Get the booster role + badge`,
-                value: `Stand out with a nice booster role and a booster badge!`,
+                name: `💎┆Consigue el rol y la insignia de booster`,
+                value: `¡Destaca con un buen rol de booster y una insignia de booster!`,
               },
               {
-                name: `💻┆Access to new bèta updates in Bot`,
-                value: `We'll give your server access to updates that aren't out yet! How nice is that?`,
+                name: `💻┆Acceso a nuevas actualizaciones beta de Bot`,
+                value: `¡Tu servidor tendrá acceso a actualizaciones que aún no han salido! ¿No es genial?`,
               },
             ],
           },
@@ -275,12 +275,12 @@ module.exports = async (client, interaction, args) => {
       .then(() => {
         client.embed(
           {
-            title: `🔗・Links`,
+            title: `🔗・Enlaces`,
             thumbnail: client.user.avatarURL({ size: 1024 }),
-            desc: `_____ \n\nSee all the links from Bot Network!`,
+            desc: `_____ \n\n¡Mira todos los enlaces de Bot Network!`,
             fields: [
               {
-                name: `▬▬│Servers│▬▬`,
+                name: `▬▬│Servidores│▬▬`,
                 value: ``,
               },
             ],
@@ -293,20 +293,20 @@ module.exports = async (client, interaction, args) => {
   if (message == "rewards") {
     client.embed(
       {
-        title: `😜・Role Rewards`,
+        title: `😜・Recompensas de roles`,
         thumbnail: client.user.avatarURL({ size: 1024 }),
-        desc: `_____ \n\nDo you want some extras in the server? Or do you want to stand out more in the server? Look below for the rewards`,
+        desc: `_____ \n\n¿Quieres algunos extras en el servidor? ¿O quieres destacar más? Mira las recompensas abajo`,
         fields: [
           {
-            name: `🏆┆Levels`,
-            value: `- Level 5   | <@&833307296699908097>\n- Level 10  | <@&833307450437664838>\n- Level 15  | <@&833307452279226379>\n- Level 30 | <@&915290300757458964>\n- Level 40 | <@&915290324480430080>`,
+            name: `🏆┆Niveles`,
+            value: `- Nivel 5   | <@&833307296699908097>\n- Nivel 10  | <@&833307450437664838>\n- Nivel 15  | <@&833307452279226379>\n- Nivel 30 | <@&915290300757458964>\n- Nivel 40 | <@&915290324480430080>`,
           },
           {
-            name: `🥳┆Special`,
-            value: `- 1 server vote | <@&833959913742794772>\n- 1 boost | <@&744208324022501447>\n- 1 donate | <@&849554599371210793>`,
+            name: `🥳┆Especial`,
+            value: `- 1 voto al servidor | <@&833959913742794772>\n- 1 boost | <@&744208324022501447>\n- 1 donación | <@&849554599371210793>`,
           },
           {
-            name: `💰┆Economy`,
+            name: `💰┆Economía`,
             value: `- $10.000 | <@&890720270086733854>\n- $15.000 | <@&833936202725720084>\n- $20.000 | <@&833936185167839232> \n- $25.000 | <@&928236333309255711> \n- $30.000 | <@&928235747100733450>`,
           },
         ],
@@ -326,25 +326,25 @@ module.exports = async (client, interaction, args) => {
       .then(() => {
         client.embed(
           {
-            title: `🤖・Our bots`,
+            title: `🤖・Nuestros bots`,
             thumbnail: client.user.avatarURL({ size: 1024 }),
-            desc: `_____ \n\nOutside of a community we also maintain 2 public bots. These bots are all made to make your server better!`,
+            desc: `_____ \n\nAdemás de una comunidad, también mantenemos 2 bots públicos. ¡Todos están hechos para mejorar tu servidor!`,
             fields: [
               {
-                name: `📘┆What is Bot?`,
-                value: `Bot is a bot with which you can run your entire server! With no less than 400+ commands, we have a large bot with many options to improve your server! You know what else is beautiful? All of this is **FREE** to use!`,
+                name: `📘┆¿Qué es Bot?`,
+                value: `¡Bot es un bot con el que puedes gestionar todo tu servidor! Con más de 400 comandos, es un bot enorme con muchas opciones para mejorar tu servidor. ¿Y sabes qué es lo mejor? ¡Todo es **GRATIS**!`,
               },
               {
-                name: `🎶┆What is Bot 2?`,
-                value: `Bot 2 was created for additional music. This way you never get in each other's way when someone is already listening to music. Furthermore, this bot contains a soundboard and a radio system`,
+                name: `🎶┆¿Qué es Bot 2?`,
+                value: `Bot 2 se creó para tener música adicional. Así nunca se estorban cuando alguien ya está escuchando música. Además, este bot incluye un soundboard y un sistema de radio`,
               },
               {
-                name: `📨┆How do I invite the bots?`,
-                value: `You can invite the bots by doing \`/invite\` or by clicking on the links below \n\n**Bot** - [Invite here](${client.config.discord.botInvite})`,
+                name: `📨┆¿Cómo invito a los bots?`,
+                value: `Puedes invitar a los bots con \`/invite\` o haciendo clic en los enlaces de abajo \n\n**Bot** - [Invítalo aquí](${client.config.discord.botInvite})`,
               },
               {
-                name: `🎫┆How do I get help when needed?`,
-                value: `You can make a ticket in <#820308164322656327>! We are happy to help you with your questions here and offer support in your server!`,
+                name: `🎫┆¿Cómo consigo ayuda si la necesito?`,
+                value: `¡Puedes abrir un ticket en <#820308164322656327>! Con gusto responderemos tus preguntas y te daremos soporte.`,
               },
             ],
           },

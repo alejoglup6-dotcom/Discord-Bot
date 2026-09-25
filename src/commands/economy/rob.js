@@ -11,14 +11,14 @@ module.exports = async (client, interaction, args) => {
   const user = interaction.options.getUser("user");
   if (!user)
     return client.errUsage(
-      { usage: "rob [mention user]", type: "editreply" },
+      { usage: "rob [mencionar usuario]", type: "editreply" },
       interaction,
     );
 
   if (user.bot)
     return client.errNormal(
       {
-        error: "You rob a bot!",
+        error: "¡No puedes robarle a un bot!",
         type: "editreply",
       },
       interaction,
@@ -47,7 +47,7 @@ module.exports = async (client, interaction, args) => {
             if (authorData.Money < 200)
               return client.errNormal(
                 {
-                  error: `You need atleast 200 coins in your wallet to rob someone!`,
+                  error: `¡Necesitas al menos 200 monedas en tu cartera para robarle a alguien!`,
                   type: "editreply",
                 },
                 interaction,
@@ -66,7 +66,7 @@ module.exports = async (client, interaction, args) => {
                   ) {
                     return client.errNormal(
                       {
-                        error: `${user.username} does not have anything you can rob!`,
+                        error: `¡${user.username} no tiene nada que puedas robar!`,
                         type: "editreply",
                       },
                       interaction,
@@ -101,15 +101,15 @@ module.exports = async (client, interaction, args) => {
 
                   client.succNormal(
                     {
-                      text: `Your robbed a user and got away!`,
+                      text: `¡Le robaste a un usuario y escapaste!`,
                       fields: [
                         {
-                          name: `👤┆User`,
+                          name: `👤┆Usuario`,
                           value: `${user}`,
                           inline: true,
                         },
                         {
-                          name: `${client.emotes.economy.coins}┆Robbed`,
+                          name: `${client.emotes.economy.coins}┆Robado`,
                           value: `$${random}`,
                           inline: true,
                         },
@@ -121,7 +121,7 @@ module.exports = async (client, interaction, args) => {
                 } else {
                   return client.errNormal(
                     {
-                      error: `${user.username} does not have anything you can rob!`,
+                      error: `¡${user.username} no tiene nada que puedas robar!`,
                       type: "editreply",
                     },
                     interaction,

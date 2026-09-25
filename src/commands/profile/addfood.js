@@ -12,7 +12,7 @@ module.exports = async (client, interaction, args) => {
         if (data.Food.includes(food)) {
           return client.errNormal(
             {
-              error: `That food is already exists in your database!`,
+              error: `¡Esa comida ya está en tu base de datos!`,
               type: "editreply",
             },
             interaction,
@@ -26,10 +26,10 @@ module.exports = async (client, interaction, args) => {
       }
       client.succNormal(
         {
-          text: "Added your food",
+          text: "Comida añadida",
           fields: [
             {
-              name: "🥐┆Food",
+              name: "🥐┆Comida",
               value: `\`\`\`${food}\`\`\``,
               inline: true,
             },
@@ -41,7 +41,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

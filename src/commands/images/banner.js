@@ -22,7 +22,7 @@ module.exports = async (client, interaction, args) => {
 
         client.embed(
           {
-            title: `🖼・User Banner`,
+            title: `🖼・Banner del usuario`,
             image: url,
             type: "editreply",
           },
@@ -32,8 +32,8 @@ module.exports = async (client, interaction, args) => {
         if (accent_color) {
           client.embed(
             {
-              title: `🖼・User Banner`,
-              desc: `${user} doesn't have a banner but they do have a accent color`,
+              title: `🖼・Banner del usuario`,
+              desc: `${user} no tiene banner, pero sí tiene un color de acento`,
               color: accent_color,
               type: "editreply",
             },
@@ -42,8 +42,8 @@ module.exports = async (client, interaction, args) => {
         } else {
           client.embed(
             {
-              title: `🖼・User Banner`,
-              desc: `${user} doesn't have a banner but they do have a accent color`,
+              title: `🖼・Banner del usuario`,
+              desc: `${user} no tiene banner, pero sí tiene un color de acento`,
               color: accent_color,
               type: "editreply",
             },

@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
 
     client.embed(
       {
-        title: `${client.emotes.normal.error}・Suggestion denied`,
+        title: `${client.emotes.normal.error}・Sugerencia rechazada`,
         desc: `\`\`\`${embedData.description}\`\`\``,
         color: client.config.colors.error,
         author: {
@@ -49,11 +49,11 @@ module.exports = async (client, interaction, args) => {
         client
           .embed(
             {
-              title: `${client.emotes.normal.check}・Suggestion denied`,
-              desc: `Your suggestion in ${interaction.guild.name} has been denied by a moderator!`,
+              title: `${client.emotes.normal.check}・Sugerencia rechazada`,
+              desc: `¡Un moderador rechazó tu sugerencia en ${interaction.guild.name}!`,
               fields: [
                 {
-                  name: `💬┆Suggestion`,
+                  name: `💬┆Sugerencia`,
                   value: `${embedData.description}`,
                 },
               ],
@@ -66,10 +66,10 @@ module.exports = async (client, interaction, args) => {
 
     client.succNormal(
       {
-        text: "Suggestion successfully denied",
+        text: "Sugerencia rechazada correctamente",
         fields: [
           {
-            name: `💬┆Suggestion`,
+            name: `💬┆Sugerencia`,
             value: `${embedData.description}`,
           },
         ],
@@ -80,7 +80,7 @@ module.exports = async (client, interaction, args) => {
   } else {
     client.errNormal(
       {
-        error: `No suggestion channel set! Please do the setup`,
+        error: `¡No hay canal de sugerencias configurado! Haz la configuración primero`,
         type: "editreply",
       },
       interaction,

@@ -12,7 +12,7 @@ module.exports = async (client, interaction, args) => {
 
   if (author.id == target.id)
     return client.errNormal(
-      { error: "You cannot marry yourself!", type: "editreply" },
+      { error: "¡No puedes casarte contigo mismo!", type: "editreply" },
       interaction,
     );
 
@@ -21,7 +21,7 @@ module.exports = async (client, interaction, args) => {
       if (data) {
         client.errNormal(
           {
-            error: "Someone in the couple is already married!",
+            error: "¡Alguien de la pareja ya está casado!",
             type: "editreply",
           },
           interaction,
@@ -34,7 +34,7 @@ module.exports = async (client, interaction, args) => {
           if (data) {
             client.errNormal(
               {
-                error: "Someone in the couple is already married!",
+                error: "¡Alguien de la pareja ya está casado!",
                 type: "editreply",
               },
               interaction,
@@ -48,7 +48,7 @@ module.exports = async (client, interaction, args) => {
               if (data) {
                 client.errNormal(
                   {
-                    error: "You cannot marry a family member!",
+                    error: "¡No puedes casarte con un miembro de tu familia!",
                     type: "editreply",
                   },
                   interaction,
@@ -62,7 +62,7 @@ module.exports = async (client, interaction, args) => {
                   if (data) {
                     client.errNormal(
                       {
-                        error: "You cannot marry a family member!",
+                        error: "¡No puedes casarte con un miembro de tu familia!",
                         type: "editreply",
                       },
                       interaction,
@@ -76,7 +76,7 @@ module.exports = async (client, interaction, args) => {
                         if (data.Children.includes(target.id)) {
                           client.errNormal(
                             {
-                              error: "You cannot marry a family member!",
+                              error: "¡No puedes casarte con un miembro de tu familia!",
                               type: "editreply",
                             },
                             interaction,
@@ -113,8 +113,8 @@ module.exports = async (client, interaction, args) => {
 
     client.embed(
       {
-        title: `👰・Marriage proposal`,
-        desc: `${author} has ${target} asked to propose him! \n${target} click on one of the buttons`,
+        title: `👰・Propuesta de matrimonio`,
+        desc: `¡${author} le propuso matrimonio a ${target}! \n${target}, haz clic en uno de los botones`,
         components: [row],
         content: `${target}`,
         type: "editreply",
@@ -164,8 +164,8 @@ module.exports = async (client, interaction, args) => {
 
           client.embed(
             {
-              title: `👰・Marriage proposal - Approved`,
-              desc: `${author} and ${target} are now married! 👰🎉`,
+              title: `👰・Propuesta de matrimonio - Aceptada`,
+              desc: `¡${author} y ${target} ahora están casados! 👰🎉`,
               components: [],
               content: `${target}`,
               type: "editreply",
@@ -177,8 +177,8 @@ module.exports = async (client, interaction, args) => {
         if (i.customId == "propose_deny") {
           client.embed(
             {
-              title: `👰・Marriage proposal - Denied`,
-              desc: `${target} loves someone else and chose not to marry ${author}`,
+              title: `👰・Propuesta de matrimonio - Rechazada`,
+              desc: `${target} ama a otra persona y decidió no casarse con ${author}`,
               components: [],
               content: `${target}`,
               type: "editreply",
@@ -190,8 +190,8 @@ module.exports = async (client, interaction, args) => {
       .catch(() => {
         client.embed(
           {
-            title: `👰・Marriage proposal - Denied`,
-            desc: `${target} has not answered anything! The wedding is canceled`,
+            title: `👰・Propuesta de matrimonio - Rechazada`,
+            desc: `¡${target} no respondió! Se canceló la boda`,
             components: [],
             content: `${target}`,
             type: "editreply",

@@ -13,7 +13,7 @@ module.exports = async (client, guild) => {
     try {
         var channelName = await client.getTemplate(guild);
         channelName = channelName.replace(`{emoji}`, "🥇")
-        channelName = channelName.replace(`{name}`, `Tier: ${tier[guild.premiumTier] || '0'}`)
+        channelName = channelName.replace(`{name}`, `Nivel: ${tier[guild.premiumTier] || '0'}`)
 
         const data = await Schema.findOne({ Guild: guild.id });
         const channel = guild.channels.cache.get(data.BoostTier)

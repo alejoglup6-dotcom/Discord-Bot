@@ -6,11 +6,11 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("embed")
-    .setDescription("Generate an embed")
+    .setDescription("Genera un embed")
     .addChannelOption((option) =>
       option
         .setName("channel")
-        .setDescription("Channel where the embed should be")
+        .setDescription("Canal donde debe ir el embed")
         .setRequired(true)
         .addChannelTypes(ChannelType.GuildText),
     ),
@@ -35,60 +35,60 @@ module.exports = {
     let row = new Discord.ActionRowBuilder().addComponents(
       new Discord.StringSelectMenuBuilder()
         .setCustomId("embedSelect")
-        .setPlaceholder("Nothing selected")
+        .setPlaceholder("Nada seleccionado")
         .addOptions([
           {
             emoji: "✏️",
-            label: "Title",
-            description: "Create a embed title",
+            label: "Título",
+            description: "Crea el título del embed",
             value: "title_embed",
           },
           {
             emoji: "💬",
-            label: "Description",
-            description: "Create a embed description",
+            label: "Descripción",
+            description: "Crea la descripción del embed",
             value: "description_embed",
           },
           {
             emoji: "🕵️",
-            label: "Author",
-            description: "Create a embed author",
+            label: "Autor",
+            description: "Crea el autor del embed",
             value: "author_embed",
           },
           {
             emoji: "🔻",
-            label: "Footer",
-            description: "Create a embed footer",
+            label: "Pie de página",
+            description: "Crea el pie de página del embed",
             value: "footer_embed",
           },
           {
             emoji: "🔳",
-            label: "Thumbnail",
-            description: "Create a embed thumbnail",
+            label: "Miniatura",
+            description: "Crea la miniatura del embed",
             value: "thumbnail_embed",
           },
           {
             emoji: "🕙",
-            label: "Timestamp",
-            description: "Create a embed timestamp",
+            label: "Fecha y hora",
+            description: "Añade la fecha y hora al embed",
             value: "timestamp_embed",
           },
           {
             emoji: "🖼️",
-            label: "Image",
-            description: "Create a embed image",
+            label: "Imagen",
+            description: "Crea la imagen del embed",
             value: "image_embed",
           },
           {
             emoji: "🌐",
             label: "URL",
-            description: "Create a embed url",
+            description: "Crea la URL del embed",
             value: "url_embed",
           },
           {
             emoji: "🔵",
             label: "Color",
-            description: "Create a embed color",
+            description: "Crea el color del embed",
             value: "color_embed",
           },
         ]),
@@ -98,12 +98,12 @@ module.exports = {
       new Discord.ButtonBuilder()
         .setCustomId("send_embed")
         .setEmoji("✅")
-        .setLabel("Send embed")
+        .setLabel("Enviar embed")
         .setStyle(Discord.ButtonStyle.Success),
     );
 
     let embed = new Discord.EmbedBuilder().setDescription(
-      `Please select some options`,
+      `Elige algunas opciones`,
     );
 
     interaction.editReply({ embeds: [embed], components: [row, row2] });
@@ -119,7 +119,7 @@ module.exports = {
 
         if (i.values == "title_embed") {
           interaction.channel
-            .send({ content: "Please enter a title" })
+            .send({ content: "Escribe un título" })
             .then((message) => {
               const filterMessage = (m) =>
                 m.author.id === interaction.user.id && !m.author.bot;
@@ -142,7 +142,7 @@ module.exports = {
 
         if (i.values == "description_embed") {
           interaction.channel
-            .send({ content: "Please enter a description" })
+            .send({ content: "Escribe una descripción" })
             .then((message) => {
               const filterMessage = (m) =>
                 m.author.id === interaction.user.id && !m.author.bot;
@@ -165,7 +165,7 @@ module.exports = {
 
         if (i.values == "author_embed") {
           interaction.channel
-            .send({ content: "Please enter a author" })
+            .send({ content: "Escribe un autor" })
             .then((message) => {
               const filterMessage = (m) =>
                 m.author.id === interaction.user.id && !m.author.bot;
@@ -191,7 +191,7 @@ module.exports = {
 
         if (i.values == "footer_embed") {
           interaction.channel
-            .send({ content: "Please enter a footer" })
+            .send({ content: "Escribe un pie de página" })
             .then((message) => {
               const filterMessage = (m) =>
                 m.author.id === interaction.user.id && !m.author.bot;
@@ -216,7 +216,7 @@ module.exports = {
 
         if (i.values == "thumbnail_embed") {
           interaction.channel
-            .send({ content: "Please enter a thumbnail" })
+            .send({ content: "Escribe una miniatura" })
             .then((message) => {
               const filterMessage = (m) =>
                 m.author.id === interaction.user.id && !m.author.bot;
@@ -236,7 +236,7 @@ module.exports = {
                     !collected.first().content.includes("https://")
                   )
                     return interaction.channel.send({
-                      content: "Incorrect thumbnail link!",
+                      content: "¡Enlace de la miniatura incorrecto!",
                     });
                   embed.setThumbnail(`${collected.first().content}`);
                   await interaction.editReply({ embeds: [embed] });
@@ -251,7 +251,7 @@ module.exports = {
 
         if (i.values == "image_embed") {
           interaction.channel
-            .send({ content: "Please enter a image" })
+            .send({ content: "Escribe una imagen" })
             .then((message) => {
               const filterMessage = (m) =>
                 m.author.id === interaction.user.id && !m.author.bot;
@@ -271,7 +271,7 @@ module.exports = {
                     !collected.first().content.includes("https://")
                   )
                     return interaction.channel.send({
-                      content: "Incorrect image link!",
+                      content: "¡Enlace de la imagen incorrecto!",
                     });
                   embed.setImage(`${collected.first().content}`);
                   await interaction.editReply({ embeds: [embed] });
@@ -281,7 +281,7 @@ module.exports = {
 
         if (i.values == "url_embed") {
           interaction.channel
-            .send({ content: "Please enter a url" })
+            .send({ content: "Escribe una URL" })
             .then((message) => {
               const filterMessage = (m) =>
                 m.author.id === interaction.user.id && !m.author.bot;
@@ -301,7 +301,7 @@ module.exports = {
                     !collected.first().content.includes("https://")
                   )
                     return interaction.channel.send({
-                      content: "Incorrect url!",
+                      content: "¡URL incorrecta!",
                     });
                   embed.setURL(`${collected.first().content}`);
                   await interaction.editReply({ embeds: [embed] });
@@ -311,7 +311,7 @@ module.exports = {
 
         if (i.values == "color_embed") {
           interaction.channel
-            .send({ content: "Please enter a color. e.g. #FF0000" })
+            .send({ content: "Escribe un color. Ej.: #FF0000" })
             .then((message) => {
               const filterMessage = (m) =>
                 m.author.id === interaction.user.id && !m.author.bot;
@@ -336,7 +336,7 @@ module.exports = {
         const channel = interaction.options.getChannel("channel");
         if (!channel)
           return client.errNormal(
-            { error: `Channel not found` },
+            { error: `No se encontró el canal` },
             collected.first().channel,
           );
 
@@ -350,7 +350,7 @@ module.exports = {
 
             client.succNormal(
               {
-                text: `Embed successfully sent in ${channel}`,
+                text: `Embed enviado correctamente en ${channel}`,
                 components: [],
                 type: "editreply",
               },

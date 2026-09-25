@@ -11,7 +11,7 @@ module.exports = async (client, interaction, args) => {
   );
   if (!giveaway)
     return client.errNormal(
-      { error: "This message ID is not from this guild", type: "editreply" },
+      { error: "Este ID de mensaje no es de este servidor", type: "editreply" },
       interaction,
     );
   client.giveawaysManager
@@ -19,7 +19,7 @@ module.exports = async (client, interaction, args) => {
     .then(() => {
       client.succNormal(
         {
-          text: `The giveaway has been successfully removed`,
+          text: `El sorteo se eliminó correctamente`,
           type: "editreply",
         },
         interaction,
@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
     .catch((err) => {
       client.errNormal(
         {
-          error: `I can't find the giveaway for ${messageID}!`,
+          error: `¡No encuentro el sorteo con ID ${messageID}!`,
           type: "editreply",
         },
         interaction,

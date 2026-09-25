@@ -22,7 +22,7 @@ module.exports = async (client, interaction, args) => {
     client
         .simpleEmbed(
             {
-                title: `${client.emotes.animated.loading}┆Loading...`,
+                title: `${client.emotes.animated.loading}┆Cargando...`,
                 type: "editreply",
             },
             interaction,
@@ -67,11 +67,11 @@ module.exports = async (client, interaction, args) => {
 
             let btn = new Discord.ButtonBuilder()
                 .setStyle(Discord.ButtonStyle.Primary)
-                .setLabel("Option A")
+                .setLabel("Opción A")
                 .setCustomId(id1);
             let btn2 = new Discord.ButtonBuilder()
                 .setStyle(Discord.ButtonStyle.Primary)
-                .setLabel("Option B")
+                .setLabel("Opción B")
                 .setCustomId(id2);
 
             let row = new Discord.ActionRowBuilder().addComponents(btn, btn2);
@@ -79,7 +79,7 @@ module.exports = async (client, interaction, args) => {
             client
                 .embed(
                     {
-                        title: `🤔・Would you rather...`,
+                        title: `🤔・¿Qué prefieres...?`,
                         desc: `**A)** ${decode(res.questions[0])} \n**B)** ${decode(res.questions[1])}`,
                         components: [row],
                         type: "editreply",
@@ -99,19 +99,19 @@ module.exports = async (client, interaction, args) => {
                         if (btn.customId === id1) {
                             btn = new Discord.ButtonBuilder()
                                 .setStyle(Discord.ButtonStyle.Primary)
-                                .setLabel(`Option A (${res.percentage[0]})`)
+                                .setLabel(`Opción A (${res.percentage[0]})`)
                                 .setCustomId(id1)
                                 .setDisabled(true);
                             btn2 = new Discord.ButtonBuilder()
                                 .setStyle(Discord.ButtonStyle.Secondary)
-                                .setLabel(`Option B (${res.percentage[1]})`)
+                                .setLabel(`Opción B (${res.percentage[1]})`)
                                 .setCustomId(id2)
                                 .setDisabled(true);
                             collector.stop();
 
                             client.embed(
                                 {
-                                    title: `🤔・Would you rather...`,
+                                    title: `🤔・¿Qué prefieres...?`,
                                     desc: `**A) ${decode(res.questions[0])} (${res.percentage[0]})** \nB) ${decode(res.questions[1])} (${res.percentage[1]})`,
                                     components: [
                                         { type: 1, components: [btn, btn2] },
@@ -123,19 +123,19 @@ module.exports = async (client, interaction, args) => {
                         } else if (btn.customId === id2) {
                             btn = new Discord.ButtonBuilder()
                                 .setStyle(Discord.ButtonStyle.Secondary)
-                                .setLabel(`Option A (${res.percentage[0]})`)
+                                .setLabel(`Opción A (${res.percentage[0]})`)
                                 .setCustomId(id1)
                                 .setDisabled(true);
                             btn2 = new Discord.ButtonBuilder()
                                 .setStyle(Discord.ButtonStyle.Primary)
-                                .setLabel(`Option B (${res.percentage[1]})`)
+                                .setLabel(`Opción B (${res.percentage[1]})`)
                                 .setCustomId(id2)
                                 .setDisabled(true);
                             collector.stop();
 
                             client.embed(
                                 {
-                                    title: `🤔・Would you rather...`,
+                                    title: `🤔・¿Qué prefieres...?`,
                                     desc: `A) ${decode(res.questions[0])} (${res.percentage[0]}) \n**B) ${decode(res.questions[1])} (${res.percentage[1]})**`,
                                     components: [
                                         { type: 1, components: [btn, btn2] },

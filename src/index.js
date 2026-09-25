@@ -162,8 +162,8 @@ console.log(`\u001b[0m`);
 
 manager.on("shardCreate", (shard) => {
     let embed = new Discord.EmbedBuilder()
-        .setTitle(`🆙・Launching shard`)
-        .setDescription(`A shard has just been launched`)
+        .setTitle(`🆙・Iniciando shard`)
+        .setDescription(`Se acaba de iniciar un shard`)
         .setFields([
             {
                 name: "🆔┆ID",
@@ -171,8 +171,8 @@ manager.on("shardCreate", (shard) => {
                 inline: true,
             },
             {
-                name: `📃┆State`,
-                value: `Starting up...`,
+                name: `📃┆Estado`,
+                value: `Iniciando...`,
                 inline: true,
             },
         ])
@@ -194,7 +194,7 @@ manager.on("shardCreate", (shard) => {
     shard.on("death", (process) => {
         const embed = new Discord.EmbedBuilder()
             .setTitle(
-                `🚨・Closing shard ${shard.id + 1}/${manager.totalShards} unexpectedly`,
+                `🚨・Cerrando el shard ${shard.id + 1}/${manager.totalShards} inesperadamente`,
             )
             .setFields([
                 {
@@ -211,7 +211,7 @@ manager.on("shardCreate", (shard) => {
         if (process.exitCode === null) {
             const embed = new Discord.EmbedBuilder()
                 .setTitle(
-                    `🚨・Shard ${shard.id + 1}/${manager.totalShards} exited with NULL error code!`,
+                    `🚨・¡El shard ${shard.id + 1}/${manager.totalShards} terminó con código de error NULL!`,
                 )
                 .setFields([
                     {
@@ -219,7 +219,7 @@ manager.on("shardCreate", (shard) => {
                         value: `\`${process.pid}\``,
                     },
                     {
-                        name: "Exit code",
+                        name: "Código de salida",
                         value: `\`${process.exitCode}\``,
                     },
                 ])
@@ -234,9 +234,9 @@ manager.on("shardCreate", (shard) => {
     shard.on("shardDisconnect", (event) => {
         const embed = new Discord.EmbedBuilder()
             .setTitle(
-                `🚨・Shard ${shard.id + 1}/${manager.totalShards} disconnected`,
+                `🚨・Shard ${shard.id + 1}/${manager.totalShards} desconectado`,
             )
-            .setDescription("Dumping socket close event...")
+            .setDescription("Volcando el evento de cierre del socket...")
             .setColor(config.colors.normal);
         shardLogs.send({
             username: "Bot Logs",
@@ -247,7 +247,7 @@ manager.on("shardCreate", (shard) => {
     shard.on("shardReconnecting", () => {
         const embed = new Discord.EmbedBuilder()
             .setTitle(
-                `🚨・Reconnecting shard ${shard.id + 1}/${manager.totalShards}`,
+                `🚨・Reconectando el shard ${shard.id + 1}/${manager.totalShards}`,
             )
             .setColor(config.colors.normal);
         shardLogs.send({
@@ -281,17 +281,17 @@ process.on("unhandledRejection", (error) => {
                 error.stack.slice(0, 950) + "... view console for details";
     if (!error.stack) return;
     const embed = new Discord.EmbedBuilder()
-        .setTitle(`🚨・Unhandled promise rejection`)
+        .setTitle(`🚨・Promesa rechazada sin manejar`)
         .addFields([
             {
                 name: "Error",
-                value: error ? Discord.codeBlock(error) : "No error",
+                value: error ? Discord.codeBlock(error) : "Sin error",
             },
             {
-                name: "Stack error",
+                name: "Pila del error",
                 value: error.stack
                     ? Discord.codeBlock(error.stack)
-                    : "No stack error",
+                    : "Sin pila de error",
             },
         ]);
     consoleLogs
@@ -308,10 +308,10 @@ process.on("unhandledRejection", (error) => {
 process.on("warning", (warn) => {
     console.warn("Warning:", warn);
     const embed = new Discord.EmbedBuilder()
-        .setTitle(`🚨・New warning found`)
+        .setTitle(`🚨・Nueva advertencia encontrada`)
         .addFields([
             {
-                name: `Warn`,
+                name: `Advertencia`,
                 value: `\`\`\`${warn}\`\`\``,
             },
         ]);

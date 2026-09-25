@@ -13,37 +13,37 @@ let row = new Discord.ActionRowBuilder()
                 .addComponents(
                     new Discord.ButtonBuilder()
                         .setEmoji("🔗")
-                        .setLabel("Jump to the Message")
+                        .setLabel("Ir al mensaje")
                         .setURL(`https://discordapp.com/channels/${newMessage.guild.id}/${newMessage.channel.id}/${newMessage.id}`)
                         .setStyle(Discord.ButtonStyle.Link),
                   );
       
         client.embed({
-            title: `💬・Message updated`,
-            desc: `A message has been updated`,
+            title: `💬・Mensaje editado`,
+            desc: `Se editó un mensaje`,
             fields: [
                 {
-                    name: `> Author`,
+                    name: `> Autor`,
                     value: `- ${newMessage.member.user} (${newMessage.member.user.tag})`
                 },
                 {
-                    name: `> Date`,
+                    name: `> Fecha`,
                     value: `- ${newMessage.createdAt}`
                 },
                 {
-                    name: `> Channel`,
+                    name: `> Canal`,
                     value: `- ${newMessage.channel} (${newMessage.channel.name})`
                 },
                 {
-                    name: `> Old message`,
+                    name: `> Mensaje anterior`,
                     value: `\`\`\`${oldMessage.content.replace(/`/g, "'")}\`\`\``
                 },
                 {
-                    name: `> New message`,
+                    name: `> Mensaje nuevo`,
                     value: `\`\`\`${newMessage.content.replace(/`/g, "'")}\`\`\``
                 },
                 {
-                    name: `> Timestamp`,
+                    name: `> Fecha`,
                     value: `- <t:${Math.floor(newMessage.createdTimestamp / 1000)}:R>`
                 }
             ],

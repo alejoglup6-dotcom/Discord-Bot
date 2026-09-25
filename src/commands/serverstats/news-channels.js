@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   channelName = channelName.replace(`{emoji}`, "📢");
   channelName = channelName.replace(
     `{name}`,
-    `News Channels: ${interaction.guild.channels.cache.filter((channel) => channel.type === Discord.ChannelType.GuildAnnouncement).size || 0}`,
+    `Canales de anuncios: ${interaction.guild.channels.cache.filter((channel) => channel.type === Discord.ChannelType.GuildAnnouncement).size || 0}`,
   );
 
   await interaction.guild.channels
@@ -39,10 +39,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `News channel count created!`,
+          text: `¡Se creó el contador de canales de anuncios!`,
           fields: [
             {
-              name: `📘┆Channel`,
+              name: `📘┆Canal`,
               value: `${channel}`,
             },
           ],

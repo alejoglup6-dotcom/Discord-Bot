@@ -28,10 +28,10 @@ module.exports = async (client, interaction, args) => {
 
     client.succNormal(
       {
-        text: `Your shortened url has been created!`,
+        text: `¡Se creó tu URL acortada!`,
         fields: [
           {
-            name: `🔗┇Link`,
+            name: `🔗┇Enlace`,
             value: `${res}`,
             inline: true,
           },

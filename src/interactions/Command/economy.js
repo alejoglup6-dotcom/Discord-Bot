@@ -5,191 +5,191 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("economy")
-    .setDescription("Play the economy game in your server")
+    .setDescription("Juega a la economía en tu servidor")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the economy category commands"),
+        .setDescription("Información sobre los comandos de la categoría de economía"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("additem")
-        .setDescription("Add a role item to the economy store")
+        .setDescription("Añade un rol como artículo en la tienda")
         .addRoleOption((option) =>
           option
             .setName("role")
-            .setDescription("Select a role")
+            .setDescription("Elige un rol")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount")
+            .setDescription("Introduce una cantidad")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("addmoney")
-        .setDescription("Add money to a user")
+        .setDescription("Dale dinero a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount")
+            .setDescription("Introduce una cantidad")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("balance")
-        .setDescription("See your balance")
+        .setDescription("Mira tu saldo")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(false),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("beg").setDescription("Beg for money"),
+      subcommand.setName("beg").setDescription("Mendiga dinero"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("buy").setDescription("Buy items in the Bot store"),
+      subcommand.setName("buy").setDescription("Compra artículos en la tienda de Bot"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("clear").setDescription("Clear the economy"),
+      subcommand.setName("clear").setDescription("Reinicia la economía"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("crime").setDescription("Commit a crime"),
+      subcommand.setName("crime").setDescription("Comete un crimen"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("daily").setDescription("Claim your daily money"),
+      subcommand.setName("daily").setDescription("Recoge tu dinero diario"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("deleteitem")
-        .setDescription("Delete a role item from the economy store")
+        .setDescription("Quita un rol de la tienda")
         .addRoleOption((option) =>
           option
             .setName("role")
-            .setDescription("Select a role")
+            .setDescription("Elige un rol")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("deposit")
-        .setDescription("Deposit money to the bank")
+        .setDescription("Deposita dinero en el banco")
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount")
+            .setDescription("Introduce una cantidad")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("fish").setDescription("Fish some fish"),
+      subcommand.setName("fish").setDescription("Pesca algunos peces"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("hourly").setDescription("Claim your hourly money"),
+      subcommand.setName("hourly").setDescription("Recoge tu dinero por hora"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("hunt").setDescription("Hunt some animals"),
+      subcommand.setName("hunt").setDescription("Caza algunos animales"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("monthly").setDescription("Claim your monthly money"),
+      subcommand.setName("monthly").setDescription("Recoge tu dinero mensual"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("pay")
-        .setDescription("Pay a user")
+        .setDescription("Págale a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount")
+            .setDescription("Introduce una cantidad")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("present").setDescription("Get a weekly present"),
+      subcommand.setName("present").setDescription("Recoge un regalo semanal"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("removemoney")
-        .setDescription("Remove money from a user")
+        .setDescription("Quítale dinero a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount")
+            .setDescription("Introduce una cantidad")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("rob")
-        .setDescription("Rob a user")
+        .setDescription("Róbale a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("store")
-        .setDescription("Show the store of this guild"),
+        .setDescription("Muestra la tienda de este servidor"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("weekly").setDescription("Claim your weekly money"),
+      subcommand.setName("weekly").setDescription("Recoge tu dinero semanal"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("withdraw")
-        .setDescription("Withdraw your money")
+        .setDescription("Retira tu dinero")
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount")
+            .setDescription("Introduce una cantidad")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("work").setDescription("Go to work"),
+      subcommand.setName("work").setDescription("Ve a trabajar"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("yearly").setDescription("Claim your yearly money"),
+      subcommand.setName("yearly").setDescription("Recoge tu dinero anual"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("leaderboard")
-        .setDescription("See the economy leaderboard")
+        .setDescription("Mira la clasificación de la economía")
         .addStringOption((option) =>
           option
             .setName("type")
-            .setDescription("The leaderboard type that you want")
+            .setDescription("El tipo de clasificación que quieres")
             .setRequired(true)
             .addChoices(
-              { name: "Money", value: "money" },
-              { name: "Bank", value: "bank" },
+              { name: "Dinero", value: "money" },
+              { name: "Banco", value: "bank" },
             ),
         ),
     ),

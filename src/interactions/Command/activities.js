@@ -5,16 +5,16 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("activities")
-    .setDescription("Start a activity")
+    .setDescription("Inicia una actividad")
     .addStringOption((option) =>
       option
         .setName("activity")
-        .setDescription("The activity that you want")
+        .setDescription("La actividad que quieres")
         .setRequired(true)
         .addChoices(
           { name: "Betrayal.io", value: "betrayal" },
-          { name: "Checkers in the Park", value: "checkers" },
-          { name: "Chess in the Park", value: "chess" },
+          { name: "Damas en el parque", value: "checkers" },
+          { name: "Ajedrez en el parque", value: "chess" },
           { name: "Doodle Crew", value: "doodlecrew" },
           { name: "Fishington.io", value: "fishington" },
           { name: "Letter League", value: "letterleague" },
@@ -23,7 +23,7 @@ module.exports = {
           { name: "Sketch Heads", value: "sketchheads" },
           { name: "Spell Cast", value: "spellcast" },
           { name: "Word Snacks", value: "wordsnacks" },
-          { name: "Watch Together", value: "watchtogether" },
+          { name: "Ver juntos", value: "watchtogether" },
         ),
     ),
   /**
@@ -40,7 +40,7 @@ module.exports = {
     if (!channel)
       return client.errNormal(
         {
-          error: `You're not in a voice channel!`,
+          error: `¡No estás en un canal de voz!`,
           type: "editreply",
         },
         interaction,

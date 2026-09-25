@@ -23,7 +23,7 @@ module.exports = async (client, interaction, args) => {
   if (user.isCommunicationDisabled())
     return client.errNormal(
       {
-        error: `${user} has already timed out!`,
+        error: `¡${user} ya está aislado!`,
         type: "editreply",
       },
       interaction,
@@ -34,10 +34,10 @@ module.exports = async (client, interaction, args) => {
     .then((m) => {
       client.succNormal(
         {
-          text: `${user} successfully timed out **${time} minutes**`,
+          text: `${user} fue aislado correctamente durante **${time} minutos**`,
           fields: [
             {
-              name: `💬┆Reason`,
+              name: `💬┆Razón`,
               value: `${reason}`,
             },
           ],
@@ -49,7 +49,7 @@ module.exports = async (client, interaction, args) => {
     .catch((e) => {
       client.errNormal(
         {
-          error: `I can't timeout ${user.tag}`,
+          error: `No puedo aislar a ${user.tag}`,
           type: "editreply",
         },
         interaction,

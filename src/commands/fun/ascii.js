@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   if (msg.length > 2000)
     return client.errNormal(
       {
-        error: "Please provide text shorter than 2000 character!",
+        error: "¡Escribe un texto de menos de 2000 caracteres!",
         type: "editreply",
       },
       interaction,
@@ -19,7 +19,7 @@ module.exports = async (client, interaction, args) => {
   figlet.text(msg, function (err, data) {
     if (err) {
       return client.errNormal(
-        { error: "Something went wrong!", type: "editreply" },
+        { error: "¡Algo salió mal!", type: "editreply" },
         interaction,
       );
     }

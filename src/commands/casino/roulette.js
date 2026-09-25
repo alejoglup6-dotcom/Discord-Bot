@@ -23,13 +23,13 @@ module.exports = async (client, interaction, args) => {
 
         if (!colour || !money)
           return client.errUsage(
-            { usage: "roulette [color] [amount]", type: "editreply" },
+            { usage: "roulette [color] [cantidad]", type: "editreply" },
             interaction,
           );
         colour = colour.toLowerCase();
         if (money > data.Money)
           return client.errNormal(
-            { error: `You are betting more than you have!`, type: "editreply" },
+            { error: `¡Estás apostando más de lo que tienes!`, type: "editreply" },
             interaction,
           );
 
@@ -38,7 +38,7 @@ module.exports = async (client, interaction, args) => {
         else if (colour == "g" || colour.includes("green")) colour = 2;
         else
           return client.errNormal(
-            { error: `No correct color specified!`, type: "editreply" },
+            { error: `¡No se indicó un color válido!`, type: "editreply" },
             interaction,
           );
 
@@ -51,8 +51,8 @@ module.exports = async (client, interaction, args) => {
 
           client.embed(
             {
-              title: `🎰・Multiplier: 15x`,
-              desc: `You won **${client.emotes.economy.coins} $${money}**`,
+              title: `🎰・Multiplicador: 15x`,
+              desc: `Ganaste **${client.emotes.economy.coins} $${money}**`,
               type: "editreply",
             },
             interaction,
@@ -65,8 +65,8 @@ module.exports = async (client, interaction, args) => {
 
           client.embed(
             {
-              title: `🎰・Multiplier: 1.5x`,
-              desc: `You won **${client.emotes.economy.coins} $${money}**`,
+              title: `🎰・Multiplicador: 1.5x`,
+              desc: `Ganaste **${client.emotes.economy.coins} $${money}**`,
               type: "editreply",
             },
             interaction,
@@ -79,8 +79,8 @@ module.exports = async (client, interaction, args) => {
 
           client.embed(
             {
-              title: `🎰・Multiplier: 2x`,
-              desc: `You won **${client.emotes.economy.coins} $${money}**`,
+              title: `🎰・Multiplicador: 2x`,
+              desc: `Ganaste **${client.emotes.economy.coins} $${money}**`,
               type: "editreply",
             },
             interaction,
@@ -92,8 +92,8 @@ module.exports = async (client, interaction, args) => {
 
           client.embed(
             {
-              title: `🎰・Multiplier: 0x`,
-              desc: `You lost **${client.emotes.economy.coins} $${money}**`,
+              title: `🎰・Multiplicador: 0x`,
+              desc: `Perdiste **${client.emotes.economy.coins} $${money}**`,
               type: "editreply",
             },
             interaction,
@@ -102,7 +102,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: `You has no ${client.emotes.economy.coins}!`,
+            error: `¡No tienes ${client.emotes.economy.coins}!`,
             type: "editreply",
           },
           interaction,

@@ -3,56 +3,56 @@ const ms = require("ms");
 
 let timeLength = 50000;
 module.exports = async (client, interaction, args) => {
-  let list = `Because we were lost, we had to go back the way we came.
-    He's in a boy band which doesn't make much sense for a snake.
-    A dead duck doesn't fly backward.
-    Don't piss in my garden and tell me you're trying to help my plants grow.
-    Her scream silenced the rowdy teenagers.
-    The team members were hard to tell apart since they all wore their hair in a ponytail.
-    I hear that Nancy is very pretty.
-    Nudist colonies shun fig-leaf couture.
-    A song can make or ruin a person’s day if they let it get to them.
-    She saw no irony asking me to change but wanting me to accept her for who she is.
-    My uncle's favorite pastime was building cars out of noodles.
-    In the end, he realized he could see sound and hear words.
-    Please look up a recipe for chicken soup on the internet.
-    It didn't take long for Gary to detect the robbers were amateurs.
-    How did you get hurt?
-    It was obvious she was hot, sweaty, and tired.
-    He appeared to be confusingly perplexed.
-    Love is not like pizza.
-    It was always dangerous to drive with him since he insisted the safety cones were a slalom course.
-    As he waited for the shower to warm, he noticed that he could hear water change temperature.
-    Greetings from the galaxy MACS0647-JD, or what we call home.
-    The world has changed a lot during the last ten years.
-    As he entered the church he could hear the soft voice of someone whispering into a cell phone.
-    Now I need to ponder my existence and ask myself if I'm truly real
-    Yesterday's weather was good for climbing.
-    Waffles are always better without fire ants and fleas.
-    Nancy was proud that she ran a tight shipwreck.
-    He was so preoccupied with whether or not he could that he failed to stop to consider if he should.
-    If eating three-egg omelets causes weight-gain, budgie eggs are a good substitute.
-    I don’t respect anybody who can’t tell the difference between Pepsi and Coke.
-    He found the end of the rainbow and was surprised at what he found there.
-    He wondered why at 18 he was old enough to go to war, but not old enough to buy cigarettes.
-    She lived on Monkey Jungle Road and that seemed to explain all of her strangeness.
-    Julie wants a perfect husband.
-    Can I get you something to drink?
-    Please wait outside of the house.
-    His son quipped that power bars were nothing more than adult candy bars.
-    My older sister looks like my mom.
-    The thick foliage and intertwined vines made the hike nearly impossible.
-    A glittering gem is not enough.
-    Thirty years later, she still thought it was okay to put the toilet paper roll under rather than over.
-    Each person who knows you has a different perception of who you are.
-    Go down the stairs carefully.
-    Facing his greatest fear, he ate his first marshmallow.
-    She cried diamonds.
-    Tomorrow will bring something new, so leave today as a memory.
-    Erin accidentally created a new universe.
-    David subscribes to the "stuff your tent into the bag" strategy over nicely folding it.
-    The waitress was not amused when he ordered green eggs and ham.
-    All you need to do is pick up the pen and begin.`;
+  let list = `Como estábamos perdidos, tuvimos que volver por donde vinimos.
+    Está en una banda de chicos, lo cual no tiene mucho sentido para una serpiente.
+    Un pato muerto no vuela hacia atrás.
+    No ensucies mi jardín y me digas que intentas ayudar a mis plantas a crecer.
+    Su grito silenció a los adolescentes escandalosos.
+    Era difícil distinguir a los miembros del equipo porque todos llevaban coleta.
+    Me han dicho que Nancy es muy guapa.
+    En las colonias nudistas no se lleva la moda de la hoja de parra.
+    Una canción puede alegrar o arruinar el día de alguien si se lo permite.
+    No vio ninguna ironía en pedirme que cambiara pero querer que la aceptara tal como es.
+    El pasatiempo favorito de mi tío era construir coches con fideos.
+    Al final, se dio cuenta de que podía ver sonidos y oír palabras.
+    Por favor, busca en internet una receta de sopa de pollo.
+    Gary no tardó en darse cuenta de que los ladrones eran unos aficionados.
+    ¿Cómo te hiciste daño?
+    Era obvio que tenía calor, estaba sudada y cansada.
+    Parecía confusamente perplejo.
+    El amor no es como la pizza.
+    Siempre era peligroso conducir con él porque insistía en que los conos eran una pista de slalom.
+    Mientras esperaba a que la ducha se calentara, notó que podía oír cómo cambiaba la temperatura del agua.
+    Saludos desde la galaxia MACS0647-JD, o lo que llamamos hogar.
+    El mundo ha cambiado mucho en los últimos diez años.
+    Al entrar en la iglesia oyó la voz suave de alguien susurrando al teléfono.
+    Ahora necesito reflexionar sobre mi existencia y preguntarme si de verdad soy real
+    El clima de ayer era bueno para escalar.
+    Los waffles siempre están mejor sin hormigas de fuego ni pulgas.
+    Nancy estaba orgullosa de dirigir un naufragio bien organizado.
+    Estaba tan ocupado pensando si podía hacerlo que no se detuvo a pensar si debía.
+    Si comer tortillas de tres huevos engorda, los huevos de periquito son un buen sustituto.
+    No respeto a nadie que no sepa distinguir entre Pepsi y Coca-Cola.
+    Encontró el final del arcoíris y se sorprendió con lo que había allí.
+    Se preguntaba por qué a los 18 tenía edad para ir a la guerra, pero no para comprar cigarros.
+    Vivía en la calle Selva de los Monos y eso parecía explicar todas sus rarezas.
+    Julie quiere un marido perfecto.
+    ¿Te traigo algo de beber?
+    Por favor, espera fuera de la casa.
+    Su hijo bromeó con que las barritas energéticas no eran más que golosinas para adultos.
+    Mi hermana mayor se parece a mi mamá.
+    El follaje espeso y las enredaderas hicieron que la caminata fuera casi imposible.
+    Una gema reluciente no es suficiente.
+    Treinta años después, seguía pensando que estaba bien poner el papel higiénico por debajo y no por encima.
+    Cada persona que te conoce tiene una percepción diferente de quién eres.
+    Baja las escaleras con cuidado.
+    Enfrentándose a su mayor miedo, se comió su primer malvavisco.
+    Lloraba diamantes.
+    Mañana traerá algo nuevo, así que deja el hoy como un recuerdo.
+    Erin creó sin querer un nuevo universo.
+    David prefiere meter la tienda de campaña a presión en la bolsa en lugar de doblarla bien.
+    A la mesera no le hizo gracia cuando pidió huevos verdes con jamón.
+    Lo único que tienes que hacer es tomar el bolígrafo y empezar.`;
 
   async function start() {
     const inGame = new Set();
@@ -75,8 +75,8 @@ module.exports = async (client, interaction, args) => {
 
       await client.embed(
         {
-          title: `💬・FastType`,
-          desc: `Type the below in ${ms(timeLength, { long: true })}! \n${sentence}`,
+          title: `💬・Escritura rápida`,
+          desc: `¡Escribe lo siguiente en ${ms(timeLength, { long: true })}! \n${sentence}`,
           type: "editreply",
         },
         interaction,
@@ -92,7 +92,7 @@ module.exports = async (client, interaction, args) => {
       } catch (ex) {
         client.errNormal(
           {
-            error: "Time\'s up!",
+            error: "¡Se acabó el tiempo!",
             type: "editreply",
           },
           interaction,
@@ -107,7 +107,7 @@ module.exports = async (client, interaction, args) => {
         msg.first().delete();
         client.succNormal(
           {
-            text: "Ended!",
+            text: "¡Terminado!",
             type: "editreply",
           },
           interaction,
@@ -120,7 +120,7 @@ module.exports = async (client, interaction, args) => {
         msg.first().delete();
         client.succNormal(
           {
-            text: `You did it in ${ms(Date.now() - time, { long: true })}!`,
+            text: `¡Lo lograste en ${ms(Date.now() - time, { long: true })}!`,
             type: "editreply",
           },
           interaction,
@@ -129,7 +129,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: "Unfortunately you didn't succeed!",
+            error: "¡Por desgracia no lo lograste!",
             type: "editreply",
           },
           interaction,
@@ -140,7 +140,7 @@ module.exports = async (client, interaction, args) => {
 
       if (i === 25) {
         client.succNormal(
-          { text: `You did it!`, type: "editreply" },
+          { text: `¡Lo lograste!`, type: "editreply" },
           interaction,
         );
         inGame.delete(interaction.user.id);

@@ -5,58 +5,58 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("invites")
-    .setDescription("View the invites system")
+    .setDescription("Mira el sistema de invitaciones")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the invites category commands"),
+        .setDescription("Información sobre los comandos de la categoría invitaciones"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("add")
-        .setDescription("Add invites to a user")
+        .setDescription("Añade invitaciones a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount of invites")
+            .setDescription("Escribe una cantidad de invitaciones")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("remove")
-        .setDescription("Remove invites from a user")
+        .setDescription("Quita invitaciones a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount of invites")
+            .setDescription("Escribe una cantidad de invitaciones")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("show")
-        .setDescription("See your invites")
+        .setDescription("Mira tus invitaciones")
         .addUserOption((option) =>
-          option.setName("user").setDescription("Select a user"),
+          option.setName("user").setDescription("Elige un usuario"),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("leaderboard")
-        .setDescription("See the invites leaderboard"),
+        .setDescription("Mira la clasificación de invitaciones"),
     ),
   /**
    * @param {Client} client

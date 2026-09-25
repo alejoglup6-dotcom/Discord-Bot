@@ -15,14 +15,14 @@ module.exports = async (client, interaction, args) => {
         Schema.findOneAndDelete({ Guild: interaction.guild.id, Code: id }).then(
           () => {
             client.succNormal(
-              { text: `Note **#${id}** has been deleted!`, type: "editreply" },
+              { text: `¡La nota **#${id}** se eliminó!`, type: "editreply" },
               interaction,
             );
           },
         );
       } else {
         client.errNormal(
-          { error: `No note found with the id **#${id}**`, type: "editreply" },
+          { error: `No se encontró ninguna nota con el ID **#${id}**`, type: "editreply" },
           interaction,
         );
       }

@@ -40,7 +40,7 @@ module.exports = async (client, interaction, args) => {
   if (!badgeFlags[badge.toUpperCase()])
     return client.errNormal(
       {
-        error: `I can't find that badge`,
+        error: `No encuentro esa insignia`,
         type: `editreply`,
       },
       interaction,
@@ -51,7 +51,7 @@ module.exports = async (client, interaction, args) => {
       if (Badges.FLAGS.includes(badge.toUpperCase()))
         return client.errNormal(
           {
-            error: `This users already has that badge!`,
+            error: `¡Este usuario ya tiene esa insignia!`,
             type: `editreply`,
           },
           interaction,
@@ -70,7 +70,7 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `Added the ${badgeFlags[badge.toUpperCase()]} (${badge.toUpperCase()}) badge!`,
+          text: `¡Se añadió la insignia ${badgeFlags[badge.toUpperCase()]} (${badge.toUpperCase()})!`,
           type: `editreply`,
         },
         interaction,
@@ -84,7 +84,7 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `Added the ${badgeFlags[badge.toUpperCase()]} (${badge.toUpperCase()}) badge!`,
+          text: `¡Se añadió la insignia ${badgeFlags[badge.toUpperCase()]} (${badge.toUpperCase()})!`,
           type: `editreply`,
         },
         interaction,
@@ -92,16 +92,16 @@ module.exports = async (client, interaction, args) => {
     }
 
     let embedLogs = new Discord.EmbedBuilder()
-      .setTitle(`📛・Badge added`)
-      .setDescription(`Added a new badge to ${member} (${member.id})`)
+      .setTitle(`📛・Insignia añadida`)
+      .setDescription(`Se añadió una nueva insignia a ${member} (${member.id})`)
       .addFields(
         {
-          name: "👤┆Added By",
+          name: "👤┆Añadida por",
           value: `${interaction.user} (${interaction.user.tag})`,
           inline: true,
         },
         {
-          name: `📛┆Badge`,
+          name: `📛┆Insignia`,
           value: `${badgeFlags[badge.toUpperCase()]} (${badge.toUpperCase()})`,
           inline: true,
         },
@@ -117,7 +117,7 @@ module.exports = async (client, interaction, args) => {
     if (!Badges.FLAGS.includes(badge.toUpperCase()))
       return client.errNormal(
         {
-          error: `The user doesn't have that badge`,
+          error: `El usuario no tiene esa insignia`,
           type: `editreply`,
         },
         interaction,
@@ -137,7 +137,7 @@ module.exports = async (client, interaction, args) => {
       let deleted = await model.deleteMany({ User: member.id });
       client.succNormal(
         {
-          text: `Removed the ${badgeFlags[badge.toUpperCase()]} (${badge.toUpperCase()}) badge, the user have been removed from the badge system, he has no badges left!`,
+          text: `Se quitó la insignia ${badgeFlags[badge.toUpperCase()]} (${badge.toUpperCase()}). El usuario ya no tiene insignias, así que se eliminó del sistema de insignias.`,
           type: "editreply",
         },
         interaction,
@@ -149,7 +149,7 @@ module.exports = async (client, interaction, args) => {
       });
       client.succNormal(
         {
-          text: `Removed the ${badgeFlags[badge.toUpperCase()]} (${badge.toUpperCase()}) badge!`,
+          text: `¡Se quitó la insignia ${badgeFlags[badge.toUpperCase()]} (${badge.toUpperCase()})!`,
           type: "editreply",
         },
         interaction,
@@ -157,16 +157,16 @@ module.exports = async (client, interaction, args) => {
     }
 
     let embedLogs = new Discord.EmbedBuilder()
-      .setTitle(`📛・Badge removed`)
-      .setDescription(`Removed a badge from ${member} (${member.id})`)
+      .setTitle(`📛・Insignia quitada`)
+      .setDescription(`Se quitó una insignia a ${member} (${member.id})`)
       .addFields(
         {
-          name: "👤┆Removed By",
+          name: "👤┆Quitada por",
           value: `${interaction.user} (${interaction.user.tag})`,
           inline: true,
         },
         {
-          name: `📛┆Badge`,
+          name: `📛┆Insignia`,
           value: `${badgeFlags[badge.toUpperCase()]} (${badge.toUpperCase()})`,
           inline: true,
         },

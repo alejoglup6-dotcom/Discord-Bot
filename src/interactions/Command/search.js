@@ -5,92 +5,92 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("search")
-    .setDescription("Search something on the internet")
+    .setDescription("Busca algo en internet")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the search category commands"),
+        .setDescription("Información sobre los comandos de esta categoría"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("bing")
-        .setDescription("Find something on Bing")
+        .setDescription("Busca algo en Bing")
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("Your search name")
+            .setDescription("Lo que quieres buscar")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("ddg")
-        .setDescription("Find something on DuckDuckGo")
+        .setDescription("Busca algo en DuckDuckGo")
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("Your search name")
+            .setDescription("Lo que quieres buscar")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("google")
-        .setDescription("Find something on Google")
+        .setDescription("Busca algo en Google")
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("Your search name")
+            .setDescription("Lo que quieres buscar")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("youtube")
-        .setDescription("Find something on YouTube")
+        .setDescription("Busca algo en YouTube")
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("Your search name")
+            .setDescription("Lo que quieres buscar")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("corona")
-        .setDescription("See the corona stats")
+        .setDescription("Mira las estadísticas del coronavirus")
         .addStringOption((option) =>
           option
             .setName("country")
-            .setDescription("Enter a country")
+            .setDescription("Escribe un país")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("crypto")
-        .setDescription("See the value of the crypto coin")
+        .setDescription("Mira el valor de una criptomoneda")
         .addStringOption((option) =>
           option
             .setName("coin")
-            .setDescription("Enter a coin")
+            .setDescription("Escribe una moneda")
             .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("currency")
-            .setDescription("Enter a currency")
+            .setDescription("Escribe una divisa")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("docs")
-        .setDescription("See the discord.js docs")
+        .setDescription("Mira la documentación de discord.js")
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("Your search name")
+            .setDescription("Lo que quieres buscar")
             .setRequired(true),
         ),
     )
@@ -98,84 +98,84 @@ module.exports = {
       subcommand
         .setName("github")
         .setDescription(
-          "Get info on a github user just by entering their username",
+          "Consigue información de un usuario de GitHub con su nombre de usuario",
         )
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("Enter a github name")
+            .setDescription("Escribe un nombre de GitHub")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("hexcolour")
-        .setDescription("Get info from a color")
+        .setDescription("Consigue información de un color")
         .addStringOption((option) =>
           option
             .setName("color")
-            .setDescription("Enter a hex color")
+            .setDescription("Introduce un color")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("itunes")
-        .setDescription("Search on iTunes for any song")
+        .setDescription("Busca cualquier canción en iTunes")
         .addStringOption((option) =>
           option
             .setName("song")
-            .setDescription("Enter a song name")
+            .setDescription("Escribe el nombre de una canción")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("npm")
-        .setDescription("Get info on an NPM package")
+        .setDescription("Consigue información de un paquete de NPM")
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("Enter a package name")
+            .setDescription("Escribe el nombre de un paquete")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("steam")
-        .setDescription("Get info on an application on Steam")
+        .setDescription("Consigue información de una aplicación de Steam")
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("Enter a Steam application name")
+            .setDescription("Escribe el nombre de una aplicación de Steam")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("translate")
-        .setDescription("Translate some text")
+        .setDescription("Traduce un texto")
         .addStringOption((option) =>
           option
             .setName("language")
-            .setDescription("Enter a language")
+            .setDescription("Escribe un idioma")
             .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("text")
-            .setDescription("Enter some text")
+            .setDescription("Escribe un texto")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("weather")
-        .setDescription("See the current weather")
+        .setDescription("Mira el clima actual")
         .addStringOption((option) =>
           option
             .setName("location")
-            .setDescription("Enter a location name")
+            .setDescription("Escribe el nombre de un lugar")
             .setRequired(true),
         ),
     ),

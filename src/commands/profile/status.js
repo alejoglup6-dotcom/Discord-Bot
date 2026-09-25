@@ -9,7 +9,7 @@ module.exports = async (client, interaction, args) => {
   if (status.length > 30)
     return client.errNormal(
       {
-        error: "Your status cannot be longer than 30 characters",
+        error: "Tu estado no puede tener más de 30 caracteres",
         type: "editreply",
       },
       interaction,
@@ -22,10 +22,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: "Your status is set",
+          text: "Tu estado se guardó",
           fields: [
             {
-              name: "😎┆Status",
+              name: "😎┆Estado",
               value: `\`\`\`${status}\`\`\``,
               inline: true,
             },
@@ -37,7 +37,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

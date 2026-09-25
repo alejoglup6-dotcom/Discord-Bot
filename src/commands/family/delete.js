@@ -20,8 +20,8 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `${client.emotes.normal.error}・Reset family`,
-      desc: `Are you sure you want to reset your family?`,
+      title: `${client.emotes.normal.error}・Reiniciar familia`,
+      desc: `¿Seguro que quieres reiniciar tu familia?`,
       components: [row],
       type: "editreply",
     },
@@ -60,7 +60,7 @@ module.exports = async (client, interaction, args) => {
         }
 
         client.succNormal(
-          { text: `Your family has been deleted!`, type: "editreply" },
+          { text: `¡Tu familia se eliminó!`, type: "editreply" },
           interaction,
         );
       }
@@ -72,7 +72,7 @@ module.exports = async (client, interaction, args) => {
     .catch((err) => {
       console.log(err);
       client.errNormal(
-        { error: "Time's up! Cancelled backup loading!", type: "editreply" },
+        { error: "¡Se acabó el tiempo! Se canceló la acción", type: "editreply" },
         interaction,
       );
     });

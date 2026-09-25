@@ -50,7 +50,7 @@ module.exports = async (client, interaction, args) => {
 
       let btn = new Discord.ButtonBuilder()
         .setStyle(Discord.ButtonStyle.Success)
-        .setLabel("Yes")
+        .setLabel("Sí")
         .setCustomId(id1);
       let btn2 = new Discord.ButtonBuilder()
         .setStyle(Discord.ButtonStyle.Danger)
@@ -62,8 +62,8 @@ module.exports = async (client, interaction, args) => {
       client
         .embed(
           {
-            title: `🤔・Will you press the button?`,
-            desc: `\`\`\`${decode(res.questions[0].charAt(0).toUpperCase() + res.questions[0].slice(1))} \`\`\`\n**But** \`\`\`\n\n${decode(res.questions[1].charAt(0).toUpperCase() + res.questions[1].slice(1))}\`\`\``,
+            title: `🤔・¿Pulsarías el botón?`,
+            desc: `\`\`\`${decode(res.questions[0].charAt(0).toUpperCase() + res.questions[0].slice(1))} \`\`\`\n**Pero** \`\`\`\n\n${decode(res.questions[1].charAt(0).toUpperCase() + res.questions[1].slice(1))}\`\`\``,
             components: [row],
             type: "editreply",
           },
@@ -81,7 +81,7 @@ module.exports = async (client, interaction, args) => {
             if (btn.customId === id1) {
               btn = new Discord.ButtonBuilder()
                 .setStyle(Discord.ButtonStyle.Success)
-                .setLabel(`Yes (${res.percentage["1"]})`)
+                .setLabel(`Sí (${res.percentage["1"]})`)
                 .setCustomId(id1)
                 .setDisabled(true);
               btn2 = new Discord.ButtonBuilder()
@@ -93,8 +93,8 @@ module.exports = async (client, interaction, args) => {
 
               client.embed(
                 {
-                  title: `🤔・Will you press the button?`,
-                  desc: `\`\`\`${decode(res.questions[0].charAt(0).toUpperCase() + res.questions[0].slice(1))} \`\`\`\n**But** \`\`\`\n\n${decode(res.questions[1].charAt(0).toUpperCase() + res.questions[1].slice(1))}\`\`\``,
+                  title: `🤔・¿Pulsarías el botón?`,
+                  desc: `\`\`\`${decode(res.questions[0].charAt(0).toUpperCase() + res.questions[0].slice(1))} \`\`\`\n**Pero** \`\`\`\n\n${decode(res.questions[1].charAt(0).toUpperCase() + res.questions[1].slice(1))}\`\`\``,
                   components: [{ type: 1, components: [btn, btn2] }],
                   type: "editreply",
                 },
@@ -103,7 +103,7 @@ module.exports = async (client, interaction, args) => {
             } else if (btn.customId === id2) {
               btn = new Discord.ButtonBuilder()
                 .setStyle(Discord.ButtonStyle.Danger)
-                .setLabel(`Yes (${res.percentage["1"]})`)
+                .setLabel(`Sí (${res.percentage["1"]})`)
                 .setCustomId(id1)
                 .setDisabled(true);
               btn2 = new Discord.ButtonBuilder()
@@ -115,8 +115,8 @@ module.exports = async (client, interaction, args) => {
 
               client.embed(
                 {
-                  title: `🤔・Will you press the button?`,
-                  desc: `\`\`\`${decode(res.questions[0].charAt(0).toUpperCase() + res.questions[0].slice(1))} \`\`\`\n**But** \`\`\`\n\n${decode(res.questions[1].charAt(0).toUpperCase() + res.questions[1].slice(1))}\`\`\``,
+                  title: `🤔・¿Pulsarías el botón?`,
+                  desc: `\`\`\`${decode(res.questions[0].charAt(0).toUpperCase() + res.questions[0].slice(1))} \`\`\`\n**Pero** \`\`\`\n\n${decode(res.questions[1].charAt(0).toUpperCase() + res.questions[1].slice(1))}\`\`\``,
                   components: [{ type: 1, components: [btn, btn2] }],
                   type: "editreply",
                 },

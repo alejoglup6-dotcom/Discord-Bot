@@ -13,8 +13,8 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `${client.user.username}・Donate`,
-      desc: "_____ \n\nClick the button below for the sponsor page \n**Pay attention! sponsor is not required**",
+      title: `${client.user.username}・Donar`,
+      desc: "_____ \n\nHaz clic en el botón de abajo para ir a la página de patrocinio \n**¡Atención! El patrocinio no es obligatorio**",
       thumbnail: client.user.avatarURL({ dynamic: true }),
       url: "https://github.com/sponsors/CorwinDev",
       components: [row],

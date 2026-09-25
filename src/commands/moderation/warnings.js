@@ -17,7 +17,7 @@ module.exports = async (client, interaction, args) => {
   if (perms == false) {
     client.errNormal(
       {
-        error: "You don't have the required permissions to use this command!",
+        error: "¡No tienes los permisos necesarios para usar este comando!",
         type: "editreply",
       },
       interaction,
@@ -33,11 +33,11 @@ module.exports = async (client, interaction, args) => {
         var fields = [];
         data.Warnings.forEach((element) => {
           fields.push({
-            name: "Warning **" + element.Case + "**",
+            name: "Advertencia **" + element.Case + "**",
             value:
-              "Reason: " +
+              "Razón: " +
               element.Reason +
-              "\nModerator <@!" +
+              "\nModerador <@!" +
               element.Moderator +
               ">",
             inline: true,
@@ -45,8 +45,8 @@ module.exports = async (client, interaction, args) => {
         });
         client.embed(
           {
-            title: `${client.emotes.normal.error}・Warnings`,
-            desc: `The warnings of **${member.tag}**`,
+            title: `${client.emotes.normal.error}・Advertencias`,
+            desc: `Las advertencias de **${member.tag}**`,
             fields: [
               {
                 name: "Total",
@@ -61,8 +61,8 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.embed(
           {
-            title: `${client.emotes.normal.error}・Warnings`,
-            desc: `User ${member.user.tag} has no warnings!`,
+            title: `${client.emotes.normal.error}・Advertencias`,
+            desc: `¡El usuario ${member.user.tag} no tiene advertencias!`,
             type: "editreply",
           },
           interaction,

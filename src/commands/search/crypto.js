@@ -17,8 +17,8 @@ module.exports = async (client, interaction, args) => {
 
     client.embed(
       {
-        title: `💹・Crypto stats`,
-        desc: `The current price of **1 ${coin}** = **${data[coin][currency]} ${currency}**`,
+        title: `💹・Estadísticas cripto`,
+        desc: `El precio actual de **1 ${coin}** = **${data[coin][currency]} ${currency}**`,
         type: "editreply",
       },
       interaction,
@@ -26,7 +26,7 @@ module.exports = async (client, interaction, args) => {
   } catch {
     client.errNormal(
       {
-        error: "Please check your inputs!",
+        error: "¡Revisa los datos que introdujiste!",
         type: "editreply",
       },
       interaction,

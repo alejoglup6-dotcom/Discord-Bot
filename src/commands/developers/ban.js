@@ -19,7 +19,7 @@ module.exports = async (client, interaction, args) => {
       // add the check here
       return client.errNormal(
         {
-          error: `You cannot ban yourself from the bot`,
+          error: `No puedes banearte a ti mismo del bot`,
           type: `editreply`,
         },
         interaction,
@@ -30,7 +30,7 @@ module.exports = async (client, interaction, args) => {
       if (data) {
         return client.errNormal(
           {
-            error: `<@!${member.id}> (${member.id}) has already been banned from the bot`,
+            error: `<@!${member.id}> (${member.id}) ya está baneado del bot`,
             type: `editreply`,
           },
           interaction,
@@ -42,17 +42,17 @@ module.exports = async (client, interaction, args) => {
 
         client.succNormal(
           {
-            text: `<@!${member.id}> (${member.id}) banned from the bot`,
+            text: `<@!${member.id}> (${member.id}) fue baneado del bot`,
             type: "editreply",
           },
           interaction,
         );
 
         let embedLogs = new Discord.EmbedBuilder()
-          .setTitle(`🔨・Ban added`)
-          .setDescription(`<@!${member.id}> (${member.id}) banned from the bot`)
+          .setTitle(`🔨・Baneo añadido`)
+          .setDescription(`<@!${member.id}> (${member.id}) fue baneado del bot`)
           .addFields({
-            name: "👤┆Banned By",
+            name: "👤┆Baneado por",
             value: `${interaction.user} (${interaction.user.tag})`,
             inline: true,
           })
@@ -71,19 +71,19 @@ module.exports = async (client, interaction, args) => {
         Schema.findOneAndDelete({ User: member.id }).then(() => {
           client.succNormal(
             {
-              text: `<@!${member.id}> (${member.id}) unbanned from the bot`,
+              text: `<@!${member.id}> (${member.id}) fue desbaneado del bot`,
               type: "editreply",
             },
             interaction,
           );
 
           let embedLogs = new Discord.EmbedBuilder()
-            .setTitle(`🔨・Ban removed`)
+            .setTitle(`🔨・Baneo eliminado`)
             .setDescription(
-              `<@!${member.id}> (${member.id}) unbanned from the bot`,
+              `<@!${member.id}> (${member.id}) fue desbaneado del bot`,
             )
             .addFields({
-              name: "👤┆Unbanned By",
+              name: "👤┆Desbaneado por",
               value: `${interaction.user} (${interaction.user.tag})`,
               inline: true,
             })
@@ -98,7 +98,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         return client.errNormal(
           {
-            error: `<@!${member.id}> (${member.id}) has not been banned from the bot`,
+            error: `<@!${member.id}> (${member.id}) no está baneado del bot`,
             type: `editreply`,
           },
           interaction,

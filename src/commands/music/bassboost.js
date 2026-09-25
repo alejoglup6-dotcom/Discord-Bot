@@ -17,7 +17,7 @@ module.exports = async (client, interaction, args) => {
   if (!channel)
     return client.errNormal(
       {
-        error: `You're not in a voice channel!`,
+        error: `¡No estás en un canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -26,7 +26,7 @@ module.exports = async (client, interaction, args) => {
   if (player && channel.id !== player?.voiceId)
     return client.errNormal(
       {
-        error: `You're not in the same voice channel!`,
+        error: `¡No estás en el mismo canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -35,7 +35,7 @@ module.exports = async (client, interaction, args) => {
   if (!player || !player.queue.current)
     return client.errNormal(
       {
-        error: "There are no songs playing in this server",
+        error: "No se está reproduciendo ninguna canción en este servidor",
         type: "editreply",
       },
       interaction,
@@ -51,7 +51,7 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `Bass boost level adjusted to **level ${level}**`,
+      text: `Nivel de refuerzo de graves ajustado a **nivel ${level}**`,
       type: "editreply",
     },
     interaction,

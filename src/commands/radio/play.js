@@ -15,7 +15,7 @@ module.exports = async (client, interaction, args) => {
     : null;
   if (!channel)
     return client.errNormal(
-      { text: `The channel does not exist!`, type: "editreply" },
+      { text: `¡El canal no existe!`, type: "editreply" },
       interaction,
     );
 
@@ -35,21 +35,21 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `📻・Started radio`,
-      desc: `Radio has started successfully \nTo make the bot leave do: \`rleave\``,
+      title: `📻・Radio iniciada`,
+      desc: `La radio se inició correctamente \nPara que el bot salga usa: \`rleave\``,
       fields: [
         {
-          name: "👤┆Started By",
+          name: "👤┆Iniciada por",
           value: `${interaction.user} (${interaction.user.tag})`,
           inline: true,
         },
         {
-          name: "📺┆Channel",
+          name: "📺┆Canal",
           value: `${channel} (${channel.name})`,
           inline: true,
         },
         {
-          name: "🎶┆Radio Station",
+          name: "🎶┆Emisora",
           value: `[Radio 538](https://www.538.nl/)`,
           inline: true,
         },
@@ -60,21 +60,21 @@ module.exports = async (client, interaction, args) => {
   );
 
   let embed = new Discord.EmbedBuilder()
-    .setTitle(`📻・Started radio`)
-    .setDescription(`_______________ \n\nRadio has started successfully`)
+    .setTitle(`📻・Radio iniciada`)
+    .setDescription(`_______________ \n\nLa radio se inició correctamente`)
     .addFields(
       {
-        name: "👤┆Started By",
+        name: "👤┆Iniciada por",
         value: `${interaction.user} (${interaction.user.tag})`,
         inline: true,
       },
       {
-        name: "📺┆Channel",
+        name: "📺┆Canal",
         value: `${channel} (${channel.name})`,
         inline: true,
       },
       {
-        name: "⚙️┆Guild",
+        name: "⚙️┆Servidor",
         value: `${interaction.guild.name} (${interaction.guild.id})`,
         inline: true,
       },

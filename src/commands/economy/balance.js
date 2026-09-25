@@ -11,7 +11,7 @@ module.exports = async (client, interaction, args) => {
   if (user.bot)
     return client.errNormal(
       {
-        error: "You cannot see the balance of a bot!",
+        error: "¡No puedes ver el saldo de un bot!",
         type: "editreply",
       },
       interaction,
@@ -24,15 +24,15 @@ module.exports = async (client, interaction, args) => {
 
         client.embed(
           {
-            title: `${client.emotes.economy.coins}・Balance`,
+            title: `${client.emotes.economy.coins}・Saldo`,
             fields: [
               {
-                name: `${client.emotes.economy.pocket}┆Wallet`,
+                name: `${client.emotes.economy.pocket}┆Cartera`,
                 value: `$${data.Money}`,
                 inline: true,
               },
               {
-                name: `${client.emotes.economy.bank}┆Bank`,
+                name: `${client.emotes.economy.bank}┆Banco`,
                 value: `$${data.Bank}`,
                 inline: true,
               },
@@ -42,7 +42,7 @@ module.exports = async (client, interaction, args) => {
                 inline: true,
               },
             ],
-            desc: `The current balance of \`${user.tag}\``,
+            desc: `El saldo actual de \`${user.tag}\``,
             type: "editreply",
           },
           interaction,
@@ -50,7 +50,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: `The user doesn't have any money!`,
+            error: `¡El usuario no tiene dinero!`,
             type: "editreply",
           },
           interaction,

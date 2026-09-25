@@ -6,7 +6,7 @@ module.exports = (client, player, track) => {
   const channel = client.channels.cache.get(player.textId);
   client.errNormal(
     {
-      error: "Queue is empty, Leaving voice channel",
+      error: "La cola está vacía, salgo del canal de voz",
     },
     channel,
   );

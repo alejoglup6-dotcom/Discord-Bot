@@ -39,10 +39,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `Boost count created!`,
+          text: `¡Se creó el contador de boosts!`,
           fields: [
             {
-              name: `📘┆Channel`,
+              name: `📘┆Canal`,
               value: `${channel}`,
             },
           ],

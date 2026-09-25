@@ -8,7 +8,7 @@ module.exports = async (client, interaction, args) => {
 
   if (!msg)
     return client.errUsage(
-      { usage: "gif [text]", type: "editreply" },
+      { usage: "gif [texto]", type: "editreply" },
       interaction,
     );
 

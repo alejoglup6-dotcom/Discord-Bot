@@ -5,20 +5,20 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("music")
-    .setDescription("Playing music in Bot")
+    .setDescription("Reproduce música en Bot")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the music category commands"),
+        .setDescription("Información sobre los comandos de la categoría música"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("bassboost")
-        .setDescription("Set the bassboost level")
+        .setDescription("Ajusta el nivel de refuerzo de graves")
         .addStringOption((option) =>
           option
             .setName("level")
-            .setDescription("The level of the bassboost")
+            .setDescription("El nivel de refuerzo de graves")
             .setRequired(true)
             .addChoices(
               { name: "0", value: "0" },
@@ -31,93 +31,93 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("play")
-        .setDescription("Start the music")
+        .setDescription("Inicia la música")
         .addStringOption((option) =>
           option
             .setName("song")
-            .setDescription("Enter a song name/url")
+            .setDescription("Escribe el nombre o la URL de una canción")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("clear").setDescription("Delete the music queue"),
+      subcommand.setName("clear").setDescription("Vacía la cola de música"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("loop").setDescription("Loop the music"),
+      subcommand.setName("loop").setDescription("Repite la música en bucle"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("lyrics")
-        .setDescription("Get the lyrics of the current song")
+        .setDescription("Consigue la letra de la canción actual")
         .addStringOption((option) =>
-          option.setName("song").setDescription("Enter a song name"),
+          option.setName("song").setDescription("Escribe el nombre de una canción"),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("playing")
-        .setDescription("See which song is playing now"),
+        .setDescription("Mira qué canción está sonando"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("pause").setDescription("Pause the music"),
+      subcommand.setName("pause").setDescription("Pausa la música"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("previous").setDescription("Play previous song"),
+      subcommand.setName("previous").setDescription("Reproduce la canción anterior"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("queue").setDescription("See the music queue"),
+      subcommand.setName("queue").setDescription("Mira la cola de música"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("resume").setDescription("Resume the music"),
+      subcommand.setName("resume").setDescription("Reanuda la música"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("remove")
-        .setDescription("Remove a song from the queue")
+        .setDescription("Quita una canción de la cola")
         .addNumberOption((option) =>
           option
             .setName("number")
-            .setDescription("Song number")
+            .setDescription("Número de la canción")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("seek")
-        .setDescription("Seek the current playing music")
+        .setDescription("Adelanta o atrasa la canción actual")
         .addNumberOption((option) =>
           option
             .setName("time")
-            .setDescription("New song time")
+            .setDescription("Nuevo tiempo de la canción")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("shuffle").setDescription("Shuffle the music"),
+      subcommand.setName("shuffle").setDescription("Mezcla la música"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("skip").setDescription("Skip the current song"),
+      subcommand.setName("skip").setDescription("Salta la canción actual"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("skipto")
-        .setDescription("Skip to a new song")
+        .setDescription("Salta a otra canción")
         .addNumberOption((option) =>
           option
             .setName("number")
-            .setDescription("Song number")
+            .setDescription("Número de la canción")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("stop").setDescription("Stop the music"),
+      subcommand.setName("stop").setDescription("Detén la música"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("volume")
-        .setDescription("Set the music volume")
+        .setDescription("Ajusta el volumen de la música")
         .addNumberOption((option) =>
-          option.setName("amount").setDescription("New volume number"),
+          option.setName("amount").setDescription("Nuevo volumen"),
         ),
     ),
 

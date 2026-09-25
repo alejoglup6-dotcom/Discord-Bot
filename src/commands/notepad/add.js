@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
 
         client.succNormal(
           {
-            text: "Note has been added! \`/notepad notes\` to see all your notes",
+            text: "¡Nota añadida! Usa \`/notepad notes\` para ver todas tus notas",
             type: "editreply",
           },
           interaction,

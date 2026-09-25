@@ -22,10 +22,10 @@ module.exports = async (client, interaction, args) => {
       );
       client.succNormal(
         {
-          text: "The specified user has been successfully unbanned!",
+          text: "¡El usuario indicado fue desbaneado correctamente!",
           fields: [
             {
-              name: "👤┆User",
+              name: "👤┆Usuario",
               value: member
                 ? member.user.tag
                 : interaction.options.getString("user"),
@@ -40,7 +40,7 @@ module.exports = async (client, interaction, args) => {
     .catch(function (e) {
       return client.errNormal(
         {
-          error: `I could not find the user!`,
+          error: `¡No pude encontrar al usuario!`,
           type: "editreply",
         },
         interaction,

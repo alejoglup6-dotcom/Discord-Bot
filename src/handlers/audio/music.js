@@ -40,7 +40,7 @@ module.exports = (client) => {
           {
             title: embedData.title,
             url: embedData.url,
-            desc: `Music is currently paused`,
+            desc: `La música está en pausa`,
             thumbnail: embedData.thumbnail.url,
             fields: embedData.fields,
             components: [row],
@@ -87,7 +87,7 @@ module.exports = (client) => {
           {
             title: embedData.title,
             url: embedData.url,
-            desc: `Music is currently resumed`,
+            desc: `La música se reanudó`,
             thumbnail: embedData.thumbnail.url,
             fields: embedData.fields,
             components: [row],
@@ -107,7 +107,7 @@ module.exports = (client) => {
 
         client.embed(
           {
-            desc: `Music is currently stopped`,
+            desc: `La música se detuvo`,
             color: client.config.colors.error,
             components: [],
             type: "edit",
@@ -152,21 +152,21 @@ module.exports = (client) => {
           {
             title: `${client.emotes.normal.music}・${track.title}`,
             url: track.uri,
-            desc: `Music started in <#${player.voiceId}>!`,
+            desc: `¡La música empezó en <#${player.voiceId}>!`,
             thumbnail: track.thumbnail,
             fields: [
               {
-                name: `👤┆Requested By`,
+                name: `👤┆Pedida por`,
                 value: `${track.requester}`,
                 inline: true,
               },
               {
-                name: `${client.emotes.normal.clock}┆Ends at`,
+                name: `${client.emotes.normal.clock}┆Termina a las`,
                 value: `<t:${(Date.now() / 1000 + track.duration / 1000).toFixed(0)}:f>`,
                 inline: true,
               },
               {
-                name: `🎬┆Author`,
+                name: `🎬┆Autor`,
                 value: `${track.author}`,
                 inline: true,
               },
@@ -212,21 +212,21 @@ module.exports = (client) => {
           {
             title: `${client.emotes.normal.music}・${track.title}`,
             url: track.uri,
-            desc: `Music started in <#${player.voiceId}>!`,
+            desc: `¡La música empezó en <#${player.voiceId}>!`,
             thumbnail: track.thumbnail,
             fields: [
               {
-                name: `👤┆Requested By`,
+                name: `👤┆Pedida por`,
                 value: `${track.requester}`,
                 inline: true,
               },
               {
-                name: `${client.emotes.normal.clock}┆Ends at`,
+                name: `${client.emotes.normal.clock}┆Termina a las`,
                 value: `<t:${(Date.now() / 1000 + track.duration / 1000).toFixed(0)}:f>`,
                 inline: true,
               },
               {
-                name: `🎬┆Author`,
+                name: `🎬┆Autor`,
                 value: `${track.author}`,
                 inline: true,
               },

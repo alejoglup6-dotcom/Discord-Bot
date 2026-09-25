@@ -18,21 +18,21 @@ module.exports = async (client, interaction, args) => {
   }).then(async (data) => {
     if (data) {
       return client.errNormal(
-        { error: `You already made this reminder!`, type: "editreply" },
+        { error: `¡Ya creaste este recordatorio!`, type: "editreply" },
         interaction,
       );
     } else {
       return client.succNormal(
         {
-          text: `Your reminder is set!`,
+          text: `¡Tu recordatorio está listo!`,
           fields: [
             {
-              name: `${client.emotes.normal.clock}┇End Time`,
+              name: `${client.emotes.normal.clock}┇Hora de fin`,
               value: `${new Date(endtime).toLocaleTimeString()}`,
               inline: true,
             },
             {
-              name: `💭┇Reminder`,
+              name: `💭┇Recordatorio`,
               value: `${text}`,
               inline: true,
             },
@@ -47,11 +47,11 @@ module.exports = async (client, interaction, args) => {
   setTimeout(async () => {
     client.embed(
       {
-        title: `🔔・Reminder`,
-        desc: `Your reminder just ended!`,
+        title: `🔔・Recordatorio`,
+        desc: `¡Tu recordatorio acaba de terminar!`,
         fields: [
           {
-            name: `💭┇Reminder`,
+            name: `💭┇Recordatorio`,
             value: `${text}`,
             inline: true,
           },

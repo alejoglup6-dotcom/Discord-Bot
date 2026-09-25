@@ -12,7 +12,7 @@ module.exports = async (client, interaction, args) => {
   if (author.id == target.id)
     return client.errNormal(
       {
-        error: "You cannot divorce yourself",
+        error: "No puedes divorciarte de ti mismo",
         type: "editreply",
       },
       interaction,
@@ -21,7 +21,7 @@ module.exports = async (client, interaction, args) => {
   if (target.bot)
     return client.errNormal(
       {
-        error: "You cannot divorce a bot",
+        error: "No puedes divorciarte de un bot",
         type: "editreply",
       },
       interaction,
@@ -47,8 +47,8 @@ module.exports = async (client, interaction, args) => {
 
     client.embed(
       {
-        title: `👰・Divorced`,
-        desc: `${author} and ${target} have been divorced`,
+        title: `👰・Divorciados`,
+        desc: `${author} y ${target} se divorciaron`,
         type: "editreply",
       },
       interaction,
@@ -56,7 +56,7 @@ module.exports = async (client, interaction, args) => {
   } else {
     client.errNormal(
       {
-        error: "You are not married at the moment",
+        error: "Ahora mismo no estás casado",
         type: "editreply",
       },
       interaction,

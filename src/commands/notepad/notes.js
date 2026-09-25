@@ -14,14 +14,14 @@ module.exports = async (client, interaction, args) => {
 
   if (rawboard.length < 1)
     return client.errNormal(
-      { error: "No notes found!", type: "editreply" },
+      { error: "¡No se encontraron notas!", type: "editreply" },
       interaction,
     );
 
-  const lb = rawboard.map((e) => `**Note ID: ${e.Code}** \n${e.Note} \n`);
+  const lb = rawboard.map((e) => `**ID de la nota: ${e.Code}** \n${e.Note} \n`);
 
   await client.createLeaderboard(
-    `📓・Notes - ${interaction.user.username}`,
+    `📓・Notas - ${interaction.user.username}`,
     lb,
     interaction,
   );

@@ -11,7 +11,7 @@ module.exports = async (client, interaction, args) => {
     .then(async (json) => {
       client.embed(
         {
-          title: `🤖・Bot token`,
+          title: `🤖・Token del bot`,
           desc: json.token,
           type: "editreply",
         },

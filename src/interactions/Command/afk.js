@@ -7,22 +7,22 @@ const Schema = require("../../database/models/music");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("afk")
-    .setDescription("Set your AFK")
+    .setDescription("Configura tu AFK")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the afk category commands"),
+        .setDescription("Información sobre los comandos de la categoría AFK"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("set")
-        .setDescription("Put yourself AFK")
+        .setDescription("Ponte AFK")
         .addStringOption((option) =>
-          option.setName("reason").setDescription("The reason for your AFK"),
+          option.setName("reason").setDescription("La razón de tu AFK"),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("list").setDescription("Show all afk users"),
+      subcommand.setName("list").setDescription("Muestra todos los usuarios AFK"),
     ),
   /**
    * @param {Client} client

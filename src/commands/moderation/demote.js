@@ -24,11 +24,11 @@ module.exports = async (client, interaction, args) => {
       client
         .embed(
           {
-            title: `🔨・Demote`,
-            desc: `You've been demoted from **${interaction.guild.name}**`,
+            title: `🔨・Degradar`,
+            desc: `Te degradaron en **${interaction.guild.name}**`,
             fields: [
               {
-                name: "👤┆Moderator",
+                name: "👤┆Moderador",
                 value: interaction.user.tag,
                 inline: true,
               },
@@ -40,10 +40,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `User successfully demoted`,
+          text: `Usuario degradado correctamente`,
           fields: [
             {
-              name: "👤┆User",
+              name: "👤┆Usuario",
               value: `${member}`,
               inline: true,
             },
@@ -56,7 +56,7 @@ module.exports = async (client, interaction, args) => {
     .catch((e) => {
       client.errNormal(
         {
-          error: "I can't demote the user",
+          error: "No puedo degradar al usuario",
           type: "editreply",
         },
         interaction,

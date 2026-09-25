@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
     if (data) {
       if (isNaN(age))
         return client.errNormal(
-          { error: "No valid number provided", type: "editreply" },
+          { error: "No indicaste un número válido", type: "editreply" },
           interaction,
         );
 
@@ -19,10 +19,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: "Your age is set",
+          text: "Tu edad se guardó",
           fields: [
             {
-              name: "📆┆Age",
+              name: "📆┆Edad",
               value: `\`\`\`${age}\`\`\``,
               inline: true,
             },
@@ -34,7 +34,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

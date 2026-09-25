@@ -14,8 +14,8 @@ module.exports = async (client, interaction, args) => {
       if (result == "paper")
         return client.embed(
           {
-            title: `${client.emotes.normal.paper}・Rock paper scissors`,
-            desc: `I have ${result}, I win!`,
+            title: `${client.emotes.normal.paper}・Piedra, papel o tijera`,
+            desc: `Saqué ${result}, ¡gano yo!`,
             type: "editreply",
           },
           interaction,
@@ -24,8 +24,8 @@ module.exports = async (client, interaction, args) => {
       if (result == "scissors")
         return client.embed(
           {
-            title: `${client.emotes.normal.paper}・Rock paper scissors`,
-            desc: `I have ${result}, You win!`,
+            title: `${client.emotes.normal.paper}・Piedra, papel o tijera`,
+            desc: `Saqué ${result}, ¡ganas tú!`,
             type: "editreply",
           },
           interaction,
@@ -34,8 +34,8 @@ module.exports = async (client, interaction, args) => {
       if (result == "rock")
         return client.embed(
           {
-            title: `${client.emotes.normal.paper}・Rock paper scissors`,
-            desc: `I have ${result}, It's a draw!`,
+            title: `${client.emotes.normal.paper}・Piedra, papel o tijera`,
+            desc: `Saqué ${result}, ¡es un empate!`,
             type: "editreply",
           },
           interaction,
@@ -46,8 +46,8 @@ module.exports = async (client, interaction, args) => {
       if (result == "paper")
         return client.embed(
           {
-            title: `${client.emotes.normal.paper}・Rock paper scissors`,
-            desc: `I have ${result}, It's a draw!`,
+            title: `${client.emotes.normal.paper}・Piedra, papel o tijera`,
+            desc: `Saqué ${result}, ¡es un empate!`,
             type: "editreply",
           },
           interaction,
@@ -56,8 +56,8 @@ module.exports = async (client, interaction, args) => {
       if (result == "scissors")
         return client.embed(
           {
-            title: `${client.emotes.normal.paper}・Rock paper scissors`,
-            desc: `I have ${result}, I win!`,
+            title: `${client.emotes.normal.paper}・Piedra, papel o tijera`,
+            desc: `Saqué ${result}, ¡gano yo!`,
             type: "editreply",
           },
           interaction,
@@ -66,8 +66,8 @@ module.exports = async (client, interaction, args) => {
       if (result == "rock")
         return client.embed(
           {
-            title: `${client.emotes.normal.paper}・Rock paper scissors`,
-            desc: `I have ${result}, You win!`,
+            title: `${client.emotes.normal.paper}・Piedra, papel o tijera`,
+            desc: `Saqué ${result}, ¡ganas tú!`,
             type: "editreply",
           },
           interaction,
@@ -78,8 +78,8 @@ module.exports = async (client, interaction, args) => {
       if (result == "paper")
         return client.embed(
           {
-            title: `${client.emotes.normal.paper}・Rock paper scissors`,
-            desc: `I have ${result}, You win!`,
+            title: `${client.emotes.normal.paper}・Piedra, papel o tijera`,
+            desc: `Saqué ${result}, ¡ganas tú!`,
             type: "editreply",
           },
           interaction,
@@ -88,8 +88,8 @@ module.exports = async (client, interaction, args) => {
       if (result == "scissors")
         return client.embed(
           {
-            title: `${client.emotes.normal.paper}・Rock paper scissors`,
-            desc: `I have ${result}, It's a draw!`,
+            title: `${client.emotes.normal.paper}・Piedra, papel o tijera`,
+            desc: `Saqué ${result}, ¡es un empate!`,
             type: "editreply",
           },
           interaction,
@@ -98,8 +98,8 @@ module.exports = async (client, interaction, args) => {
       if (result == "rock")
         return client.embed(
           {
-            title: `${client.emotes.normal.paper}・Rock paper scissors`,
-            desc: `I have ${result}, I win!`,
+            title: `${client.emotes.normal.paper}・Piedra, papel o tijera`,
+            desc: `Saqué ${result}, ¡gano yo!`,
             type: "editreply",
           },
           interaction,

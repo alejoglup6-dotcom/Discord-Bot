@@ -5,12 +5,12 @@ const Discord = require("discord.js");
  */
 module.exports = async (client, interaction, args) => {
   const roll = [
-    "Never gonna give you up",
-    "Never gonna let you down",
-    "Never gonna run around and desert you",
-    "Never gonna make you cry",
-    "Never gonna say goodbye",
-    "Never gonna tell a lie and hurt you",
+    "Nunca te voy a abandonar",
+    "Nunca te voy a decepcionar",
+    "Nunca voy a dar vueltas y dejarte tirado",
+    "Nunca te voy a hacer llorar",
+    "Nunca te voy a decir adiós",
+    "Nunca te voy a mentir ni a hacer daño",
   ];
   const rick = roll[Math.floor(Math.random() * roll.length)];
 

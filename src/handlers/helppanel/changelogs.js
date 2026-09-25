@@ -12,29 +12,29 @@ module.exports = async (client) => {
                     .addComponents(
                         new Discord.StringSelectMenuBuilder()
                             .setCustomId('Bot-helppanel')
-                            .setPlaceholder('❌┆Nothing selected')
+                            .setPlaceholder('❌┆Nada seleccionado')
                             .addOptions([
                                 {
-                                    label: `Commands`,
-                                    description: `Show the commands of Bot!`,
+                                    label: `Comandos`,
+                                    description: `¡Muestra los comandos de Bot!`,
                                     emoji: "💻",
                                     value: "commands-Bothelp",
                                 },
                                 {
-                                    label: `Invite`,
-                                    description: `Invite Bot to your server`,
+                                    label: `Invitar`,
+                                    description: `Invita al bot a tu servidor`,
                                     emoji: "📨",
                                     value: "invite-Bothelp",
                                 },
                                 {
-                                    label: `Support server`,
-                                    description: `Join the suppport server`,
+                                    label: `Servidor de soporte`,
+                                    description: `Únete al servidor de soporte`,
                                     emoji: "❓",
                                     value: "support-Bothelp",
                                 },
                                 {
-                                    label: `Changelogs`,
-                                    description: `Show the bot changelogs`,
+                                    label: `Registro de cambios`,
+                                    description: `Muestra el registro de cambios del bot`,
                                     emoji: "📃",
                                     value: "changelogs-Bothelp",
                                 },
@@ -42,18 +42,18 @@ module.exports = async (client) => {
                     );
 
                 client.embed({
-                    title: "📃・Changelogs",
+                    title: "📃・Registro de cambios",
                     desc: `_____`,
                     thumbnail: client.user.avatarURL({ size: 1024 }),
                     fields: [
             	        {
-                            name: "📢┆Alert!",
-                            value: 'This is the changelogs of the bot, here you can see the changes that have been made to the bot.',
+                            name: "📢┆¡Atención!",
+                            value: 'Este es el registro de cambios del bot. Aquí puedes ver los cambios que se le han hecho.',
                             inline: false,
                         },
                         {
-                            name: "📃┆Changelogs",
-                            value: '10/12/2022 - Updated the bot to the latest version of discord.js (v14)',
+                            name: "📃┆Registro de cambios",
+                            value: '10/12/2022 - Se actualizó el bot a la última versión de discord.js (v14)',
                             inline: false,
                         }
                     ],

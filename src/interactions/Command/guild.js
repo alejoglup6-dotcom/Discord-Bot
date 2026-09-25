@@ -5,95 +5,95 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("guild")
-    .setDescription("Manage the guild")
+    .setDescription("Gestiona el servidor")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the guild category commands"),
+        .setDescription("Información sobre los comandos de la categoría servidor"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("channelinfo")
-        .setDescription("Get information about a channel")
+        .setDescription("Consigue información sobre un canal")
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Select a channel")
+            .setDescription("Elige un canal")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("members")
-        .setDescription("See how many members there are in this server"),
+        .setDescription("Mira cuántos miembros hay en este servidor"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("oldestmember")
-        .setDescription("Get the oldest account creation date in the guild"),
+        .setDescription("Mira la cuenta más antigua del servidor"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("roleinfo")
-        .setDescription("Get info about a role")
+        .setDescription("Consigue información sobre un rol")
         .addRoleOption((option) =>
           option
             .setName("role")
-            .setDescription("Select a role")
+            .setDescription("Elige un rol")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("info")
-        .setDescription("Get all info about the current server"),
+        .setDescription("Consigue toda la información del servidor actual"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("stealemoji")
-        .setDescription("Steal an emoji")
+        .setDescription("Roba un emoji")
         .addStringOption((option) =>
           option
             .setName("emoji")
-            .setDescription("Enter an emoji to steal")
+            .setDescription("Escribe el emoji que quieres robar")
             .setRequired(true),
         )
         .addRoleOption((option) =>
           option
             .setName("role")
-            .setDescription("Select a role")
+            .setDescription("Elige un rol")
             .setRequired(false),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("youngestmember")
-        .setDescription("Get the youngest account creation date in the guild"),
+        .setDescription("Mira la cuenta más reciente del servidor"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("userinfo")
-        .setDescription("Get all info about a user")
+        .setDescription("Consigue toda la información de un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("inviteinfo")
-        .setDescription("Get all info about a invite")
+        .setDescription("Consigue toda la información de una invitación")
         .addStringOption((option) =>
           option
             .setName("invite")
-            .setDescription("Enter a invite code")
+            .setDescription("Escribe un código de invitación")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("emojis").setDescription("See the guild emojis"),
+      subcommand.setName("emojis").setDescription("Mira los emojis del servidor"),
     ),
   /**
    * @param {Client} client

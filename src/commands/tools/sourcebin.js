@@ -17,18 +17,18 @@ module.exports = async (client, interaction, args) => {
         },
       ],
       {
-        title: "💻・Random Code",
-        description: "This is code was uploaded via Bot",
+        title: "💻・Código aleatorio",
+        description: "Este código se subió a través de Bot",
       },
     )
     .then((value) => {
       client.succNormal(
         {
-          text: `Your code has been posted!`,
+          text: `¡Tu código se publicó!`,
           fields: [
             {
-              name: `🔗┇Link`,
-              value: `[Click here to see your code](${value.url})`,
+              name: `🔗┇Enlace`,
+              value: `[Haz clic aquí para ver tu código](${value.url})`,
               inline: true,
             },
           ],

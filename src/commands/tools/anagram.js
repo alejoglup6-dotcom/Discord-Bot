@@ -14,7 +14,7 @@ module.exports = async (client, interaction, args) => {
       let content = ``;
       if (!json.all[0])
         return client.errNormal(
-          { error: "No word found!", type: "editreply" },
+          { error: "¡No se encontró ninguna palabra!", type: "editreply" },
           interaction,
         );
 
@@ -24,11 +24,11 @@ module.exports = async (client, interaction, args) => {
 
       client.embed(
         {
-          title: `❓・Anagram`,
-          desc: `I formed a word with the given letters`,
+          title: `❓・Anagrama`,
+          desc: `Formé una palabra con las letras indicadas`,
           fields: [
             {
-              name: `💬┇Word(s)`,
+              name: `💬┇Palabra(s)`,
               value: content,
             },
           ],

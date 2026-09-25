@@ -9,7 +9,7 @@ module.exports = async (client, interaction, args) => {
   if (aboutme.length > 1024)
     return client.errNormal(
       {
-        error: "Your about me cannot be longer than 1024 characters",
+        error: "Tu 'sobre mí' no puede tener más de 1024 caracteres",
         type: "editreply",
       },
       interaction,
@@ -22,10 +22,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: "Your about me is set",
+          text: "Tu 'sobre mí' se guardó",
           fields: [
             {
-              name: "📘┆About Me",
+              name: "📘┆Sobre mí",
               value: `\`\`\`${aboutme}\`\`\``,
               inline: true,
             },
@@ -37,7 +37,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

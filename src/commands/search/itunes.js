@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   const r = await pop.itunes(song).catch((e) => {
     return client.errNormal(
       {
-        error: "Song not found!",
+        error: "¡No se encontró la canción!",
         type: "editreply",
       },
       interaction,
@@ -24,37 +24,37 @@ module.exports = async (client, interaction, args) => {
       url: r.url,
       fields: [
         {
-          name: "💬┇Name",
+          name: "💬┇Nombre",
           value: `${r.name}`,
           inline: true,
         },
         {
-          name: "🎤┇Artist",
+          name: "🎤┇Artista",
           value: `${r.artist}`,
           inline: true,
         },
         {
-          name: "📁┇Album",
+          name: "📁┇Álbum",
           value: `${r.album}`,
           inline: true,
         },
         {
-          name: "🎼┇Length",
+          name: "🎼┇Duración",
           value: `${r.length}`,
           inline: true,
         },
         {
-          name: "🏷️┇Genre",
+          name: "🏷️┇Género",
           value: `${r.genre}`,
           inline: true,
         },
         {
-          name: "💵┇Price",
+          name: "💵┇Precio",
           value: `${r.price}`,
           inline: true,
         },
         {
-          name: "⏰┇Release Date",
+          name: "⏰┇Fecha de lanzamiento",
           value: `<t:${Math.round(new Date(r.release_date).getTime() / 1000)}>`,
           inline: true,
         },

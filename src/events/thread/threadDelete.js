@@ -2,20 +2,20 @@ const discord = require('discord.js');
 
 module.exports = async (client, channel) => {
     let types = {
-        10: "News Thread",
-        11: "Public Thread",
-        12: "Private Thread",
+        10: "Hilo de anuncios",
+        11: "Hilo público",
+        12: "Hilo privado",
     }
 
     const logsChannel = await client.getLogs(channel.guild.id);
     if (!logsChannel) return;
 
     client.embed({
-        title: `📖・Thread deleted`,
-        desc: `A thread has been deleted`,
+        title: `📖・Hilo eliminado`,
+        desc: `Se eliminó un hilo`,
         fields: [
             {
-                name: `> Name`,
+                name: `> Nombre`,
                 value: `- ${channel.name}`
             },
             {
@@ -23,11 +23,11 @@ module.exports = async (client, channel) => {
                 value: `- ${channel.id}`
             },
             {
-                name: `> Category`,
+                name: `> Categoría`,
                 value: `${channel.parent}`
             },
             {
-                name: `> Type`,
+                name: `> Tipo`,
                 value: `${types[channel.type]}`
             }
         ]

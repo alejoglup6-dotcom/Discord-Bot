@@ -21,7 +21,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: "Could not find that documentation!",
+            error: "¡No pude encontrar esa documentación!",
             type: "editreply",
           },
           interaction,

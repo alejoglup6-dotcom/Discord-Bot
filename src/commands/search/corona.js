@@ -19,17 +19,17 @@ module.exports = async (client, interaction, args) => {
           title: `💉・COVID-19 - ${countries}`,
           fields: [
             {
-              name: "✅┇Confirmed Cases",
+              name: "✅┇Casos confirmados",
               value: `${confirmed}`,
               inline: true,
             },
             {
-              name: "🤗┇Recovered",
+              name: "🤗┇Recuperados",
               value: `${recovered}`,
               inline: true,
             },
             {
-              name: "💀┇Deaths",
+              name: "💀┇Muertes",
               value: `${deaths}`,
               inline: true,
             },
@@ -41,7 +41,7 @@ module.exports = async (client, interaction, args) => {
     })
     .catch((e) => {
       return client.errNormal(
-        { error: `Invalid country provided!`, type: "editreply" },
+        { error: `¡El país indicado no es válido!`, type: "editreply" },
         interaction,
       );
     });

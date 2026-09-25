@@ -14,10 +14,10 @@ module.exports = (client) => {
         });
 
         client.succNormal({
-            text: `Channel has been set up successfully!`,
+            text: `¡El canal se configuró correctamente!`,
             fields: [
                 {
-                    name: `📘┆Channel`,
+                    name: `📘┆Canal`,
                     value: `${channel} (${channel.id})`
                 }
             ],
@@ -40,10 +40,10 @@ module.exports = (client) => {
         });
 
         client.succNormal({
-            text: `Role has been set up successfully!`,
+            text: `¡El rol se configuró correctamente!`,
             fields: [
                 {
-                    name: `📘┆Role`,
+                    name: `📘┆Rol`,
                     value: `${role} (${role.id})`
                 }
             ],

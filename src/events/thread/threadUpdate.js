@@ -2,24 +2,24 @@ const discord = require('discord.js');
 
 module.exports = async (client, oldChannel, newChannel) => {
     let types = {
-        10: "News Thread",
-        11: "Public Thread",
-        12: "Private Thread",
+        10: "Hilo de anuncios",
+        11: "Hilo público",
+        12: "Hilo privado",
     }
 
     const logsChannel = await client.getLogs(newChannel.guild.id);
     if (!logsChannel) return;
 
     client.embed({
-        title: `📖・Thread updated`,
-        desc: `A thread has been updated`,
+        title: `📖・Hilo actualizado`,
+        desc: `Se actualizó un hilo`,
         fields: [
             {
-                name: `> Old name`,
+                name: `> Nombre anterior`,
                 value: `- ${oldChannel.name}`
             },
             {
-                name: `> New name`,
+                name: `> Nombre nuevo`,
                 value: `- ${newChannel.name}`
             },
             {
@@ -27,15 +27,15 @@ module.exports = async (client, oldChannel, newChannel) => {
                 value: `- ${newChannel.id}`
             },
             {
-                name: `> Category`,
+                name: `> Categoría`,
                 value: `${newChannel.parent}`
             },
             {
-                name: `> Channel`,
+                name: `> Canal`,
                 value: `<#${newChannel.id}>`
             },
             {
-                name: `> Type`,
+                name: `> Tipo`,
                 value: `${types[newChannel.type]}`
             }
         ]

@@ -5,88 +5,88 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("autosetup")
-    .setDescription("Let the bot setup automatically")
+    .setDescription("Deja que el bot se configure automáticamente")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the auto setup commands"),
+        .setDescription("Información sobre los comandos de configuración automática"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("logs")
-        .setDescription("Set the logs from the server")
+        .setDescription("Configura los registros del servidor")
         .addStringOption((option) =>
           option
             .setName("setup")
-            .setDescription("The setup that you want")
+            .setDescription("La configuración que quieres")
             .setRequired(true)
             .addChoices(
-              { name: "Server logs", value: "serverLogs" },
-              { name: "Level logs", value: "levelLogs" },
-              { name: "Boost logs", value: "boostLogs" },
+              { name: "Registros del servidor", value: "serverLogs" },
+              { name: "Registros de niveles", value: "levelLogs" },
+              { name: "Registros de boosts", value: "boostLogs" },
             ),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("fun")
-        .setDescription("Set the fun channels from the server")
+        .setDescription("Configura los canales de diversión del servidor")
         .addStringOption((option) =>
           option
             .setName("setup")
-            .setDescription("The setup that you want")
+            .setDescription("La configuración que quieres")
             .setRequired(true)
             .addChoices(
-              { name: "Birthdays", value: "birthdays" },
+              { name: "Cumpleaños", value: "birthdays" },
               { name: "Chatbot", value: "chatbot" },
-              { name: "Reviews", value: "reviews" },
-              { name: "Suggestions", value: "suggestions" },
-              { name: "Starboard", value: "starboard" },
+              { name: "Reseñas", value: "reviews" },
+              { name: "Sugerencias", value: "suggestions" },
+              { name: "Tablón de estrellas", value: "starboard" },
             ),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("games")
-        .setDescription("Set the game channels from the server")
+        .setDescription("Configura los canales de juegos del servidor")
         .addStringOption((option) =>
           option
             .setName("setup")
-            .setDescription("The setup that you want")
+            .setDescription("La configuración que quieres")
             .setRequired(true)
             .addChoices(
-              { name: "Counting", value: "counting" },
-              { name: "Guess the number", value: "gtn" },
-              { name: "Guess the word", value: "gtw" },
-              { name: "Word snake", value: "wordsnake" },
+              { name: "Contar", value: "counting" },
+              { name: "Adivina el número", value: "gtn" },
+              { name: "Adivina la palabra", value: "gtw" },
+              { name: "Serpiente de palabras", value: "wordsnake" },
             ),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("welcome")
-        .setDescription("Setup the welcome system")
+        .setDescription("Configura el sistema de bienvenida")
         .addStringOption((option) =>
           option
             .setName("setup")
-            .setDescription("The setup that you want")
+            .setDescription("La configuración que quieres")
             .setRequired(true)
             .addChoices(
-              { name: "Welcome channel", value: "welcomechannel" },
-              { name: "Welcome role", value: "welcomerole" },
-              { name: "Leave channnel", value: "leavechannel" },
+              { name: "Canal de bienvenida", value: "welcomechannel" },
+              { name: "Rol de bienvenida", value: "welcomerole" },
+              { name: "Canal de despedida", value: "leavechannel" },
             ),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("customvoice")
-        .setDescription("Set the custom voice channels from the server"),
+        .setDescription("Configura los canales de voz personalizados del servidor"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("ticketpanel")
-        .setDescription("Set the ticket panel from the server"),
+        .setDescription("Configura el panel de tickets del servidor"),
     ),
   /**
    * @param {Client} client

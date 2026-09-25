@@ -10,13 +10,13 @@ module.exports = async (client, interaction, args) => {
   const target = interaction.options.getUser("user");
   if (!target)
     return client.errUsage(
-      { usage: "thanks [mention user]", type: "editreply" },
+      { usage: "thanks [mencionar usuario]", type: "editreply" },
       interaction,
     );
 
   if (target.id === interaction.user.id)
     return client.errNormal(
-      { error: `You cannot thank yourself!`, type: "editreply" },
+      { error: `¡No puedes agradecerte a ti mismo!`, type: "editreply" },
       interaction,
     );
 
@@ -25,7 +25,7 @@ module.exports = async (client, interaction, args) => {
     .then(async (data) => {
       if (data) {
         client.errNormal(
-          { error: `You already thanked this user!`, type: "editreply" },
+          { error: `¡Ya le agradeciste a este usuario!`, type: "editreply" },
           interaction,
         );
       } else {
@@ -35,7 +35,7 @@ module.exports = async (client, interaction, args) => {
             data.save();
             client.succNormal(
               {
-                text: `You have thanked <@${target.id}>! They now have \`${data.Received}\` thanks`,
+                text: `¡Le agradeciste a <@${target.id}>! Ahora tiene \`${data.Received}\` agradecimientos`,
                 type: "editreply",
               },
               interaction,
@@ -48,7 +48,7 @@ module.exports = async (client, interaction, args) => {
             }).save();
             client.succNormal(
               {
-                text: `You have thanked <@${target.id}>! They now have \`1\` thanks`,
+                text: `¡Le agradeciste a <@${target.id}>! Ahora tiene \`1\` agradecimiento`,
                 type: "editreply",
               },
               interaction,

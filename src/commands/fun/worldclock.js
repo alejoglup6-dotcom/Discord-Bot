@@ -27,25 +27,25 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `⏰・World clock`,
+      title: `⏰・Reloj mundial`,
       fields: [
         {
-          name: ":flag_eu:┇London (GMT)",
+          name: ":flag_eu:┇Londres (GMT)",
           value: `${gmt}\n(GMT+0/GMT+1)`,
           inline: true,
         },
         {
-          name: ":flag_us:┇New York (EST)",
+          name: ":flag_us:┇Nueva York (EST)",
           value: `${est}\n(GMT-5)`,
           inline: true,
         },
         {
-          name: ":flag_us:┇Los Angles (PST)",
+          name: ":flag_us:┇Los Ángeles (PST)",
           value: `${pst}\n(GMT-8)`,
           inline: true,
         },
         {
-          name: ":flag_us:┇Mexico City (CST)",
+          name: ":flag_us:┇Ciudad de México (CST)",
           value: `${cst}\n(GMT-7)`,
           inline: true,
         },
@@ -60,7 +60,7 @@ module.exports = async (client, interaction, args) => {
           inline: true,
         },
         {
-          name: ":flag_kr:┇Korean (KST)",
+          name: ":flag_kr:┇Corea (KST)",
           value: `${kst}\n(GMT+9)`,
           inline: true,
         },

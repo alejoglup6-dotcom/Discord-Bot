@@ -42,7 +42,7 @@ module.exports = async (client, member) => {
                     const channel = member.guild.channels.cache.get(channelData.Channel)
 
                     await client.embed({
-                        title: `👋・Bye`,
+                        title: `👋・Adiós`,
                         desc: leaveMessage
                     }, channel).catch(() => { })
                 }).catch(async () => {
@@ -51,8 +51,8 @@ module.exports = async (client, member) => {
                         const channel = member.guild.channels.cache.get(channelData.Channel)
 
                         await client.embed({
-                            title: `👋・Bye`,
-                            desc: `**${member.user.tag}** has left us`
+                            title: `👋・Adiós`,
+                            desc: `**${member.user.tag}** nos dejó`
                         }, channel).catch(() => { })
                     }
                 })
@@ -63,8 +63,8 @@ module.exports = async (client, member) => {
                     const channel = member.guild.channels.cache.get(channelData.Channel)
 
                     await client.embed({
-                        title: `👋・Bye`,
-                        desc: `**${member.user.tag}** was invited by ${user.tag}`
+                        title: `👋・Adiós`,
+                        desc: `**${member.user.tag}** fue invitado por ${user.tag}`
                     }, channel).catch(() => { })
 
                 }).catch(async () => {
@@ -73,8 +73,8 @@ module.exports = async (client, member) => {
                         const channel = member.guild.channels.cache.get(channelData.Channel)
 
                         await client.embed({
-                            title: `👋・Bye`,
-                            desc: `**${member.user.tag}** was invited by ${user.tag}`
+                            title: `👋・Adiós`,
+                            desc: `**${member.user.tag}** fue invitado por ${user.tag}`
                         }, channel).catch(() => { })
                     }
                 })
@@ -87,8 +87,8 @@ module.exports = async (client, member) => {
             const channel = member.guild.channels.cache.get(channelData.Channel)
 
             await client.embed({
-                title: `👋・Bye`,
-                desc: `**${member.user.tag}** has left us`
+                title: `👋・Adiós`,
+                desc: `**${member.user.tag}** nos dejó`
             }, channel).catch(() => { })
         }
     }

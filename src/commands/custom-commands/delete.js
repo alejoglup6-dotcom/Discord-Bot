@@ -22,17 +22,17 @@ module.exports = async (client, interaction, args) => {
         );
         if (!command)
           return client.errNormal(
-            { error: "Unable to find this command!", type: "editreply" },
+            { error: "¡No se encontró este comando!", type: "editreply" },
             interaction,
           );
         await interaction.guild.commands.delete(command.id);
 
         client.succNormal(
           {
-            text: `The command has been deleted successfully`,
+            text: `El comando se eliminó correctamente`,
             fields: [
               {
-                name: "🔧┆Command",
+                name: "🔧┆Comando",
                 value: `\`\`\`${cmdname}\`\`\``,
                 inline: true,
               },
@@ -44,7 +44,7 @@ module.exports = async (client, interaction, args) => {
       });
     } else {
       client.errNormal(
-        { error: "Unable to find this command!", type: "editreply" },
+        { error: "¡No se encontró este comando!", type: "editreply" },
         interaction,
       );
     }

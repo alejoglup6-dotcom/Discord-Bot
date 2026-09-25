@@ -19,7 +19,7 @@ module.exports = async (client, interaction, args) => {
   if (amount > 100)
     return client.errNormal(
       {
-        error: "I cannot delete more than 100 messages at a time!",
+        error: "¡No puedo eliminar más de 100 mensajes a la vez!",
         type: "editreply",
       },
       interaction,
@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
   if (amount < 1)
     return client.errNormal(
       {
-        error: "I cannot delete less than 1 message!",
+        error: "¡No puedo eliminar menos de 1 mensaje!",
         type: "editreply",
       },
       interaction,
@@ -39,10 +39,10 @@ module.exports = async (client, interaction, args) => {
     .then(() => {
       client.succNormal(
         {
-          text: `I have successfully deleted the messages`,
+          text: `Eliminé los mensajes correctamente`,
           fields: [
             {
-              name: "💬┆Amount",
+              name: "💬┆Cantidad",
               value: `${amount}`,
               inline: true,
             },
@@ -56,7 +56,7 @@ module.exports = async (client, interaction, args) => {
       client.errNormal(
         {
           error:
-            "There was an error trying to delete messages in this channel!",
+            "¡Hubo un error al intentar eliminar mensajes en este canal!",
           type: "editreply",
         },
         interaction,

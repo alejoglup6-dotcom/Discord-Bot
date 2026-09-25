@@ -13,16 +13,16 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `👴・Oldest member`,
-      desc: `See who is the oldest member in **${interaction.guild.name}**`,
+      title: `👴・Miembro más antiguo`,
+      desc: `Mira quién es el miembro más antiguo de **${interaction.guild.name}**`,
       fields: [
         {
-          name: `👤┆User`,
+          name: `👤┆Usuario`,
           value: `${member[0]} (${member[0].user.username}#${member[0].user.discriminator})`,
           inline: true,
         },
         {
-          name: `⏰┆Account creation`,
+          name: `⏰┆Creación de la cuenta`,
           value: `<t:${Math.round(member[0].user.createdTimestamp / 1000)}>`,
           inline: true,
         },

@@ -20,7 +20,7 @@ module.exports = async (client, interaction, args) => {
     );
   } else {
     client.errNormal(
-      { error: "Please supply a valid emoji!", type: "editreply" },
+      { error: "¡Indica un emoji válido!", type: "editreply" },
       interaction,
     );
   }

@@ -25,15 +25,15 @@ module.exports = async (client) => {
   );
 
   let embed = new Discord.EmbedBuilder()
-    .setTitle(`🆙・Finishing shard`)
-    .setDescription(`A shard just finished`)
+    .setTitle(`🆙・Shard iniciado`)
+    .setDescription(`Un shard acaba de terminar de iniciarse`)
     .addFields(
       {
         name: "🆔┆ID",
         value: `${client.shard.ids[0] + 1}/${client.options.shardCount}`,
         inline: true,
       },
-      { name: "📃┆State", value: `Ready`, inline: true },
+      { name: "📃┆Estado", value: `Listo`, inline: true },
     )
     .setColor(client.config.colors.normal);
   startLogs.send({
@@ -54,10 +54,10 @@ module.exports = async (client) => {
       } else {
         statuttext = [
           `・❓┆/help`,
-          `・💻┆${totalGuilds} servers`,
+          `・💻┆${totalGuilds} servidores`,
           `・📨┆discord.gg/corwindev`,
-          `・🎉┆400+ commands`,
-          `・🏷️┆Version ${require(`${process.cwd()}/package.json`).version}`,
+          `・🎉┆Más de 400 comandos`,
+          `・🏷️┆Versión ${require(`${process.cwd()}/package.json`).version}`,
         ];
       }
       const randomText =

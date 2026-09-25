@@ -5,37 +5,37 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("birthdays")
-    .setDescription("View or register a birthday")
+    .setDescription("Consulta o registra un cumpleaños")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
         .setDescription(
-          "Get information about the birthdays category commands",
+          "Información sobre los comandos de la categoría de cumpleaños",
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("check").setDescription("Check your birthday"),
+      subcommand.setName("check").setDescription("Consulta tu cumpleaños"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("delete").setDescription("Delete your birthday"),
+      subcommand.setName("delete").setDescription("Elimina tu cumpleaños"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("list").setDescription("Get to see all birthdays"),
+      subcommand.setName("list").setDescription("Mira todos los cumpleaños"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("set")
-        .setDescription("Set your birthday")
+        .setDescription("Guarda tu cumpleaños")
         .addNumberOption((option) =>
           option
             .setName("day")
-            .setDescription("The day number that is your birthday")
+            .setDescription("El día de tu cumpleaños (número)")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("month")
-            .setDescription("The month number that is your birthday")
+            .setDescription("El mes de tu cumpleaños (número)")
             .setRequired(true),
         ),
     ),

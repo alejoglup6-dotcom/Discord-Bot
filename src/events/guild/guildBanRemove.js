@@ -5,12 +5,12 @@ module.exports = async (client, ban) => {
     if (!logsChannel) return;
 
     client.embed({
-        title: `🔧・Member unbanned`,
-        desc: `A user has been unbanned`,
+        title: `🔧・Miembro desbaneado`,
+        desc: `Se desbaneó a un usuario`,
         thumbnail: ban.user.avatarURL({ size: 4096 }),
         fields: [
             {
-                name: `> User`,
+                name: `> Usuario`,
                 value: `- ${ban.user}`
             },
             {
@@ -22,7 +22,7 @@ module.exports = async (client, ban) => {
                 value: `- ${ban.user.id}`
             },
             {
-                name: `> Timestamp`,
+                name: `> Fecha`,
                 value: `- <t:${Math.floor(ban.createdTimestamp / 1000)}:R>`
             }
         ]

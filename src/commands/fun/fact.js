@@ -12,7 +12,7 @@ module.exports = async (client, interaction, args) => {
 
     client.embed(
       {
-        title: `😂・Fact`,
+        title: `😂・Dato`,
         desc: fact,
         type: "editreply",
       },

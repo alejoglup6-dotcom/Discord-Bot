@@ -35,7 +35,7 @@ module.exports = async (client, interaction, args) => {
               if (ticketCategory == undefined) {
                 return client.errNormal(
                   {
-                    error: "Do the setup!",
+                    error: "¡Haz la configuración!",
                     type: type,
                   },
                   interaction,
@@ -46,7 +46,7 @@ module.exports = async (client, interaction, args) => {
                 return client
                   .simpleEmbed(
                     {
-                      desc: `${client.emotes.animated.loading}・Transcript saving...`,
+                      desc: `${client.emotes.animated.loading}・Guardando transcripción...`,
                       type: type,
                     },
                     interaction,
@@ -57,7 +57,7 @@ module.exports = async (client, interaction, args) => {
                       .then(() => {
                         return client.simpleEmbed(
                           {
-                            desc: `Transcript saved`,
+                            desc: `Transcripción guardada`,
                             type: "editreply",
                           },
                           interaction,
@@ -67,7 +67,7 @@ module.exports = async (client, interaction, args) => {
               } else {
                 client.errNormal(
                   {
-                    error: "This is not a ticket!",
+                    error: "¡Esto no es un ticket!",
                     type: type,
                   },
                   interaction,
@@ -76,7 +76,7 @@ module.exports = async (client, interaction, args) => {
             } else {
               return client.errNormal(
                 {
-                  error: "Do the setup!",
+                  error: "¡Haz la configuración!",
                   type: type,
                 },
                 interaction,

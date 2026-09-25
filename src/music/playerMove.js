@@ -7,7 +7,7 @@ module.exports = (client, player, currentChannel, newChannel) => {
     const channel = client.channels.cache.get(player.textId);
     client.errNormal(
       {
-        error: "Music has stopped. I'm disconnected from the channel",
+        error: "La música se detuvo. Me desconecté del canal",
       },
       channel,
     );

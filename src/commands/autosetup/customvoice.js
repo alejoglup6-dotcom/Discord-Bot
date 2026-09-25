@@ -8,13 +8,13 @@ const voiceSchema = require("../../database/models/voice");
 module.exports = async (client, interaction, args) => {
   interaction.guild.channels
     .create({
-      name: "Custom voice",
+      name: "Voz personalizada",
       type: Discord.ChannelType.GuildCategory,
     })
     .then((cat) => {
       interaction.guild.channels
         .create({
-          name: "➕ Create Voice",
+          name: "➕ Crear voz",
           type: Discord.ChannelType.GuildVoice,
           parent: cat.id,
           permissionOverwrites: [
@@ -45,10 +45,10 @@ module.exports = async (client, interaction, args) => {
 
           client.succNormal(
             {
-              text: `Custom voice has been set up successfully!`,
+              text: `¡La voz personalizada se configuró correctamente!`,
               fields: [
                 {
-                  name: `📘┆Channel`,
+                  name: `📘┆Canal`,
                   value: `${ch} (${ch.name})`,
                 },
               ],

@@ -13,7 +13,7 @@ module.exports = async (client, interaction, args) => {
         if (!data.Hobbys.includes(hobby)) {
           return client.errNormal(
             {
-              error: `That hobby doesn't exist in the database!`,
+              error: `¡Ese pasatiempo no está en la base de datos!`,
               type: "editreply",
             },
             interaction,
@@ -28,10 +28,10 @@ module.exports = async (client, interaction, args) => {
       }
       client.succNormal(
         {
-          text: "Removed your hobby",
+          text: "Pasatiempo eliminado",
           fields: [
             {
-              name: "⚽┆Hobby",
+              name: "⚽┆Pasatiempo",
               value: `\`\`\`${hobby}\`\`\``,
               inline: true,
             },
@@ -43,7 +43,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

@@ -13,7 +13,7 @@ module.exports = (client) => {
         if (labels.length < 25 || labels.length == 25) {
             const menu = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-1`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(0, 25));
 
             row.addComponents(menu)
@@ -24,12 +24,12 @@ module.exports = (client) => {
         if (labels.length < 50 && labels.length > 25 || labels.length == 50) {
             const menu = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-1`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(0, 25));
 
             const menu2 = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-2`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(25, 50));
 
             row.addComponents(menu)
@@ -41,17 +41,17 @@ module.exports = (client) => {
         if (labels.length < 75 && labels.length > 50 || labels.length == 75) {
             const menu = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-1`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(0, 25));
 
             const menu2 = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-2`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(25, 50));
 
             const menu3 = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-3`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(50, 75));
 
             row.addComponents(menu)
@@ -64,22 +64,22 @@ module.exports = (client) => {
         if (labels.length < 100 && labels.length > 75 || labels.length == 100) {
             const menu = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-1`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(0, 25));
 
             const menu2 = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-2`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(25, 50));
 
             const menu3 = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-3`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(50, 75));
 
             const menu4 = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-4`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(75, 100));
 
             row.addComponents(menu)
@@ -93,27 +93,27 @@ module.exports = (client) => {
         if (labels.length < 125 && labels.length > 100 || labels.length == 125) {
             const menu = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-1`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(0, 25));
 
             const menu2 = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-2`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(25, 50));
 
             const menu3 = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-3`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(50, 75));
 
             const menu4 = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-4`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(75, 100));
 
             const menu5 = new Discord.StringSelectMenuBuilder()
                 .setCustomId(`${id}-5`)
-                .setPlaceholder('❌┇Nothing selected')
+                .setPlaceholder('❌┇Nada seleccionado')
                 .addOptions(labels.slice(100, 125));
 
             row.addComponents(menu)
