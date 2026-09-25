@@ -63,7 +63,9 @@ client.player = new Kazagumo(
     {
         resume: true,
         resumeTimeout: 30,
-        reconnectTries: 10,
+        // Reintentos espaciados: los nodos públicos bloquean (429) si se conecta muy seguido
+        reconnectTries: 5,
+        reconnectInterval: 20,
     },
 );
 
@@ -117,6 +119,7 @@ for (const [name, event] of Object.entries(musicEvents)) {
 }
 client.player.shoukaku.on("ready", require("./music/ready").bind(null, client));
 client.player.shoukaku.on("error", require("./music/error").bind(null, client));
+require("./music/reconnect")(client, getLavalinkNodes());
 
 // Connect to database
 require("./database/connect")();
