@@ -13,8 +13,8 @@ module.exports = async (client, interaction, args) => {
       if (data) {
         client.embed(
           {
-            title: "📨・Invites",
-            desc: `**${user.tag}** has \`${data.Invites}\` invites`,
+            title: "📨・Invitaciones",
+            desc: `**${user.tag}** tiene \`${data.Invites}\` invitaciones`,
             fields: [
               {
                 name: "Total",
@@ -22,7 +22,7 @@ module.exports = async (client, interaction, args) => {
                 inline: true,
               },
               {
-                name: "Left",
+                name: "Se fueron",
                 value: `${data.Left}`,
                 inline: true,
               },
@@ -34,8 +34,8 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.embed(
           {
-            title: "📨・Invites",
-            desc: `**${user.tag}** has \`0\` invites`,
+            title: "📨・Invitaciones",
+            desc: `**${user.tag}** tiene \`0\` invitaciones`,
             fields: [
               {
                 name: "Total",
@@ -43,7 +43,7 @@ module.exports = async (client, interaction, args) => {
                 inline: true,
               },
               {
-                name: "Left",
+                name: "Se fueron",
                 value: `0`,
                 inline: true,
               },

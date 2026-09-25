@@ -13,16 +13,16 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `${client.emotes.normal.check}・Success!`,
-      desc: `I converted text to binary text`,
+      title: `${client.emotes.normal.check}・¡Listo!`,
+      desc: `Convertí el texto a binario`,
       fields: [
         {
-          name: "📥┇Input",
+          name: "📥┇Entrada",
           value: `\`\`\`${text}\`\`\``,
           inline: false,
         },
         {
-          name: "📤┇Output",
+          name: "📤┇Salida",
           value: `\`\`\`${encode}\`\`\``,
           inline: false,
         },

@@ -8,11 +8,11 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `ℹ・Channel information`,
-      desc: `Channel information about: <#${channel.id}>`,
+      title: `ℹ・Información del canal`,
+      desc: `Información del canal: <#${channel.id}>`,
       fields: [
         {
-          name: "Type",
+          name: "Tipo",
           value: `${channel.type}`,
           inline: true,
         },
@@ -22,17 +22,17 @@ module.exports = async (client, interaction, args) => {
           inline: true,
         },
         {
-          name: "Type",
+          name: "Tipo",
           value: `${channel.type}`,
           inline: true,
         },
         {
-          name: "Made on",
+          name: "Creado el",
           value: `${channel.createdAt}`,
           inline: true,
         },
         {
-          name: "Subject",
+          name: "Tema",
           value: `${channel.topic ? channel.topic : "N/A"}`,
           inline: true,
         },
@@ -42,7 +42,7 @@ module.exports = async (client, interaction, args) => {
           inline: true,
         },
         {
-          name: "Parent",
+          name: "Categoría",
           value: `${channel.parentID ? channel.parentID : "N/A"}`,
           inline: true,
         },

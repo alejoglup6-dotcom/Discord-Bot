@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   if (!channel)
     return client.errNormal(
       {
-        error: `You're not in a voice channel!`,
+        error: `¡No estás en un canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -19,7 +19,7 @@ module.exports = async (client, interaction, args) => {
   if (player && channel.id !== player?.voiceId)
     return client.errNormal(
       {
-        error: `You're not in the same voice channel!`,
+        error: `¡No estás en el mismo canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
   if (!player || !player.queue.current)
     return client.errNormal(
       {
-        error: "There are no songs playing in this server",
+        error: "No se está reproduciendo ninguna canción en este servidor",
         type: "editreply",
       },
       interaction,
@@ -39,7 +39,7 @@ module.exports = async (client, interaction, args) => {
   if (!amount)
     return client.simpleEmbed(
       {
-        desc: `${client.emotes.normal.volume}┆Current volume is **${player.volume}%**`,
+        desc: `${client.emotes.normal.volume}┆El volumen actual es **${player.volume}%**`,
         type: "editreply",
       },
       interaction,
@@ -48,7 +48,7 @@ module.exports = async (client, interaction, args) => {
   if (isNaN(amount) || amount === "Infinity")
     return client.errNormal(
       {
-        text: `Please enter a valid number!`,
+        text: `¡Introduce un número válido!`,
         type: "editreply",
       },
       interaction,
@@ -57,7 +57,7 @@ module.exports = async (client, interaction, args) => {
   if (Math.round(parseInt(amount)) < 1 || Math.round(parseInt(amount)) > 1000)
     return client.errNormal(
       {
-        text: "Volume cannot exceed 1000%",
+        text: "El volumen no puede superar el 1000%",
         type: "editreply",
       },
       interaction,
@@ -67,7 +67,7 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `Volume set to **${amount}%**`,
+      text: `Volumen ajustado a **${amount}%**`,
       type: "editreply",
     },
     interaction,

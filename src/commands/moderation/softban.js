@@ -17,7 +17,7 @@ module.exports = async (client, interaction, args) => {
   const member = await interaction.guild.members.fetch(
     interaction.options.getUser("user").id,
   );
-  const reason = interaction.options.getString("reason") || "Not given";
+  const reason = interaction.options.getString("reason") || "No indicada";
 
   if (
     member.permissions.has(Discord.PermissionsBitField.Flags.BanMembers) ||
@@ -25,7 +25,7 @@ module.exports = async (client, interaction, args) => {
   )
     return client.errNormal(
       {
-        error: "You can't ban a moderator",
+        error: "No puedes banear a un moderador",
         type: "editreply",
       },
       interaction,
@@ -34,16 +34,16 @@ module.exports = async (client, interaction, args) => {
   client
     .embed(
       {
-        title: `🔨・Ban`,
-        desc: `You've been banned in **${interaction.guild.name}**`,
+        title: `🔨・Baneo`,
+        desc: `Te banearon de **${interaction.guild.name}**`,
         fields: [
           {
-            name: "👤┆Banned by",
+            name: "👤┆Baneado por",
             value: interaction.user.tag,
             inline: true,
           },
           {
-            name: "💬┆Reason",
+            name: "💬┆Razón",
             value: reason,
             inline: true,
           },
@@ -55,15 +55,15 @@ module.exports = async (client, interaction, args) => {
       member.ban({ days: 7, reason: reason });
       client.succNormal(
         {
-          text: "The specified user has been successfully banned and successfully received a notification!",
+          text: "¡El usuario indicado fue baneado correctamente y recibió una notificación!",
           fields: [
             {
-              name: "👤┆Banned user",
+              name: "👤┆Usuario baneado",
               value: member.user.tag,
               inline: true,
             },
             {
-              name: "💬┆Reason",
+              name: "💬┆Razón",
               value: reason,
               inline: true,
             },
@@ -77,7 +77,7 @@ module.exports = async (client, interaction, args) => {
       member.ban({ days: 7, reason: reason });
       client.succNormal(
         {
-          text: "The given user has been successfully banned, but has not received a notification!",
+          text: "El usuario indicado fue baneado correctamente, ¡pero no recibió ninguna notificación!",
           type: "editreply",
         },
         interaction,

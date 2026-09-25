@@ -11,16 +11,16 @@ module.exports = async (client, interaction, args) => {
   if (rawboard.length < 1)
     return client.errNormal(
       {
-        error: "No data found!",
+        error: "¡No se encontraron datos!",
         type: "editreply",
       },
       interaction,
     );
 
-  const lb = rawboard.map((e) => `<@!${e.User}> - **Reason** ${e.Message}`);
+  const lb = rawboard.map((e) => `<@!${e.User}> - **Razón** ${e.Message}`);
 
   await client.createLeaderboard(
-    `🚫・AFK users - ${interaction.guild.name}`,
+    `🚫・Usuarios AFK - ${interaction.guild.name}`,
     lb,
     interaction,
   );

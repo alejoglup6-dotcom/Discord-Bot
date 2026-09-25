@@ -16,12 +16,12 @@ module.exports = async (client, interaction, args) => {
         data.save();
 
         client.succNormal(
-          { text: "Note has been edited!", type: "editreply" },
+          { text: "¡Nota editada!", type: "editreply" },
           interaction,
         );
       } else {
         client.errNormal(
-          { error: `No note found!`, type: "editreply" },
+          { error: `¡No se encontró la nota!`, type: "editreply" },
           interaction,
         );
       }

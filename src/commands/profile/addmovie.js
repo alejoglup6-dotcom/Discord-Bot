@@ -12,7 +12,7 @@ module.exports = async (client, interaction, args) => {
         if (data.Movies.includes(movie)) {
           return client.errNormal(
             {
-              error: `That movie is already exists in your database!`,
+              error: `¡Esa película ya está en tu base de datos!`,
               type: "editreply",
             },
             interaction,
@@ -26,10 +26,10 @@ module.exports = async (client, interaction, args) => {
       }
       client.succNormal(
         {
-          text: "Added your movie",
+          text: "Película añadida",
           fields: [
             {
-              name: "🎬┆Movies",
+              name: "🎬┆Películas",
               value: `\`\`\`${movie}\`\`\``,
               inline: true,
             },
@@ -41,7 +41,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

@@ -16,70 +16,41 @@ module.exports = async (client, interaction, args) => {
 
   const member = interaction.options.getUser("user");
 
-  interaction.guild.channels.cache.forEach(async (channel) => {
-    if (channel.messages) {
-      let messages = await channel.messages.fetch();
-      let userMessages = messages.filter((m) => m.author.id === member.id);
-      await channel
-        .bulkDelete(userMessages)
-        .then(() => {
-          client
-            .succNormal(
-              {
-                text: `I have successfully deleted the messages`,
-                fields: [
-                  {
-                    name: "👤┆User",
-                    value: `${member} (${member.tag})`,
-                    inline: true,
-                  },
-                ],
-                type: "editreply",
-              },
-              interaction,
-            )
-            .then((msg) =>
-              setTimeout(() => {
-                msg.delete();
-              }, 5000),
-            );
-        })
-        .catch((err) => {});
-    }
-  });
+  // Se revisan los últimos 100 mensajes de cada canal de texto; Discord no
+  // permite borrar en bloque mensajes de más de 14 días
+  let deleted = 0;
+  for (const channel of interaction.guild.channels.cache.values()) {
+    if (!channel.isTextBased() || !channel.messages) continue;
 
-  interaction.channel
-    .bulkDelete(amount + 1)
-    .then(() => {
-      client
-        .succNormal(
-          {
-            text: `I have successfully deleted the messages`,
-            fields: [
-              {
-                name: "💬┆Amount",
-                value: amount,
-                inline: true,
-              },
-            ],
-            type: "editreply",
-          },
-          interaction,
-        )
-        .then((msg) =>
-          setTimeout(() => {
-            msg.delete();
-          }, 5000),
-        );
-    })
-    .catch((err) => {
-      client.errNormal(
+    try {
+      const messages = await channel.messages.fetch({ limit: 100 });
+      const userMessages = messages.filter((m) => m.author.id === member.id);
+      if (!userMessages.size) continue;
+
+      const result = await channel.bulkDelete(userMessages, true);
+      deleted += result.size;
+    } catch {
+      // Sin permisos en este canal
+    }
+  }
+
+  client.succNormal(
+    {
+      text: `Eliminé los mensajes correctamente`,
+      fields: [
         {
-          error:
-            "There was an error trying to delete messages in this channel!",
-          type: "editreply",
+          name: "👤┆Usuario",
+          value: `${member} (${member.tag})`,
+          inline: true,
         },
-        interaction,
-      );
-    });
+        {
+          name: "💬┆Cantidad",
+          value: `${deleted}`,
+          inline: true,
+        },
+      ],
+      type: "editreply",
+    },
+    interaction,
+  );
 };

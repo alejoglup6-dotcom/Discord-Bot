@@ -6,27 +6,27 @@ const Discord = require("discord.js");
 module.exports = async (client, interaction, args) => {
   client.embed(
     {
-      title: `📘・Owner information`,
+      title: `📘・Información del dueño`,
       desc: `____________________________`,
       thumbnail: client.user.avatarURL({ dynamic: true, size: 1024 }),
       fields: [
         {
-          name: "👑┆Owner name",
+          name: "👑┆Nombre del dueño",
           value: `Corwin`,
           inline: true,
         },
         {
-          name: "🏷┆Discord tag",
+          name: "🏷┆Tag de Discord",
           value: `</Corwin>#0001`,
           inline: true,
         },
         {
-          name: "🏢┆Organization",
+          name: "🏢┆Organización",
           value: `CoreWare`,
           inline: true,
         },
         {
-          name: "🌐┆Website",
+          name: "🌐┆Sitio web",
           value: `[https://corwindev.nl](https://corwindev.nl)`,
           inline: true,
         },

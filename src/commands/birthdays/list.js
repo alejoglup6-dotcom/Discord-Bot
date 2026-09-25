@@ -11,7 +11,7 @@ module.exports = async (client, interaction, args) => {
   if (rawBirthdayboard.length < 1)
     return client.errNormal(
       {
-        error: "No birthdays found!",
+        error: "¡No se encontraron cumpleaños!",
         type: "editreply",
       },
       interaction,
@@ -23,7 +23,7 @@ module.exports = async (client, interaction, args) => {
   );
 
   await client.createLeaderboard(
-    `🎂・Birthdays - ${interaction.guild.name}`,
+    `🎂・Cumpleaños - ${interaction.guild.name}`,
     lb,
     interaction,
   );

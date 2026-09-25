@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
     .then(async (json) => {
       client.embed(
         {
-          title: `💡・Random cat fact`,
+          title: `💡・Dato aleatorio sobre gatos`,
           desc: json.fact,
           type: "editreply",
         },

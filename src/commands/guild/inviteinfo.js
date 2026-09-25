@@ -10,11 +10,11 @@ module.exports = async (client, interaction, args) => {
   const invite = interaction.options.getString("invite");
 
   const verifyFlags = {
-    0: `Unrestricted`,
-    1: `Must have verified email on account`,
-    2: `Must be registered on Discord for longer than 5 minutes`,
-    3: `Must be a member of the server for longer than 10 minutes`,
-    4: `Must have a verified phone number`,
+    0: `Sin restricciones`,
+    1: `Debe tener un correo verificado en la cuenta`,
+    2: `Debe llevar más de 5 minutos registrado en Discord`,
+    3: `Debe llevar más de 10 minutos como miembro del servidor`,
+    4: `Debe tener un número de teléfono verificado`,
   };
 
   axios
@@ -22,7 +22,7 @@ module.exports = async (client, interaction, args) => {
     .catch(async () => {
       return client.errNormal(
         {
-          error: "I couldn't find the server",
+          error: "No pude encontrar el servidor",
           type: "editreply",
         },
         interaction,
@@ -37,49 +37,49 @@ module.exports = async (client, interaction, args) => {
 
       return client.embed(
         {
-          title: `📨・Invite information`,
+          title: `📨・Información de la invitación`,
           thumbnail: `https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png?size=1024`,
           image: `https://cdn.discordapp.com/banners/${data.guild.id}/${data.guild.banner}.png?size=1024`,
           fields: [
             {
-              name: "Server Name",
+              name: "Nombre del servidor",
               value: `${data.guild.name}`,
               inline: true,
             },
             {
-              name: "Server ID",
+              name: "ID del servidor",
               value: `${data.guild.id}`,
               inline: true,
             },
             {
-              name: "Server Created",
+              name: "Servidor creado",
               value: `<t:${guildTimestamp}>`,
               inline: true,
             },
             {
-              name: "Channel Name",
+              name: "Nombre del canal",
               value: `${data.channel.name}`,
               inline: true,
             },
             {
-              name: "Channel ID",
+              name: "ID del canal",
               value: `${data.channel.id}`,
               inline: true,
             },
             {
-              name: "Channel Created",
+              name: "Canal creado",
               value: `<t:${channelTimestamp}>`,
               inline: true,
             },
             {
-              name: "Server Images",
-              value: `${data.guild.icon && data.guild.banner && data.guild.splash ? `` : `No data`}
-          ${data.guild.icon ? `[Server Icon](https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png?size=4096)` : ``}
-          ${data.guild.banner ? `[Server Banner](https://cdn.discordapp.com/banners/${data.guild.id}/${data.guild.banner}.png?size=4096)` : ``}`,
+              name: "Imágenes del servidor",
+              value: `${data.guild.icon && data.guild.banner && data.guild.splash ? `` : `Sin datos`}
+          ${data.guild.icon ? `[Icono del servidor](https://cdn.discordapp.com/icons/${data.guild.id}/${data.guild.icon}.png?size=4096)` : ``}
+          ${data.guild.banner ? `[Banner del servidor](https://cdn.discordapp.com/banners/${data.guild.id}/${data.guild.banner}.png?size=4096)` : ``}`,
               inline: true,
             },
             {
-              name: "Server Verification Level",
+              name: "Nivel de verificación del servidor",
               value: `${verifyFlags[data.guild.verification_level]}`,
               inline: true,
             },

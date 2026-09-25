@@ -6,21 +6,21 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("setup")
-    .setDescription("Manage the Bot setups")
+    .setDescription("Gestiona las configuraciones de Bot")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the setup category commands"),
+        .setDescription("Información sobre los comandos de la categoría configuración"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("tickets")
-        .setDescription("Setup the tickets")
+        .setDescription("Configura los tickets")
         .addChannelOption((option) =>
           option
             .setName("category")
             .setDescription(
-              "Select a category where the tickets should come in",
+              "Elige una categoría donde se crearán los tickets",
             )
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildCategory),
@@ -28,20 +28,20 @@ module.exports = {
         .addRoleOption((option) =>
           option
             .setName("role")
-            .setDescription("Select the support role")
+            .setDescription("Elige el rol de soporte")
             .setRequired(true),
         )
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("The channel for the ticket panel")
+            .setDescription("El canal para el panel de tickets")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText),
         )
         .addChannelOption((option) =>
           option
             .setName("logs")
-            .setDescription("The channel for the ticket logs")
+            .setDescription("El canal para los registros de tickets")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText),
         ),
@@ -49,40 +49,40 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("customvoice")
-        .setDescription("Setup the custom voice channels")
+        .setDescription("Configura los canales de voz personalizados")
         .addChannelOption((option) =>
           option
             .setName("category")
-            .setDescription("Select a category where the channels come in")
+            .setDescription("Elige una categoría donde se crearán los canales")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildCategory),
         )
         .addStringOption((option) =>
           option
             .setName("channelname")
-            .setDescription("The template for the channel names")
+            .setDescription("La plantilla para los nombres de los canales")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("logs")
-        .setDescription("Set the logs from the server")
+        .setDescription("Configura los registros del servidor")
         .addStringOption((option) =>
           option
             .setName("setup")
-            .setDescription("The setup that you want")
+            .setDescription("La configuración que quieres")
             .setRequired(true)
             .addChoices(
-              { name: "Server logs", value: "serverLogs" },
-              { name: "Level logs", value: "levelLogs" },
-              { name: "Boost logs", value: "boostLogs" },
+              { name: "Registros del servidor", value: "serverLogs" },
+              { name: "Registros de niveles", value: "levelLogs" },
+              { name: "Registros de boosts", value: "boostLogs" },
             ),
         )
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("The channel for the logs")
+            .setDescription("El canal para los registros")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText),
         ),
@@ -90,24 +90,24 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("fun")
-        .setDescription("Set the fun channels from the server")
+        .setDescription("Configura los canales de diversión del servidor")
         .addStringOption((option) =>
           option
             .setName("setup")
-            .setDescription("The setup that you want")
+            .setDescription("La configuración que quieres")
             .setRequired(true)
             .addChoices(
-              { name: "Birthdays", value: "birthdays" },
+              { name: "Cumpleaños", value: "birthdays" },
               { name: "Chatbot", value: "chatbot" },
-              { name: "Reviews", value: "reviews" },
-              { name: "Suggestions", value: "suggestions" },
-              { name: "Starboard", value: "starboard" },
+              { name: "Reseñas", value: "reviews" },
+              { name: "Sugerencias", value: "suggestions" },
+              { name: "Tablón de estrellas", value: "starboard" },
             ),
         )
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("The channel for the fun")
+            .setDescription("El canal de diversión")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText),
         ),
@@ -115,23 +115,23 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("games")
-        .setDescription("Set the game channels from the server")
+        .setDescription("Configura los canales de juegos del servidor")
         .addStringOption((option) =>
           option
             .setName("setup")
-            .setDescription("The setup that you want")
+            .setDescription("La configuración que quieres")
             .setRequired(true)
             .addChoices(
-              { name: "Counting", value: "counting" },
-              { name: "Guess the number", value: "gtn" },
-              { name: "Guess the word", value: "gtw" },
-              { name: "Word snake", value: "wordsnake" },
+              { name: "Contar", value: "counting" },
+              { name: "Adivina el número", value: "gtn" },
+              { name: "Adivina la palabra", value: "gtw" },
+              { name: "Serpiente de palabras", value: "wordsnake" },
             ),
         )
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("The channel for the game")
+            .setDescription("El canal del juego")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText),
         ),
@@ -139,21 +139,21 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("welcomechannels")
-        .setDescription("Setup the welcome channels")
+        .setDescription("Configura los canales de bienvenida")
         .addStringOption((option) =>
           option
             .setName("setup")
-            .setDescription("The setup that you want")
+            .setDescription("La configuración que quieres")
             .setRequired(true)
             .addChoices(
-              { name: "Welcome channel", value: "welcomechannel" },
-              { name: "Leave channnel", value: "leavechannel" },
+              { name: "Canal de bienvenida", value: "welcomechannel" },
+              { name: "Canal de despedida", value: "leavechannel" },
             ),
         )
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("The channel that you want")
+            .setDescription("El canal que quieres")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText),
         ),
@@ -161,57 +161,57 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("welcomerole")
-        .setDescription("Setup the welcome role")
+        .setDescription("Configura el rol de bienvenida")
         .addRoleOption((option) =>
           option
             .setName("role")
-            .setDescription("The role that you want")
+            .setDescription("El rol que quieres")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("ticketpanel")
-        .setDescription("Setup the ticket panel")
+        .setDescription("Configura el panel de tickets")
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("The name of the ticket panel")
+            .setDescription("El nombre del panel de tickets")
             .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("description")
-            .setDescription("The description of the ticket panel")
+            .setDescription("La descripción del panel de tickets")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("deletesetup")
-        .setDescription("Delete a Bot setup")
+        .setDescription("Elimina una configuración de Bot")
         .addStringOption((option) =>
           option
             .setName("setup")
-            .setDescription("The setup that you want")
+            .setDescription("La configuración que quieres")
             .setRequired(true)
             .addChoices(
               { name: "Tickets", value: "tickets" },
-              { name: "Custom voice", value: "customvoice" },
-              { name: "Server logs", value: "serverlogs" },
-              { name: "Level logs", value: "levellogs" },
-              { name: "Boost logs", value: "boostlogs" },
-              { name: "Birthdays", value: "birthdays" },
+              { name: "Voz personalizada", value: "customvoice" },
+              { name: "Registros del servidor", value: "serverlogs" },
+              { name: "Registros de niveles", value: "levellogs" },
+              { name: "Registros de boosts", value: "boostlogs" },
+              { name: "Cumpleaños", value: "birthdays" },
               { name: "Chatbot", value: "chatbot" },
-              { name: "Reviews", value: "reviews" },
-              { name: "Suggestions", value: "suggestions" },
-              { name: "Counting", value: "counting" },
-              { name: "Guess the number", value: "gtn" },
-              { name: "Guess the word", value: "gtw" },
-              { name: "Welcome channel", value: "welcomechannel" },
-              { name: "Leave channel", value: "leavechannel" },
-              { name: "Welcome role", value: "welcomerole" },
-              { name: "Word snake", value: "wordsnake" },
+              { name: "Reseñas", value: "reviews" },
+              { name: "Sugerencias", value: "suggestions" },
+              { name: "Contar", value: "counting" },
+              { name: "Adivina el número", value: "gtn" },
+              { name: "Adivina la palabra", value: "gtw" },
+              { name: "Canal de bienvenida", value: "welcomechannel" },
+              { name: "Canal de despedida", value: "leavechannel" },
+              { name: "Rol de bienvenida", value: "welcomerole" },
+              { name: "Serpiente de palabras", value: "wordsnake" },
             ),
         ),
     ),

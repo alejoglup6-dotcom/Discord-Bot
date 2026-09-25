@@ -5,15 +5,15 @@ module.exports = async (client, invite) => {
     if (!logsChannel) return;
 
     client.embed({
-        title: `📨・Invite deleted`,
-        desc: `A invite has been deleted`,
+        title: `📨・Invitación eliminada`,
+        desc: `Se eliminó una invitación`,
         fields: [
             {
-                name: `> Code`,
+                name: `> Código`,
                 value: `- ${invite.code}`
             },
             {
-                name: `> Timestamp`,
+                name: `> Fecha`,
                 value: `- <t:${Math.floor(invite.createdTimestamp / 1000)}:R>`
             }
         ]

@@ -29,7 +29,7 @@ module.exports = async (client, interaction, args) => {
       if (ticketCategory == undefined) {
         return client.errNormal(
           {
-            error: "Do the ticket setup!",
+            error: "¡Haz la configuración de tickets!",
             type: type,
           },
           interaction,
@@ -40,7 +40,7 @@ module.exports = async (client, interaction, args) => {
         client
           .simpleEmbed(
             {
-              desc: `Delete this ticket in **5s**`,
+              desc: `Este ticket se eliminará en **5s**`,
               type: type,
             },
             interaction,
@@ -66,7 +66,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: "This is not a ticket!",
+            error: "¡Esto no es un ticket!",
             type: type,
           },
           interaction,
@@ -75,7 +75,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "Do the ticket setup!",
+          error: "¡Haz la configuración de tickets!",
           type: type,
         },
         interaction,

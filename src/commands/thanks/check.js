@@ -11,8 +11,8 @@ module.exports = async (client, interaction, args) => {
     if (data) {
       return client.embed(
         {
-          title: `🤝・Thanks`,
-          desc: `**${member.tag}** has \`${data.Received}\` thanks`,
+          title: `🤝・Agradecimientos`,
+          desc: `**${member.tag}** tiene \`${data.Received}\` agradecimientos`,
           type: "editreply",
         },
         interaction,
@@ -20,8 +20,8 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.embed(
         {
-          title: `🤝・Thanks`,
-          desc: `**${member.tag}** has \`0\` thanks`,
+          title: `🤝・Agradecimientos`,
+          desc: `**${member.tag}** tiene \`0\` agradecimientos`,
           type: "editreply",
         },
         interaction,

@@ -15,7 +15,7 @@ module.exports = async (client, interaction, args) => {
     client
       .embed(
         {
-          title: `💡・Suggestion`,
+          title: `💡・Sugerencia`,
           desc: `${suggestionQuery}`,
           author: {
             name: interaction.user.tag,
@@ -30,15 +30,15 @@ module.exports = async (client, interaction, args) => {
       .then((msg) => {
         client.succNormal(
           {
-            text: `Suggestion successfully submitted!`,
+            text: `¡Sugerencia enviada correctamente!`,
             fields: [
               {
-                name: `💬┇Suggestion`,
+                name: `💬┇Sugerencia`,
                 value: `${suggestionQuery}`,
                 inline: true,
               },
               {
-                name: `📘┇Channel`,
+                name: `📘┇Canal`,
                 value: `<#${data.Channel}>`,
                 inline: true,
               },
@@ -54,7 +54,7 @@ module.exports = async (client, interaction, args) => {
       .catch((e) => {
         return client.errNormal(
           {
-            error: `No suggestion channel set! Please do the setup`,
+            error: `¡No hay canal de sugerencias configurado! Haz la configuración primero`,
             type: "editreply",
           },
           interaction,
@@ -63,7 +63,7 @@ module.exports = async (client, interaction, args) => {
   } else {
     client.errNormal(
       {
-        error: `No suggestion channel set! Please do the setup`,
+        error: `¡No hay canal de sugerencias configurado! Haz la configuración primero`,
         type: "editreply",
       },
       interaction,

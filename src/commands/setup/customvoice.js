@@ -42,10 +42,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `Custom voice has been set up successfully!`,
+          text: `¡La voz personalizada se configuró correctamente!`,
           fields: [
             {
-              name: `📘┆Channel`,
+              name: `📘┆Canal`,
               value: `${ch} (${ch.name})`,
             },
           ],

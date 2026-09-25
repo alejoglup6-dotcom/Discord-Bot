@@ -27,7 +27,7 @@ module.exports = async (client, interaction, args) => {
         if (ticketData.resolved == false)
           return client.errNormal(
             {
-              error: "Ticket is already open!",
+              error: "¡El ticket ya está abierto!",
               type: "ephemeraledit",
             },
             interaction,
@@ -44,7 +44,7 @@ module.exports = async (client, interaction, args) => {
               if (ticketCategory == undefined) {
                 return client.errNormal(
                   {
-                    error: "Do the setup!",
+                    error: "¡Haz la configuración!",
                     type: type,
                   },
                   interaction,
@@ -70,7 +70,7 @@ module.exports = async (client, interaction, args) => {
 
                 return client.simpleEmbed(
                   {
-                    desc: `Ticket opened by <@!${interaction.user.id}>`,
+                    desc: `Ticket abierto por <@!${interaction.user.id}>`,
                     type: type,
                   },
                   interaction,
@@ -78,7 +78,7 @@ module.exports = async (client, interaction, args) => {
               } else {
                 client.errNormal(
                   {
-                    error: "This is not a ticket!",
+                    error: "¡Esto no es un ticket!",
                     type: type,
                   },
                   interaction,
@@ -87,7 +87,7 @@ module.exports = async (client, interaction, args) => {
             } else {
               return client.errNormal(
                 {
-                  error: "Do the setup!",
+                  error: "¡Haz la configuración!",
                   type: type,
                 },
                 interaction,

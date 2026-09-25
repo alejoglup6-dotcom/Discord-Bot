@@ -7,113 +7,113 @@ const model = require("../../database/models/badge");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("developers")
-    .setDescription("Commands for the Bot developers")
+    .setDescription("Comandos para los desarrolladores de Bot")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
         .setDescription(
-          "Get information about the developers category commands",
+          "Información sobre los comandos de la categoría de desarrolladores",
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("eval")
-        .setDescription("Get the result of a piece of code")
+        .setDescription("Ejecuta un fragmento de código y mira el resultado")
         .addStringOption((option) =>
-          option.setName("code").setDescription("Your code").setRequired(true),
+          option.setName("code").setDescription("Tu código").setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("badge")
-        .setDescription("Manage the bot badges")
+        .setDescription("Gestiona las insignias del bot")
         .addBooleanOption((option) =>
           option
             .setName("new")
-            .setDescription("Select a boolean")
+            .setDescription("Elige verdadero o falso")
             .setRequired(true),
         )
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("badge")
-            .setDescription("Choose your badge")
+            .setDescription("Elige la insignia")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("ban")
-        .setDescription("Manage the bot bans")
+        .setDescription("Gestiona los baneos del bot")
         .addBooleanOption((option) =>
           option
             .setName("new")
-            .setDescription("Select a boolean")
+            .setDescription("Elige verdadero o falso")
             .setRequired(true),
         )
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("credits")
-        .setDescription("Manage the bot credits")
+        .setDescription("Gestiona los créditos del bot")
         .addStringOption((option) =>
           option
             .setName("type")
-            .setDescription("The type of credits")
+            .setDescription("El tipo de créditos")
             .setRequired(true)
             .addChoices(
-              { name: "Add", value: "add" },
-              { name: "Remove", value: "remove" },
+              { name: "Añadir", value: "add" },
+              { name: "Quitar", value: "remove" },
             ),
         )
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Amount of credits")
+            .setDescription("Cantidad de créditos")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("args")
-        .setDescription("Post preset messages")
+        .setDescription("Publica mensajes predefinidos")
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription("Select a message")
+            .setDescription("Elige un mensaje")
             .setRequired(true)
             .addChoices(
-              { name: "Information", value: "information" },
-              { name: "Rules", value: "rules" },
-              { name: "Applications", value: "applications" },
-              { name: "Booster perks", value: "boosterperks" },
-              { name: "Links", value: "links" },
-              { name: "Rewards", value: "rewards" },
-              { name: "Our bots", value: "ourbots" },
+              { name: "Información", value: "information" },
+              { name: "Reglas", value: "rules" },
+              { name: "Solicitudes", value: "applications" },
+              { name: "Beneficios para boosters", value: "boosterperks" },
+              { name: "Enlaces", value: "links" },
+              { name: "Recompensas", value: "rewards" },
+              { name: "Nuestros bots", value: "ourbots" },
             ),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("servers")
-        .setDescription("See all servers from this shard"),
+        .setDescription("Mira todos los servidores de este shard"),
     ),
   /**
    * @param {Client} client
@@ -129,7 +129,7 @@ module.exports = {
       } else {
         return client.errNormal(
           {
-            error: "Only Bot developers are allowed to do this",
+            error: "Solo los desarrolladores de Bot pueden hacer esto",
             type: "ephemeral",
           },
           interaction,

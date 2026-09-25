@@ -6,59 +6,59 @@ const ms = require("ms");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("profile")
-    .setDescription("Create a profile for the server")
+    .setDescription("Crea un perfil para el servidor")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the profile category commands"),
+        .setDescription("Información sobre los comandos de la categoría perfil"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("create").setDescription("Create your profile"),
+      subcommand.setName("create").setDescription("Crea tu perfil"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("delete").setDescription("Delete your profile"),
+      subcommand.setName("delete").setDescription("Elimina tu perfil"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("profile")
-        .setDescription("See your profile")
+        .setDescription("Mira tu perfil")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("The user you want the profile from")
+            .setDescription("El usuario cuyo perfil quieres ver")
             .setRequired(false),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("aboutme")
-        .setDescription("Set your about me")
+        .setDescription("Configura tu 'sobre mí'")
         .addStringOption((option) =>
           option
             .setName("text")
-            .setDescription("Enter a about me")
+            .setDescription("Escribe tu 'sobre mí'")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("age")
-        .setDescription("Set your age")
+        .setDescription("Configura tu edad")
         .addNumberOption((option) =>
           option
             .setName("number")
-            .setDescription("Enter a number")
+            .setDescription("Escribe un número")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("bday")
-        .setDescription("Set your bday")
+        .setDescription("Configura tu cumpleaños")
         .addStringOption((option) =>
           option
             .setName("bday")
-            .setDescription("Enter a bday")
+            .setDescription("Escribe tu cumpleaños")
             .setRequired(true),
         ),
     )
@@ -66,26 +66,26 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("actor")
-        .setDescription("Set your favorite actor")
+        .setDescription("Configura tu actor favorito")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("addactor")
-            .setDescription("The actor you want to add")
+            .setDescription("El actor que quieres añadir")
             .addStringOption((option) =>
               option
                 .setName("actor")
-                .setDescription("The actor you want to add")
+                .setDescription("El actor que quieres añadir")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("delactor")
-            .setDescription("The actor you want te remove")
+            .setDescription("El actor que quieres quitar")
             .addStringOption((option) =>
               option
                 .setName("actor")
-                .setDescription("The actor you want to remove")
+                .setDescription("El actor que quieres quitar")
                 .setRequired(true),
             ),
         ),
@@ -93,26 +93,26 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("artist")
-        .setDescription("Set your favorite artist")
+        .setDescription("Configura tu artista favorito")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("addartist")
-            .setDescription("The artist you want to add")
+            .setDescription("El artista que quieres añadir")
             .addStringOption((option) =>
               option
                 .setName("artist")
-                .setDescription("The artist you want to add")
+                .setDescription("El artista que quieres añadir")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("delartist")
-            .setDescription("The artist you want te remove")
+            .setDescription("El artista que quieres quitar")
             .addStringOption((option) =>
               option
                 .setName("artist")
-                .setDescription("The artist you want to remove")
+                .setDescription("El artista que quieres quitar")
                 .setRequired(true),
             ),
         ),
@@ -120,37 +120,37 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("color")
-        .setDescription("Set your favorite color")
+        .setDescription("Configura tu color favorito")
         .addStringOption((option) =>
           option
             .setName("color")
-            .setDescription("The color you want to set")
+            .setDescription("El color que quieres poner")
             .setRequired(true),
         ),
     )
     .addSubcommandGroup((group) =>
       group
         .setName("food")
-        .setDescription("Set your favorite food")
+        .setDescription("Configura tu comida favorita")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("addfood")
-            .setDescription("The food you want to add")
+            .setDescription("La comida que quieres añadir")
             .addStringOption((option) =>
               option
                 .setName("food")
-                .setDescription("The food you want to add")
+                .setDescription("La comida que quieres añadir")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("delfood")
-            .setDescription("The food you want te remove")
+            .setDescription("La comida que quieres quitar")
             .addStringOption((option) =>
               option
                 .setName("food")
-                .setDescription("The food you want to remove")
+                .setDescription("La comida que quieres quitar")
                 .setRequired(true),
             ),
         ),
@@ -158,26 +158,26 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("movie")
-        .setDescription("Set your favorite movie")
+        .setDescription("Configura tu película favorita")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("addmovie")
-            .setDescription("The movie you want to add")
+            .setDescription("La película que quieres añadir")
             .addStringOption((option) =>
               option
                 .setName("movie")
-                .setDescription("The movie you want to add")
+                .setDescription("La película que quieres añadir")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("delmovie")
-            .setDescription("The movie you want te remove")
+            .setDescription("La película que quieres quitar")
             .addStringOption((option) =>
               option
                 .setName("movie")
-                .setDescription("The movie you want to remove")
+                .setDescription("La película que quieres quitar")
                 .setRequired(true),
             ),
         ),
@@ -185,26 +185,26 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("pet")
-        .setDescription("Set your favorite pet")
+        .setDescription("Configura tu mascota favorita")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("addpet")
-            .setDescription("The pet you want to add")
+            .setDescription("La mascota que quieres añadir")
             .addStringOption((option) =>
               option
                 .setName("pet")
-                .setDescription("The pet you want to add")
+                .setDescription("La mascota que quieres añadir")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("delpet")
-            .setDescription("The pet you want te remove")
+            .setDescription("La mascota que quieres quitar")
             .addStringOption((option) =>
               option
                 .setName("pet")
-                .setDescription("The pet you want to remove")
+                .setDescription("La mascota que quieres quitar")
                 .setRequired(true),
             ),
         ),
@@ -212,56 +212,56 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("song")
-        .setDescription("Set your favorite song")
+        .setDescription("Configura tu canción favorita")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("addsong")
-            .setDescription("The song you want to add")
+            .setDescription("La canción que quieres añadir")
             .addStringOption((option) =>
               option
                 .setName("song")
-                .setDescription("The song you want to add")
+                .setDescription("La canción que quieres añadir")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("delsong")
-            .setDescription("The song you want te remove")
+            .setDescription("La canción que quieres quitar")
             .addStringOption((option) =>
               option
                 .setName("song")
-                .setDescription("The song you want to remove")
+                .setDescription("La canción que quieres quitar")
                 .setRequired(true),
             ),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("gender").setDescription("Set your gender"),
+      subcommand.setName("gender").setDescription("Configura tu género"),
     )
     .addSubcommandGroup((group) =>
       group
         .setName("hobbies")
-        .setDescription("Set your favorite hobby")
+        .setDescription("Configura tu pasatiempo favorito")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("addhobby")
-            .setDescription("The song you want to add")
+            .setDescription("La canción que quieres añadir")
             .addStringOption((option) =>
               option
                 .setName("hobby")
-                .setDescription("The hobby you want to add")
+                .setDescription("El pasatiempo que quieres añadir")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("delhobby")
-            .setDescription("The hobby you want te remove")
+            .setDescription("El pasatiempo que quieres quitar")
             .addStringOption((option) =>
               option
                 .setName("hobby")
-                .setDescription("The hobby you want to remove")
+                .setDescription("El pasatiempo que quieres quitar")
                 .setRequired(true),
             ),
         ),
@@ -269,22 +269,22 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("origin")
-        .setDescription("Set your origin")
+        .setDescription("Configura tu origen")
         .addStringOption((option) =>
           option
             .setName("country")
-            .setDescription("Enter a country")
+            .setDescription("Escribe un país")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("status")
-        .setDescription("Set your status")
+        .setDescription("Configura tu estado")
         .addStringOption((option) =>
           option
             .setName("text")
-            .setDescription("Enter a status")
+            .setDescription("Escribe un estado")
             .setRequired(true),
         ),
     ),

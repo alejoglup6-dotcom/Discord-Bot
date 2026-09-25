@@ -13,7 +13,7 @@ module.exports = async (client, interaction, args) => {
   if (!rawLeaderboard)
     return client.errNormal(
       {
-        error: `No data found!`,
+        error: `¡No se encontraron datos!`,
         type: "editreply",
       },
       interaction,
@@ -21,11 +21,11 @@ module.exports = async (client, interaction, args) => {
 
   const lb = rawLeaderboard.map(
     (e) =>
-      `**${rawLeaderboard.findIndex((i) => i.Guild === interaction.guild.id && i.User === e.User) + 1}** | <@!${e.User}> - Invites: \`${e.Invites}\``,
+      `**${rawLeaderboard.findIndex((i) => i.Guild === interaction.guild.id && i.User === e.User) + 1}** | <@!${e.User}> - Invitaciones: \`${e.Invites}\``,
   );
 
   await client.createLeaderboard(
-    `📨・Invites - ${interaction.guild.name}`,
+    `📨・Invitaciones - ${interaction.guild.name}`,
     lb,
     interaction,
   );

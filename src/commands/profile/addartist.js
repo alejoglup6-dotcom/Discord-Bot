@@ -12,7 +12,7 @@ module.exports = async (client, interaction, args) => {
         if (data.Artists.includes(artist)) {
           return client.errNormal(
             {
-              error: `That artist is already exists in your database!`,
+              error: `¡Ese artista ya está en tu base de datos!`,
               type: "editreply",
             },
             interaction,
@@ -26,10 +26,10 @@ module.exports = async (client, interaction, args) => {
       }
       client.succNormal(
         {
-          text: "Added your artist",
+          text: "Artista añadido",
           fields: [
             {
-              name: "🎤┆Artist",
+              name: "🎤┆Artista",
               value: `\`\`\`${artist}\`\`\``,
               inline: true,
             },
@@ -41,7 +41,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

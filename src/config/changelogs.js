@@ -1,27 +1,27 @@
 module.exports = {
     release: "11-1-2022",
     bugs: [
-        "Better music system",
-        "Better bot setups",
-        "Giveaways fixed",
-        "A new invite tracker system",
-        "Channel logs bug fixed",
-        "Better error handling for commands"
+        "Mejor sistema de música",
+        "Mejores configuraciones del bot",
+        "Sorteos arreglados",
+        "Nuevo sistema de seguimiento de invitaciones",
+        "Arreglado el bug de los registros de canales",
+        "Mejor manejo de errores en los comandos"
     ],
     features: [
-        "Bot completely in slash commands",
-        "New Activities",
-        "New server stats",
-        "Auto setups",
-        "Scheduled Events logs",
-        "Mute command is now timeout command",
-        "Embed layout improvements",
-        "A advanced embed builder",
-        "Removed snipe commands",
-        "Unnecessary commands removed",
-        "Some commands rearranged",
-        "**Bot 1 year pack** available for **10 Dcredits**",
-        "Better error handling for commands"
+        "Bot completamente con comandos de barra",
+        "Nuevas actividades",
+        "Nuevas estadísticas del servidor",
+        "Configuraciones automáticas",
+        "Registros de eventos programados",
+        "El comando mute ahora es el comando timeout",
+        "Mejoras en el diseño de los embeds",
+        "Un creador avanzado de embeds",
+        "Se quitaron los comandos snipe",
+        "Se quitaron comandos innecesarios",
+        "Se reorganizaron algunos comandos",
+        "**Paquete de 1 año de Bot** disponible por **10 Dcredits**",
+        "Mejor manejo de errores en los comandos"
     ],
 };
 

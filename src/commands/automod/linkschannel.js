@@ -15,7 +15,7 @@ module.exports = async (client, interaction, args) => {
         if (data.Channels.includes(channel.id)) {
           return client.errNormal(
             {
-              error: `The channel ${channel} is already in the database!`,
+              error: `¡El canal ${channel} ya está en la base de datos!`,
               type: "editreply",
             },
             interaction,
@@ -34,10 +34,10 @@ module.exports = async (client, interaction, args) => {
 
     client.succNormal(
       {
-        text: `Channel has been added to the whitelist!`,
+        text: `¡El canal se añadió a la lista blanca!`,
         fields: [
           {
-            name: `📘┆Channel`,
+            name: `📘┆Canal`,
             value: `${channel} (${channel.name})`,
           },
         ],
@@ -51,7 +51,7 @@ module.exports = async (client, interaction, args) => {
         if (!data.Channels.includes(channel.id)) {
           return client.errNormal(
             {
-              error: `The channel ${channel} doesn't exist in the database!`,
+              error: `¡El canal ${channel} no existe en la base de datos!`,
               type: "editreply",
             },
             interaction,
@@ -72,10 +72,10 @@ module.exports = async (client, interaction, args) => {
 
         client.succNormal(
           {
-            text: `Channel has been removed from the whitelist!`,
+            text: `¡El canal se eliminó de la lista blanca!`,
             fields: [
               {
-                name: `📘┆Channel`,
+                name: `📘┆Canal`,
                 value: `${channel} (${channel.name})`,
               },
             ],
@@ -86,7 +86,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         return client.errNormal(
           {
-            error: `This guild has not data!`,
+            error: `¡Este servidor no tiene datos!`,
             type: "editreply",
           },
           interaction,

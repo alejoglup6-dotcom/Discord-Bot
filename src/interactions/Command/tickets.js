@@ -8,84 +8,84 @@ const ticketChannels = require("../../database/models/ticketChannels");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("tickets")
-    .setDescription("Manage tickets in your server")
+    .setDescription("Gestiona los tickets de tu servidor")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the tickets category commands"),
+        .setDescription("Información sobre los comandos de la categoría tickets"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("add")
-        .setDescription("Add a user to a ticket")
+        .setDescription("Añade a un usuario a un ticket")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("claim").setDescription("Claim a ticket"),
+      subcommand.setName("claim").setDescription("Reclama un ticket"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("close").setDescription("Close a ticket"),
+      subcommand.setName("close").setDescription("Cierra un ticket"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("delete").setDescription("Delete a ticket"),
+      subcommand.setName("delete").setDescription("Elimina un ticket"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("information")
-        .setDescription("Information about a ticket"),
+        .setDescription("Información sobre un ticket"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("lower").setDescription("Lower a ticket"),
+      subcommand.setName("lower").setDescription("Baja la prioridad de un ticket"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("create")
-        .setDescription("Create a ticket")
+        .setDescription("Crea un ticket")
         .addStringOption((option) =>
-          option.setName("reason").setDescription("Reason to open a ticket"),
+          option.setName("reason").setDescription("Razón para abrir un ticket"),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("notice").setDescription("Send a notice to a ticket"),
+      subcommand.setName("notice").setDescription("Envía un aviso a un ticket"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("open").setDescription("Reopen a ticket"),
+      subcommand.setName("open").setDescription("Reabre un ticket"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("raise").setDescription("Raise a ticket"),
+      subcommand.setName("raise").setDescription("Sube la prioridad de un ticket"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("remove")
-        .setDescription("Remove a user from a ticket")
+        .setDescription("Quita a un usuario de un ticket")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("rename")
-        .setDescription("Rename a ticket")
+        .setDescription("Renombra un ticket")
         .addStringOption((option) =>
           option
             .setName("name")
-            .setDescription("New ticket name")
+            .setDescription("Nuevo nombre del ticket")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("transcript").setDescription("Transcript a ticket"),
+      subcommand.setName("transcript").setDescription("Guarda la transcripción de un ticket"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("unclaim").setDescription("Unclaim a ticket"),
+      subcommand.setName("unclaim").setDescription("Libera un ticket reclamado"),
     ),
   /**
    * @param {Client} client

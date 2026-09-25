@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = async (client) => {
     const fields = [
         {
-            name: `📺┆Activities`,
+            name: `📺┆Actividades`,
             value: `\`/activities\``,
             inline: true
         },
@@ -13,22 +13,22 @@ module.exports = async (client) => {
             inline: true
         },
         {
-            name: `📣┆Announcement`,
+            name: `📣┆Anuncios`,
             value: `\`/announcement help\``,
             inline: true
         },
         {
-            name: `👮‍♂️┆Auto mod`,
+            name: `👮‍♂️┆Automoderación`,
             value: `\`/automod help\``,
             inline: true
         },
         {
-            name: `⚙️┆Auto setup`,
+            name: `⚙️┆Configuración automática`,
             value: `\`/autosetup help\``,
             inline: true
         },
         {
-            name: `🎂┆Birthday`,
+            name: `🎂┆Cumpleaños`,
             value: `\`/birthdays help\``,
             inline: true
         },
@@ -43,12 +43,12 @@ module.exports = async (client) => {
             inline: true
         },
         {
-            name: `⚙┆Configuration`,
+            name: `⚙┆Configuración`,
             value: `\`/config help\``,
             inline: true
         },
         {
-            name: `💻┆Custom commands`,
+            name: `💻┆Comandos personalizados`,
             value: `\`/custom-commands help\``,
             inline: true
         },
@@ -58,72 +58,72 @@ module.exports = async (client) => {
             inline: true
         },
         {
-            name: `💰┆Economy`,
+            name: `💰┆Economía`,
             value: `\`/economy help\``,
             inline: true
         },
         {
-            name: `👪┆Family`,
+            name: `👪┆Familia`,
             value: `\`/family help\``,
             inline: true
         },
         {
-            name: `😂┆Fun`,
+            name: `😂┆Diversión`,
             value: `\`/fun help\``,
             inline: true
         },
         {
-            name: `🎮┆Games`,
+            name: `🎮┆Juegos`,
             value: `\`/games help\``,
             inline: true
         },
         {
-            name: `🥳┆Giveaway`,
+            name: `🥳┆Sorteo`,
             value: `\`/giveaway help\``,
             inline: true
         },
         {
-            name: `⚙️┆Guild settings`,
+            name: `⚙️┆Ajustes del servidor`,
             value: `\`/guild help\``,
             inline: true
         },
         {
-            name: `🖼┆Images`,
+            name: `🖼┆Imágenes`,
             value: `\`/images help\``,
             inline: true
         },
         {
-            name: `📨┆Invites`,
+            name: `📨┆Invitaciones`,
             value: `\`/invites help\``,
             inline: true
         },
         {
-            name: `🆙┆Leveling`,
+            name: `🆙┆Niveles`,
             value: `\`/levels help\``,
             inline: true
         },
         {
-            name: `💬┆Messages`,
+            name: `💬┆Mensajes`,
             value: `\`/messages help\``,
             inline: true
         },
         {
-            name: `👔┆Moderation`,
+            name: `👔┆Moderación`,
             value: `\`/moderation help\``,
             inline: true
         },
         {
-            name: `🎶┆Music`,
+            name: `🎶┆Música`,
             value: `\`/music help\``,
             inline: true
         },
         {
-            name: `📓┆Notepad`,
+            name: `📓┆Bloc de notas`,
             value: `\`/notepad help\``,
             inline: true
         },
         {
-            name: `👤┆Profile`,
+            name: `👤┆Perfil`,
             value: `\`/profile help\``,
             inline: true
         },
@@ -133,22 +133,22 @@ module.exports = async (client) => {
             inline: true
         },
         {
-            name: `😛┆Reaction roles`,
+            name: `😛┆Roles por reacción`,
             value: `\`/reactionroles help\``,
             inline: true
         },
         {
-            name: `🔍┆Search`,
+            name: `🔍┆Búsqueda`,
             value: `\`/search help\``,
             inline: true
         },
         {
-            name: `📊┆Server stats`,
+            name: `📊┆Estadísticas del servidor`,
             value: `\`/serverstats help\``,
             inline: true
         },
         {
-            name: `⚙️┆Setup`,
+            name: `⚙️┆Configuración`,
             value: `\`/setup help\``,
             inline: true
         },
@@ -158,17 +158,17 @@ module.exports = async (client) => {
             inline: true
         },
         {
-            name: `🗨️┆Sticky messages`,
+            name: `🗨️┆Mensajes fijos`,
             value: `\`/stickymessages help\``,
             inline: true
         },
         {
-            name: `💡┆Suggestions`,
-            value: `\`/sugestions help\``,
+            name: `💡┆Sugerencias`,
+            value: `\`/suggestions help\``,
             inline: true
         },
         {
-            name: `🤝┆Thanks`,
+            name: `🤝┆Agradecimientos`,
             value: `\`/thanks help\``,
             inline: true
         },
@@ -178,12 +178,12 @@ module.exports = async (client) => {
             inline: true
         },
         {
-            name: `⚒️┆Tools`,
+            name: `⚒️┆Herramientas`,
             value: `\`/tools help\``,
             inline: true
         },
         {
-            name: `🔊┆Voice`,
+            name: `🔊┆Voz`,
             value: `\`/voice help\``,
             inline: true
         },
@@ -210,12 +210,12 @@ module.exports = async (client) => {
                             .setStyle(Discord.ButtonStyle.Secondary),
 
                         new Discord.ButtonBuilder()
-                            .setLabel("Invite")
+                            .setLabel("Invitar")
                             .setURL(client.config.discord.botInvite)
                             .setStyle(Discord.ButtonStyle.Link),
 
                         new Discord.ButtonBuilder()
-                            .setLabel("Support server")
+                            .setLabel("Servidor de soporte")
                             .setURL(client.config.discord.serverInvite)
                             .setStyle(Discord.ButtonStyle.Link),
                     );
@@ -224,29 +224,29 @@ module.exports = async (client) => {
                     .addComponents(
                         new Discord.StringSelectMenuBuilder()
                             .setCustomId('Bot-helppanel')
-                            .setPlaceholder('❌┆Nothing selected')
+                            .setPlaceholder('❌┆Nada seleccionado')
                             .addOptions([
                                 {
-                                    label: `Commands`,
-                                    description: `Show the commands of Bot!`,
+                                    label: `Comandos`,
+                                    description: `¡Muestra los comandos de Bot!`,
                                     emoji: "💻",
                                     value: "commands-Bothelp",
                                 },
                                 {
-                                    label: `Invite`,
-                                    description: `Invite Bot to your server`,
+                                    label: `Invitar`,
+                                    description: `Invita al bot a tu servidor`,
                                     emoji: "📨",
                                     value: "invite-Bothelp",
                                 },
                                 {
-                                    label: `Support server`,
-                                    description: `Join the suppport server`,
+                                    label: `Servidor de soporte`,
+                                    description: `Únete al servidor de soporte`,
                                     emoji: "❓",
                                     value: "support-Bothelp",
                                 },
                                 {
-                                    label: `Changelogs`,
-                                    description: `Show the bot changelogs`,
+                                    label: `Registro de cambios`,
+                                    description: `Muestra el registro de cambios del bot`,
                                     emoji: "📃",
                                     value: "changelogs-Bothelp",
                                 },
@@ -254,8 +254,8 @@ module.exports = async (client) => {
                     );
 
                 client.embed({
-                    title: `❓・Help panel`,
-                    desc: `View all command categories in the bot here! \n\n[Website](https://corwindev.nl) | [Invite](${client.config.discord.botInvite}) | [Vote](https://top.gg/bot/798144456528363550/vote)`,
+                    title: `❓・Panel de ayuda`,
+                    desc: `¡Mira aquí todas las categorías de comandos del bot! \n\n[Sitio web](https://corwindev.nl) | [Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/798144456528363550/vote)`,
                     image: "https://cdn.discordapp.com/attachments/843487478881976381/874694194474668052/Bot_banner_invite.jpg",
                     fields: fields.slice(0, 24),
                     components: [row2, row],
@@ -269,8 +269,8 @@ module.exports = async (client) => {
                         if (i.customId == "helpNext") {
                             if (page == 1) {
                                 client.embed({
-                                    title: `❓・Help panel`,
-                                    desc: `View all command categories in the bot here! \n\n[Website](https://corwindev.nl) | [Invite](${client.config.discord.botInvite}) | [Vote](https://top.gg/bot/798144456528363550/vote)`,
+                                    title: `❓・Panel de ayuda`,
+                                    desc: `¡Mira aquí todas las categorías de comandos del bot! \n\n[Sitio web](https://corwindev.nl) | [Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/798144456528363550/vote)`,
                                     fields: fields.slice(25, 49),
                                     components: [row2, row],
                                     type: 'update'
@@ -282,8 +282,8 @@ module.exports = async (client) => {
                         else if (i.customId == "helpPrev") {
                             if (page == 2) {
                                 client.embed({
-                                    title: `❓・Help panel`,
-                                    desc: `View all command categories in the bot here! \n\n[Website](https://corwindev.nl) | [Invite](${client.config.discord.botInvite}) | [Vote](https://top.gg/bot/798144456528363550/vote)`,
+                                    title: `❓・Panel de ayuda`,
+                                    desc: `¡Mira aquí todas las categorías de comandos del bot! \n\n[Sitio web](https://corwindev.nl) | [Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/798144456528363550/vote)`,
                                     fields: fields.slice(0, 24),
                                     components: [row2, row],
                                     type: 'update'

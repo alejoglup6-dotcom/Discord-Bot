@@ -17,10 +17,10 @@ module.exports = async (client, interaction, args) => {
         }).then(() => {
           client.succNormal(
             {
-              text: "Sticky message deleted",
+              text: "Mensaje fijo eliminado",
               fields: [
                 {
-                  name: `📘┆Channel`,
+                  name: `📘┆Canal`,
                   value: `${channel}`,
                 },
               ],
@@ -32,7 +32,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: "No message found!",
+            error: "¡No se encontró ningún mensaje!",
             type: "editreply",
           },
           interaction,

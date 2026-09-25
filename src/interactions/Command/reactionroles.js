@@ -6,84 +6,84 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("reactionroles")
-    .setDescription("Manage the server reaction roles")
+    .setDescription("Gestiona los roles por reacción del servidor")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
         .setDescription(
-          "Get information about the reaction roles category commands",
+          "Información sobre los comandos de la categoría roles por reacción",
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("add")
-        .setDescription("Add a reaction role")
+        .setDescription("Añade un rol por reacción")
         .addStringOption((option) =>
           option
             .setName("category")
-            .setDescription("category name for your reaction roles group")
+            .setDescription("Nombre de la categoría para tu grupo de roles por reacción")
             .setRequired(true),
         )
         .addRoleOption((option) =>
           option
             .setName("role")
-            .setDescription("Select a role")
+            .setDescription("Elige un rol")
             .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("emoji")
-            .setDescription("Enter a emoji")
+            .setDescription("Escribe un emoji")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("delete")
-        .setDescription("Delete a reaction roles category")
+        .setDescription("Elimina una categoría de roles por reacción")
         .addStringOption((option) =>
           option
             .setName("category")
-            .setDescription("category name for your reaction roles group")
+            .setDescription("Nombre de la categoría para tu grupo de roles por reacción")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("list")
-        .setDescription("Show all reaction roles categories from this guild"),
+        .setDescription("Muestra todas las categorías de roles por reacción del servidor"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("button")
-        .setDescription("Show all reaction roles with buttons")
+        .setDescription("Muestra todos los roles por reacción con botones")
         .addStringOption((option) =>
           option
             .setName("category")
-            .setDescription("Category name for your reaction roles group")
+            .setDescription("Nombre de la categoría para tu grupo de roles por reacción")
             .setRequired(true),
         )
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Channel where the reaction roles should come")
+            .setDescription("Canal donde deben ir los roles por reacción")
             .addChannelTypes(ChannelType.GuildText),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("menu")
-        .setDescription("Show all reaction roles in a menu")
+        .setDescription("Muestra todos los roles por reacción en un menú")
         .addStringOption((option) =>
           option
             .setName("category")
-            .setDescription("Category name for your reaction roles group")
+            .setDescription("Nombre de la categoría para tu grupo de roles por reacción")
             .setRequired(true),
         )
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Channel where the reaction roles should come")
+            .setDescription("Canal donde deben ir los roles por reacción")
             .addChannelTypes(ChannelType.GuildText),
         ),
     ),

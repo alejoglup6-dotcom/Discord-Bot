@@ -20,7 +20,7 @@ module.exports = async (client, interaction, args) => {
 
   if (!role)
     return client.errUsage(
-      { usage: "deleteitem [role]", type: "editreply" },
+      { usage: "deleteitem [rol]", type: "editreply" },
       interaction,
     );
 
@@ -35,10 +35,10 @@ module.exports = async (client, interaction, args) => {
 
         client.succNormal(
           {
-            text: `The role was deleted from the store`,
+            text: `El rol se eliminó de la tienda`,
             fields: [
               {
-                name: `🛒┆Role`,
+                name: `🛒┆Rol`,
                 value: `${role}`,
               },
             ],
@@ -49,7 +49,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: `This role is not in the store!`,
+            error: `¡Este rol no está en la tienda!`,
             type: "editreply",
           },
           interaction,

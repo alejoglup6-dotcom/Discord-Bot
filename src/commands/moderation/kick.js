@@ -17,7 +17,7 @@ module.exports = async (client, interaction, args) => {
   const member = await interaction.guild.members.fetch(
     interaction.options.getUser("user").id,
   );
-  const reason = interaction.options.getString("reason") || "Not given";
+  const reason = interaction.options.getString("reason") || "No indicada";
 
   if (
     member.permissions.has(Discord.PermissionsBitField.Flags.KickMembers) ||
@@ -25,7 +25,7 @@ module.exports = async (client, interaction, args) => {
   )
     return client.errNormal(
       {
-        error: "You can't kick a moderator",
+        error: "No puedes expulsar a un moderador",
         type: "editreply",
       },
       interaction,
@@ -34,16 +34,16 @@ module.exports = async (client, interaction, args) => {
   client
     .embed(
       {
-        title: `🔨・Kick`,
-        desc: `You've been kicked in **${interaction.guild.name}**`,
+        title: `🔨・Expulsión`,
+        desc: `Te expulsaron de **${interaction.guild.name}**`,
         fields: [
           {
-            name: "👤┆Kicked by",
+            name: "👤┆Expulsado por",
             value: interaction.user.tag,
             inline: true,
           },
           {
-            name: "💬┆Reason",
+            name: "💬┆Razón",
             value: reason,
             inline: true,
           },
@@ -55,15 +55,15 @@ module.exports = async (client, interaction, args) => {
       member.kick(reason);
       client.succNormal(
         {
-          text: "The specified user has been successfully kicked and successfully received a notification!",
+          text: "¡El usuario indicado fue expulsado correctamente y recibió una notificación!",
           fields: [
             {
-              name: "👤┆Kicked user",
+              name: "👤┆Usuario expulsado",
               value: member.user.tag,
               inline: true,
             },
             {
-              name: "💬┆Reason",
+              name: "💬┆Razón",
               value: reason,
               inline: true,
             },
@@ -77,7 +77,7 @@ module.exports = async (client, interaction, args) => {
       member.kick(reason);
       client.succNormal(
         {
-          text: "The given user has been successfully kicked, but has not received a notification!",
+          text: "El usuario indicado fue expulsado correctamente, ¡pero no recibió ninguna notificación!",
           type: "editreply",
         },
         interaction,

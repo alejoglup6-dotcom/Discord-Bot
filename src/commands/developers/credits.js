@@ -30,22 +30,22 @@ module.exports = async (client, interaction, args) => {
 
     client.succNormal(
       {
-        text: `Added **${amount} credits** to ${user}`,
+        text: `Se añadieron **${amount} créditos** a ${user}`,
         type: "editreply",
       },
       interaction,
     );
 
     let embedLogs = new Discord.EmbedBuilder()
-      .setTitle(`🪙・Credits added`)
-      .setDescription(`Added credits to ${user} (${user.id})`)
+      .setTitle(`🪙・Créditos añadidos`)
+      .setDescription(`Se añadieron créditos a ${user} (${user.id})`)
       .addFields(
         {
-          name: "👤┆Added By",
+          name: "👤┆Añadida por",
           value: `${interaction.user} (${interaction.user.tag})`,
           inline: true,
         },
-        { name: "🔢┆Amount", value: `${amount}`, inline: true },
+        { name: "🔢┆Cantidad", value: `${amount}`, inline: true },
       )
       .setColor(client.config.colors.normal)
       .setTimestamp();
@@ -63,22 +63,22 @@ module.exports = async (client, interaction, args) => {
 
     client.succNormal(
       {
-        text: `Removed **${amount} credits** from ${user}`,
+        text: `Se quitaron **${amount} créditos** a ${user}`,
         type: "editreply",
       },
       interaction,
     );
 
     let embedLogs = new Discord.EmbedBuilder()
-      .setTitle(`🪙・Credits removed`)
-      .setDescription(`Removed credits from ${user} (${user.id})`)
+      .setTitle(`🪙・Créditos quitados`)
+      .setDescription(`Se quitaron créditos a ${user} (${user.id})`)
       .addFields(
         {
-          name: "👤┆Removed By",
+          name: "👤┆Quitada por",
           value: `${interaction.user} (${interaction.user.tag})`,
           inline: true,
         },
-        { name: "🔢┆Amount", value: `${amount}`, inline: true },
+        { name: "🔢┆Cantidad", value: `${amount}`, inline: true },
       )
       .setColor(client.config.colors.normal)
       .setTimestamp();

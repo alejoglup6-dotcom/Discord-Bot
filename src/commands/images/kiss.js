@@ -22,7 +22,7 @@ module.exports = async (client, interaction, args) => {
   const embed = client.templateEmbed();
   embed.setImage("attachment://kiss.png");
   embed.setDescription(
-    `**${interaction.user.username}** kissed **${member.username}**`,
+    `**${interaction.user.username}** besó a **${member.username}**`,
   );
   interaction.editReply({ files: [attach], embeds: [embed] });
 };

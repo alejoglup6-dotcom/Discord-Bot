@@ -5,31 +5,31 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("thanks")
-    .setDescription("Get an overview of the thanks system")
+    .setDescription("Mira el resumen del sistema de agradecimientos")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the thanks category commands"),
+        .setDescription("Información sobre los comandos de la categoría agradecimientos"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("check")
-        .setDescription("See your thanks")
+        .setDescription("Mira tus agradecimientos")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("thanks")
-        .setDescription("Thanks a user")
+        .setDescription("Agradece a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     ),

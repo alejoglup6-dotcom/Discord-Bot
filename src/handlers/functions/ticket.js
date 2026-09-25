@@ -77,7 +77,7 @@ module.exports = async (client) => {
                 <span class="chatlog__reference-name" title="${author.username.replace(/"/g, '')}" style="color: ${author.hexAccentColor ?? '#FFFFFF'}">${author.bot ? `<span class="chatlog__bot-tag">BOT</span> ${xss(author.username)}` : xss(author.username)}</span>
                 <div class="chatlog__reference-content">
                     <span class="chatlog__reference-link" onclick="scrollToMessage(event, '${message.reference.messageId}')">
-                            ${referencedMessage ? (referencedMessage?.content ? `${formatContent(referencedMessage?.content, false, true)}...` : '<em>Click to see attachment</em>') : '<em>Original message was deleted.</em>'}
+                            ${referencedMessage ? (referencedMessage?.content ? `${formatContent(referencedMessage?.content, false, true)}...` : '<em>Haz clic para ver el archivo adjunto</em>') : '<em>El mensaje original se eliminó.</em>'}
                     </span>
                 </div>`;
 
@@ -131,7 +131,7 @@ module.exports = async (client) => {
             messageContent.classList.add('chatlog__message');
             messageContent.setAttribute('data-message-id', message.id);
             messageContent.setAttribute('id', `message-${message.id}`);
-            messageContent.title = `Message sent: ${message.createdAt.toLocaleString()}`;
+            messageContent.title = `Mensaje enviado: ${message.createdAt.toLocaleString()}`;
 
             // message content
             if (message.content) {
@@ -164,9 +164,9 @@ module.exports = async (client) => {
                         const attachmentImage = document.createElement('img');
                         attachmentImage.classList.add('chatlog__attachment-media');
                         attachmentImage.src = attachment.proxyURL ?? attachment.url;
-                        attachmentImage.alt = 'Image attachment';
+                        attachmentImage.alt = 'Imagen adjunta';
                         attachmentImage.loading = 'lazy';
-                        attachmentImage.title = `Image: ${attachment.name} (${formatBytes(attachment.size)})`;
+                        attachmentImage.title = `Imagen: ${attachment.name} (${formatBytes(attachment.size)})`;
 
                         attachmentLink.appendChild(attachmentImage);
                         attachmentsDiv.appendChild(attachmentLink);
@@ -174,16 +174,16 @@ module.exports = async (client) => {
                         const attachmentVideo = document.createElement('video');
                         attachmentVideo.classList.add('chatlog__attachment-media');
                         attachmentVideo.src = attachment.proxyURL ?? attachment.url;
-                        attachmentVideo.alt = 'Video attachment';
+                        attachmentVideo.alt = 'Vídeo adjunto';
                         attachmentVideo.controls = true;
-                        attachmentVideo.title = `Video: ${attachment.name} (${formatBytes(attachment.size)})`;
+                        attachmentVideo.title = `Vídeo: ${attachment.name} (${formatBytes(attachment.size)})`;
 
                         attachmentsDiv.appendChild(attachmentVideo);
                     } else if (['mp3', 'ogg'].includes(attachmentType)) {
                         const attachmentAudio = document.createElement('audio');
                         attachmentAudio.classList.add('chatlog__attachment-media');
                         attachmentAudio.src = attachment.proxyURL ?? attachment.url;
-                        attachmentAudio.alt = 'Audio attachment';
+                        attachmentAudio.alt = 'Audio adjunto';
                         attachmentAudio.controls = true;
                         attachmentAudio.title = `Audio: ${attachment.name} (${formatBytes(attachment.size)})`;
 
@@ -259,7 +259,7 @@ module.exports = async (client) => {
                             const embedAuthorIcon = document.createElement('img');
                             embedAuthorIcon.classList.add('chatlog__embed-author-icon');
                             embedAuthorIcon.src = embed.author.iconURL;
-                            embedAuthorIcon.alt = 'Author icon';
+                            embedAuthorIcon.alt = 'Icono del autor';
                             embedAuthorIcon.loading = 'lazy';
                             embedAuthorIcon.onerror = () => embedAuthorIcon.style.visibility = 'hidden';
 
@@ -419,7 +419,7 @@ module.exports = async (client) => {
                             const embedFooterIcon = document.createElement('img');
                             embedFooterIcon.classList.add('chatlog__embed-footer-icon');
                             embedFooterIcon.src = embed.footer.proxyIconURL ?? embed.footer.iconURL;
-                            embedFooterIcon.alt = 'Footer icon';
+                            embedFooterIcon.alt = 'Icono del pie';
                             embedFooterIcon.loading = 'lazy';
 
                             embedFooter.appendChild(embedFooterIcon);
@@ -452,23 +452,10 @@ module.exports = async (client) => {
             .replace(/\&\#x60;/g, '`') // we dont want ` to be escaped
             .replace(/```(.+?)```/gs, code => {
                 if (!replyStyle) {
-                    const split = code.slice(3, -3).split('\n');
-                    let language = split.shift().trim().toLowerCase();
-
-                    if (static.LanguageAliases[language])
-                        language = static.LanguageAliases[language];
-
-                    if (languages.includes(language)) {
-                        const joined = he.unescape(split.join("\n"));
-                        return `<div class="pre pre--multiline language-${language}">${hljs.default.highlight(joined, {
-                            language,
-                        }).value
-                            }</div>`;
-                    } else {
-                        return `<div class="pre pre--multiline nohighlight">${code
-                            .slice(3, -3)
-                            .trim()}</div>`;
-                    }
+                    // highlight.js no está instalado, así que los bloques de código van sin resaltar
+                    return `<div class="pre pre--multiline nohighlight">${code
+                        .slice(3, -3)
+                        .trim()}</div>`;
                 } else {
                     const split = code.slice(3, -3).split('\n');
                     split.shift();

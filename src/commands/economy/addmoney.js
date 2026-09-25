@@ -21,20 +21,20 @@ module.exports = async (client, interaction, args) => {
 
   if (!user || !amount)
     return client.errUsage(
-      { usage: "addmoney [user] [amount]", type: "editreply" },
+      { usage: "addmoney [usuario] [cantidad]", type: "editreply" },
       interaction,
     );
 
   if (isNaN(amount))
     return client.errNormal(
-      { error: "Enter a valid number!", type: "editreply" },
+      { error: "¡Introduce un número válido!", type: "editreply" },
       interaction,
     );
 
   if (user.bot)
     return client.errNormal(
       {
-        error: "You cannot add money to a bot!",
+        error: "¡No puedes darle dinero a un bot!",
         type: "editreply",
       },
       interaction,
@@ -48,15 +48,15 @@ module.exports = async (client, interaction, args) => {
         if (data) {
           client.succNormal(
             {
-              text: `Added money to a user!`,
+              text: `¡Se añadió dinero a un usuario!`,
               fields: [
                 {
-                  name: `👤┆User`,
+                  name: `👤┆Usuario`,
                   value: `<@!${user.id}>`,
                   inline: true,
                 },
                 {
-                  name: `${client.emotes.economy.coins}┆Amount`,
+                  name: `${client.emotes.economy.coins}┆Cantidad`,
                   value: `$${amount}`,
                   inline: true,
                 },
@@ -67,7 +67,7 @@ module.exports = async (client, interaction, args) => {
           );
         } else {
           client.errNormal(
-            { error: `This user doesn't have any money!`, type: "editreply" },
+            { error: `¡Este usuario no tiene dinero!`, type: "editreply" },
             interaction,
           );
         }

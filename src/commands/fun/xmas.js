@@ -13,8 +13,8 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `🎄・Christmas`,
-      desc: `${days} days until Christmas`,
+      title: `🎄・Navidad`,
+      desc: `Faltan ${days} días para Navidad`,
       type: "editreply",
     },
     interaction,

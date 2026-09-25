@@ -11,19 +11,19 @@ module.exports = async (client, interaction, args) => {
 
   if (!amount)
     return client.errUsage(
-      { usage: "deposit [amount]", type: "editreply" },
+      { usage: "deposit [cantidad]", type: "editreply" },
       interaction,
     );
 
   if (isNaN(amount))
     return client.errNormal(
-      { error: "Enter a valid number!", type: "editreply" },
+      { error: "¡Introduce un número válido!", type: "editreply" },
       interaction,
     );
 
   if (amount < 0)
     return client.errNormal(
-      { error: `You can't deposit negative money!`, type: "editreply" },
+      { error: `¡No puedes depositar dinero negativo!`, type: "editreply" },
       interaction,
     );
 
@@ -32,7 +32,7 @@ module.exports = async (client, interaction, args) => {
       if (data) {
         if (data.Money < parseInt(amount))
           return client.errNormal(
-            { error: `You don't have that much money!`, type: "editreply" },
+            { error: `¡No tienes tanto dinero!`, type: "editreply" },
             interaction,
           );
 
@@ -44,10 +44,10 @@ module.exports = async (client, interaction, args) => {
 
         client.succNormal(
           {
-            text: `You've have deposited some money into your bank!`,
+            text: `¡Depositaste dinero en tu banco!`,
             fields: [
               {
-                name: `${client.emotes.economy.coins}┆Amount`,
+                name: `${client.emotes.economy.coins}┆Cantidad`,
                 value: `$${amount}`,
                 inline: true,
               },
@@ -58,7 +58,7 @@ module.exports = async (client, interaction, args) => {
         );
       } else {
         client.errNormal(
-          { text: `You don't have any money to deposit!`, type: "editreply" },
+          { text: `¡No tienes dinero para depositar!`, type: "editreply" },
           interaction,
         );
       }

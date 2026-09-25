@@ -5,63 +5,63 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("games")
-    .setDescription("Play games in Bot")
+    .setDescription("Juega a juegos en Bot")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the games category commands"),
+        .setDescription("Información sobre los comandos de la categoría juegos"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("8ball")
-        .setDescription("Ask the bot a question")
+        .setDescription("Hazle una pregunta al bot")
         .addStringOption((option) =>
           option
             .setName("question")
-            .setDescription("The question you want to ask")
+            .setDescription("La pregunta que quieres hacer")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("fasttype").setDescription("Learn to type faster"),
+      subcommand.setName("fasttype").setDescription("Aprende a escribir más rápido"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("roll").setDescription("Roll a die"),
+      subcommand.setName("roll").setDescription("Tira un dado"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("rps")
-        .setDescription("Play rock paper scissors against the bot")
+        .setDescription("Juega a piedra, papel o tijera contra el bot")
         .addStringOption((option) =>
           option
             .setName("option")
-            .setDescription("Choose what you want")
+            .setDescription("Elige lo que quieres")
             .setRequired(true)
             .addChoices(
-              { name: "🪨 Rock", value: "rock" },
-              { name: "📃 Paper", value: "paper" },
-              { name: "✂️ Scissors", value: "scissors" },
+              { name: "🪨 Piedra", value: "rock" },
+              { name: "📃 Papel", value: "paper" },
+              { name: "✂️ Tijera", value: "scissors" },
             ),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("skipword").setDescription("Skip the current word"),
+      subcommand.setName("skipword").setDescription("Salta la palabra actual"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("snake").setDescription("Playing the game snake"),
+      subcommand.setName("snake").setDescription("Juega a la serpiente"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("trivia").setDescription("Play Trivia"),
+      subcommand.setName("trivia").setDescription("Juega a trivia"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("willyoupressthebutton")
-        .setDescription("Play Will You Press The Button"),
+        .setDescription("Juega a ¿Pulsarías el botón?"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("wouldyourather")
-        .setDescription("Play Would You Rather"),
+        .setDescription("Juega a ¿Qué prefieres?"),
     ),
 
   /**

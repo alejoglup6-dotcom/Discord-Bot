@@ -20,7 +20,7 @@ module.exports = async (client, interaction, args) => {
   if (!channel)
     return client.errNormal(
       {
-        error: `You're not in a voice channel!`,
+        error: `¡No estás en un canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -29,7 +29,7 @@ module.exports = async (client, interaction, args) => {
   if (!checkVoice) {
     return client.errNormal(
       {
-        error: `You cannot edit this channel!`,
+        error: `¡No puedes editar este canal!`,
         type: "editreply",
       },
       interaction,
@@ -39,10 +39,10 @@ module.exports = async (client, interaction, args) => {
 
     client.succNormal(
       {
-        text: `The channel limit was to \`${limit}\`!`,
+        text: `¡El límite del canal se ajustó a \`${limit}\`!`,
         fields: [
           {
-            name: `📘┆Channel`,
+            name: `📘┆Canal`,
             value: `${channel} (${channel.name})`,
           },
         ],

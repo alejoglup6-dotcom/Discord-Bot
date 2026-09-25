@@ -7,12 +7,12 @@ const Schema = require("../../database/models/reviewChannels");
  */
 module.exports = async (client, interaction, args) => {
   const stars = interaction.options.getNumber("stars");
-  const message = interaction.options.getString("message") || "Not given";
+  const message = interaction.options.getString("message") || "No indicada";
 
   if (stars < 1 || stars > 5)
     return client.errNormal(
       {
-        error: `Stars must be a minimum of 1 and a maximum of 5`,
+        error: `Las estrellas deben ser mínimo 1 y máximo 5`,
         type: "editreply",
       },
       interaction,
@@ -24,7 +24,7 @@ module.exports = async (client, interaction, args) => {
       if (!channel)
         return client.errNormal(
           {
-            error: `No review channel set! Do \`reviewchannel\``,
+            error: `¡No hay canal de reseñas configurado! Usa \`reviewchannel\``,
             type: "editreply",
           },
           interaction,
@@ -37,15 +37,15 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: "Your review has been successfully submitted",
+          text: "Tu reseña se envió correctamente",
           fields: [
             {
-              name: `⭐┇Stars`,
+              name: `⭐┇Estrellas`,
               value: `${stars}`,
               inline: true,
             },
             {
-              name: `📘┇Channel`,
+              name: `📘┇Canal`,
               value: `<#${data.Channel}>`,
               inline: true,
             },
@@ -57,16 +57,16 @@ module.exports = async (client, interaction, args) => {
 
       client.embed(
         {
-          title: `Review・${interaction.user.tag}`,
-          desc: `A new review has been written!`,
+          title: `Reseña・${interaction.user.tag}`,
+          desc: `¡Se escribió una nueva reseña!`,
           fields: [
             {
-              name: "Stars",
+              name: "Estrellas",
               value: `${totalStars}`,
               inline: true,
             },
             {
-              name: "Note",
+              name: "Nota",
               value: `${message}`,
               inline: true,
             },
@@ -77,7 +77,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       client.errNormal(
         {
-          error: `No review channel set! Do \`reviewchannel\``,
+          error: `¡No hay canal de reseñas configurado! Usa \`reviewchannel\``,
           type: "editreply",
         },
         interaction,

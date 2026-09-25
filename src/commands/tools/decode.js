@@ -9,7 +9,7 @@ module.exports = async (client, interaction, args) => {
   if (isNaN(parseInt(code)))
     return client.errNormal(
       {
-        error: `You can only decode binary code!`,
+        error: `¡Solo puedes decodificar código binario!`,
         type: "editreply",
       },
       interaction,
@@ -22,16 +22,16 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `${client.emotes.normal.check}・Success!`,
-      desc: `I have decoded code`,
+      title: `${client.emotes.normal.check}・¡Listo!`,
+      desc: `Decodifiqué el código`,
       fields: [
         {
-          name: "📥 - Input",
+          name: "📥 - Entrada",
           value: `\`\`\`${code}\`\`\``,
           inline: false,
         },
         {
-          name: "📥 - Output",
+          name: "📥 - Salida",
           value: `\`\`\`${decode}\`\`\``,
           inline: false,
         },

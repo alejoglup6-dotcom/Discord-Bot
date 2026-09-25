@@ -20,7 +20,7 @@ module.exports = {
         await interaction.deferReply({ ephemeral: false });
         const member = await interaction.guild.members.fetch(interaction.options.getUser('user').id);
         if (!member) return client.errNormal({
-            error: "This user is not in this guild!",
+            error: "¡Este usuario no está en este servidor!",
             type: 'editreply'
         }, interaction);
         const badgeFlags = {
@@ -40,22 +40,22 @@ module.exports = {
         }
 
         const flags = {
-            ActiveDeveloper: "👨‍💻・Active Developer",
-            BugHunterLevel1: "🐛・Discord Bug Hunter",
-            BugHunterLevel2: "🐛・Discord Bug Hunter",
-            CertifiedModerator: "👮‍♂️・Certified Moderator",
-            HypeSquadOnlineHouse1: "🏠・House Bravery Member",
-            HypeSquadOnlineHouse2: "🏠・House Brilliance Member",
-            HypeSquadOnlineHouse3: "🏠・House Balance Member",
-            HypeSquadEvents: "🏠・HypeSquad Events",
+            ActiveDeveloper: "👨‍💻・Desarrollador activo",
+            BugHunterLevel1: "🐛・Cazador de bugs de Discord",
+            BugHunterLevel2: "🐛・Cazador de bugs de Discord",
+            CertifiedModerator: "👮‍♂️・Moderador certificado",
+            HypeSquadOnlineHouse1: "🏠・Miembro de House Bravery",
+            HypeSquadOnlineHouse2: "🏠・Miembro de House Brilliance",
+            HypeSquadOnlineHouse3: "🏠・Miembro de House Balance",
+            HypeSquadEvents: "🏠・Eventos de HypeSquad",
             PremiumEarlySupporter: "👑・Early Supporter",
             Partner: "👑・Partner",
             Quarantined: "🔒・Quarantined", // Not sure if this is still a thing
             Spammer: "🔒・Spammer", // Not sure if this one works
-            Staff: "👨‍💼・Discord Staff",
-            TeamPseudoUser: "👨‍💼・Discord Team",
-            VerifiedBot: "🤖・Verified Bot",
-            VerifiedDeveloper: "👨‍💻・(early)Verified Bot Developer",
+            Staff: "👨‍💼・Staff de Discord",
+            TeamPseudoUser: "👨‍💼・Equipo de Discord",
+            VerifiedBot: "🤖・Bot verificado",
+            VerifiedDeveloper: "👨‍💻・Desarrollador de bots verificado (pionero)",
         }
 
         let Badges = await model.findOne({ User: member.user.id });
@@ -67,54 +67,54 @@ module.exports = {
         const userFlags = member.user.flags ? member.user.flags.toArray() : [];
 
         return client.embed({
-            title: `👤・User information`,
-            desc: `Information about ${member.user.username}`,
+            title: `👤・Información del usuario`,
+            desc: `Información sobre ${member.user.username}`,
             thumbnail: member.user.displayAvatarURL({ dynamic: true, size: 1024 }),
             image: member.user.bannerURL({ dynamic: true, size: 1024 }),
             fields: [
                 {
-                    name: "Username",
+                    name: "Nombre de usuario",
                     value: `${member.user.username}`,
                     inline: true,
                 },
                 {
-                    name: "Discriminator",
+                    name: "Discriminador",
                     value: `${member.user.discriminator}`,
                     inline: true,
                 },
                 {
-                    name: "Nickname",
-                    value: `${member.nickname || 'No nickname'}`,
+                    name: "Apodo",
+                    value: `${member.nickname || 'Sin apodo'}`,
                     inline: true,
                 },
                 {
-                    name: "Id",
+                    name: "ID",
                     value: `${member.user.id}`,
                     inline: true,
                 },
                 {
                     name: "Flags",
-                    value: `${userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None'}`,
+                    value: `${userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'Ninguna'}`,
                     inline: true,
                 },
                 {
-                    name: "Badges",
-                    value: `${Badges.FLAGS ? Badges.FLAGS.map(flag => badgeFlags[flag]).join(' ') : 'None'}`,
+                    name: "Insignias",
+                    value: `${Badges.FLAGS ? Badges.FLAGS.map(flag => badgeFlags[flag]).join(' ') : 'Ninguna'}`,
                     inline: true,
                 },
                 {
-                    name: "Discord joined at",
+                    name: "Se unió a Discord el",
                     value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>`,
                     inline: true,
                 },
                 {
-                    name: "Server joined at",
+                    name: "Se unió al servidor el",
                     value: `<t:${Math.round(member.joinedAt / 1000)}>`,
                     inline: true,
                 },
                 {
                     name: `Roles [${roles.length}]`,
-                    value: `${roles.length ? roles.join(', ') : 'None'}`,
+                    value: `${roles.length ? roles.join(', ') : 'Ninguno'}`,
                     inline: false,
                 }
             ],

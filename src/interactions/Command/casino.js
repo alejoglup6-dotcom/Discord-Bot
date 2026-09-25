@@ -5,59 +5,59 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("casino")
-    .setDescription("Play the casino game")
+    .setDescription("Juega en el casino")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the casino category commands"),
+        .setDescription("Información sobre los comandos de la categoría casino"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("blackjack")
-        .setDescription("Play a blackjack game to win money")
+        .setDescription("Juega al blackjack para ganar dinero")
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount")
+            .setDescription("Introduce una cantidad")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("crash")
-        .setDescription("More risk, more reward")
+        .setDescription("Más riesgo, más recompensa")
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount")
+            .setDescription("Introduce una cantidad")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("roulette")
-        .setDescription("Play roulette")
+        .setDescription("Juega a la ruleta")
         .addStringOption((option) =>
           option
             .setName("color")
-            .setDescription("Enter a hex color")
+            .setDescription("Introduce un color")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount")
+            .setDescription("Introduce una cantidad")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("slots")
-        .setDescription("Play slots")
+        .setDescription("Juega a las tragamonedas")
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount")
+            .setDescription("Introduce una cantidad")
             .setRequired(true),
         ),
     ),

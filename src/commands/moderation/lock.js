@@ -26,10 +26,10 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: "Channel locked successfully!",
+      text: "¡Canal bloqueado correctamente!",
       fields: [
         {
-          name: `📘┆Channel`,
+          name: `📘┆Canal`,
           value: `${channel} (${channel.name})`,
         },
       ],

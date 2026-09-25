@@ -18,7 +18,7 @@ module.exports = async (client, interaction, args) => {
       if (!data)
         return client.errNormal(
           {
-            error: `No data found!`,
+            error: `¡No se encontraron datos!`,
             type: "editreply",
           },
           interaction,
@@ -35,7 +35,7 @@ module.exports = async (client, interaction, args) => {
 
       const menu = new Discord.StringSelectMenuBuilder()
         .setCustomId("reaction_select")
-        .setPlaceholder("❌┇Nothing selected")
+        .setPlaceholder("❌┇Nada seleccionado")
         .setMinValues(1);
 
       var labels = [];
@@ -47,7 +47,7 @@ module.exports = async (client, interaction, args) => {
 
           const generated = {
             label: `${role.name}`,
-            description: `Add or remove the role ${role.name}`,
+            description: `Añade o quita el rol ${role.name}`,
             emoji: data.Roles[value][1].raw,
             value: data.Roles[value][1].raw,
           };
@@ -64,7 +64,7 @@ module.exports = async (client, interaction, args) => {
         .embed(
           {
             title: `${upper}・Roles`,
-            desc: `_____ \n\nChoose your roles in the menu! \n\n${map}`,
+            desc: `_____ \n\n¡Elige tus roles en el menú! \n\n${map}`,
             components: [row],
           },
           channel,
@@ -74,7 +74,7 @@ module.exports = async (client, interaction, args) => {
             client.errNormal(
               {
                 error:
-                  "I couldn't send the message!\nMake sure I have the correct permissions!",
+                  "¡No pude enviar el mensaje!\n¡Asegúrate de que tengo los permisos correctos!",
                 type: "editreply",
               },
               interaction,
@@ -87,7 +87,7 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: "Reaction panel successfully created!",
+          text: "¡Panel de reacciones creado correctamente!",
           type: "ephemeraledit",
         },
         interaction,

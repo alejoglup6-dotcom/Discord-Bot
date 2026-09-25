@@ -12,7 +12,7 @@ module.exports = async (client, interaction, args) => {
     .catch((e) => {
       return client.errNormal(
         {
-          error: "Color not found!",
+          error: "¡No se encontró el color!",
           type: "editreply",
         },
         interaction,
@@ -21,7 +21,7 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `🎨・Color info`,
+      title: `🎨・Información del color`,
       image: `https://some-random-api.com/canvas/colorviewer?hex=${color}`,
       color: `#${color}`,
       fields: [

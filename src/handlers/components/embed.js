@@ -35,10 +35,10 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.error}・Error!`)
-        embed.setDescription(`Something went wrong!`)
+        embed.setTitle(`${client.emotes.normal.error}・¡Error!`)
+        embed.setDescription(`¡Algo salió mal!`)
         embed.addFields( 
-            { name: "💬┆Error comment", value: `\`\`\`${error}\`\`\``},
+            { name: "💬┆Detalle del error", value: `\`\`\`${error}\`\`\``},
         )
         embed.setColor(client.config.colors.error)
 
@@ -58,10 +58,10 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.error}・Error!`)
-        embed.setDescription(`You did not provide the correct arguments`)
+        embed.setTitle(`${client.emotes.normal.error}・¡Error!`)
+        embed.setDescription(`No indicaste los argumentos correctos`)
         embed.addFields(
-            { name: "💬┆Required arguments", value: `\`\`\`${usage}\`\`\``},    
+            { name: "💬┆Argumentos necesarios", value: `\`\`\`${usage}\`\`\``},    
         )
         embed.setColor(client.config.colors.error)
 
@@ -82,10 +82,10 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.error}・Error!`)
-        embed.setDescription(`You don't have the right permissions`)
+        embed.setTitle(`${client.emotes.normal.error}・¡Error!`)
+        embed.setDescription(`No tienes los permisos necesarios`)
         embed.addFields(
-            { name: "🔑┆Required Permission", value: `\`\`\`${perms}\`\`\``},
+            { name: "🔑┆Permiso necesario", value: `\`\`\`${perms}\`\`\``},
         )
         embed.setColor(client.config.colors.error)
 
@@ -106,10 +106,10 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.error}・Error!`)
-        embed.setDescription(`I don't have the right permissions`)
+        embed.setTitle(`${client.emotes.normal.error}・¡Error!`)
+        embed.setDescription(`No tengo los permisos necesarios`)
         embed.addFields(
-            { name: "🔑┆Required Permission", value: `\`\`\`${perms}\`\`\``},
+            { name: "🔑┆Permiso necesario", value: `\`\`\`${perms}\`\`\``},
         )
         embed.setColor(client.config.colors.error)
 
@@ -130,10 +130,10 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.error}・Error!`)
-        embed.setDescription(`You've already done this once`)
+        embed.setTitle(`${client.emotes.normal.error}・¡Error!`)
+        embed.setDescription(`Ya hiciste esto una vez`)
         embed.addFields(
-            { name: "⏰┆Try again on", value: `<t:${time}:f>`},
+            { name: "⏰┆Vuelve a intentarlo el", value: `<t:${time}:f>`},
         )
         embed.setColor(client.config.colors.error)
 
@@ -158,7 +158,7 @@ module.exports = (client) => {
         content: content,
         components: components
     }, interaction) {
-        embed.setTitle(`${client.emotes.normal.check}・Success!`)
+        embed.setTitle(`${client.emotes.normal.check}・¡Listo!`)
         embed.setDescription(`${text}`)
         embed.setColor(client.config.colors.succes)
 
@@ -192,8 +192,9 @@ module.exports = (client) => {
         components: components,
         type: type
     }, interaction) {
-        if (interaction.guild == undefined) interaction.guild = { id: "0" };
-        const functiondata = await Schema.findOne({ Guild: interaction.guild.id })
+        // El canal de destino puede no existir (por ejemplo, un canal de registros borrado)
+        if (!interaction) return;
+        const functiondata = interaction.guild ? await Schema.findOne({ Guild: interaction.guild.id }) : null;
 
         if (title) embed.setTitle(title);
         if (desc && desc.length >= 2048) embed.setDescription(desc.substr(0, 2044) + "...");
@@ -227,7 +228,8 @@ module.exports = (client) => {
         components: components,
         type: type
     }, interaction) {
-        const functiondata = await Schema.findOne({ Guild: interaction.guild.id })
+        if (!interaction) return;
+        const functiondata = interaction.guild ? await Schema.findOne({ Guild: interaction.guild.id }) : null;
 
         let embed = new Discord.EmbedBuilder()
             .setColor(client.config.colors.normal)
@@ -238,7 +240,7 @@ module.exports = (client) => {
         if (image) embed.setImage(image);
         if (thumbnail) embed.setThumbnail(thumbnail);
         if (fields) embed.addFields(fields);
-        if (author) embed.setAuthor(author[0], author[1]);
+        if (author) embed.setAuthor(author);
         if (url) embed.setURL(url);
         if (color) embed.setColor(color);
         if (functiondata && functiondata.Color && !color) embed.setColor(functiondata.Color)
@@ -257,6 +259,8 @@ module.exports = (client) => {
         components: components,
         type: type
     }, interaction) {
+        if (!interaction) return;
+
         if (type && type.toLowerCase() == "edit") {
             return await interaction.edit({
                 embeds: embeds,

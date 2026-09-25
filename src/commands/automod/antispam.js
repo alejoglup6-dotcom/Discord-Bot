@@ -21,7 +21,7 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `Anti spam is now **${boolean ? "enabled" : "disabled"}** in this guild`,
+      text: `El anti-spam ahora está **${boolean ? "activado" : "desactivado"}** en este servidor`,
       type: "editreply",
     },
     interaction,

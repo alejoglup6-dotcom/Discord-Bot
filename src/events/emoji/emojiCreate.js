@@ -11,15 +11,15 @@ module.exports = async (client, emoji) => {
     if (!logsChannel) return;
 
     client.embed({
-        title: `😛・Emoji created`,
-        desc: `An emoji has been created`,
+        title: `😛・Emoji creado`,
+        desc: `Se creó un emoji`,
         fields: [
             {
                 name: `> Emoji`,
                 value: `- ${emoji}`
             },
             {
-                name: `> Name`,
+                name: `> Nombre`,
                 value: `- ${emoji.name}`
             },
             {
@@ -27,7 +27,7 @@ module.exports = async (client, emoji) => {
                 value: `- ${emoji.id}`
             },
             {
-                name: `> Url`,
+                name: `> URL`,
                 value: `- ${emoji.imageURL({ dynamic: true })}`
             }
         ]

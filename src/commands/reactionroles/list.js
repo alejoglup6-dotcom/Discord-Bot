@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   if (!reactions)
     return client.errNormal(
       {
-        error: `No data found!`,
+        error: `¡No se encontraron datos!`,
         type: "editreply",
       },
       interaction,
@@ -19,12 +19,12 @@ module.exports = async (client, interaction, args) => {
   let list = ``;
 
   for (var i = 0; i < reactions.length; i++) {
-    list += `**${i + 1}** - Category: ${reactions[i].Category} \n`;
+    list += `**${i + 1}** - Categoría: ${reactions[i].Category} \n`;
   }
 
   await client.embed(
     {
-      title: "📃・Reaction roles",
+      title: "📃・Roles por reacción",
       desc: list,
       type: "editreply",
     },

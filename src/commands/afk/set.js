@@ -6,7 +6,7 @@ const Schema = require("../../database/models/afk");
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
-  const reason = interaction.options.getString("reason") || `Not specified`;
+  const reason = interaction.options.getString("reason") || `No especificada`;
 
   Schema.findOne({
     Guild: interaction.guild.id,
@@ -15,7 +15,7 @@ module.exports = async (client, interaction, args) => {
     if (data) {
       return client.errNormal(
         {
-          error: `You're already afk!`,
+          error: `¡Ya estás AFK!`,
           type: "editreply",
         },
         interaction,
@@ -35,7 +35,7 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `Your AFK has been set up successfully`,
+          text: `Tu AFK se configuró correctamente`,
           type: "ephemeraledit",
         },
         interaction,
@@ -43,7 +43,7 @@ module.exports = async (client, interaction, args) => {
 
       client.embed(
         {
-          desc: `${interaction.user} is now afk! **Reason:** ${reason}`,
+          desc: `¡${interaction.user} ahora está AFK! **Razón:** ${reason}`,
         },
         interaction.channel,
       );

@@ -36,7 +36,7 @@ module.exports = async (client, interaction, args) => {
                 if (ticketCategory == undefined) {
                   return client.errNormal(
                     {
-                      error: "Do the setup!",
+                      error: "¡Haz la configuración!",
                       type: type,
                     },
                     interaction,
@@ -46,7 +46,7 @@ module.exports = async (client, interaction, args) => {
                 if (interaction.channel.parentId == ticketCategory.id) {
                   client.simpleEmbed(
                     {
-                      desc: `Hey <@!${ticketData.creator}>, \n\nCan we still help you? \nIf there is no response within **24 hours**, we will close this ticket \n\n- Team ${interaction.guild.name}`,
+                      desc: `Hola <@!${ticketData.creator}>, \n\n¿Todavía podemos ayudarte? \nSi no hay respuesta en **24 horas**, cerraremos este ticket \n\n- Equipo de ${interaction.guild.name}`,
                       content: `<@!${ticketData.creator}>`,
                       type: type,
                     },
@@ -55,7 +55,7 @@ module.exports = async (client, interaction, args) => {
                 } else {
                   client.errNormal(
                     {
-                      error: "This is not a ticket!",
+                      error: "¡Esto no es un ticket!",
                       type: type,
                     },
                     interaction,
@@ -64,7 +64,7 @@ module.exports = async (client, interaction, args) => {
               } else {
                 return client.errNormal(
                   {
-                    error: "Do the setup!",
+                    error: "¡Haz la configuración!",
                     type: type,
                   },
                   interaction,
@@ -74,7 +74,7 @@ module.exports = async (client, interaction, args) => {
         } else {
           return client.errNormal(
             {
-              error: "You are not allowed to notice your own ticket!",
+              error: "¡No puedes enviar un aviso a tu propio ticket!",
               type: "ephemeral",
             },
             interaction,

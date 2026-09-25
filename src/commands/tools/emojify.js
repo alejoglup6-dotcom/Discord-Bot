@@ -4,7 +4,7 @@ module.exports = async (client, interaction) => {
 
     const args = interaction.options.getString('text');
 
-    if (args.length > 4096) return client.errNormal({ error: "Your emojify text cannot be longer than 4096 characters", type: 'editreply' }, interaction);
+    if (args.length > 4096) return client.errNormal({ error: "El texto para emojificar no puede tener más de 4096 caracteres", type: 'editreply' }, interaction);
 
     const specialCodes = {
         '0': ':zero:',
@@ -34,7 +34,7 @@ module.exports = async (client, interaction) => {
     }).join('');
 
     client.embed({
-        title: `🙂・Emojify`,
+        title: `🙂・Emojificar`,
         desc: `${text}`,
         type: 'editreply'
     }, interaction)

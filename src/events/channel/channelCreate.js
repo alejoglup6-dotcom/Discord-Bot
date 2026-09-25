@@ -2,26 +2,26 @@ const discord = require('discord.js');
 
 module.exports = async (client, channel) => {
     let types = {
-        0: "Text Channel",
-        2: "Voice Channel",
-        4: "Category",
-        5: "News Channel",
-        10: "News Thread",
-        11: "Public Thread",
-        12: "Private Thread",
-        13: "Stage Channel",
-        14: "Category",
+        0: "Canal de texto",
+        2: "Canal de voz",
+        4: "Categoría",
+        5: "Canal de anuncios",
+        10: "Hilo de anuncios",
+        11: "Hilo público",
+        12: "Hilo privado",
+        13: "Canal de escenario",
+        14: "Categoría",
     }
 
     const logsChannel = await client.getLogs(channel.guild.id);
     if (!logsChannel) return;
 
     client.embed({
-        title: `🔧・Channel created`,
-        desc: `A channel has been created`,
+        title: `🔧・Canal creado`,
+        desc: `Se creó un canal`,
         fields: [
             {
-                name: `> Name`,
+                name: `> Nombre`,
                 value: `- ${channel.name}`
             },
             {
@@ -29,15 +29,15 @@ module.exports = async (client, channel) => {
                 value: `- ${channel.id}`
             },
             {
-                name: `> Category`,
+                name: `> Categoría`,
                 value: `- ${channel.parent}`
             },
             {
-                name: `> Channel`,
+                name: `> Canal`,
                 value: `- <#${channel.id}>`
             },
             {
-                name: `> Type`,
+                name: `> Tipo`,
                 value: `- ${types[channel.type]}`
             }
         ]

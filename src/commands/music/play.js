@@ -7,7 +7,7 @@ module.exports = async (client, interaction, args) => {
   if (!interaction.member.voice.channel)
     return client.errNormal(
       {
-        error: `You're not in a voice channel!`,
+        error: `¡No estás en un canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -19,7 +19,7 @@ module.exports = async (client, interaction, args) => {
   if (!channel)
     return client.errNormal(
       {
-        error: `The channel does not exist!`,
+        error: `¡El canal no existe!`,
         type: "editreply",
       },
       interaction,
@@ -30,28 +30,28 @@ module.exports = async (client, interaction, args) => {
   if (player && channel.id !== player?.voiceId)
     return client.errNormal(
       {
-        error: `You are not in the same voice channel!`,
+        error: `¡No estás en el mismo canal de voz!`,
         type: "editreply",
       },
       interaction,
     );
 
   if (!player) {
+    if (!channel.joinable)
+      return client.errNormal(
+        {
+          error: `No se puede entrar a ese canal`,
+          type: "editreply",
+        },
+        interaction,
+      );
+
     player = await client.player.createPlayer({
       guildId: interaction.guild.id,
       voiceId: channel.id,
       textId: interaction.channel.id,
       deaf: true,
     });
-
-    if (!channel.joinable)
-      return client.errNormal(
-        {
-          error: `That channel isn\'t joinable`,
-          type: "editreply",
-        },
-        interaction,
-      );
 
     setTimeout(() => {
       if (channel.type == Discord.ChannelType.GuildStageVoice) {
@@ -66,7 +66,7 @@ module.exports = async (client, interaction, args) => {
 
   client.simpleEmbed(
     {
-      desc: `🔎┆Searching...`,
+      desc: `🔎┆Buscando...`,
       type: "editreply",
     },
     interaction,
@@ -75,10 +75,10 @@ module.exports = async (client, interaction, args) => {
   const res = await player.search(query, { requester: interaction.user });
 
   if (!res.tracks.length) {
-    if (!player.queue.current) player.destroy();
+    if (!player.queue.current) player.destroy().catch(() => {});
     return client.errNormal(
       {
-        error: `Error getting music. Please try again in a few minutes`,
+        error: `Error al obtener la música. Inténtalo de nuevo en unos minutos`,
         type: "editreply",
       },
       interaction,
@@ -97,21 +97,21 @@ module.exports = async (client, interaction, args) => {
           {
             title: `${client.emotes.normal.music}・${track.title}`,
             url: track.uri,
-            desc: `The song has been added to the queue!`,
+            desc: `¡La canción se añadió a la cola!`,
             thumbnail: track.thumbnail,
             fields: [
               {
-                name: `👤┆Requested By`,
+                name: `👤┆Pedida por`,
                 value: `${track.requester}`,
                 inline: true,
               },
               {
-                name: `${client.emotes.normal.clock}┆Ends at`,
+                name: `${client.emotes.normal.clock}┆Termina a las`,
                 value: `<t:${(Date.now() / 1000 + track.length / 1000).toFixed(0)}:f>`,
                 inline: true,
               },
               {
-                name: `🎬┆Author`,
+                name: `🎬┆Autor`,
                 value: `${track.author}`,
                 inline: true,
               },
@@ -168,7 +168,7 @@ module.exports = async (client, interaction, args) => {
       let row2 = new Discord.ActionRowBuilder().addComponents(
         new Discord.ButtonBuilder()
           .setEmoji("🛑")
-          .setLabel("Cancel")
+          .setLabel("Cancelar")
           .setCustomId("cancel")
           .setStyle(Discord.ButtonStyle.Danger),
       );
@@ -183,12 +183,12 @@ module.exports = async (client, interaction, args) => {
 
       client.embed(
         {
-          title: `🔍・Search Results`,
+          title: `🔍・Resultados de la búsqueda`,
           desc: results,
           fields: [
             {
-              name: `❓┆Cancel search?`,
-              value: `Press \`cancel\` to stop the search`,
+              name: `❓┆¿Cancelar la búsqueda?`,
+              value: `Escribe \`cancel\` para detener la búsqueda`,
               inline: true,
             },
           ],
@@ -198,6 +198,7 @@ module.exports = async (client, interaction, args) => {
         interaction,
       );
 
+      let i;
       try {
         i = await interaction.channel.awaitMessageComponent({
           filter,
@@ -207,12 +208,12 @@ module.exports = async (client, interaction, args) => {
           errors: ["time"],
         });
       } catch (e) {
-        if (!player.queue.current) player.destroy();
+        if (!player.queue.current) player.destroy().catch(() => {});
         row.components.forEach((button) => button.setDisabled(true));
         row2.components.forEach((button) => button.setDisabled(true));
         return client.errNormal(
           {
-            error: `You didn't provide a selection`,
+            error: `No elegiste ninguna opción`,
             type: "editreply",
             components: [row, row2],
           },
@@ -225,15 +226,15 @@ module.exports = async (client, interaction, args) => {
       i.deferUpdate();
 
       if (first.toLowerCase() === "cancel") {
-        if (!player.queue.current) player.destroy();
-        return interaction.channel.send("Cancelled selection.");
+        if (!player.queue.current) player.destroy().catch(() => {});
+        return interaction.channel.send("Selección cancelada.");
       }
 
       const index = Number(first) - 1;
       if (index < 0 || index > max - 1)
         return client.errNormal(
           {
-            error: `The number you provided too small or too big (1-${max})`,
+            error: `El número que diste es demasiado pequeño o demasiado grande (1-${max})`,
             type: "editreply",
           },
           interaction,
@@ -249,21 +250,21 @@ module.exports = async (client, interaction, args) => {
           {
             title: `${client.emotes.normal.music}・${track.title}`,
             url: track.uri,
-            desc: `The song has been added to the queue!`,
+            desc: `¡La canción se añadió a la cola!`,
             thumbnail: track.thumbnail,
             fields: [
               {
-                name: `👤┆Requested By`,
+                name: `👤┆Pedida por`,
                 value: `${track.requester}`,
                 inline: true,
               },
               {
-                name: `${client.emotes.normal.clock}┆Ends at`,
-                value: `<t:${(Date.now() / 1000 + track.duration / 1000).toFixed(0)}:f>`,
+                name: `${client.emotes.normal.clock}┆Termina a las`,
+                value: `<t:${(Date.now() / 1000 + track.length / 1000).toFixed(0)}:f>`,
                 inline: true,
               },
               {
-                name: `🎬┆Author`,
+                name: `🎬┆Autor`,
                 value: `${track.author}`,
                 inline: true,
               },

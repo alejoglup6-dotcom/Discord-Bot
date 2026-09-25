@@ -27,7 +27,6 @@ module.exports = {
             PREMIUM: client.emotes.badges.premium,
             SUPPORTER: client.emotes.badges.supporter,
             TEAM: client.emotes.badges.team,
-            BOOSTER: client.emotes.badges.booster,
             PARTNER: client.emotes.badges.partner,
             VOTER: client.emotes.badges.voter,
             SUPPORT: client.emotes.badges.support,
@@ -39,22 +38,22 @@ module.exports = {
         }
 
         const flags = {
-            ActiveDeveloper: "👨‍💻・Active Developer",
-            BugHunterLevel1: "🐛・Discord Bug Hunter",
-            BugHunterLevel2: "🐛・Discord Bug Hunter",
-            CertifiedModerator: "👮‍♂️・Certified Moderator",
-            HypeSquadOnlineHouse1: "🏠・House Bravery Member",
-            HypeSquadOnlineHouse2: "🏠・House Brilliance Member",
-            HypeSquadOnlineHouse3: "🏠・House Balance Member",
-            HypeSquadEvents: "🏠・HypeSquad Events",
+            ActiveDeveloper: "👨‍💻・Desarrollador activo",
+            BugHunterLevel1: "🐛・Cazador de bugs de Discord",
+            BugHunterLevel2: "🐛・Cazador de bugs de Discord",
+            CertifiedModerator: "👮‍♂️・Moderador certificado",
+            HypeSquadOnlineHouse1: "🏠・Miembro de House Bravery",
+            HypeSquadOnlineHouse2: "🏠・Miembro de House Brilliance",
+            HypeSquadOnlineHouse3: "🏠・Miembro de House Balance",
+            HypeSquadEvents: "🏠・Eventos de HypeSquad",
             PremiumEarlySupporter: "👑・Early Supporter",
             Partner: "👑・Partner",
             Quarantined: "🔒・Quarantined", // Not sure if this is still a thing
             Spammer: "🔒・Spammer", // Not sure if this one works
-            Staff: "👨‍💼・Discord Staff",
-            TeamPseudoUser: "👨‍💼・Discord Team",
-            VerifiedBot: "🤖・Verified Bot",
-            VerifiedDeveloper: "👨‍💻・(early)Verified Bot Developer",
+            Staff: "👨‍💼・Staff de Discord",
+            TeamPseudoUser: "👨‍💼・Equipo de Discord",
+            VerifiedBot: "🤖・Bot verificado",
+            VerifiedDeveloper: "👨‍💻・Desarrollador de bots verificado (pionero)",
         }
 
 
@@ -80,16 +79,16 @@ module.exports = {
                 const userFlags = user.flags ? user.flags.toArray() : [];
 
                 client.embed({
-                    title: `${client.user.username}・Profile`,
+                    title: `${client.user.username}・Perfil`,
                     desc: '_____',
                     thumbnail: user.avatarURL({ dynamic: true }),
                     fields: [{
-                        name: "👤┆User",
+                        name: "👤┆Usuario",
                         value: user.username,
                         inline: true
                     },
                     {
-                        name: "📘┆Discriminator",
+                        name: "📘┆Discriminador",
                         value: user.discriminator,
                         inline: true
                     },
@@ -99,94 +98,94 @@ module.exports = {
                         inline: true
                     },
                     {
-                        name: "👨‍👩‍👦┆Gender",
-                        value: `${data.Gender || 'Not set'}`,
+                        name: "👨‍👩‍👦┆Género",
+                        value: `${data.Gender || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "🔢┆Age",
-                        value: `${data.Age || 'Not set'}`,
+                        name: "🔢┆Edad",
+                        value: `${data.Age || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "🎂┆Birthday",
-                        value: `${data.Birthday || 'Not set'}`,
+                        name: "🎂┆Cumpleaños",
+                        value: `${data.Birthday || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "🎨┆Favorite color",
-                        value: `${data.Color || 'Not set'}`,
+                        name: "🎨┆Color favorito",
+                        value: `${data.Color || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "🐶┆Favorite pets",
-                        value: `${data.Pets.join(', ') || 'Not set'}`,
+                        name: "🐶┆Mascotas favoritas",
+                        value: `${data.Pets.join(', ') || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "🍕┆Favorite food",
-                        value: `${data.Food.join(', ') || 'Not set'}`,
+                        name: "🍕┆Comida favorita",
+                        value: `${data.Food.join(', ') || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "🎶┆Favorite songs",
-                        value: `${data.Songs.join(', ') || 'Not set'}`,
+                        name: "🎶┆Canciones favoritas",
+                        value: `${data.Songs.join(', ') || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "🎤┆Favorite artists",
-                        value: `${data.Artists.join(', ') || 'Not set'}`,
+                        name: "🎤┆Artistas favoritos",
+                        value: `${data.Artists.join(', ') || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "🎬┆Favorite movies",
-                        value: `${data.Movies.join(', ') || 'Not set'}`,
+                        name: "🎬┆Películas favoritas",
+                        value: `${data.Movies.join(', ') || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "👨‍🎤┆Favorite actors",
-                        value: `${data.Actors.join(', ') || 'Not set'}`,
+                        name: "👨‍🎤┆Actores favoritos",
+                        value: `${data.Actors.join(', ') || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "🏴┆Origin",
-                        value: `${data.Orgin || 'Not set'}`,
+                        name: "🏴┆Origen",
+                        value: `${data.Orgin || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "🎮┆Hobby's",
-                        value: `${data.Hobbys.join(', ') || 'Not set'}`,
+                        name: "🎮┆Pasatiempos",
+                        value: `${data.Hobbys.join(', ') || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "😛┆Status",
-                        value: `${data.Status || 'Not set'}`,
+                        name: "😛┆Estado",
+                        value: `${data.Status || 'Sin definir'}`,
                         inline: true
                     },
                     {
-                        name: "📛┆Bot Badges",
-                        value: `${Badges.FLAGS ? Badges.FLAGS.map(flag => badgeFlags[flag]).join(' ') : 'None'}`,
+                        name: "📛┆Insignias del bot",
+                        value: `${Badges.FLAGS ? Badges.FLAGS.map(flag => badgeFlags[flag]).join(' ') : 'Ninguna'}`,
                         inline: true
                     },
                     {
-                        name: "🏷️┆Discord Badges",
-                        value: `${userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'None' || 'None'}`,
+                        name: "🏷️┆Insignias de Discord",
+                        value: `${userFlags.length ? userFlags.map(flag => flags[flag]).join(', ') : 'Ninguna'}`,
                         inline: true
                     },
                     {
                         name: "💳┆Dcredits",
-                        value: `${credits || 'None'}`,
+                        value: `${credits || 'Ninguno'}`,
                         inline: true
                     },
                     {
-                        name: "ℹ️┆About me",
-                        value: `${data.Aboutme || 'Not set'}`,
+                        name: "ℹ️┆Sobre mí",
+                        value: `${data.Aboutme || 'Sin definir'}`,
                         inline: false
                     },], type: 'editreply'
                 }, interaction);
             }
             else {
-                return client.errNormal({ error: "No profile found! Open a profile with /profile create", type: 'ephemeral' }, interaction);
+                return client.errNormal({ error: "¡No se encontró ningún perfil! Crea uno con /profile create", type: 'ephemeral' }, interaction);
             }
         })
     },

@@ -11,7 +11,7 @@ module.exports = async (client, interaction, args) => {
     .then(async (json) => {
       client.embed(
         {
-          title: `💡・Random dog fact`,
+          title: `💡・Dato aleatorio sobre perros`,
           desc: json.fact,
           type: "editreply",
         },

@@ -27,7 +27,7 @@ module.exports = async (client, interaction, args) => {
         .then((emoji) => {
           client.succNormal(
             {
-              text: `Emoji successfully added to the server`,
+              text: `Emoji añadido correctamente al servidor`,
               fields: [
                 {
                   name: "😛┇Emoji",
@@ -35,12 +35,12 @@ module.exports = async (client, interaction, args) => {
                   inline: true,
                 },
                 {
-                  name: "😜┇Emoji name",
+                  name: "😜┇Nombre del emoji",
                   value: `${emoji.name}`,
                   inline: true,
                 },
                 {
-                  name: "😝┇Emoji id",
+                  name: "😝┇ID del emoji",
                   value: `${emoji.id}`,
                   inline: true,
                 },
@@ -56,7 +56,7 @@ module.exports = async (client, interaction, args) => {
         .then((emoji) => {
           client.succNormal(
             {
-              text: `Emoji successfully added to the server`,
+              text: `Emoji añadido correctamente al servidor`,
               fields: [
                 {
                   name: "😛┇Emoji",
@@ -64,12 +64,12 @@ module.exports = async (client, interaction, args) => {
                   inline: true,
                 },
                 {
-                  name: "😜┇Emoji name",
+                  name: "😜┇Nombre del emoji",
                   value: `${emoji.name}`,
                   inline: true,
                 },
                 {
-                  name: "😝┇Emoji id",
+                  name: "😝┇ID del emoji",
                   value: `${emoji.id}`,
                   inline: true,
                 },
@@ -83,7 +83,7 @@ module.exports = async (client, interaction, args) => {
   } else {
     client.errNormal(
       {
-        error: "Emoji not found!",
+        error: "¡No se encontró el emoji!",
         type: "editreply",
       },
       interaction,

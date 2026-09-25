@@ -8,7 +8,7 @@ module.exports = async (client, interaction, args) => {
   client
     .simpleEmbed(
       {
-        desc: `${client.emotes.animated.loading} Calculating ping...`,
+        desc: `${client.emotes.animated.loading} Calculando el ping...`,
         type: "editreply",
       },
       interaction,
@@ -26,20 +26,20 @@ module.exports = async (client, interaction, args) => {
         client.embed(
           {
             title: `${client.emotes.normal.pong}・Pong`,
-            desc: `Check out how fast our bot is`,
+            desc: `Mira qué tan rápido es nuestro bot`,
             fields: [
               {
-                name: "🤖┆Bot latency",
+                name: "🤖┆Latencia del bot",
                 value: `${ping}ms (${pingSeconds}s)`,
                 inline: true,
               },
               {
-                name: "💻┆API Latency",
+                name: "💻┆Latencia de la API",
                 value: `${client.ws.ping}ms (${apiSeconds}s)`,
                 inline: true,
               },
               {
-                name: "📂┆Database Latency",
+                name: "📂┆Latencia de la base de datos",
                 value: `${result.ok}ms (${mongooseSeconds}s)`,
                 inline: true,
               },

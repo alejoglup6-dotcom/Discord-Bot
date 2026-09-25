@@ -13,7 +13,7 @@ module.exports = async (client, interaction, args) => {
   if (author.id == target.id)
     return client.errNormal(
       {
-        error: "You cannot disown yourself",
+        error: "No puedes desheredarte a ti mismo",
         type: "editreply",
       },
       interaction,
@@ -22,7 +22,7 @@ module.exports = async (client, interaction, args) => {
   if (target.bot)
     return client.errNormal(
       {
-        error: "You cannot disown a bot",
+        error: "No puedes desheredar a un bot",
         type: "editreply",
       },
       interaction,
@@ -36,8 +36,8 @@ module.exports = async (client, interaction, args) => {
             if (data2) {
               client.embed(
                 {
-                  title: `👪・Disowned`,
-                  desc: `${author} has disowned <@!${data.Parent}>`,
+                  title: `👪・Desheredado`,
+                  desc: `${author} desheredó a <@!${data.Parent}>`,
                   type: "editreply",
                 },
                 interaction,
@@ -75,8 +75,8 @@ module.exports = async (client, interaction, args) => {
 
                 client.embed(
                   {
-                    title: `👪・Disowned`,
-                    desc: `${author} has disowned <@!${target.id}>`,
+                    title: `👪・Desheredado`,
+                    desc: `${author} desheredó a <@!${target.id}>`,
                     type: "editreply",
                   },
                   interaction,
@@ -84,7 +84,7 @@ module.exports = async (client, interaction, args) => {
               } else {
                 client.errNormal(
                   {
-                    error: "You have no children/parents at the moment",
+                    error: "Ahora mismo no tienes hijos ni padres",
                     type: "editreply",
                   },
                   interaction,
@@ -93,7 +93,7 @@ module.exports = async (client, interaction, args) => {
             } else {
               client.errNormal(
                 {
-                  error: "You have no children/parents at the moment",
+                  error: "Ahora mismo no tienes hijos ni padres",
                   type: "editreply",
                 },
                 interaction,

@@ -7,7 +7,7 @@ require("moment-duration-format");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("help")
-    .setDescription("Get help with the bot"),
+    .setDescription("Consigue ayuda con el bot"),
 
   /**
    * @param {Client} client
@@ -20,29 +20,29 @@ module.exports = {
     const row = new Discord.ActionRowBuilder().addComponents(
       new Discord.StringSelectMenuBuilder()
         .setCustomId("Bot-helppanel")
-        .setPlaceholder("❌┆Nothing selected")
+        .setPlaceholder("❌┆Nada seleccionado")
         .addOptions([
           {
-            label: `Commands`,
-            description: `Show the commands of Bot!`,
+            label: `Comandos`,
+            description: `¡Muestra los comandos de Bot!`,
             emoji: "💻",
             value: "commands-Bothelp",
           },
           {
-            label: `Invite`,
-            description: `Invite Bot to your server`,
+            label: `Invitar`,
+            description: `Invita al bot a tu servidor`,
             emoji: "📨",
             value: "invite-Bothelp",
           },
           {
-            label: `Support server`,
-            description: `Join the suppport server`,
+            label: `Servidor de soporte`,
+            description: `Únete al servidor de soporte`,
             emoji: "❓",
             value: "support-Bothelp",
           },
           {
-            label: `Changelogs`,
-            description: `Show the bot changelogs`,
+            label: `Registro de cambios`,
+            description: `Muestra el registro de cambios del bot`,
             emoji: "📃",
             value: "changelogs-Bothelp",
           },
@@ -51,22 +51,22 @@ module.exports = {
 
     return client.embed(
       {
-        title: `❓・Help panel`,
-        desc: `Welcome to Bot's help panel! We have made a small overview to help you! Make a choice via the menu below`,
+        title: `❓・Panel de ayuda`,
+        desc: `¡Bienvenido al panel de ayuda de Bot! Hicimos un pequeño resumen para ayudarte. Elige una opción en el menú de abajo`,
         image:
           "https://cdn.discordapp.com/attachments/843487478881976381/874694194474668052/Bot_banner_invite.jpg",
         fields: [
           {
-            name: `❌┆Menu doesn't work?`,
-            value: `Try resending the command. If you get no reaction, make sure you report the bug!`,
+            name: `❌┆¿El menú no funciona?`,
+            value: `Prueba a enviar el comando otra vez. Si no hay reacción, ¡reporta el bug!`,
           },
           {
-            name: `🪲┆Found a bug?`,
-            value: `Report this with \`/report bug\``,
+            name: `🪲┆¿Encontraste un bug?`,
+            value: `Repórtalo con \`/report bug\``,
           },
           {
-            name: `🔗┆Links`,
-            value: `[Website](https://corwindev.nl/) | [Invite](${client.config.discord.botInvite}) | [Vote](https://top.gg/bot/798144456528363550/vote)`,
+            name: `🔗┆Enlaces`,
+            value: `[Sitio web](https://corwindev.nl/) | [Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/798144456528363550/vote)`,
           },
         ],
         components: [row],

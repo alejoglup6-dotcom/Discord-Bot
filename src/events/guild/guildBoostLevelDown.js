@@ -5,19 +5,19 @@ module.exports = async (client, guild, oldLevel, newLevel) => {
     if (!logsChannel) return;
 
     client.embed({
-        title: `🆙・New boost level`,
-        desc: `This server has returned to a new boost level`,
+        title: `🆙・Nuevo nivel de boost`,
+        desc: `Este servidor volvió a un nivel de boost anterior`,
         fields: [
             {
-                name: `> Old level`,
+                name: `> Nivel anterior`,
                 value: `- ${oldLevel}`
             },
             {
-                name: `> New level`,
+                name: `> Nivel nuevo`,
                 value: `- ${newLevel}`
             },
             {
-                name: `> Timestamp`,
+                name: `> Fecha`,
                 value: `- <t:${Math.floor(Date.now() / 1000)}:R>`
             }
         ]

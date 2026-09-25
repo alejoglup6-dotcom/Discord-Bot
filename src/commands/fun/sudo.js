@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   if (text.length >= 2000)
     return client.errNormal(
       {
-        error: "You may not use more than 2000 characters!",
+        error: "¡No puedes usar más de 2000 caracteres!",
         type: "editreply",
       },
       interaction,
@@ -27,7 +27,7 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `The sudo message was sent!`,
+          text: `¡Se envió el mensaje sudo!`,
           type: "ephemeraledit",
         },
         interaction,

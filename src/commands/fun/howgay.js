@@ -6,8 +6,8 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `🏳️‍🌈・Gay rate`,
-      desc: `You are ${result}% gay!`,
+      title: `🏳️‍🌈・Nivel gay`,
+      desc: `¡Eres ${result}% gay!`,
       type: "editreply",
     },
     interaction,

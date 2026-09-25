@@ -6,13 +6,13 @@ module.exports = {
 
   data: new SlashCommandBuilder()
     .setName("soundboard")
-    .setDescription("Play all the sounds in Bot")
+    .setDescription("Reproduce todos los sonidos de Bot")
 
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
         .setDescription(
-          "Get information about the soundboard category commands",
+          "Información sobre los comandos de la categoría soundboard",
         ),
     )
 
@@ -20,21 +20,21 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("windows")
-        .setDescription("Play the windows sounds in Bot")
+        .setDescription("Reproduce los sonidos de Windows en Bot")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("windowserror")
-            .setDescription("Play the windows error sound"),
+            .setDescription("Reproduce el sonido de error de Windows"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("windowsshutdown")
-            .setDescription("Play the windows shutdown sound"),
+            .setDescription("Reproduce el sonido de apagado de Windows"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("windowsstartup")
-            .setDescription("Play the windows startup sound"),
+            .setDescription("Reproduce el sonido de inicio de Windows"),
         ),
     )
 
@@ -43,27 +43,27 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("earrape")
-        .setDescription("Play the earrape sounds in Bot")
+        .setDescription("Reproduce los sonidos a todo volumen de Bot")
         .addSubcommand((subcommand) =>
-          subcommand.setName("reee").setDescription("Play the reee sound"),
+          subcommand.setName("reee").setDescription("Reproduce el sonido reee"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("defaultdance")
-            .setDescription("Play the defaultdance sound"),
+            .setDescription("Reproduce el sonido defaultdance"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("startup")
-            .setDescription("Play the startup sound"),
+            .setDescription("Reproduce el sonido startup"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("thomas").setDescription("Play the thomas sound"),
+          subcommand.setName("thomas").setDescription("Reproduce el sonido thomas"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("wegothim")
-            .setDescription("Play the wegothim sound"),
+            .setDescription("Reproduce el sonido wegothim"),
         ),
     )
 
@@ -72,36 +72,36 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("songs")
-        .setDescription("Play the song sounds in Bot")
+        .setDescription("Reproduce las canciones del soundboard de Bot")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("dancememe")
-            .setDescription("Play the dancememe sound"),
+            .setDescription("Reproduce el sonido dancememe"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("despacito")
-            .setDescription("Play the despacito sound"),
+            .setDescription("Reproduce el sonido despacito"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("elevator")
-            .setDescription("Play the elevator sound"),
+            .setDescription("Reproduce el sonido elevator"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("rickastley")
-            .setDescription("Play the rickastley sound"),
+            .setDescription("Reproduce el sonido rickastley"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("running")
-            .setDescription("Play the running sound"),
+            .setDescription("Reproduce el sonido running"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("tobecontinued")
-            .setDescription("Play the tobecontinued sound"),
+            .setDescription("Reproduce el sonido tobecontinued"),
         ),
     )
 
@@ -110,26 +110,26 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("discord")
-        .setDescription("Play the discord sounds in Bot")
+        .setDescription("Reproduce los sonidos de Discord en Bot")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("discordcall")
-            .setDescription("Play the discord call sound"),
+            .setDescription("Reproduce el sonido de llamada de Discord"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("discordjoin")
-            .setDescription("Play the discord voice call join sound"),
+            .setDescription("Reproduce el sonido de entrar a una llamada de Discord"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("discordleave")
-            .setDescription("Play the discord voice call leave sound"),
+            .setDescription("Reproduce el sonido de salir de una llamada de Discord"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("discordnotification")
-            .setDescription("Play the discord notification sound"),
+            .setDescription("Reproduce el sonido de notificación de Discord"),
         ),
     )
 
@@ -138,58 +138,58 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("memes")
-        .setDescription("Play the meme sounds in Bot")
+        .setDescription("Reproduce los sonidos de memes de Bot")
         .addSubcommand((subcommand) =>
-          subcommand.setName("fbi").setDescription("Play the fbi sound"),
+          subcommand.setName("fbi").setDescription("Reproduce el sonido fbi"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("jeff").setDescription("Play the jeff sound"),
+          subcommand.setName("jeff").setDescription("Reproduce el sonido jeff"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("lambo").setDescription("Play the lambo sound"),
+          subcommand.setName("lambo").setDescription("Reproduce el sonido lambo"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("missionfailed")
-            .setDescription("Play the missionfailed sound"),
+            .setDescription("Reproduce el sonido missionfailed"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("moaning").setDescription("Play themoaning sound"),
+          subcommand.setName("moaning").setDescription("Reproduce el sonido moaning"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("nani").setDescription("Play the nani sound"),
+          subcommand.setName("nani").setDescription("Reproduce el sonido nani"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("nyancat")
-            .setDescription("Play the nyancat sound"),
+            .setDescription("Reproduce el sonido nyancat"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("ohh").setDescription("Play the ohh sound"),
+          subcommand.setName("ohh").setDescription("Reproduce el sonido ohh"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("rimshot")
-            .setDescription("Play the rimshot sound"),
+            .setDescription("Reproduce el sonido rimshot"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("roblox").setDescription("Play the roblox sound"),
+          subcommand.setName("roblox").setDescription("Reproduce el sonido roblox"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("shotdown")
-            .setDescription("Play the shotdown sound"),
+            .setDescription("Reproduce el sonido shotdown"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("spongebob")
-            .setDescription("Play the spongebob sound"),
+            .setDescription("Reproduce el sonido spongebob"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("wow").setDescription("Play the wow sound"),
+          subcommand.setName("wow").setDescription("Reproduce el sonido wow"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("yeet").setDescription("Play the yeet sound"),
+          subcommand.setName("yeet").setDescription("Reproduce el sonido yeet"),
         ),
     ),
 

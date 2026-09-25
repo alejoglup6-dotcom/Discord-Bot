@@ -12,29 +12,29 @@ module.exports = async (client) => {
                     .addComponents(
                         new Discord.StringSelectMenuBuilder()
                             .setCustomId('Bot-linkspanel')
-                            .setPlaceholder('❌┆Nothing selected')
+                            .setPlaceholder('❌┆Nada seleccionado')
                             .addOptions([
                                 {
-                                    label: `Support server`,
-                                    description: `Join the suppport server`,
+                                    label: `Servidor de soporte`,
+                                    description: `Únete al servidor de soporte`,
                                     emoji: "❓",
                                     value: "support-linkspanel",
                                 },
                                 {
-                                    label: `Invite Bot`,
-                                    description: `Invite Bot to your server`,
+                                    label: `Invitar al bot`,
+                                    description: `Invita al bot a tu servidor`,
                                     emoji: "📨",
                                     value: "invite-linkspanel",
                                 },
                                 {
-                                    label: `Community Server`,
-                                    description: `Join the community server!`,
+                                    label: `Servidor de la comunidad`,
+                                    description: `¡Únete al servidor de la comunidad!`,
                                     emoji: "🌍",
                                     value: "community-linkspanel",
                                 },
                                 {
                                     label: `Top.gg`,
-                                    description: `Show the top.gg link`,
+                                    description: `Muestra el enlace de top.gg`,
                                     emoji: "📃",
                                     value: "top.gg-linkspanel",
                                 },
@@ -45,14 +45,14 @@ module.exports = async (client) => {
                     .addComponents(
 
                         new Discord.ButtonBuilder()
-                            .setLabel("Vote Now")
+                            .setLabel("Vota ahora")
                             .setURL("https://top.gg/bot/798144456528363550/vote")
                             .setStyle(Discord.ButtonStyle.Link),
                     );
 
                 client.embed({
-                    title: `📃・Bot Vote`,
-                    desc: `Vote for Bot on top.gg`,
+                    title: `📃・Votar por el bot`,
+                    desc: `Vota por Bot en top.gg`,
                     image: "https://cdn.discordapp.com/attachments/843487478881976381/874694192755007509/Bot_banner_vote.jpg",
                     url: "https://top.gg/bot/798144456528363550/vote",
                     components: [row2, row],

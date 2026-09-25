@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
 
     client.embed(
       {
-        title: `${client.emotes.normal.check}・Suggestion accepted`,
+        title: `${client.emotes.normal.check}・Sugerencia aceptada`,
         desc: `\`\`\`${embedData.description}\`\`\``,
         color: client.config.colors.succes,
         author: {
@@ -49,11 +49,11 @@ module.exports = async (client, interaction, args) => {
         client
           .embed(
             {
-              title: `${client.emotes.normal.check}・Suggestion accepted`,
-              desc: `Your suggestion in ${interaction.guild.name} has been accepted by a moderator!`,
+              title: `${client.emotes.normal.check}・Sugerencia aceptada`,
+              desc: `¡Un moderador aceptó tu sugerencia en ${interaction.guild.name}!`,
               fields: [
                 {
-                  name: `💬┆Suggestion`,
+                  name: `💬┆Sugerencia`,
                   value: `${embedData.description}`,
                 },
               ],
@@ -66,10 +66,10 @@ module.exports = async (client, interaction, args) => {
 
     client.succNormal(
       {
-        text: "Suggestion successfully accepted",
+        text: "Sugerencia aceptada correctamente",
         fields: [
           {
-            name: `💬┆Suggestion`,
+            name: `💬┆Sugerencia`,
             value: `${embedData.description}`,
           },
         ],
@@ -80,7 +80,7 @@ module.exports = async (client, interaction, args) => {
   } else {
     client.errNormal(
       {
-        error: `No suggestion channel set! Please do the setup`,
+        error: `¡No hay canal de sugerencias configurado! Haz la configuración primero`,
         type: "editreply",
       },
       interaction,

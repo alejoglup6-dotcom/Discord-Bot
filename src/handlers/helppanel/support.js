@@ -12,29 +12,29 @@ module.exports = async (client) => {
                     .addComponents(
                         new Discord.StringSelectMenuBuilder()
                             .setCustomId('Bot-helppanel')
-                            .setPlaceholder('❌┆Nothing selected')
+                            .setPlaceholder('❌┆Nada seleccionado')
                             .addOptions([
                                 {
-                                    label: `Commands`,
-                                    description: `Show the commands of ${client.user.username}!`,
+                                    label: `Comandos`,
+                                    description: `¡Muestra los comandos de ${client.user.username}!`,
                                     emoji: "💻",
                                     value: "commands-Bothelp",
                                 },
                                 {
-                                    label: `Invite`,
-                                    description: `Invite ${client.user.username} to your server`,
+                                    label: `Invitar`,
+                                    description: `Invita a ${client.user.username} a tu servidor`,
                                     emoji: "📨",
                                     value: "invite-Bothelp",
                                 },
                                 {
-                                    label: `Support server`,
-                                    description: `Join the suppport server`,
+                                    label: `Servidor de soporte`,
+                                    description: `Únete al servidor de soporte`,
                                     emoji: "❓",
                                     value: "support-Bothelp",
                                 },
                                 {
-                                    label: `Changelogs`,
-                                    description: `Show the ${client.user.username} changelogs`,
+                                    label: `Registro de cambios`,
+                                    description: `Muestra el registro de cambios de ${client.user.username}`,
                                     emoji: "📃",
                                     value: "changelogs-Bothelp",
                                 },
@@ -44,14 +44,14 @@ module.exports = async (client) => {
                 let row = new Discord.ActionRowBuilder()
                     .addComponents(
                         new Discord.ButtonBuilder()
-                            .setLabel("Support server")
+                            .setLabel("Servidor de soporte")
                             .setURL(client.config.discord.serverInvite)
                             .setStyle(Discord.ButtonStyle.Link),
                     );
 
                 client.embed({
-                    title: `❓・Support`,
-                    desc: `Make your server even better with ${client.user.username}!`,
+                    title: `❓・Soporte`,
+                    desc: `¡Mejora tu servidor aún más con ${client.user.username}!`,
                     image: "https://cdn.discordapp.com/attachments/843487478881976381/874694194474668052/Bot_banner_invite.jpg",
                     url: client.config.discord.serverInvite,
                     components: [row2, row],

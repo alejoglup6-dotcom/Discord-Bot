@@ -5,58 +5,58 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("bot")
-    .setDescription("Information about the bot")
+    .setDescription("Información sobre el bot")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the bot category commands"),
+        .setDescription("Información sobre los comandos de la categoría bot"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("info")
-        .setDescription("Get information about the bot"),
+        .setDescription("Consigue información sobre el bot"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("ping").setDescription("See the bots ping in ms"),
+      subcommand.setName("ping").setDescription("Mira el ping del bot en ms"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("changelogs")
-        .setDescription("Get the changelogs of the bot"),
+        .setDescription("Mira el registro de cambios del bot"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("donate").setDescription("Get the Bot donate link"),
+      subcommand.setName("donate").setDescription("Consigue el enlace de donación de Bot"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("links")
-        .setDescription("Get a message with all the Bot links"),
+        .setDescription("Recibe un mensaje con todos los enlaces de Bot"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("owner").setDescription("Get info about the owner"),
+      subcommand.setName("owner").setDescription("Información sobre el dueño"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("socials").setDescription("Get the Bot socials"),
+      subcommand.setName("socials").setDescription("Mira las redes sociales de Bot"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("support")
-        .setDescription("Get an invite of the support server"),
+        .setDescription("Consigue una invitación al servidor de soporte"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("uptime").setDescription("Show the bot uptime"),
+      subcommand.setName("uptime").setDescription("Muestra el tiempo activo del bot"),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("vote").setDescription("See if you have voted"),
+      subcommand.setName("vote").setDescription("Mira si ya votaste"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("feedback")
-        .setDescription("Send your opinion about the bot to the developers")
+        .setDescription("Envía tu opinión sobre el bot a los desarrolladores")
         .addStringOption((option) =>
           option
             .setName("feedback")
-            .setDescription("Your feedback")
+            .setDescription("Tus comentarios")
             .setRequired(true),
         ),
     ),

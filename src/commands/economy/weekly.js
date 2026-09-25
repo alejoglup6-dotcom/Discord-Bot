@@ -29,10 +29,10 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.succNormal(
           {
-            text: `You've collected your weekly reward!`,
+            text: `¡Recogiste tu recompensa semanal!`,
             fields: [
               {
-                name: `${client.emotes.economy.coins}┆Amount`,
+                name: `${client.emotes.economy.coins}┆Cantidad`,
                 value: `$${amount}`,
                 inline: true,
               },

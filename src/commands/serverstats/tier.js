@@ -17,7 +17,7 @@ module.exports = async (client, interaction, args) => {
   channelName = channelName.replace(`{emoji}`, "🥇");
   channelName = channelName.replace(
     `{name}`,
-    `Tier: ${tier[interaction.guild.premiumTier] || "0"}`,
+    `Nivel: ${tier[interaction.guild.premiumTier] || "0"}`,
   );
 
   await interaction.guild.channels
@@ -46,10 +46,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `Tier count created!`,
+          text: `¡Se creó el contador de nivel de boost!`,
           fields: [
             {
-              name: `📘┆Channel`,
+              name: `📘┆Canal`,
               value: `${channel}`,
             },
           ],

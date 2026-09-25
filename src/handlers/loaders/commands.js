@@ -5,6 +5,7 @@ const { Chalk } = require('chalk');
 const chalk = new Chalk();
 
 const fs = require('fs');
+const { localize } = require('../../config/localizations');
 
 module.exports = (client) => {
     const interactionLogs = new Discord.WebhookClient({
@@ -25,7 +26,10 @@ module.exports = (client) => {
         for (const file of commandFiles) {
             const command = require(`${process.cwd()}/src/interactions/${dirs}/${file}`);
             client.commands.set(command.data.name, command);
-            commands.push(command.data);
+            // Todos los comandos usan datos del servidor, así que solo se muestran en servidores
+            const json = localize(command.data.toJSON());
+            json.contexts = [0];
+            commands.push(json);
         };
     });
 
@@ -34,7 +38,7 @@ module.exports = (client) => {
     (async () => {
         try {
             const embed = new Discord.EmbedBuilder()
-                .setDescription(`Started refreshing application (/) commands.`)
+                .setDescription(`Empezando a actualizar los comandos de aplicación (/).`)
                 .setColor(client.config.colors.normal)
             interactionLogs.send({
                 username: 'Bot Logs',
@@ -47,7 +51,7 @@ module.exports = (client) => {
             )
 
             const embedFinal = new Discord.EmbedBuilder()
-                .setDescription(`Successfully reloaded ${commands.length} application (/) commands.`)
+                .setDescription(`Se recargaron correctamente ${commands.length} comandos de aplicación (/).`)
                 .setColor(client.config.colors.normal)
             interactionLogs.send({
                 username: 'Bot Logs',

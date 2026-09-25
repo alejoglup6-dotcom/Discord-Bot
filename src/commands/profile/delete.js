@@ -12,7 +12,7 @@ module.exports = async (client, interaction, args) => {
       }).then(() => {
         client.succNormal(
           {
-            text: "Your profile was deleted!",
+            text: "¡Tu perfil se eliminó!",
             type: "editreply",
           },
           interaction,
@@ -21,7 +21,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       client.errNormal(
         {
-          error: "No profile found!",
+          error: "¡No se encontró ningún perfil!",
           type: "editreply",
         },
         interaction,

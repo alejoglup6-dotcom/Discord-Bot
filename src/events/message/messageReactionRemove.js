@@ -38,17 +38,17 @@ module.exports = async (client, reaction, user) => {
           image: image,
           fields: [
             {
-              name: `⭐┇Stars`,
+              name: `⭐┇Estrellas`,
               value: `${reaction.count}`,
               inline: true
             },
             {
-              name: `🗨️┇Message`,
-              value: `[Jump to the message](${reaction.message.url})`,
+              name: `🗨️┇Mensaje`,
+              value: `[Ir al mensaje](${reaction.message.url})`,
               inline: true
             },
             {
-              name: `👤┇Author`,
+              name: `👤┇Autor`,
               value: `${reaction.message.author} (${reaction.message.author.tag})`,
               inline: true
             }

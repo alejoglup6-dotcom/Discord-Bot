@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   channelName = channelName.replace(`{emoji}`, "🎤");
   channelName = channelName.replace(
     `{name}`,
-    `Stage Channels: ${interaction.guild.channels.cache.filter((channel) => channel.type === Discord.ChannelType.GuildStageVoice).size || 0}`,
+    `Canales de escenario: ${interaction.guild.channels.cache.filter((channel) => channel.type === Discord.ChannelType.GuildStageVoice).size || 0}`,
   );
 
   await interaction.guild.channels
@@ -39,10 +39,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `Stage channel count created!`,
+          text: `¡Se creó el contador de canales de escenario!`,
           fields: [
             {
-              name: `📘┆Channel`,
+              name: `📘┆Canal`,
               value: `${channel}`,
             },
           ],

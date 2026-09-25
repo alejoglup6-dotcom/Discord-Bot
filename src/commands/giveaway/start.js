@@ -16,13 +16,13 @@ module.exports = async (client, interaction, args) => {
       prize: `${client.emotes.normal.gift} - ${prize}`,
       lastChance: {
         enabled: true,
-        content: `${client.emotes.normal.error} **LAST CHANCE TO ENTER !** ${client.emotes.normal.error}`,
+        content: `${client.emotes.normal.error} **¡ÚLTIMA OPORTUNIDAD PARA PARTICIPAR!** ${client.emotes.normal.error}`,
         threshold: 5000,
         embedColor: "#FF0000",
       },
       pauseOptions: {
         isPaused: false,
-        content: "⚠️ **THIS GIVEAWAY IS PAUSED !** ⚠️",
+        content: "⚠️ **¡ESTE SORTEO ESTÁ EN PAUSA!** ⚠️",
         unPauseAfter: null,
         embedColor: "#FFFF00",
       },
@@ -30,18 +30,18 @@ module.exports = async (client, interaction, args) => {
       hostedBy: interaction.user,
       thumbnail: interaction.guild.iconURL({ dynamic: true, size: 1024 }),
       messages: {
-        giveaway: `${client.emotes.normal.party} **GIVEAWAY** ${client.emotes.normal.party}`,
-        giveawayEnded: `${client.emotes.normal.party} **GIVEAWAY ENDED** ${client.emotes.normal.party}`,
-        drawing: `${client.emotes.normal.clock} - Ends at: **{timestamp}**!`,
-        inviteToParticipate: "React with 🥳 to enter the giveaway! \n",
+        giveaway: `${client.emotes.normal.party} **SORTEO** ${client.emotes.normal.party}`,
+        giveawayEnded: `${client.emotes.normal.party} **SORTEO TERMINADO** ${client.emotes.normal.party}`,
+        drawing: `${client.emotes.normal.clock} - Termina: **{timestamp}**`,
+        inviteToParticipate: "¡Reacciona con 🥳 para participar en el sorteo! \n",
         winMessage:
-          "Congratulations {winners}! You just won the **{this.prize}** !",
-        embedFooter: "Giveaway!",
+          "¡Felicidades {winners}! ¡Acabas de ganar **{this.prize}**!",
+        embedFooter: "¡Sorteo!",
         embedColor: client.config.colors.normal,
-        noWinner: "Giveaway canceled, not enough participants. \n",
-        hostedBy: `${client.emotes.normal.party} - Hosted by: {this.hostedBy}`,
-        winners: `🏆 - Winner(s)`,
-        endedAt: "Ends at:",
+        noWinner: "Sorteo cancelado, no hay suficientes participantes. \n",
+        hostedBy: `${client.emotes.normal.party} - Organizado por: {this.hostedBy}`,
+        winners: `🏆 - Ganador(es)`,
+        endedAt: "Termina:",
         units: {
           seconds: "seconds",
           minutes: "minutes",
@@ -54,7 +54,7 @@ module.exports = async (client, interaction, args) => {
     .then((gData) => {
       client.succNormal(
         {
-          text: `Giveaway started in ${gchannel}`,
+          text: `Sorteo iniciado en ${gchannel}`,
           type: "ephemeraledit",
         },
         interaction,

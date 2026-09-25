@@ -61,23 +61,23 @@ module.exports = async (client, oldMember, newMember) => {
 
     const oldRoles = removedRoles.size
         ? removedRoles.map((role) => `<@&${role.id}>`).join(" ")
-        : "No roles removed";
+        : "No se quitaron roles";
 
     const newRoles = addedRoles.size
         ? addedRoles.map((role) => `<@&${role.id}>`).join(" ")
-        : "No roles added";
+        : "No se añadieron roles";
 
     await client.embed(
         {
-            title: `${newMember.user.username} roles adjusted`,
-            desc: `Roles were changed for <@${newMember.id}>`,
+            title: `Roles de ${newMember.user.username} cambiados`,
+            desc: `Se cambiaron los roles de <@${newMember.id}>`,
             fields: [
                 {
-                    name: "> Removed Roles",
+                    name: "> Roles quitados",
                     value: oldRoles,
                 },
                 {
-                    name: "> Added Roles",
+                    name: "> Roles añadidos",
                     value: newRoles,
                 },
             ],

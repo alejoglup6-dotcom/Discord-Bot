@@ -11,18 +11,18 @@ module.exports = async (client, interaction, args) => {
   if (rawLeaderboard.length < 1)
     return client.errNormal(
       {
-        error: `No rewards found!`,
+        error: `¡No se encontraron recompensas!`,
         type: "editreply",
       },
       interaction,
     );
 
   const lb = rawLeaderboard.map(
-    (e) => `**${e.Messages} messages** - <@&${e.Role}>`,
+    (e) => `**${e.Messages} mensajes** - <@&${e.Role}>`,
   );
 
   await client.createLeaderboard(
-    `💬・Message rewards - ${interaction.guild.name}`,
+    `💬・Recompensas por mensajes - ${interaction.guild.name}`,
     lb,
     interaction,
   );

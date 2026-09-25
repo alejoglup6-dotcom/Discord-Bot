@@ -5,89 +5,89 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("messages")
-    .setDescription("View the message system")
+    .setDescription("Mira el sistema de mensajes")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the message category commands"),
+        .setDescription("Información sobre los comandos de esta categoría"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("add")
-        .setDescription("Add messages to a user")
+        .setDescription("Añade mensajes a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount of messages")
+            .setDescription("Escribe una cantidad de mensajes")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("deletereward")
-        .setDescription("Delete a message reward")
+        .setDescription("Elimina una recompensa por mensajes")
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount of messages")
+            .setDescription("Escribe una cantidad de mensajes")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("createreward")
-        .setDescription("Create a message reward")
+        .setDescription("Crea una recompensa por mensajes")
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount of messages")
+            .setDescription("Escribe una cantidad de mensajes")
             .setRequired(true),
         )
         .addRoleOption((option) =>
           option
             .setName("role")
-            .setDescription("The role for this reward")
+            .setDescription("El rol de esta recompensa")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("remove")
-        .setDescription("Remove messages to a user")
+        .setDescription("Quita mensajes a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount of messages")
+            .setDescription("Escribe una cantidad de mensajes")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("show")
-        .setDescription("See your messages")
+        .setDescription("Mira tus mensajes")
         .addUserOption((option) =>
-          option.setName("user").setDescription("Select a user"),
+          option.setName("user").setDescription("Elige un usuario"),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("rewards").setDescription("Show all message rewards"),
+      subcommand.setName("rewards").setDescription("Muestra todas las recompensas por mensajes"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("leaderboard")
-        .setDescription("See the message leaderboard"),
+        .setDescription("Mira la clasificación de mensajes"),
     ),
   /**
    * @param {Client} client

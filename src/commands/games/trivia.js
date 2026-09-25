@@ -34,23 +34,23 @@ module.exports = async (client, interaction, args) => {
     const absoluteDays = Math.floor(time / (1000 * 60 * 60 * 24));
     const d = absoluteDays
       ? absoluteDays === 1
-        ? "1 day"
-        : `${absoluteDays} days`
+        ? "1 día"
+        : `${absoluteDays} días`
       : null;
     const h = absoluteHours
       ? absoluteHours === 1
-        ? "1 hour"
-        : `${absoluteHours} hours`
+        ? "1 hora"
+        : `${absoluteHours} horas`
       : null;
     const m = absoluteMinutes
       ? absoluteMinutes === 1
-        ? "1 minute"
-        : `${absoluteMinutes} minutes`
+        ? "1 minuto"
+        : `${absoluteMinutes} minutos`
       : null;
     const s = absoluteSeconds
       ? absoluteSeconds === 1
-        ? "1 second"
-        : `${absoluteSeconds} seconds`
+        ? "1 segundo"
+        : `${absoluteSeconds} segundos`
       : null;
     const absoluteTime = [];
     if (d) absoluteTime.push(d);
@@ -158,7 +158,7 @@ module.exports = async (client, interaction, args) => {
         fields: [
           {
             name: `${decode(question.question)}`,
-            value: `You only have **${convertTime(60000)}** to guess the answer!\n\n${opt}`,
+            value: `¡Solo tienes **${convertTime(60000)}** para adivinar la respuesta!\n\n${opt}`,
           },
         ],
         components: [row],
@@ -230,7 +230,7 @@ module.exports = async (client, interaction, args) => {
           await client.embed(
             {
               title: `🕹️・Trivia`,
-              desc: `GG, It was **${question.options[question.correct]}**. You gave the correct answer in **${time}**.`,
+              desc: `GG, era **${question.options[question.correct]}**. Diste la respuesta correcta en **${time}**.`,
               components: [
                 { type: 1, components: [fbtn1, fbtn2, fbtn3, fbtn4] },
               ],
@@ -327,7 +327,7 @@ module.exports = async (client, interaction, args) => {
           await client.embed(
             {
               title: `🕹️・Trivia`,
-              desc: `Better luck next time! The correct answer was **${question.options[question.correct]}**.`,
+              desc: `¡Más suerte la próxima vez! La respuesta correcta era **${question.options[question.correct]}**.`,
               components: [
                 { type: 1, components: [fbtn1, fbtn2, fbtn3, fbtn4] },
               ],
@@ -382,7 +382,7 @@ module.exports = async (client, interaction, args) => {
           client.embed(
             {
               title: `🕹️・Trivia`,
-              desc: `Better luck next time! The correct answer was **${question.options[question.correct]}**.`,
+              desc: `¡Más suerte la próxima vez! La respuesta correcta era **${question.options[question.correct]}**.`,
               components: [
                 { type: 1, components: [fbtn1, fbtn2, fbtn3, fbtn4] },
               ],

@@ -13,8 +13,8 @@ module.exports = async (client, interaction, args) => {
       if (data) {
         client.embed(
           {
-            title: "💬・Messages",
-            desc: `**${user.tag}** has \`${data.Messages}\` messages`,
+            title: "💬・Mensajes",
+            desc: `**${user.tag}** tiene \`${data.Messages}\` mensajes`,
             type: "editreply",
           },
           interaction,
@@ -22,8 +22,8 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.embed(
           {
-            title: "💬・Messages",
-            desc: `**${user.tag}** has \`0\` messages`,
+            title: "💬・Mensajes",
+            desc: `**${user.tag}** tiene \`0\` mensajes`,
             type: "editreply",
           },
           interaction,

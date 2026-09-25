@@ -9,7 +9,7 @@ module.exports = async (client, interaction, args) => {
 
   if (!user)
     return client.errUsage(
-      { usage: "hug [mention user]", type: "editreply" },
+      { usage: "hug [mencionar usuario]", type: "editreply" },
       interaction,
     );
 
@@ -19,14 +19,14 @@ module.exports = async (client, interaction, args) => {
     data = response.data;
   } catch (e) {
     return client.errNormal(
-      { error: "An error occured!", type: "editreply" },
+      { error: "¡Ocurrió un error!", type: "editreply" },
       interaction,
     );
   }
 
   client.embed(
     {
-      title: `${interaction.user.tag} hugs ${user.tag}`,
+      title: `${interaction.user.tag} abraza a ${user.tag}`,
       image: `${data.link}`,
       type: "editreply",
     },

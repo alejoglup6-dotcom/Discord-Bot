@@ -8,12 +8,12 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `👤・Membercount`,
-      desc: `View the total number of members in the server`,
+      title: `👤・Cantidad de miembros`,
+      desc: `Mira el número total de miembros del servidor`,
       fields: [
         {
-          name: `👤┆Members`,
-          value: `${members.filter((member) => !member.user.bot).size} members`,
+          name: `👤┆Miembros`,
+          value: `${members.filter((member) => !member.user.bot).size} miembros`,
           inline: true,
         },
         {
@@ -23,7 +23,7 @@ module.exports = async (client, interaction, args) => {
         },
         {
           name: `📘┆Total`,
-          value: `${interaction.guild.memberCount} members`,
+          value: `${interaction.guild.memberCount} miembros`,
           inline: true,
         },
       ],

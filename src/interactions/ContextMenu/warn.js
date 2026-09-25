@@ -24,7 +24,7 @@ module.exports = {
     if (perms === false) {
       client.errNormal(
         {
-          error: `You don't have the required permissions to use this command!`,
+          error: `¡No tienes los permisos necesarios para usar este comando!`,
           type: "ephemeral",
         },
         interaction,
@@ -33,14 +33,14 @@ module.exports = {
     }
     // Create modal to give a reason
     const modal = new Discord.ModalBuilder()
-      .setTitle("Warn")
+      .setTitle("Advertir")
       .setCustomId("warn")
       .addComponents(
         new Discord.ActionRowBuilder().addComponents(
           new Discord.TextInputBuilder()
             .setCustomId("reason")
-            .setPlaceholder("Reason")
-            .setLabel("Reason")
+            .setPlaceholder("Razón")
+            .setLabel("Razón")
             .setMinLength(1)
             .setStyle(Discord.TextInputStyle.Short)
             .setMaxLength(100),
@@ -105,16 +105,16 @@ module.exports = {
     client
       .embed(
         {
-          title: `🔨・Warn`,
-          desc: `You've been warned in **${interaction.guild.name}**`,
+          title: `🔨・Advertencia`,
+          desc: `Recibiste una advertencia en **${interaction.guild.name}**`,
           fields: [
             {
-              name: "👤┆Moderator",
+              name: "👤┆Moderador",
               value: interaction.user.tag,
               inline: true,
             },
             {
-              name: "📄┆Reason",
+              name: "📄┆Razón",
               value: submitted.fields.getTextInputValue("reason"),
               inline: true,
             },
@@ -132,20 +132,20 @@ module.exports = {
     );
     client.succNormal(
       {
-        text: `User has received a warning!`,
+        text: `¡El usuario recibió una advertencia!`,
         fields: [
           {
-            name: "👤┆User",
+            name: "👤┆Usuario",
             value: `${member}`,
             inline: true,
           },
           {
-            name: "👤┆Moderator",
+            name: "👤┆Moderador",
             value: `${interaction.user}`,
             inline: true,
           },
           {
-            name: "📄┆Reason",
+            name: "📄┆Razón",
             value: submitted.fields.getTextInputValue("reason"),
             inline: false,
           },

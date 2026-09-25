@@ -9,7 +9,7 @@ module.exports = async (client, interaction, args) => {
   if (country.length > 50)
     return client.errNormal(
       {
-        error: "Your origin cannot be longer than 50 characters",
+        error: "Tu origen no puede tener más de 50 caracteres",
         type: "editreply",
       },
       interaction,
@@ -22,10 +22,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: "Your origin is set",
+          text: "Tu origen se guardó",
           fields: [
             {
-              name: "🌍┆Country",
+              name: "🌍┆País",
               value: `\`\`\`${country}\`\`\``,
               inline: true,
             },
@@ -37,7 +37,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

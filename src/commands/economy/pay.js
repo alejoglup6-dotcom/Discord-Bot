@@ -13,14 +13,14 @@ module.exports = async (client, interaction, args) => {
 
   if (amount < 0)
     return client.errNormal(
-      { error: `You can't pay negative money!`, type: "editreply" },
+      { error: `¡No puedes pagar dinero negativo!`, type: "editreply" },
       interaction,
     );
 
   if (user.id == interaction.user.id) {
     return client.errNormal(
       {
-        error: "You cannot pay money to yourself!",
+        error: "¡No puedes pagarte a ti mismo!",
         type: "editreply",
       },
       interaction,
@@ -34,7 +34,7 @@ module.exports = async (client, interaction, args) => {
     if (data) {
       if (data.Money < parseInt(amount))
         return client.errNormal(
-          { error: `You don't have that much money!`, type: "editreply" },
+          { error: `¡No tienes tanto dinero!`, type: "editreply" },
           interaction,
         );
 
@@ -47,15 +47,15 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `You have payed some money to a user!`,
+          text: `¡Le pagaste dinero a un usuario!`,
           fields: [
             {
-              name: `👤┆User`,
+              name: `👤┆Usuario`,
               value: `$${user}`,
               inline: true,
             },
             {
-              name: `${client.emotes.economy.coins}┆Amount`,
+              name: `${client.emotes.economy.coins}┆Cantidad`,
               value: `$${amount}`,
               inline: true,
             },
@@ -66,7 +66,7 @@ module.exports = async (client, interaction, args) => {
       );
     } else {
       client.errNormal(
-        { text: `You don't have any money!`, type: "editreply" },
+        { text: `¡No tienes dinero!`, type: "editreply" },
         interaction,
       );
     }

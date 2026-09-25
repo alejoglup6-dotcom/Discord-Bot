@@ -24,7 +24,7 @@ module.exports = async (client, interaction, args) => {
       if (data) {
         return client.errNormal(
           {
-            error: "This level already has a reward!",
+            error: "¡Este nivel ya tiene una recompensa!",
             type: "editreply",
           },
           interaction,
@@ -38,10 +38,10 @@ module.exports = async (client, interaction, args) => {
 
         client.succNormal(
           {
-            text: `Level reward created`,
+            text: `Recompensa de nivel creada`,
             fields: [
               {
-                name: "📘┆Role",
+                name: "📘┆Rol",
                 value: `${role}`,
                 inline: true,
               },

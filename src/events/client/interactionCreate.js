@@ -13,13 +13,16 @@ const CommandsSchema = require("../../database/models/customCommandAdvanced");
  * @returns 
  */
 module.exports = async (client, interaction) => {
+  // El bot solo funciona dentro de servidores
+  if (!interaction.guild) return;
+
   // Commands
   if (interaction.isCommand() || interaction.isUserContextMenuCommand()) {
     banSchema.findOne({ User: interaction.user.id }).then(async (data) => {
       if (data) {
         return client.errNormal(
           {
-            error: "You have been banned by the developers of this bot",
+            error: "Los desarrolladores de este bot te banearon",
             type: "ephemeral",
           },
           interaction,
@@ -60,14 +63,14 @@ module.exports = async (client, interaction) => {
             } else if (cmdx.Action == "DM") {
               await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
               interaction.editReply({
-                content: "I have sent you something in your DMs",
+                content: "Te envié algo por MD",
               });
               return interaction.user
                 .send({ content: cmdx.Responce })
                 .catch((e) => {
                   client.errNormal(
                     {
-                      error: "I can't DM you, maybe you have DM turned off!",
+                      error: "No puedo enviarte MD, ¡quizá los tienes desactivados!",
                       type: "ephemeral",
                     },
                     interaction,
@@ -90,8 +93,8 @@ module.exports = async (client, interaction) => {
 
           return client.embed(
             {
-              title: `❓・Help panel`,
-              desc: `Get help with the commands in \`${interaction.commandName}\` \n\n${commands}`,
+              title: `❓・Panel de ayuda`,
+              desc: `Consigue ayuda con los comandos de \`${interaction.commandName}\` \n\n${commands}`,
               type: "reply",
             },
             interaction,
@@ -141,7 +144,7 @@ module.exports = async (client, interaction) => {
                   client
                     .succNormal(
                       {
-                        text: "You have been successfully verified!",
+                        text: "¡Te verificaste correctamente!",
                       },
                       interaction.user,
                     )
@@ -158,7 +161,7 @@ module.exports = async (client, interaction) => {
                   client
                     .errNormal(
                       {
-                        error: "You have answered the captcha incorrectly!",
+                        error: "¡Respondiste mal el captcha!",
                         type: "editreply",
                       },
                       interaction,
@@ -178,7 +181,7 @@ module.exports = async (client, interaction) => {
       client.errNormal(
         {
           error:
-            "Verify is disabled in this server! Or you are using the wrong channel!",
+            "¡La verificación está desactivada en este servidor! O estás usando el canal equivocado",
           type: "ephemeral",
         },
         interaction,
@@ -206,7 +209,7 @@ module.exports = async (client, interaction) => {
               .catch((error) => {});
 
             interaction.reply({
-              content: `<@&${roleid}> was removed!`,
+              content: `¡Se quitó <@&${roleid}>!`,
               flags: Discord.MessageFlags.Ephemeral,
             });
           } else {
@@ -216,7 +219,7 @@ module.exports = async (client, interaction) => {
               .catch((error) => {});
 
             interaction.reply({
-              content: `<@&${roleid}> was added!`,
+              content: `¡Se añadió <@&${roleid}>!`,
               flags: Discord.MessageFlags.Ephemeral,
             });
           }
@@ -254,7 +257,7 @@ module.exports = async (client, interaction) => {
 
             if (i + 1 === interaction.values.length) {
               interaction.reply({
-                content: `I have updated the following roles for you: ${roles}`,
+                content: `Actualicé los siguientes roles: ${roles}`,
                 flags: Discord.MessageFlags.Ephemeral,
               });
             }

@@ -12,7 +12,7 @@ module.exports = async (client, interaction, args) => {
       if (!isHexcolor(color))
         return client.errNormal(
           {
-            error: "You did not specify an hex color! Example: #ff0000",
+            error: "¡No indicaste un color hexadecimal! Ejemplo: #ff0000",
             type: "editreply",
           },
           interaction,
@@ -23,7 +23,7 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: "Your favorite color is set",
+          text: "Tu color favorito se guardó",
           fields: [
             {
               name: "🎨┆Color",
@@ -38,7 +38,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

@@ -13,7 +13,7 @@ module.exports = async (client, interaction, args) => {
   if (!channel)
     return client.errNormal(
       {
-        error: `You're not in a voice channel!`,
+        error: `¡No estás en un canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -22,7 +22,7 @@ module.exports = async (client, interaction, args) => {
   if (player && channel.id !== player?.voiceId)
     return client.errNormal(
       {
-        error: `You're not in the same voice channel!`,
+        error: `¡No estás en el mismo canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -31,7 +31,7 @@ module.exports = async (client, interaction, args) => {
   if (!player || !player.queue.current)
     return client.errNormal(
       {
-        error: "There are no songs playing in this server",
+        error: "No se está reproduciendo ninguna canción en este servidor",
         type: "editreply",
       },
       interaction,
@@ -47,14 +47,16 @@ module.exports = async (client, interaction, args) => {
 
   try {
     lyrics = await lyricsFinder(search, "");
-    if (!lyrics) lyrics = `No lyrics found for ${search} :x:`;
+    if (!lyrics) lyrics = `No se encontró la letra de ${search} :x:`;
   } catch (error) {
-    lyrics = `No lyrics found for ${search} :x:`;
+    lyrics = `No se encontró la letra de ${search} :x:`;
   }
+
+  if (lyrics.length > 4096) lyrics = `${lyrics.slice(0, 4093)}...`;
 
   client.embed(
     {
-      title: `${client.emotes.normal.music}・Lyrics For ${search}`,
+      title: `${client.emotes.normal.music}・Letra de ${search}`,
       desc: lyrics,
       type: "editreply",
     },

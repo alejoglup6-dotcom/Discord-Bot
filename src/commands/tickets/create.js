@@ -8,9 +8,9 @@ const ticketMessageConfig = require("../../database/models/ticketMessage");
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
-  let reason = "Not given";
+  let reason = "No indicada";
   if (interaction.options)
-    reason = interaction.options.getString("reason") || "Not given";
+    reason = interaction.options.getString("reason") || "No indicada";
 
   let type = "reply";
   if (interaction.isCommand()) type = "editreply";
@@ -26,7 +26,7 @@ module.exports = async (client, interaction, args) => {
         if (interaction.isCommand()) {
           return client.errNormal(
             {
-              error: "Ticket limit reached. 1/1",
+              error: "Límite de tickets alcanzado. 1/1",
               type: "ephemeraledit",
             },
             interaction,
@@ -34,7 +34,7 @@ module.exports = async (client, interaction, args) => {
         } else
           return client.errNormal(
             {
-              error: "Ticket limit reached. 1/1",
+              error: "Límite de tickets alcanzado. 1/1",
               type: "ephemeral",
             },
             interaction,
@@ -59,7 +59,7 @@ module.exports = async (client, interaction, args) => {
 
               try {
                 var openTicket =
-                  "Thanks for creating a ticket! \nSupport will be with you shortly \n\n🔒 - Close ticket \n✋ - Claim ticket \n📝 - Save transcript \n🔔 - Send a notification";
+                  "¡Gracias por crear un ticket! \nEl equipo de soporte te atenderá en breve \n\n🔒 - Cerrar ticket \n✋ - Reclamar ticket \n📝 - Guardar transcripción \n🔔 - Enviar una notificación";
                 let ticketMessageData = await ticketMessageConfig.findOne({
                   Guild: interaction.guild.id,
                 });
@@ -92,8 +92,8 @@ module.exports = async (client, interaction, args) => {
                 client
                   .embed(
                     {
-                      title: `${client.emotes.animated.loading}・Progress`,
-                      desc: `Your ticket is being created...`,
+                      title: `${client.emotes.animated.loading}・Progreso`,
+                      desc: `Se está creando tu ticket...`,
                       type: "ephemeral",
                     },
                     interaction,
@@ -110,7 +110,7 @@ module.exports = async (client, interaction, args) => {
                     if (ticketCategory == undefined) {
                       return client.errNormal(
                         {
-                          error: "Do the setup!",
+                          error: "¡Haz la configuración!",
                           type: type,
                         },
                         interaction,
@@ -157,21 +157,21 @@ module.exports = async (client, interaction, args) => {
                         .then(async (channel) => {
                           client.embed(
                             {
-                              title: `⚙️・System`,
-                              desc: `Ticket has been created`,
+                              title: `⚙️・Sistema`,
+                              desc: `El ticket se creó`,
                               fields: [
                                 {
-                                  name: "👤┆Creator",
+                                  name: "👤┆Creador",
                                   value: `${interaction.user}`,
                                   inline: true,
                                 },
                                 {
-                                  name: "📂┆Channel",
+                                  name: "📂┆Canal",
                                   value: `${channel}`,
                                   inline: true,
                                 },
                                 {
-                                  name: "⏰┆Created at",
+                                  name: "⏰┆Creado el",
                                   value: `<t:${(Date.now() / 1000).toFixed(0)}:f>`,
                                   inline: true,
                                 },
@@ -192,21 +192,21 @@ module.exports = async (client, interaction, args) => {
                           if (logsChannel) {
                             client.embed(
                               {
-                                title: `📝・Open ticket`,
-                                desc: `A new ticket has been created`,
+                                title: `📝・Ticket abierto`,
+                                desc: `Se creó un nuevo ticket`,
                                 fields: [
                                   {
-                                    name: "👤┆Creator",
+                                    name: "👤┆Creador",
                                     value: `${interaction.user.tag} (${interaction.user.id})`,
                                     inline: false,
                                   },
                                   {
-                                    name: "📂┆Channel",
-                                    value: `${channel.name} is found at ${channel}`,
+                                    name: "📂┆Canal",
+                                    value: `${channel.name} está en ${channel}`,
                                     inline: false,
                                   },
                                   {
-                                    name: "⏰┆Created at",
+                                    name: "⏰┆Creado el",
                                     value: `<t:${(Date.now() / 1000).toFixed(0)}:F>`,
                                     inline: false,
                                   },
@@ -221,17 +221,17 @@ module.exports = async (client, interaction, args) => {
                               desc: openTicket,
                               fields: [
                                 {
-                                  name: "👤┆Creator",
+                                  name: "👤┆Creador",
                                   value: `${interaction.user}`,
                                   inline: true,
                                 },
                                 {
-                                  name: "📄┆Subject",
+                                  name: "📄┆Asunto",
                                   value: `${reason}`,
                                   inline: true,
                                 },
                                 {
-                                  name: "⏰┆Created at",
+                                  name: "⏰┆Creado el",
                                   value: `<t:${(Date.now() / 1000).toFixed(0)}:F>`,
                                   inline: true,
                                 },
@@ -247,7 +247,7 @@ module.exports = async (client, interaction, args) => {
               } catch (err) {
                 client.errNormal(
                   {
-                    error: "Do the setup!",
+                    error: "¡Haz la configuración!",
                     type: type,
                   },
                   interaction,
@@ -257,7 +257,7 @@ module.exports = async (client, interaction, args) => {
             } else {
               return client.errNormal(
                 {
-                  error: "Do the setup!",
+                  error: "¡Haz la configuración!",
                   type: type,
                 },
                 interaction,

@@ -12,16 +12,16 @@ module.exports = async (client, reaction, user) => {
       
     if (reaction.message.author.id === user.id)
       return client.errNormal({
-        error: `You cannot star your own messages\n\nMessage: ${reaction.message.cleanContent}`,
+        error: `No puedes darle estrella a tus propios mensajes\n\nMensaje: ${reaction.message.cleanContent}`,
       }, client.users.cache.get(user.id));
 
     if (reaction.message.author.bot) return client.errNormal({
-      error: `You cannot star bot messages\n\nMessage: ${reaction.message.cleanContent}`,
+      error: `No puedes darle estrella a mensajes de bots\n\nMensaje: ${reaction.message.cleanContent}`,
     }, client.users.cache.get(user.id));
 
     const starboardChannel = reaction.message.guild.channels.cache.get(data.Channel);
     if (!starboardChannel) return client.errNormal({
-      error: `No star channel found! Run the channel setup`,
+      error: `¡No hay canal de estrellas! Haz la configuración del canal`,
     }, client.users.cache.get(user.id));
 
     const fetch = await starboardChannel.messages.fetch({ limit: 100 });
@@ -41,17 +41,17 @@ module.exports = async (client, reaction, user) => {
         image: image,
         fields: [
           {
-            name: `⭐┇Stars`,
+            name: `⭐┇Estrellas`,
             value: `${reaction.count}`,
             inline: true
           },
           {
-            name: `🗨️┇Message`,
-            value: `[Jump to the message](${reaction.message.url})`,
+            name: `🗨️┇Mensaje`,
+            value: `[Ir al mensaje](${reaction.message.url})`,
             inline: true
           },
           {
-            name: `👤┇Author`,
+            name: `👤┇Autor`,
             value: `${reaction.message.author} (${reaction.message.author.tag})`,
             inline: true
           }
@@ -63,7 +63,7 @@ module.exports = async (client, reaction, user) => {
     if (!stars) {
       const image = reaction.message.attachments.size > 0 ? await extension(reaction, reaction.message.attachments.first()?.url) : "";
       if (image === "" && reaction.message.cleanContent.length < 1) return client.errNormal({
-        error: `You cannot star an empty message`,
+        error: `No puedes darle estrella a un mensaje vacío`,
         type: 'ephemeral'
       }, reaction.message);
 
@@ -73,17 +73,17 @@ module.exports = async (client, reaction, user) => {
         image: image,
         fields: [
           {
-            name: `⭐┇Stars`,
+            name: `⭐┇Estrellas`,
             value: `${reaction.count}`,
             inline: true
           },
           {
-            name: `🗨️┇Message`,
-            value: `[Jump to the message](${reaction.message.url})`,
+            name: `🗨️┇Mensaje`,
+            value: `[Ir al mensaje](${reaction.message.url})`,
             inline: true
           },
           {
-            name: `👤┇Author`,
+            name: `👤┇Autor`,
             value: `${reaction.message.author} (${reaction.message.author.tag})`,
             inline: true
           }

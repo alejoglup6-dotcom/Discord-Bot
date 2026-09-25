@@ -13,7 +13,7 @@ module.exports = async (client, interaction, args) => {
       if (!data)
         return client.errNormal(
           {
-            error: `No data found!`,
+            error: `¡No se encontraron datos!`,
             type: "editreply",
           },
           interaction,
@@ -26,7 +26,7 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `**${category}** successfully deleted!`,
+          text: `¡**${category}** se eliminó correctamente!`,
           type: "editreply",
         },
         interaction,

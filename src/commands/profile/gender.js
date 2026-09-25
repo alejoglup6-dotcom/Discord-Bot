@@ -9,22 +9,22 @@ module.exports = async (client, interaction, args) => {
     if (data) {
       const menu = new Discord.StringSelectMenuBuilder()
         .setCustomId("gender-setup")
-        .setPlaceholder("❌┆Nothing selected")
+        .setPlaceholder("❌┆Nada seleccionado")
         .addOptions(
           {
             emoji: "👨",
-            label: `Male`,
-            value: `Male`,
+            label: `Hombre`,
+            value: `Hombre`,
           },
           {
             emoji: "👩",
-            label: `Female`,
-            value: `Female`,
+            label: `Mujer`,
+            value: `Mujer`,
           },
           {
             emoji: "👪",
-            label: `Other`,
-            value: `Other`,
+            label: `Otro`,
+            value: `Otro`,
           },
         );
 
@@ -33,7 +33,7 @@ module.exports = async (client, interaction, args) => {
       client
         .embed(
           {
-            desc: `Select a gender`,
+            desc: `Elige un género`,
             type: "editreply",
             components: [row],
           },
@@ -55,7 +55,7 @@ module.exports = async (client, interaction, args) => {
 
                 client.succNormal(
                   {
-                    text: "Set your gender to " + i.values[0],
+                    text: "Tu género se guardó como " + i.values[0],
                     type: "editreply",
                     components: [],
                   },
@@ -67,7 +67,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "No profile found! Open a profile with createprofile",
+          error: "¡No se encontró ningún perfil! Crea uno con createprofile",
           type: "editreply",
         },
         interaction,

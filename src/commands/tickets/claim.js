@@ -41,7 +41,7 @@ module.exports = async (client, interaction, args) => {
           if (ticketCategory == undefined) {
             return client.errNormal(
               {
-                error: "Do the ticket setup!",
+                error: "¡Haz la configuración de tickets!",
                 type: type,
               },
               interaction,
@@ -54,7 +54,7 @@ module.exports = async (client, interaction, args) => {
 
             return client.simpleEmbed(
               {
-                desc: `You will now be assisted by <@!${interaction.user.id}>`,
+                desc: `Ahora te atenderá <@!${interaction.user.id}>`,
                 type: type,
               },
               interaction,
@@ -62,7 +62,7 @@ module.exports = async (client, interaction, args) => {
           } else {
             client.errNormal(
               {
-                error: "This is not a ticket!",
+                error: "¡Esto no es un ticket!",
                 type: type,
               },
               interaction,
@@ -71,7 +71,7 @@ module.exports = async (client, interaction, args) => {
         } else {
           client.errNormal(
             {
-              error: "Ticket has already been claimed!",
+              error: "¡El ticket ya fue reclamado!",
               type: "ephemeral",
             },
             interaction,
@@ -80,7 +80,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         return client.errNormal(
           {
-            error: "Do the ticket setup!",
+            error: "¡Haz la configuración de tickets!",
             type: type,
           },
           interaction,
@@ -89,7 +89,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       return client.errNormal(
         {
-          error: "You are not allowed to claim your own ticket!",
+          error: "¡No puedes reclamar tu propio ticket!",
           type: "ephemeral",
         },
         interaction,

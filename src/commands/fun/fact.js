@@ -1,22 +1,26 @@
 const Discord = require("discord.js");
-const request = require("request");
+const axios = require("axios");
+const translate = require("@iamtraction/google-translate");
 
 /**
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
-  var url = "https://uselessfacts.jsph.pl/random.json?language=en";
+  const { data } = await axios.get(
+    "https://uselessfacts.jsph.pl/api/v2/facts/random?language=en",
+  );
 
-  request(url, function (err, response, body) {
-    fact = JSON.parse(body).text;
+  // La API solo da datos en inglés; si la traducción falla se muestra el original
+  const fact = await translate(data.text, { to: "es" })
+    .then((res) => res.text)
+    .catch(() => data.text);
 
-    client.embed(
-      {
-        title: `😂・Fact`,
-        desc: fact,
-        type: "editreply",
-      },
-      interaction,
-    );
-  });
+  client.embed(
+    {
+      title: `😂・Dato`,
+      desc: fact,
+      type: "editreply",
+    },
+    interaction,
+  );
 };

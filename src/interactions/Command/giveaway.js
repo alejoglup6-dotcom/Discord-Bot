@@ -7,20 +7,20 @@ const ms = require("ms");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("giveaway")
-    .setDescription("Host a giveaway in your server")
+    .setDescription("Organiza un sorteo en tu servidor")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the giveaway category commands"),
+        .setDescription("Información sobre los comandos de la categoría sorteos"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("start")
-        .setDescription("Start a giveaway")
+        .setDescription("Inicia un sorteo")
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Channel where the giveaway should be")
+            .setDescription("Canal donde debe ir el sorteo")
             .setRequired(true)
             .addChannelTypes(
               ChannelType.GuildText,
@@ -30,30 +30,30 @@ module.exports = {
         .addStringOption((option) =>
           option
             .setName("duration")
-            .setDescription("Duration of the giveaway")
+            .setDescription("Duración del sorteo")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("winners")
-            .setDescription("The number of giveaway winners")
+            .setDescription("El número de ganadores del sorteo")
             .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("prize")
-            .setDescription("The giveaway prize")
+            .setDescription("El premio del sorteo")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("drop")
-        .setDescription("Start a drop giveaway")
+        .setDescription("Inicia un sorteo relámpago")
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Channel where the giveaway should be")
+            .setDescription("Canal donde debe ir el sorteo")
             .setRequired(true)
             .addChannelTypes(
               ChannelType.GuildText,
@@ -63,85 +63,85 @@ module.exports = {
         .addStringOption((option) =>
           option
             .setName("duration")
-            .setDescription("Duration of the giveaway")
+            .setDescription("Duración del sorteo")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("winners")
-            .setDescription("The number of giveaway winners")
+            .setDescription("El número de ganadores del sorteo")
             .setRequired(true),
         )
         .addStringOption((option) =>
           option
             .setName("prize")
-            .setDescription("The giveaway prize")
+            .setDescription("El premio del sorteo")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("reroll")
-        .setDescription("Reroll a giveaway")
+        .setDescription("Vuelve a sortear un sorteo")
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription("Giveaway message ID")
+            .setDescription("ID del mensaje del sorteo")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("end")
-        .setDescription("End a giveaway")
+        .setDescription("Termina un sorteo")
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription("Giveaway message ID")
+            .setDescription("ID del mensaje del sorteo")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("edit")
-        .setDescription("Edit the time of a giveaway")
+        .setDescription("Edita la duración de un sorteo")
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription("Giveaway message ID")
+            .setDescription("ID del mensaje del sorteo")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("delete")
-        .setDescription("Delete a giveaway")
+        .setDescription("Elimina un sorteo")
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription("Giveaway message ID")
+            .setDescription("ID del mensaje del sorteo")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("pause")
-        .setDescription("Pause a giveaway")
+        .setDescription("Pausa un sorteo")
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription("Giveaway message ID")
+            .setDescription("ID del mensaje del sorteo")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("unpause")
-        .setDescription("Unpause a giveaway")
+        .setDescription("Reanuda un sorteo")
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription("Giveaway message ID")
+            .setDescription("ID del mensaje del sorteo")
             .setRequired(true),
         ),
     ),

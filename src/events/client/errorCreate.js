@@ -16,10 +16,10 @@ module.exports = (client, err, command, interaction) => {
     let embed = new Discord.EmbedBuilder()
         .setTitle(`🚨・${password}`)
         .addFields(
-            { name: "✅┇Guild", value: `${interaction.guild.name} (${interaction.guild.id})`},
-            { name: `💻┇Command`, value: `${command}`},
+            { name: "✅┇Servidor", value: `${interaction.guild.name} (${interaction.guild.id})`},
+            { name: `💻┇Comando`, value: `${command}`},
             { name: `💬┇Error`, value: `\`\`\`${err}\`\`\``},
-            { name: `📃┇Stack error`, value: `\`\`\`${err.stack.substr(0, 1018)}\`\`\``},
+            { name: `📃┇Pila del error`, value: `\`\`\`${String(err?.stack ?? err).slice(0, 1018)}\`\`\``},
         )
         .setColor(client.config.colors.normal)
     errorlog.send({
@@ -31,24 +31,24 @@ module.exports = (client, err, command, interaction) => {
     let row = new Discord.ActionRowBuilder()
         .addComponents(
             new Discord.ButtonBuilder()
-                .setLabel("Support server")
+                .setLabel("Servidor de soporte")
                 .setURL(client.config.discord.serverInvite)
                 .setStyle(Discord.ButtonStyle.Link),
         );
 
     client.embed({
         title: `${client.emotes.normal.error}・Error`,
-        desc: `There was an error executing this command`,
+        desc: `Hubo un error al ejecutar este comando`,
         color: client.config.colors.error,
         fields: [
             {
-                name: `Error code`,
+                name: `Código de error`,
                 value: `\`${password}\``,
                 inline: true,
             },
             {
-                name: `What now?`,
-                value: `You can contact the developers by joining the support server`,
+                name: `¿Y ahora qué?`,
+                value: `Puedes contactar a los desarrolladores uniéndote al servidor de soporte`,
                 inline: true,
             }
         ],
@@ -57,17 +57,17 @@ module.exports = (client, err, command, interaction) => {
     }, interaction).catch(() => {
         client.embed({
             title: `${client.emotes.normal.error}・Error`,
-            desc: `There was an error executing this command`,
+            desc: `Hubo un error al ejecutar este comando`,
             color: client.config.colors.error,
             fields: [
                 {
-                    name: `Error code`,
+                    name: `Código de error`,
                     value: `\`${password}\``,
                     inline: true,
                 },
                 {
-                    name: `What now?`,
-                    value: `You can contact the developers by joining the support server`,
+                    name: `¿Y ahora qué?`,
+                    value: `Puedes contactar a los desarrolladores uniéndote al servidor de soporte`,
                     inline: true,
                 }
             ],

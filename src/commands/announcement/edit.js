@@ -11,7 +11,7 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `📢・Announcement!`,
+      title: `📢・¡Anuncio!`,
       desc: message,
       type: "edit",
     },
@@ -20,7 +20,7 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `Announcement has been edit successfully!`,
+      text: `¡El anuncio se editó correctamente!`,
       type: "ephemeraledit",
     },
     interaction,

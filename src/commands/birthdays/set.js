@@ -7,18 +7,18 @@ const Schema = require("../../database/models/birthday");
  */
 module.exports = async (client, interaction, args) => {
   const months = {
-    1: "January",
-    2: "February",
-    3: "March",
-    4: "April",
-    5: "May",
-    6: "June",
-    7: "July",
-    8: "August",
-    9: "September",
-    10: "October",
-    11: "November",
-    12: "December",
+    1: "enero",
+    2: "febrero",
+    3: "marzo",
+    4: "abril",
+    5: "mayo",
+    6: "junio",
+    7: "julio",
+    8: "agosto",
+    9: "septiembre",
+    10: "octubre",
+    11: "noviembre",
+    12: "diciembre",
   };
 
   const day = interaction.options.getNumber("day");
@@ -27,7 +27,7 @@ module.exports = async (client, interaction, args) => {
   if (!day || day > 31)
     return client.errNormal(
       {
-        error: "Wrong day format!",
+        error: "¡Formato de día incorrecto!",
         type: "editreply",
       },
       interaction,
@@ -36,7 +36,7 @@ module.exports = async (client, interaction, args) => {
   if (!month || month > 12)
     return client.errNormal(
       {
-        error: "Wrong month format!",
+        error: "¡Formato de mes incorrecto!",
         type: "editreply",
       },
       interaction,
@@ -44,7 +44,7 @@ module.exports = async (client, interaction, args) => {
 
   const convertedDay = suffixes(day);
   const convertedMonth = months[month];
-  const birthdayString = `${convertedDay} of ${convertedMonth}`;
+  const birthdayString = `${convertedDay} de ${convertedMonth}`;
 
   Schema.findOne({
     Guild: interaction.guild.id,
@@ -64,10 +64,10 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `Birthday has been set successfully`,
+      text: `El cumpleaños se guardó correctamente`,
       fields: [
         {
-          name: `${client.emotes.normal.birthday}┆Birthday`,
+          name: `${client.emotes.normal.birthday}┆Cumpleaños`,
           value: `${birthdayString}`,
         },
       ],
@@ -80,13 +80,5 @@ module.exports = async (client, interaction, args) => {
 function suffixes(number) {
   const converted = number.toString();
 
-  const lastChar = converted.charAt(converted.length - 1);
-
-  return lastChar == "1"
-    ? `${converted}st`
-    : lastChar == "2"
-      ? `${converted}nd`
-      : lastChar == "3"
-        ? `${converted}rd`
-        : `${converted}th`;
+  return converted;
 }

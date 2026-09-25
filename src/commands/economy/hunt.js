@@ -17,19 +17,19 @@ module.exports = async (client, interaction, args) => {
 
   let timeout = 60000;
   let hunt = [
-    "Rabbit :rabbit:",
-    "Frog :frog:",
-    "Monkey :monkey:",
-    "Chicken :chicken:",
-    "Wolf :wolf:",
-    "Rooster :rooster:",
-    "Turkey :turkey:",
-    "Chipmunk :chipmunk:",
-    "Water Buffalo :water_buffalo:",
-    "Race Horse :racehorse:",
-    "Pig :pig:",
-    "Snake :snake:",
-    "Cow :cow:",
+    "Conejo :rabbit:",
+    "Rana :frog:",
+    "Mono :monkey:",
+    "Pollo :chicken:",
+    "Lobo :wolf:",
+    "Gallo :rooster:",
+    "Pavo :turkey:",
+    "Ardilla :chipmunk:",
+    "Búfalo de agua :water_buffalo:",
+    "Caballo de carreras :racehorse:",
+    "Cerdo :pig:",
+    "Serpiente :snake:",
+    "Vaca :cow:",
   ];
 
   let randn = rand(0, parseInt(hunt.length));
@@ -50,7 +50,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.succNormal(
           {
-            text: `You've hunted and gotten a ${huntToWin}`,
+            text: `Cazaste y conseguiste: ${huntToWin}`,
             type: "editreply",
           },
           interaction,

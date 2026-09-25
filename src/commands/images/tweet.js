@@ -16,7 +16,7 @@ module.exports = async (client, interaction, args) => {
       .then(async (json) => {
         client.embed(
           {
-            title: `🖼・Tweet`,
+            title: `🖼・Tuit`,
             image: json.message,
             type: "editreply",
           },

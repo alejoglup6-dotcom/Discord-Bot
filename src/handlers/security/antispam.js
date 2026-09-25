@@ -35,8 +35,8 @@ module.exports = async (client) => {
                                 message.delete();
 
                                 client.embed({
-                                    title: `${client.emotes.normal.error}・Moderator`,
-                                    desc: `It is not allowed to spam in this server!`,
+                                    title: `${client.emotes.normal.error}・Moderación`,
+                                    desc: `¡No está permitido hacer spam en este servidor!`,
                                     color: client.config.colors.error,
                                     content: `${message.author}`
                                 }, message.channel)

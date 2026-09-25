@@ -7,67 +7,67 @@ const Schema = require("../../database/models/music");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("family")
-    .setDescription("Create a family in Bot")
+    .setDescription("Crea una familia en Bot")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the family category commands"),
+        .setDescription("Información sobre los comandos de la categoría familia"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("adopt")
-        .setDescription("Adopt a member")
+        .setDescription("Adopta a un miembro")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("delete").setDescription("Delete your family!"),
+      subcommand.setName("delete").setDescription("¡Elimina tu familia!"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("disown")
-        .setDescription("Disown one of your children or a parent")
+        .setDescription("Deshereda a uno de tus hijos o a uno de tus padres")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("divorce")
-        .setDescription("Divorce your partner")
+        .setDescription("Divórciate de tu pareja")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("family")
-        .setDescription(`See who's in someone's family!`)
+        .setDescription(`¡Mira quién está en la familia de alguien!`)
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(false),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("propose")
-        .setDescription("Marry a member")
+        .setDescription("Cásate con un miembro")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         ),
     ),

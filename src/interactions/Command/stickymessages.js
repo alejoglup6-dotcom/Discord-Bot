@@ -6,45 +6,45 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("stickymessages")
-    .setDescription("Manage the sticky messages")
+    .setDescription("Gestiona los mensajes fijos")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
         .setDescription(
-          "Get information about the sticky messages category commands",
+          "Información sobre los comandos de la categoría mensajes fijos",
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("stick")
-        .setDescription("Stick an message in a channel")
+        .setDescription("Fija un mensaje en un canal")
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Select a channel")
+            .setDescription("Elige un canal")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText),
         )
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription("Your sticky messages")
+            .setDescription("Tu mensaje fijo")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("messages")
-        .setDescription("Show all your guild sticky messages"),
+        .setDescription("Muestra todos los mensajes fijos del servidor"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("unstick")
-        .setDescription("Unstick an message in a channel")
+        .setDescription("Quita un mensaje fijo de un canal")
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Select a channel")
+            .setDescription("Elige un canal")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText),
         ),

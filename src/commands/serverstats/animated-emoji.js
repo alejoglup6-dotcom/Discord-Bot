@@ -23,7 +23,7 @@ module.exports = async (client, interaction, args) => {
   channelName = channelName.replace(`{emoji}`, "🤡");
   channelName = channelName.replace(
     `{name}`,
-    `Animated Emojis: ${Animated || "0"}`,
+    `Emojis animados: ${Animated || "0"}`,
   );
 
   await interaction.guild.channels
@@ -52,10 +52,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `Animated emoji's count created!`,
+          text: `¡Se creó el contador de emojis animados!`,
           fields: [
             {
-              name: `📘┆Channel`,
+              name: `📘┆Canal`,
               value: `${channel}`,
             },
           ],

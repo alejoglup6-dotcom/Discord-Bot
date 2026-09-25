@@ -15,7 +15,7 @@ module.exports = async (client, interaction, args) => {
 
   if (!user)
     return client.errUsage(
-      { usage: "hack [mention user]", type: "editreply" },
+      { usage: "hack [mencionar usuario]", type: "editreply" },
       interaction,
     );
 
@@ -30,8 +30,8 @@ module.exports = async (client, interaction, args) => {
   client
     .embed(
       {
-        title: "💻・Hacking",
-        desc: `The hack on ${user} started...`,
+        title: "💻・Hackeando",
+        desc: `Empezó el hackeo a ${user}...`,
         type: "editreply",
       },
       interaction,
@@ -41,8 +41,8 @@ module.exports = async (client, interaction, args) => {
       client
         .embed(
           {
-            title: "💻・Hacking",
-            desc: `Searching for user information..`,
+            title: "💻・Hackeando",
+            desc: `Buscando información del usuario..`,
             type: "edit",
           },
           msg,
@@ -52,8 +52,8 @@ module.exports = async (client, interaction, args) => {
           client
             .embed(
               {
-                title: "💻・Hacking",
-                desc: `Searching for IP address...`,
+                title: "💻・Hackeando",
+                desc: `Buscando la dirección IP...`,
                 type: "edit",
               },
               msg,
@@ -63,11 +63,11 @@ module.exports = async (client, interaction, args) => {
               client
                 .embed(
                   {
-                    title: "💻・Hacking",
-                    desc: `The users ip address was found!`,
+                    title: "💻・Hackeando",
+                    desc: `¡Se encontró la dirección IP del usuario!`,
                     fields: [
                       {
-                        name: "🔗┆IP Adress",
+                        name: "🔗┆Dirección IP",
                         value: `\`\`\`127.0.0.1\`\`\``,
                         inline: true,
                       },
@@ -81,8 +81,8 @@ module.exports = async (client, interaction, args) => {
                   client
                     .embed(
                       {
-                        title: "💻・Hacking",
-                        desc: `Searching for Discord login...`,
+                        title: "💻・Hackeando",
+                        desc: `Buscando el inicio de sesión de Discord...`,
                         type: "edit",
                       },
                       msg,
@@ -92,15 +92,15 @@ module.exports = async (client, interaction, args) => {
                       client
                         .embed(
                           {
-                            title: "💻・Hacking",
-                            desc: `The users discord login was found!`,
+                            title: "💻・Hackeando",
+                            desc: `¡Se encontró el inicio de sesión de Discord del usuario!`,
                             fields: [
                               {
-                                name: "📨┆Email",
+                                name: "📨┆Correo",
                                 value: `\`\`\`${user.username}onDiscord@gmail.com\`\`\``,
                               },
                               {
-                                name: "🔑┆Password",
+                                name: "🔑┆Contraseña",
                                 value: `\`\`\`${password}\`\`\``,
                               },
                             ],
@@ -113,8 +113,8 @@ module.exports = async (client, interaction, args) => {
                           client
                             .embed(
                               {
-                                title: "💻・Hacking",
-                                desc: `Search for Discord token...`,
+                                title: "💻・Hackeando",
+                                desc: `Buscando el token de Discord...`,
                                 type: "edit",
                               },
                               msg,
@@ -130,8 +130,8 @@ module.exports = async (client, interaction, args) => {
                                   client
                                     .embed(
                                       {
-                                        title: "💻・Hacking",
-                                        desc: `The users discord account token was found!`,
+                                        title: "💻・Hackeando",
+                                        desc: `¡Se encontró el token de la cuenta de Discord del usuario!`,
                                         fields: [
                                           {
                                             name: "🔧┆Token",
@@ -148,8 +148,8 @@ module.exports = async (client, interaction, args) => {
                                       client
                                         .embed(
                                           {
-                                            title: "💻・Hacking",
-                                            desc: `Reporting account to Discord for breaking TOS...`,
+                                            title: "💻・Hackeando",
+                                            desc: `Denunciando la cuenta a Discord por romper los TOS...`,
                                             type: "edit",
                                           },
                                           msg,
@@ -158,14 +158,14 @@ module.exports = async (client, interaction, args) => {
                                           wait(180);
                                           client.succNormal(
                                             {
-                                              text: `${user} is succesfully hacked. All the user's information was send to your dm`,
+                                              text: `${user} fue hackeado con éxito. Toda la información del usuario se envió a tus MD`,
                                               type: "edit",
                                             },
                                             msg,
                                           );
                                           client.embed(
                                             {
-                                              title: "😂・Pranked",
+                                              title: "😂・Era una broma",
                                               image:
                                                 "https://media1.tenor.com/images/05006ed09075a0d6965383797c3cea00/tenor.gif?itemid=17987788",
                                             },

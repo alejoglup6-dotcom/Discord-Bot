@@ -7,61 +7,61 @@ module.exports = {
 
   data: new SlashCommandBuilder()
     .setName("images")
-    .setDescription("See all the images in Bot")
+    .setDescription("Mira todas las imágenes de Bot")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the message category commands"),
+        .setDescription("Información sobre los comandos de esta categoría"),
     )
     .addSubcommandGroup((group) =>
       group
         .setName("memes")
-        .setDescription("See all the memes in Bot")
+        .setDescription("Mira todos los memes de Bot")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("clyde")
-            .setDescription("Get a custom clyde message")
+            .setDescription("Crea un mensaje personalizado de Clyde")
             .addStringOption((option) =>
               option
                 .setName("text")
-                .setDescription("Enter a text")
+                .setDescription("Escribe un texto")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("drake")
-            .setDescription("Create a drake meme")
+            .setDescription("Crea un meme de Drake")
             .addStringOption((option) =>
               option
                 .setName("text1")
-                .setDescription("Enter a text")
+                .setDescription("Escribe un texto")
                 .setRequired(true),
             )
             .addStringOption((option) =>
               option
                 .setName("text2")
-                .setDescription("Enter a text")
+                .setDescription("Escribe un texto")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("meme").setDescription("Get a random meme"),
+          subcommand.setName("meme").setDescription("Recibe un meme aleatorio"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("pooh")
-            .setDescription("Create a pooh meme")
+            .setDescription("Crea un meme de Pooh")
             .addStringOption((option) =>
               option
                 .setName("text1")
-                .setDescription("Enter a text")
+                .setDescription("Escribe un texto")
                 .setRequired(true),
             )
             .addStringOption((option) =>
               option
                 .setName("text2")
-                .setDescription("Enter a text")
+                .setDescription("Escribe un texto")
                 .setRequired(true),
             ),
         )
@@ -69,28 +69,28 @@ module.exports = {
           subcommand
             .setName("trumptweet")
             .setDescription(
-              "Display's a custom tweet from Donald Trump with the message provided",
+              "Muestra un tuit personalizado de Donald Trump con el mensaje indicado",
             )
             .addStringOption((option) =>
               option
                 .setName("text")
-                .setDescription("Enter a text")
+                .setDescription("Escribe un texto")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("tweet")
-            .setDescription("Tweet something on twitter")
+            .setDescription("Tuitea algo")
             .addStringOption((option) =>
               option
                 .setName("text")
-                .setDescription("Enter a text")
+                .setDescription("Escribe un texto")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("wasted").setDescription("GTA wasted overlay"),
+          subcommand.setName("wasted").setDescription("Efecto 'wasted' de GTA"),
         ),
     )
 
@@ -99,29 +99,29 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("animals")
-        .setDescription("See all the animal images in Bot")
+        .setDescription("Mira todas las imágenes de animales de Bot")
         .addSubcommand((subcommand) =>
-          subcommand.setName("bird").setDescription("Get a random bird"),
+          subcommand.setName("bird").setDescription("Recibe un pájaro aleatorio"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("cat").setDescription("Get a random cat"),
+          subcommand.setName("cat").setDescription("Recibe un gato aleatorio"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("dog").setDescription("Get a random dog"),
+          subcommand.setName("dog").setDescription("Recibe un perro aleatorio"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("fox").setDescription("Get a random fox"),
+          subcommand.setName("fox").setDescription("Recibe un zorro aleatorio"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("koala").setDescription("Get a random koala"),
+          subcommand.setName("koala").setDescription("Recibe un koala aleatorio"),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("panda").setDescription("Get a random panda"),
+          subcommand.setName("panda").setDescription("Recibe un panda aleatorio"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("redpanda")
-            .setDescription("Get a random redpanda"),
+            .setDescription("Recibe un panda rojo aleatorio"),
         ),
     )
 
@@ -130,192 +130,192 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("user")
-        .setDescription("See all the user images in Bot")
+        .setDescription("Mira todas las imágenes de usuarios de Bot")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("ad")
-            .setDescription("Generate a ad image")
+            .setDescription("Genera una imagen de anuncio")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want the ad from")
+                .setDescription("El usuario para el anuncio")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("avatar")
-            .setDescription("See a users avatar")
+            .setDescription("Mira el avatar de un usuario")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want the avatar from")
+                .setDescription("El usuario cuyo avatar quieres ver")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("banner")
-            .setDescription("See a users banner")
+            .setDescription("Mira el banner de un usuario")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want the banner from")
+                .setDescription("El usuario cuyo banner quieres ver")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("bed")
-            .setDescription("Creates an bed meme")
+            .setDescription("Crea un meme de la cama")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want to sleep with")
+                .setDescription("El usuario con el que quieres dormir")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("blur")
-            .setDescription("Gives an blurred image")
+            .setDescription("Genera una imagen desenfocada")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want the blurred image from")
+                .setDescription("El usuario cuya imagen quieres desenfocar")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("burn")
-            .setDescription("Gives an burned image")
+            .setDescription("Genera una imagen quemada")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want the burned image from")
+                .setDescription("El usuario cuya imagen quieres quemar")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("clown")
-            .setDescription("Generate a clown image")
+            .setDescription("Genera una imagen de payaso")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want make a clown")
+                .setDescription("El usuario que quieres convertir en payaso")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("colorify")
-            .setDescription("Generate a colorify image")
+            .setDescription("Genera una imagen coloreada")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want the colorified image from")
+                .setDescription("El usuario cuya imagen quieres colorear")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("darkness")
-            .setDescription("Gives an darkness image")
+            .setDescription("Genera una imagen oscurecida")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want the darkness image from")
+                .setDescription("El usuario cuya imagen quieres oscurecer")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("facepalm")
-            .setDescription("Generate an facepalm image")
+            .setDescription("Genera una imagen de facepalm")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want the facepalm image from")
+                .setDescription("El usuario para el facepalm")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("greyscale")
-            .setDescription("Make an image more grey")
+            .setDescription("Pon una imagen en escala de grises")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want to make more gray")
+                .setDescription("El usuario cuya imagen quieres en gris")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("invert")
-            .setDescription("Invert a image")
+            .setDescription("Invierte los colores de una imagen")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want the inverted image from")
+                .setDescription("El usuario cuya imagen quieres invertir")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("kiss")
-            .setDescription("Kiss a user")
+            .setDescription("Besa a un usuario")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want to kiss")
+                .setDescription("El usuario al que quieres besar")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("podium")
-            .setDescription("Make a user podium")
+            .setDescription("Crea un podio de usuarios")
             .addUserOption((option) =>
               option
                 .setName("user1")
-                .setDescription("The first podium user")
+                .setDescription("El primer usuario del podio")
                 .setRequired(true),
             )
             .addUserOption((option) =>
               option
                 .setName("user2")
-                .setDescription("The second podium user")
+                .setDescription("El segundo usuario del podio")
                 .setRequired(true),
             )
             .addUserOption((option) =>
               option
                 .setName("user3")
-                .setDescription("The third podium user")
+                .setDescription("El tercer usuario del podio")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("spank")
-            .setDescription("Spank a user")
+            .setDescription("Dale una nalgada a un usuario")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want to spank")
+                .setDescription("El usuario al que quieres darle una nalgada")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("wanted")
-            .setDescription("Wanted a user")
+            .setDescription("Pon a un usuario en un cartel de 'se busca'")
             .addUserOption((option) =>
               option
                 .setName("user")
-                .setDescription("The user you want to wanted")
+                .setDescription("El usuario para el cartel de 'se busca'")
                 .setRequired(true),
             ),
         ),
@@ -326,44 +326,44 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("extra")
-        .setDescription("See all the extra images in Bot")
+        .setDescription("Mira todas las imágenes extra de Bot")
         .addSubcommand((subcommand) =>
-          subcommand.setName("car").setDescription("Get a random car"),
+          subcommand.setName("car").setDescription("Recibe un coche aleatorio"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("glass")
-            .setDescription("Overlays a glass texture over an image"),
+            .setDescription("Pon una textura de cristal sobre una imagen"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("image")
-            .setDescription("Show a image in an embed")
+            .setDescription("Muestra una imagen en un embed")
             .addChannelOption((option) =>
               option
                 .setName("channel")
-                .setDescription("Channel where the embed should be")
+                .setDescription("Canal donde debe ir el embed")
                 .setRequired(true)
                 .addChannelTypes(ChannelType.GuildText),
             )
             .addStringOption((option) =>
               option
                 .setName("image-url")
-                .setDescription("Enter a image url")
+                .setDescription("Escribe la URL de una imagen")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
-          subcommand.setName("triggered").setDescription("Trigger yourself"),
+          subcommand.setName("triggered").setDescription("Ponte 'triggered'"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("wallpaper")
-            .setDescription("Returns a wallpaper from HDQWalls")
+            .setDescription("Devuelve un fondo de pantalla de HDQWalls")
             .addStringOption((option) =>
               option
                 .setName("name")
-                .setDescription("Enter a name")
+                .setDescription("Escribe un nombre")
                 .setRequired(true),
             ),
         ),

@@ -9,11 +9,11 @@ module.exports = async (client, interaction, args) => {
 
   client.succNormal(
     {
-      text: `I have found the following for: \`${name}\``,
+      text: `Encontré lo siguiente para: \`${name}\``,
       fields: [
         {
-          name: `🔗┇Link`,
-          value: `[Click here to see the link](${link})`,
+          name: `🔗┇Enlace`,
+          value: `[Haz clic aquí para ver el enlace](${link})`,
           inline: true,
         },
       ],

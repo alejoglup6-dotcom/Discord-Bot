@@ -5,21 +5,21 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("report")
-    .setDescription("Report a bug or user to the developers")
+    .setDescription("Reporta un bug o un usuario a los desarrolladores")
     .addStringOption((option) =>
       option
         .setName("type")
-        .setDescription("The type of your report")
+        .setDescription("El tipo de reporte")
         .setRequired(true)
         .addChoices(
           { name: "Bug", value: "bug" },
-          { name: "User", value: "user" },
+          { name: "Usuario", value: "user" },
         ),
     )
     .addStringOption((option) =>
       option
         .setName("description")
-        .setDescription("Description with your report")
+        .setDescription("Descripción de tu reporte")
         .setRequired(true),
     ),
   /**
@@ -40,11 +40,11 @@ module.exports = {
 
     if (type == "bug") {
       const embed = new Discord.EmbedBuilder()
-        .setTitle(`📣・New bug report!`)
+        .setTitle(`📣・¡Nuevo reporte de bug!`)
         .addFields(
-          { name: "Report category", value: "Bug", inline: true },
+          { name: "Categoría del reporte", value: "Bug", inline: true },
           {
-            name: "Submitted by",
+            name: "Enviado por",
             value: `${interaction.user.tag}`,
             inline: true,
           },
@@ -58,18 +58,18 @@ module.exports = {
 
       client.succNormal(
         {
-          text: `Bug successfully sent to the developers!`,
+          text: `¡Bug enviado correctamente a los desarrolladores!`,
           type: "ephemeraledit",
         },
         interaction,
       );
     } else if (type == "user") {
       const embed = new Discord.EmbedBuilder()
-        .setTitle(`📣・New user report!`)
+        .setTitle(`📣・¡Nuevo reporte de usuario!`)
         .addFields(
-          { name: "Report category", value: "User", inline: true },
+          { name: "Categoría del reporte", value: "Usuario", inline: true },
           {
-            name: "Submitted by",
+            name: "Enviado por",
             value: `${interaction.user.tag}`,
             inline: true,
           },
@@ -83,7 +83,7 @@ module.exports = {
 
       client.succNormal(
         {
-          text: `User report successfully sent to the developers!`,
+          text: `¡Reporte de usuario enviado correctamente a los desarrolladores!`,
           type: "ephemeraledit",
         },
         interaction,

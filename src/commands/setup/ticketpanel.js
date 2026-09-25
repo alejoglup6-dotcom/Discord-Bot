@@ -35,7 +35,7 @@ module.exports = async (client, interaction, args) => {
 
         client.succNormal(
           {
-            text: `Ticket panel has been set up successfully!`,
+            text: `¡El panel de tickets se configuró correctamente!`,
             type: "editreply",
           },
           interaction,
@@ -43,7 +43,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: `Run the ticket setup first!`,
+            error: `¡Primero ejecuta la configuración de tickets!`,
             type: "editreply",
           },
           interaction,

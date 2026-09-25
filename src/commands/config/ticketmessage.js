@@ -25,20 +25,20 @@ module.exports = async (client, interaction, args) => {
 
       if (data) {
         data.openTicket =
-          "Thanks for creating a ticket! \nSupport will be with you shortly \n\n🔒 - Close ticket \n✋ - Claim ticket \n📝 - Save transcript \n🔔 - Send a notification";
+          "¡Gracias por crear un ticket! \nEl equipo de soporte te atenderá en breve \n\n🔒 - Cerrar ticket \n✋ - Reclamar ticket \n📝 - Guardar transcripción \n🔔 - Enviar una notificación";
         data.save();
 
         client.succNormal(
           {
-            text: `The ticket message has been set successfully`,
+            text: `El mensaje del ticket se guardó correctamente`,
             fields: [
               {
-                name: `📘┆Message type`,
+                name: `📘┆Tipo de mensaje`,
                 value: `${type}`,
                 inline: true,
               },
               {
-                name: `💬┆Message`,
+                name: `💬┆Mensaje`,
                 value: `${data.openTicket}`,
                 inline: true,
               },
@@ -50,7 +50,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: `No ticket message data found!`,
+            error: `¡No se encontraron datos del mensaje de ticket!`,
             type: "editreply",
           },
           interaction,
@@ -74,15 +74,15 @@ module.exports = async (client, interaction, args) => {
 
     client.succNormal(
       {
-        text: `The ticket message has been set successfully`,
+        text: `El mensaje del ticket se guardó correctamente`,
         fields: [
           {
-            name: `📘┆Message type`,
+            name: `📘┆Tipo de mensaje`,
             value: `${type}`,
             inline: true,
           },
           {
-            name: `💬┆Message`,
+            name: `💬┆Mensaje`,
             value: `${message}`,
             inline: true,
           },
@@ -97,20 +97,20 @@ module.exports = async (client, interaction, args) => {
 
       if (data) {
         data.dmMessage =
-          "Here is the transcript for your ticket, please keep this if you ever want to refer to it!";
+          "Aquí tienes la transcripción de tu ticket. ¡Guárdala por si alguna vez necesitas consultarla!";
         data.save();
 
         client.succNormal(
           {
-            text: `The ticket message has been set successfully`,
+            text: `El mensaje del ticket se guardó correctamente`,
             fields: [
               {
-                name: `📘┆Message type`,
+                name: `📘┆Tipo de mensaje`,
                 value: `${type}`,
                 inline: true,
               },
               {
-                name: `💬┆Message`,
+                name: `💬┆Mensaje`,
                 value: `${data.dmMessage}`,
                 inline: true,
               },
@@ -122,7 +122,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.errNormal(
           {
-            error: `No ticket message data found!`,
+            error: `¡No se encontraron datos del mensaje de ticket!`,
             type: "editreply",
           },
           interaction,
@@ -146,15 +146,15 @@ module.exports = async (client, interaction, args) => {
 
     client.succNormal(
       {
-        text: `The ticket message has been set successfully`,
+        text: `El mensaje del ticket se guardó correctamente`,
         fields: [
           {
-            name: `📘┆Message type`,
+            name: `📘┆Tipo de mensaje`,
             value: `${type}`,
             inline: true,
           },
           {
-            name: `💬┆Message`,
+            name: `💬┆Mensaje`,
             value: `${message}`,
             inline: true,
           },

@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   if (!channel)
     return client.errNormal(
       {
-        error: `You're not in a voice channel!`,
+        error: `¡No estás en un canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -19,17 +19,17 @@ module.exports = async (client, interaction, args) => {
   if (player && channel.id !== player?.voiceId)
     return client.errNormal(
       {
-        error: `You're not in the same voice channel!`,
+        error: `¡No estás en el mismo canal de voz!`,
         type: "editreply",
       },
       interaction,
     );
 
-  const track = player?.getPrevious();
+  const track = player?.getPrevious(true);
   if (!player || !track)
     return client.errNormal(
       {
-        error: "There are no songs was played previously",
+        error: "No se ha reproducido ninguna canción antes",
         type: "editreply",
       },
       interaction,
@@ -61,21 +61,21 @@ module.exports = async (client, interaction, args) => {
     {
       title: `${client.emotes.normal.music}・${track.title}`,
       url: track.uri,
-      desc: `Music started in <#${player.voiceId}>!`,
+      desc: `¡La música empezó en <#${player.voiceId}>!`,
       thumbnail: track.thumbnail,
       fields: [
         {
-          name: `👤┆Requested By`,
+          name: `👤┆Pedida por`,
           value: `${track.requester}`,
           inline: true,
         },
         {
-          name: `${client.emotes.normal.clock}┆Ends at`,
-          value: `<t:${(Date.now() / 1000 + track.duration / 1000).toFixed(0)}:f>`,
+          name: `${client.emotes.normal.clock}┆Termina a las`,
+          value: `<t:${(Date.now() / 1000 + track.length / 1000).toFixed(0)}:f>`,
           inline: true,
         },
         {
-          name: `🎬┆Author`,
+          name: `🎬┆Autor`,
           value: `${track.author}`,
           inline: true,
         },

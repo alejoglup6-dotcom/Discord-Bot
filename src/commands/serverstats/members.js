@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   channelName = channelName.replace(`{emoji}`, "👤");
   channelName = channelName.replace(
     `{name}`,
-    `Members: ${interaction.guild.memberCount.toLocaleString()}`,
+    `Miembros: ${interaction.guild.memberCount.toLocaleString()}`,
   );
 
   await interaction.guild.channels
@@ -39,10 +39,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `Member count created!`,
+          text: `¡Se creó el contador de miembros!`,
           fields: [
             {
-              name: `📘┆Channel`,
+              name: `📘┆Canal`,
               value: `${channel}`,
             },
           ],

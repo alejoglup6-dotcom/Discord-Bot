@@ -41,7 +41,7 @@ module.exports = async (client, member, invite, inviter) => {
 
                     if (channel) {
                         await client.embed({
-                            title: `👋・Welcome`,
+                            title: `👋・Bienvenida`,
                             desc: joinMessage
                         }, channel).catch(() => { })
                     }
@@ -55,8 +55,8 @@ module.exports = async (client, member, invite, inviter) => {
 
                     if (channel) {
                         client.embed({
-                            title: `👋・Welcome`,
-                            desc: `I cannot trace how **${member} | ${member.user.tag}** has been joined`
+                            title: `👋・Bienvenida`,
+                            desc: `No puedo averiguar cómo entró **${member} | ${member.user.tag}**`
                         }, channel).catch(() => { })
                     }
                 }
@@ -95,7 +95,7 @@ module.exports = async (client, member, invite, inviter) => {
 
                         if (channel) {
                             await client.embed({
-                                title: `👋・Welcome`,
+                                title: `👋・Bienvenida`,
                                 desc: joinMessage
                             }, channel).catch(() => { })
                         }
@@ -110,8 +110,8 @@ module.exports = async (client, member, invite, inviter) => {
 
                         if (channel) {
                             client.embed({
-                                title: `👋・Welcome`,
-                                desc: `**${member} | ${member.user.tag}** was invited by ${inviter.tag} **(${data.Invites} invites)**`
+                                title: `👋・Bienvenida`,
+                                desc: `**${member} | ${member.user.tag}** fue invitado por ${inviter.tag} **(${data.Invites} invitaciones)**`
                             }, channel)
                         }
                     }
@@ -161,7 +161,7 @@ module.exports = async (client, member, invite, inviter) => {
 
                         if (channel) {
                             await client.embed({
-                                title: `👋・Welcome`,
+                                title: `👋・Bienvenida`,
                                 desc: joinMessage
                             }, channel).catch(() => { })
                         }
@@ -176,8 +176,8 @@ module.exports = async (client, member, invite, inviter) => {
 
                         if (channel) {
                             await client.embed({
-                                title: `👋・Welcome`,
-                                desc: `**${member} | ${member.user.tag}** was invited by ${inviter.tag} **(1 invites)**`
+                                title: `👋・Bienvenida`,
+                                desc: `**${member} | ${member.user.tag}** fue invitado por ${inviter.tag} **(1 invitación)**`
                             }, channel).catch(() => { })
                         }
                     }

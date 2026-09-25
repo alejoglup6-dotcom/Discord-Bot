@@ -2,50 +2,50 @@ const discord = require('discord.js');
 
 module.exports = async (client, event) => {
     let types = {
-        GUILD_ONLY: "Server only",
-        PUBLIC: "Public",
+        GUILD_ONLY: "Solo el servidor",
+        PUBLIC: "Público",
     }
 
     let locations = {
-        NONE: "None",
-        STAGE_INSTANCE: "Stage Channel",
-        VOICE: "Voice Channel",
-        EXTERNAL: `External`
+        NONE: "Ninguno",
+        STAGE_INSTANCE: "Canal de escenario",
+        VOICE: "Canal de voz",
+        EXTERNAL: `Externo`
     }
 
     const logsChannel = await client.getLogs(event.guildId);
     if (!logsChannel) return;
 
     client.embed({
-        title: `🎡・Event deleted`,
-        desc: `An event has been deleted`,
+        title: `🎡・Evento eliminado`,
+        desc: `Se eliminó un evento`,
         fields: [
             {
-                name: `> Name`,
+                name: `> Nombre`,
                 value: `- ${event.name}`
             },
             {
-                name: `> Description`,
-                value: `- ${event.description || 'None'}`
+                name: `> Descripción`,
+                value: `- ${event.description || 'Ninguna'}`
             },
             {
-                name: `> Start`,
+                name: `> Inicio`,
                 value: `- <t:${(event.scheduledStartTimestamp / 1000).toFixed(0)}>`
             },
             {
-                name: `> Privacy`,
+                name: `> Privacidad`,
                 value: `- ${types[event.privacyLevel]}`
             },
             {
-                name: `> Creator`,
+                name: `> Creador`,
                 value: `- <@!${event.creatorId}> (${event.creatorId})`
             },
             {
-                name: `> Location type`,
+                name: `> Tipo de ubicación`,
                 value: `- ${locations[event.entityType]}`
             },
             {
-                name: `> Timestamp`,
+                name: `> Fecha`,
                 value: `- <t:${Math.floor(Date.now() / 1000)}:R>`
             }
         ]

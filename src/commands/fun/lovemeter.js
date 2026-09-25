@@ -7,13 +7,13 @@ module.exports = async (client, interaction, args) => {
 
   if (!user1 || !user2)
     return client.errUsage(
-      { usage: "lovemeter [user1]", type: "editreply" },
+      { usage: "lovemeter [usuario1]", type: "editreply" },
       interaction,
     );
 
   if (user1 == user2)
     return client.errNormal(
-      { error: "You cannot give 2 of the same names!", type: "editreply" },
+      { error: "¡No puedes poner dos veces el mismo nombre!", type: "editreply" },
       interaction,
     );
 
@@ -21,22 +21,22 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `${client.emotes.normal.heart}・Love meter`,
-      desc: "See how much you match!",
+      title: `${client.emotes.normal.heart}・Medidor de amor`,
+      desc: "¡Mira cuánto encajan!",
       fields: [
         {
-          name: "Name 1",
+          name: "Nombre 1",
           value: `${user1}`,
           inline: true,
         },
         {
-          name: "Name 2",
+          name: "Nombre 2",
           value: `${user2}`,
           inline: true,
         },
         {
-          name: "Result",
-          value: `**${user2}** and **${user2}** match **${result}%**`,
+          name: "Resultado",
+          value: `**${user2}** y **${user2}** son compatibles en un **${result}%**`,
           inline: false,
         },
       ],

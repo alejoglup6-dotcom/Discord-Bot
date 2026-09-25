@@ -5,41 +5,41 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("notepad")
-    .setDescription("Manage your notes")
+    .setDescription("Gestiona tus notas")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the search category commands"),
+        .setDescription("Información sobre los comandos de esta categoría"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("add")
-        .setDescription("Add a note to your notepad")
+        .setDescription("Añade una nota a tu bloc de notas")
         .addStringOption((option) =>
-          option.setName("note").setDescription("Your note").setRequired(true),
+          option.setName("note").setDescription("Tu nota").setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("delete")
-        .setDescription("Delete a note from your notepad")
+        .setDescription("Elimina una nota de tu bloc de notas")
         .addStringOption((option) =>
-          option.setName("id").setDescription("Note id").setRequired(true),
+          option.setName("id").setDescription("ID de la nota").setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("edit")
-        .setDescription("Edit a note from your notepad")
+        .setDescription("Edita una nota de tu bloc de notas")
         .addStringOption((option) =>
-          option.setName("id").setDescription("Note id").setRequired(true),
+          option.setName("id").setDescription("ID de la nota").setRequired(true),
         )
         .addStringOption((option) =>
-          option.setName("note").setDescription("New note").setRequired(true),
+          option.setName("note").setDescription("Nota nueva").setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("notes").setDescription("Show all your notes"),
+      subcommand.setName("notes").setDescription("Muestra todas tus notas"),
     ),
   /**
    * @param {Client} client

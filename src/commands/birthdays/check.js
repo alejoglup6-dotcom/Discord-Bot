@@ -13,7 +13,7 @@ module.exports = async (client, interaction, args) => {
     if (!data)
       return client.errNormal(
         {
-          error: "No birthday found!",
+          error: "¡No se encontró ningún cumpleaños!",
           type: "editreply",
         },
         interaction,
@@ -21,8 +21,8 @@ module.exports = async (client, interaction, args) => {
 
     client.embed(
       {
-        title: `${client.emotes.normal.birthday}・Birthday check`,
-        desc: `${interaction.user.username} birthday is on ${data.Birthday}`,
+        title: `${client.emotes.normal.birthday}・Consulta de cumpleaños`,
+        desc: `El cumpleaños de ${interaction.user.username} es el ${data.Birthday}`,
         type: "editreply",
       },
       interaction,

@@ -11,7 +11,7 @@ module.exports = async (client, interaction, args) => {
   if (storeData.length == 0)
     return client.errNormal(
       {
-        error: `No shop found in this server`,
+        error: `No hay tienda en este servidor`,
         type: "editreply",
       },
       interaction,
@@ -30,7 +30,7 @@ module.exports = async (client, interaction, args) => {
     return labels.push(generated);
   });
   labels.push({
-    label: `Fishingrod`,
+    label: `Caña de pescar`,
     value: `fishingrod`,
   });
 
@@ -38,8 +38,8 @@ module.exports = async (client, interaction, args) => {
 
   client.embed(
     {
-      title: `🛒・${interaction.guild.name}'s Store`,
-      desc: `Choose a item from the menu to buy`,
+      title: `🛒・Tienda de ${interaction.guild.name}`,
+      desc: `Elige un artículo del menú para comprarlo`,
       components: [select],
       type: "editreply",
     },
@@ -66,7 +66,7 @@ module.exports = async (client, interaction, args) => {
         if (parseInt(100) > parseInt(data.Money))
           return client.errNormal(
             {
-              error: `You don't have enough money to buy this!`,
+              error: `¡No tienes suficiente dinero para comprar esto!`,
               type: "update",
               components: [],
             },
@@ -90,11 +90,11 @@ module.exports = async (client, interaction, args) => {
           });
         return client.succNormal(
           {
-            text: `The purchase has been successfully completed`,
+            text: `La compra se completó correctamente`,
             fields: [
               {
-                name: `📘┆Item`,
-                value: `Fishingrod`,
+                name: `📘┆Artículo`,
+                value: `Caña de pescar`,
               },
             ],
             type: "update",
@@ -108,7 +108,7 @@ module.exports = async (client, interaction, args) => {
       if (parseInt(checkStore.Amount) > parseInt(data.Money))
         return client.errNormal(
           {
-            error: `You don't have enough money to buy this!`,
+            error: `¡No tienes suficiente dinero para comprar esto!`,
             type: "update",
             components: [],
           },
@@ -121,7 +121,7 @@ module.exports = async (client, interaction, args) => {
       } catch (e) {
         return client.errNormal(
           {
-            error: `I can't add <@&${role}> to you!`,
+            error: `¡No puedo darte el rol <@&${role}>!`,
             type: "update",
             components: [],
           },
@@ -131,10 +131,10 @@ module.exports = async (client, interaction, args) => {
 
       client.succNormal(
         {
-          text: `The purchase has been successfully completed`,
+          text: `La compra se completó correctamente`,
           fields: [
             {
-              name: `📘┆Item`,
+              name: `📘┆Artículo`,
               value: `<@&${role}>`,
             },
           ],

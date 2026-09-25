@@ -17,19 +17,19 @@ module.exports = async (client, interaction, args) => {
 
   let timeout = 60000;
   let fish = [
-    "Yellow Fish :tropical_fish:",
-    "Fat Fish :blowfish:",
-    "Blue Fish :fish:",
-    "Coconut :coconut:",
-    "Dolphin :dolphin:",
-    "Lobster :lobster:",
-    "Shark :shark:",
-    "Crab :crab:",
-    "Squid :squid:",
-    "Whale :whale2:",
-    "Shrimp :shrimp:",
-    "Octopus :octopus:",
-    "Diamond :gem:",
+    "Pez amarillo :tropical_fish:",
+    "Pez globo :blowfish:",
+    "Pez azul :fish:",
+    "Coco :coconut:",
+    "Delfín :dolphin:",
+    "Langosta :lobster:",
+    "Tiburón :shark:",
+    "Cangrejo :crab:",
+    "Calamar :squid:",
+    "Ballena :whale2:",
+    "Camarón :shrimp:",
+    "Pulpo :octopus:",
+    "Diamante :gem:",
   ];
 
   let randn = rand(0, parseInt(fish.length));
@@ -44,7 +44,7 @@ module.exports = async (client, interaction, args) => {
 
   if (!userItems || userItems.FishingRod == false)
     return client.errNormal(
-      { error: "You have to buy a fishing rod!", type: "editreply" },
+      { error: "¡Tienes que comprar una caña de pescar!", type: "editreply" },
       interaction,
     );
 
@@ -55,7 +55,7 @@ module.exports = async (client, interaction, args) => {
 
       return client.errNormal(
         {
-          error: "Your fishing rod has broken! Go buy a new one!",
+          error: "¡Tu caña de pescar se rompió! ¡Ve a comprar una nueva!",
           type: "editreply",
         },
         interaction,
@@ -76,7 +76,7 @@ module.exports = async (client, interaction, args) => {
       } else {
         client.succNormal(
           {
-            text: `You've fished and gotten a ${fishToWin}`,
+            text: `Pescaste y conseguiste: ${fishToWin}`,
             type: "editreply",
           },
           interaction,
@@ -92,7 +92,7 @@ module.exports = async (client, interaction, args) => {
           dataTime.save();
         } else {
           new Schema2({
-            Guild: message.guild.id,
+            Guild: interaction.guild.id,
             User: user.id,
             Fish: Date.now(),
           }).save();

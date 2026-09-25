@@ -5,15 +5,15 @@ module.exports = async (client, guild, afkChannel) => {
     if (!logsChannel) return;
 
     client.embed({
-        title: `🛑・New AFK channel`,
-        desc: `An AFK channel has been added to the server`,
+        title: `🛑・Nuevo canal AFK`,
+        desc: `Se añadió un canal AFK al servidor`,
         fields: [
             {
-                name: `> Channel`,
+                name: `> Canal`,
                 value: `- ${afkChannel}`
             },
             {
-                name: `> Name`,
+                name: `> Nombre`,
                 value: `- ${afkChannel.name}`
             },
             {
@@ -21,7 +21,7 @@ module.exports = async (client, guild, afkChannel) => {
                 value: `- ${afkChannel.id}`
             },
             {
-                name: `> Timestamp`,
+                name: `> Fecha`,
                 value: `- <t:${Math.floor(afkChannel.createdTimestamp / 1000)}:R>`
             }
         ]

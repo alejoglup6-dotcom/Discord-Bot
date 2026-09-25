@@ -10,7 +10,7 @@ module.exports = async (client, interaction, args) => {
   if (!channel)
     return client.errNormal(
       {
-        error: `You're not in a voice channel!`,
+        error: `¡No estás en un canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -19,7 +19,7 @@ module.exports = async (client, interaction, args) => {
   if (player && channel.id !== player?.voiceId)
     return client.errNormal(
       {
-        error: `You're not in the same voice channel!`,
+        error: `¡No estás en el mismo canal de voz!`,
         type: "editreply",
       },
       interaction,
@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
   if (!player || !player.queue.current)
     return client.errNormal(
       {
-        error: "There are no songs playing in this server",
+        error: "No se está reproduciendo ninguna canción en este servidor",
         type: "editreply",
       },
       interaction,
@@ -36,12 +36,21 @@ module.exports = async (client, interaction, args) => {
 
   let number = interaction.options.getNumber("number");
 
+  if (number < 1 || number > player.queue.size)
+    return client.errNormal(
+      {
+        error: `La cola no tiene tantas canciones`,
+        type: "editreply",
+      },
+      interaction,
+    );
+
   player.queue.splice(0, parseInt(number) - 1);
   player.skip();
 
   client.succNormal(
     {
-      text: `Skipped the music to **${number}**`,
+      text: `Se saltó la música hasta la **${number}**`,
       type: "editreply",
     },
     interaction,

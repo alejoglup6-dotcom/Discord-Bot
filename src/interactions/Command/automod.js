@@ -6,63 +6,63 @@ const Discord = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("automod")
-    .setDescription("Manage the auto mod")
+    .setDescription("Gestiona la automoderación")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the auto setup commands"),
+        .setDescription("Información sobre los comandos de configuración automática"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("antiinvite")
-        .setDescription("Enable/disable antiinvite")
+        .setDescription("Activa/desactiva el anti-invitaciones")
         .addBooleanOption((option) =>
           option
             .setName("active")
-            .setDescription("Select a boolean")
+            .setDescription("Elige verdadero o falso")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("antilinks")
-        .setDescription("Enable/disable antilinks")
+        .setDescription("Activa/desactiva el anti-enlaces")
         .addBooleanOption((option) =>
           option
             .setName("active")
-            .setDescription("Select a boolean")
+            .setDescription("Elige verdadero o falso")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("antispam")
-        .setDescription("Enable/disable antispam")
+        .setDescription("Activa/desactiva el anti-spam")
         .addBooleanOption((option) =>
           option
             .setName("active")
-            .setDescription("Select a boolean")
+            .setDescription("Elige verdadero o falso")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("linkschannel")
-        .setDescription("Add a channel that is allowed to send links")
+        .setDescription("Añade un canal donde se permite enviar enlaces")
         .addStringOption((option) =>
           option
             .setName("type")
-            .setDescription("What do you want to do with the channel?")
+            .setDescription("¿Qué quieres hacer con el canal?")
             .setRequired(true)
             .addChoices(
-              { name: "Add", value: "add" },
-              { name: "Remove", value: "remove" },
+              { name: "Añadir", value: "add" },
+              { name: "Quitar", value: "remove" },
             ),
         )
         .addChannelOption((option) =>
           option
             .setName("channel")
-            .setDescription("Select a channel")
+            .setDescription("Elige un canal")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText),
         ),
@@ -70,31 +70,31 @@ module.exports = {
     .addSubcommandGroup((group) =>
       group
         .setName("blacklist")
-        .setDescription("Manage the blacklist")
+        .setDescription("Gestiona la lista negra")
         .addSubcommand((subcommand) =>
           subcommand
             .setName("display")
-            .setDescription("Show the whole blacklist"),
+            .setDescription("Muestra toda la lista negra"),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("add")
-            .setDescription("Add a word to the blacklist")
+            .setDescription("Añade una palabra a la lista negra")
             .addStringOption((option) =>
               option
                 .setName("word")
-                .setDescription("The word for the blacklist")
+                .setDescription("La palabra para la lista negra")
                 .setRequired(true),
             ),
         )
         .addSubcommand((subcommand) =>
           subcommand
             .setName("remove")
-            .setDescription("Remove a word from the blacklist")
+            .setDescription("Quita una palabra de la lista negra")
             .addStringOption((option) =>
               option
                 .setName("word")
-                .setDescription("The word for the blacklist")
+                .setDescription("La palabra para la lista negra")
                 .setRequired(true),
             ),
         ),

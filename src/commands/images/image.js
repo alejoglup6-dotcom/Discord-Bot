@@ -7,13 +7,13 @@ module.exports = async (client, interaction, args) => {
 
   if (!channel)
     return client.errNormal(
-      { error: `Channel not found`, type: "editreply" },
+      { error: `No se encontró el canal`, type: "editreply" },
       interaction,
     );
 
   client.succNormal(
     {
-      text: `The image was succesfully send to ${channel}`,
+      text: `La imagen se envió correctamente a ${channel}`,
       type: "editreply",
     },
     interaction,

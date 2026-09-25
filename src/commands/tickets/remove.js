@@ -28,7 +28,7 @@ module.exports = async (client, interaction, args) => {
     if (ticketCategory == undefined) {
       return client.errNormal(
         {
-          error: "Do the ticket setup!",
+          error: "¡Haz la configuración de tickets!",
           type: "editreply",
         },
         interaction,
@@ -40,7 +40,7 @@ module.exports = async (client, interaction, args) => {
       if (ticketData && user.id == ticketData.creator) {
         return client.errNormal(
           {
-            error: "You cannot remove the ticket maker from this ticket",
+            error: "No puedes quitar al creador del ticket de este ticket",
             type: "ephemeraledit",
           },
           interaction,
@@ -54,7 +54,7 @@ module.exports = async (client, interaction, args) => {
 
       return client.simpleEmbed(
         {
-          desc: `Removed ${user}`,
+          desc: `Se quitó a ${user}`,
           type: "editreply",
         },
         interaction,
@@ -62,7 +62,7 @@ module.exports = async (client, interaction, args) => {
     } else {
       client.errNormal(
         {
-          error: "This is not a ticket!",
+          error: "¡Esto no es un ticket!",
           type: "editreply",
         },
         interaction,

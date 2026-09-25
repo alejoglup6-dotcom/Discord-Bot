@@ -6,89 +6,89 @@ const Schema = require("../../database/models/functions");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("levels")
-    .setDescription("View the level system")
+    .setDescription("Mira el sistema de niveles")
     .addSubcommand((subcommand) =>
       subcommand
         .setName("help")
-        .setDescription("Get information about the levels category commands"),
+        .setDescription("Información sobre los comandos de la categoría niveles"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("setlevel")
-        .setDescription("Set a new level for a user")
+        .setDescription("Pon un nuevo nivel a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("level")
-            .setDescription("Enter a new level")
+            .setDescription("Escribe un nuevo nivel")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("deletereward")
-        .setDescription("Delete a level reward")
+        .setDescription("Elimina una recompensa de nivel")
         .addNumberOption((option) =>
           option
             .setName("level")
-            .setDescription("Enter a level")
+            .setDescription("Escribe un nivel")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("createreward")
-        .setDescription("Create a level reward")
+        .setDescription("Crea una recompensa de nivel")
         .addNumberOption((option) =>
           option
             .setName("level")
-            .setDescription("Enter a level")
+            .setDescription("Escribe un nivel")
             .setRequired(true),
         )
         .addRoleOption((option) =>
           option
             .setName("role")
-            .setDescription("The role for this reward")
+            .setDescription("El rol de esta recompensa")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("setxp")
-        .setDescription("Set a new xp for a user")
+        .setDescription("Pon una nueva cantidad de XP a un usuario")
         .addUserOption((option) =>
           option
             .setName("user")
-            .setDescription("Select a user")
+            .setDescription("Elige un usuario")
             .setRequired(true),
         )
         .addNumberOption((option) =>
           option
             .setName("amount")
-            .setDescription("Enter a amount of xp")
+            .setDescription("Escribe una cantidad de XP")
             .setRequired(true),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("rank")
-        .setDescription("See your current rank")
+        .setDescription("Mira tu rango actual")
         .addUserOption((option) =>
-          option.setName("user").setDescription("Select a user"),
+          option.setName("user").setDescription("Elige un usuario"),
         ),
     )
     .addSubcommand((subcommand) =>
-      subcommand.setName("rewards").setDescription("Show all level rewards"),
+      subcommand.setName("rewards").setDescription("Muestra todas las recompensas de nivel"),
     )
     .addSubcommand((subcommand) =>
       subcommand
         .setName("leaderboard")
-        .setDescription("See the level leaderboard"),
+        .setDescription("Mira la clasificación de niveles"),
     ),
   /**
    * @param {Client} client
@@ -101,7 +101,7 @@ module.exports = {
     if (!guild.Levels)
       return client.errNormal(
         {
-          error: `The level system is disabled!`,
+          error: `¡El sistema de niveles está desactivado!`,
           type: "ephemeral",
         },
         interaction,

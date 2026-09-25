@@ -19,20 +19,20 @@ module.exports = async (client, interaction, args) => {
     .then(async (banned) => {
       let list = banned.map(
         (banUser) =>
-          `${banUser.user.tag}・**Reason:** ${banUser.reason || "No reason"}`,
+          `${banUser.user.tag}・**Razón:** ${banUser.reason || "Sin razón"}`,
       );
 
       if (list.length == 0)
         return client.errNormal(
           {
-            error: `This server has no bans`,
+            error: `Este servidor no tiene baneos`,
             type: "editreply",
           },
           interaction,
         );
 
       await client.createLeaderboard(
-        `🔧・Banlist - ${interaction.guild.name}`,
+        `🔧・Lista de baneos - ${interaction.guild.name}`,
         list,
         interaction,
       );

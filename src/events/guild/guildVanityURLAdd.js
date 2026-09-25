@@ -5,15 +5,15 @@ module.exports = async (client, guild, url) => {
     if (!logsChannel) return;
 
     client.embed({
-        title: `🔗・New Vanity URL`,
-        desc: `The server vanity URL has been updated`,
+        title: `🔗・Nueva URL personalizada`,
+        desc: `Se actualizó la URL personalizada del servidor`,
         fields: [
             {
                 name: `> URL`,
                 value: `- ${url}`
             },
             {
-                name: `> Timestamp`,
+                name: `> Fecha`,
                 value: `- <t:${Math.floor(Date.now() / 1000)}:R>`
             }
         ]

@@ -1,18 +1,12 @@
-const Discord = require("discord.js");
+const leave = require("./leave");
 
-module.exports = (client, player, currentChannel, newChannel) => {
-  if (!newChannel) {
-    player.destroy();
+module.exports = (client, player, state, channels) => {
+  if (state === "LEFT") {
+    return leave(client, player, "La música se detuvo. Me desconecté del canal");
+  }
 
-    const channel = client.channels.cache.get(player.textId);
-    client.errNormal(
-      {
-        error: "Music has stopped. I'm disconnected from the channel",
-      },
-      channel,
-    );
-  } else {
-    player.setVoiceChannel(newChannel.newChannelId || newChannel);
+  if (state === "MOVED") {
+    player.setVoiceChannel(channels.newChannelId);
     if (player.paused) return;
     setTimeout(() => {
       player.pause(true);

@@ -40,8 +40,8 @@ module.exports = (client) => {
           {
             title: embedData.title,
             url: embedData.url,
-            desc: `Music is currently paused`,
-            thumbnail: embedData.thumbnail.url,
+            desc: `La música está en pausa`,
+            thumbnail: embedData.thumbnail?.url,
             fields: embedData.fields,
             components: [row],
             color: client.config.colors.error,
@@ -87,8 +87,8 @@ module.exports = (client) => {
           {
             title: embedData.title,
             url: embedData.url,
-            desc: `Music is currently resumed`,
-            thumbnail: embedData.thumbnail.url,
+            desc: `La música se reanudó`,
+            thumbnail: embedData.thumbnail?.url,
             fields: embedData.fields,
             components: [row],
             type: "edit",
@@ -103,11 +103,12 @@ module.exports = (client) => {
         const player = client.player.players.get(interaction.guild.id);
         if (!player) return;
 
-        player.destroy();
+        player.data.set("leaving", true);
+        player.destroy().catch(() => {});
 
         client.embed(
           {
-            desc: `Music is currently stopped`,
+            desc: `La música se detuvo`,
             color: client.config.colors.error,
             components: [],
             type: "edit",
@@ -122,56 +123,12 @@ module.exports = (client) => {
         const player = client.player.players.get(interaction.guild.id);
         if (!player) return;
 
-        player.stop();
-
-        const track = player.queue.current;
-
-        let row = new Discord.ActionRowBuilder().addComponents(
-          new Discord.ButtonBuilder()
-            .setEmoji("⏮️")
-            .setCustomId("Bot-musicprev")
-            .setStyle(Discord.ButtonStyle.Primary),
-
-          new Discord.ButtonBuilder()
-            .setEmoji("⏸️")
-            .setCustomId("Bot-musicpause")
-            .setStyle(Discord.ButtonStyle.Primary),
-
-          new Discord.ButtonBuilder()
-            .setEmoji("⏹️")
-            .setCustomId("Bot-musicstop")
-            .setStyle(Discord.ButtonStyle.Primary),
-
-          new Discord.ButtonBuilder()
-            .setEmoji("⏭️")
-            .setCustomId("Bot-musicnext")
-            .setStyle(Discord.ButtonStyle.Primary),
-        );
+        player.skip();
 
         client.embed(
           {
-            title: `${client.emotes.normal.music}・${track.title}`,
-            url: track.uri,
-            desc: `Music started in <#${player.voiceId}>!`,
-            thumbnail: track.thumbnail,
-            fields: [
-              {
-                name: `👤┆Requested By`,
-                value: `${track.requester}`,
-                inline: true,
-              },
-              {
-                name: `${client.emotes.normal.clock}┆Ends at`,
-                value: `<t:${(Date.now() / 1000 + track.duration / 1000).toFixed(0)}:f>`,
-                inline: true,
-              },
-              {
-                name: `🎬┆Author`,
-                value: `${track.author}`,
-                inline: true,
-              },
-            ],
-            components: [row],
+            desc: `¡Canción saltada!`,
+            components: [],
             type: "edit",
           },
           interaction.message,
@@ -182,62 +139,19 @@ module.exports = (client) => {
         interaction.deferUpdate();
 
         const player = client.player.players.get(interaction.guild.id);
-        if (!player || !player.queue.previous) return;
-
-        const track = player.queue.previous;
-
-        let row = new Discord.ActionRowBuilder().addComponents(
-          new Discord.ButtonBuilder()
-            .setEmoji("⏮️")
-            .setCustomId("Bot-musicprev")
-            .setStyle(Discord.ButtonStyle.Primary),
-
-          new Discord.ButtonBuilder()
-            .setEmoji("⏸️")
-            .setCustomId("Bot-musicpause")
-            .setStyle(Discord.ButtonStyle.Primary),
-
-          new Discord.ButtonBuilder()
-            .setEmoji("⏹️")
-            .setCustomId("Bot-musicstop")
-            .setStyle(Discord.ButtonStyle.Primary),
-
-          new Discord.ButtonBuilder()
-            .setEmoji("⏭️")
-            .setCustomId("Bot-musicnext")
-            .setStyle(Discord.ButtonStyle.Primary),
-        );
+        const track = player?.getPrevious(true);
+        if (!track) return;
 
         client.embed(
           {
-            title: `${client.emotes.normal.music}・${track.title}`,
-            url: track.uri,
-            desc: `Music started in <#${player.voiceId}>!`,
-            thumbnail: track.thumbnail,
-            fields: [
-              {
-                name: `👤┆Requested By`,
-                value: `${track.requester}`,
-                inline: true,
-              },
-              {
-                name: `${client.emotes.normal.clock}┆Ends at`,
-                value: `<t:${(Date.now() / 1000 + track.duration / 1000).toFixed(0)}:f>`,
-                inline: true,
-              },
-              {
-                name: `🎬┆Author`,
-                value: `${track.author}`,
-                inline: true,
-              },
-            ],
-            components: [row],
+            desc: `Volviendo a **${track.title}**`,
+            components: [],
             type: "edit",
           },
           interaction.message,
         );
 
-        player.play(player.queue.previous);
+        player.play(track);
       }
     }
   });
