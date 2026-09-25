@@ -66,7 +66,7 @@ module.exports = {
           },
           {
             name: `🔗┆Enlaces`,
-            value: `[Sitio web](https://corwindev.nl/) | [Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/798144456528363550/vote)`,
+            value: `[Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/${client.user.id}/vote)`,
           },
         ],
         components: [row],

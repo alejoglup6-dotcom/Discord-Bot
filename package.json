@@ -1,7 +1,7 @@
 {
   "name": "discordbot",
   "version": "11.1.0",
-  "description": "Discord Bot is a bot with which you can run your entire server! With no less than 400+ commands",
+  "description": "Drok, un bot de Discord con más de 400 comandos para gestionar todo tu servidor",
   "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -28,7 +28,7 @@
   "overrides": {
     "canvas": "^3.0.0"
   },
-  "author": "CorwinDev",
+  "author": "Drok",
   "license": "MIT",
   "dependencies": {
     "@discordjs/opus": "^0.10.0",

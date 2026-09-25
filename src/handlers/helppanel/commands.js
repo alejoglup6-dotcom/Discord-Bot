@@ -255,7 +255,7 @@ module.exports = async (client) => {
 
                 client.embed({
                     title: `❓・Panel de ayuda`,
-                    desc: `¡Mira aquí todas las categorías de comandos del bot! \n\n[Sitio web](https://corwindev.nl) | [Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/798144456528363550/vote)`,
+                    desc: `¡Mira aquí todas las categorías de comandos del bot! \n\n[Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/${client.user.id}/vote)`,
                     image: "https://cdn.discordapp.com/attachments/843487478881976381/874694194474668052/Bot_banner_invite.jpg",
                     fields: fields.slice(0, 24),
                     components: [row2, row],
@@ -270,7 +270,7 @@ module.exports = async (client) => {
                             if (page == 1) {
                                 client.embed({
                                     title: `❓・Panel de ayuda`,
-                                    desc: `¡Mira aquí todas las categorías de comandos del bot! \n\n[Sitio web](https://corwindev.nl) | [Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/798144456528363550/vote)`,
+                                    desc: `¡Mira aquí todas las categorías de comandos del bot! \n\n[Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/${client.user.id}/vote)`,
                                     fields: fields.slice(25, 49),
                                     components: [row2, row],
                                     type: 'update'
@@ -283,7 +283,7 @@ module.exports = async (client) => {
                             if (page == 2) {
                                 client.embed({
                                     title: `❓・Panel de ayuda`,
-                                    desc: `¡Mira aquí todas las categorías de comandos del bot! \n\n[Sitio web](https://corwindev.nl) | [Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/798144456528363550/vote)`,
+                                    desc: `¡Mira aquí todas las categorías de comandos del bot! \n\n[Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/${client.user.id}/vote)`,
                                     fields: fields.slice(0, 24),
                                     components: [row2, row],
                                     type: 'update'

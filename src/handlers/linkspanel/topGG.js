@@ -46,7 +46,7 @@ module.exports = async (client) => {
 
                         new Discord.ButtonBuilder()
                             .setLabel("Vota ahora")
-                            .setURL("https://top.gg/bot/798144456528363550/vote")
+                            .setURL(`https://top.gg/bot/${client.user.id}/vote`)
                             .setStyle(Discord.ButtonStyle.Link),
                     );
 
@@ -54,7 +54,7 @@ module.exports = async (client) => {
                     title: `📃・Votar por el bot`,
                     desc: `Vota por Bot en top.gg`,
                     image: "https://cdn.discordapp.com/attachments/843487478881976381/874694192755007509/Bot_banner_vote.jpg",
-                    url: "https://top.gg/bot/798144456528363550/vote",
+                    url: `https://top.gg/bot/${client.user.id}/vote`,
                     components: [row2, row],
                     type: 'edit'
                 }, interaction.message)
