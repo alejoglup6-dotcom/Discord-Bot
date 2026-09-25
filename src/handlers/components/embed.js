@@ -261,6 +261,11 @@ module.exports = (client) => {
     }, interaction) {
         if (!interaction) return;
 
+        // Si la interacción ya se aplazó, una respuesta nueva fallaría: se edita la existente
+        if (type && ["reply", "ephemeral"].includes(type.toLowerCase()) && (interaction.deferred || interaction.replied)) {
+            type = "editreply";
+        }
+
         if (type && type.toLowerCase() == "edit") {
             return await interaction.edit({
                 embeds: embeds,

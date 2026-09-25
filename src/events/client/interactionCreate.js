@@ -18,6 +18,21 @@ module.exports = async (client, interaction) => {
 
   // Commands
   if (interaction.isCommand() || interaction.isUserContextMenuCommand()) {
+    // Discord da 3 segundos para responder. La consulta de baneo a la base de datos
+    // puede tardar más, así que los comandos de barra se aplazan antes de consultarla.
+    // Los comandos vuelven a llamar a deferReply, así que esa segunda llamada no hace nada.
+    if (
+      interaction.isChatInputCommand() &&
+      client.commands.has(interaction.commandName)
+    ) {
+      const deferred = await interaction
+        .deferReply({ withResponse: true })
+        .then(() => true)
+        .catch(() => false);
+      if (!deferred) return;
+      interaction.deferReply = async () => {};
+    }
+
     banSchema.findOne({ User: interaction.user.id }).then(async (data) => {
       if (data) {
         return client.errNormal(
