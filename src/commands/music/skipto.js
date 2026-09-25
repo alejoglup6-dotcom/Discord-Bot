@@ -36,6 +36,15 @@ module.exports = async (client, interaction, args) => {
 
   let number = interaction.options.getNumber("number");
 
+  if (number < 1 || number > player.queue.size)
+    return client.errNormal(
+      {
+        error: `La cola no tiene tantas canciones`,
+        type: "editreply",
+      },
+      interaction,
+    );
+
   player.queue.splice(0, parseInt(number) - 1);
   player.skip();
 

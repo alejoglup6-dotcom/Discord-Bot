@@ -34,7 +34,8 @@ module.exports = async (client, interaction, args) => {
       interaction,
     );
 
-  player.destroy();
+  player.data.set("leaving", true);
+  player.destroy().catch(() => {});
 
   client.succNormal(
     {

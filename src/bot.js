@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const fs = require("fs");
 
 const { Connectors } = require("shoukaku");
-const { Kazagumo } = require("kazagumo");
+const { Kazagumo, Plugins } = require("kazagumo");
 const Spotify = require('kazagumo-spotify');
 
 // Discord client
@@ -52,30 +52,61 @@ client.player = new Kazagumo(
             const guild = client.guilds.cache.get(guildId);
             if (guild) guild.shard.send(payload);
         },
-        plugins: process.env.SPOTIFY_CLIENT_ID ? [new Spotify({
-            clientId: process.env.SPOTIFY_CLIENT_ID,
-            clientSecret: process.env.SPOTIFY_CLIENT_SECRET
-        })] : []
+        plugins: [
+            new Plugins.PlayerMoved(client),
+            ...(process.env.SPOTIFY_CLIENT_ID ? [new Spotify({
+                clientId: process.env.SPOTIFY_CLIENT_ID,
+                clientSecret: process.env.SPOTIFY_CLIENT_SECRET
+            })] : []),
+        ]
     },
     new Connectors.DiscordJS(client),
-    [
-        {
-            name: "Lavalink 1",
-            url:
-                (process.env.LAVALINK_HOST ?? "lavalinkv4.serenetia.com") +
-                ":" +
-                (process.env.LAVALINK_PORT ?? 80),
-            auth:
-                process.env.LAVALINK_PASSWORD ?? "https://seretia.link/discord",
-            secure: process.env.LAVALINK_SECURE === "true" ? true : false,
-        },
-    ],
+    getLavalinkNodes(),
     {
         resume: true,
         resumeTimeout: 30,
-        reconnectTries: 5,
+        reconnectTries: 10,
     },
 );
+
+// Nodos de Lavalink v4. El de .env va primero; los públicos sirven de respaldo
+// si el tuyo se cae (desactívalos con LAVALINK_FALLBACK=false).
+function getLavalinkNodes() {
+    const nodes = [];
+    const host = process.env.LAVALINK_HOST?.trim();
+
+    // lava.link ya no existe, pero venía en el .env.example antiguo
+    if (host && host !== "lava.link") {
+        const port = process.env.LAVALINK_PORT?.trim() || "443";
+        nodes.push({
+            name: "Lavalink principal",
+            url: `${host}:${port}`,
+            auth: process.env.LAVALINK_PASSWORD?.trim() || "youshallnotpass",
+            secure: process.env.LAVALINK_SECURE
+                ? process.env.LAVALINK_SECURE.trim() === "true"
+                : port === "443",
+        });
+    }
+
+    if (process.env.LAVALINK_FALLBACK !== "false" || !nodes.length) {
+        nodes.push(
+            {
+                name: "Serenetia",
+                url: "lavalinkv4.serenetia.com:443",
+                auth: "https://seretia.link/discord",
+                secure: true,
+            },
+            {
+                name: "AjieDev",
+                url: "lava-v4.ajieblogs.eu.org:443",
+                auth: "https://dsc.gg/ajidevserver",
+                secure: true,
+            },
+        );
+    }
+
+    return nodes;
+}
 
 const musicEvents = {
     playerStart: require("./music/trackStart"),

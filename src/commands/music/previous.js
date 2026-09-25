@@ -25,7 +25,7 @@ module.exports = async (client, interaction, args) => {
       interaction,
     );
 
-  const track = player?.getPrevious();
+  const track = player?.getPrevious(true);
   if (!player || !track)
     return client.errNormal(
       {
@@ -71,7 +71,7 @@ module.exports = async (client, interaction, args) => {
         },
         {
           name: `${client.emotes.normal.clock}┆Termina a las`,
-          value: `<t:${(Date.now() / 1000 + track.duration / 1000).toFixed(0)}:f>`,
+          value: `<t:${(Date.now() / 1000 + track.length / 1000).toFixed(0)}:f>`,
           inline: true,
         },
         {

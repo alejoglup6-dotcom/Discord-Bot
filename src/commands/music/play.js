@@ -37,13 +37,6 @@ module.exports = async (client, interaction, args) => {
     );
 
   if (!player) {
-    player = await client.player.createPlayer({
-      guildId: interaction.guild.id,
-      voiceId: channel.id,
-      textId: interaction.channel.id,
-      deaf: true,
-    });
-
     if (!channel.joinable)
       return client.errNormal(
         {
@@ -52,6 +45,13 @@ module.exports = async (client, interaction, args) => {
         },
         interaction,
       );
+
+    player = await client.player.createPlayer({
+      guildId: interaction.guild.id,
+      voiceId: channel.id,
+      textId: interaction.channel.id,
+      deaf: true,
+    });
 
     setTimeout(() => {
       if (channel.type == Discord.ChannelType.GuildStageVoice) {
@@ -75,7 +75,7 @@ module.exports = async (client, interaction, args) => {
   const res = await player.search(query, { requester: interaction.user });
 
   if (!res.tracks.length) {
-    if (!player.queue.current) player.destroy();
+    if (!player.queue.current) player.destroy().catch(() => {});
     return client.errNormal(
       {
         error: `Error al obtener la música. Inténtalo de nuevo en unos minutos`,
@@ -198,6 +198,7 @@ module.exports = async (client, interaction, args) => {
         interaction,
       );
 
+      let i;
       try {
         i = await interaction.channel.awaitMessageComponent({
           filter,
@@ -207,7 +208,7 @@ module.exports = async (client, interaction, args) => {
           errors: ["time"],
         });
       } catch (e) {
-        if (!player.queue.current) player.destroy();
+        if (!player.queue.current) player.destroy().catch(() => {});
         row.components.forEach((button) => button.setDisabled(true));
         row2.components.forEach((button) => button.setDisabled(true));
         return client.errNormal(
@@ -225,7 +226,7 @@ module.exports = async (client, interaction, args) => {
       i.deferUpdate();
 
       if (first.toLowerCase() === "cancel") {
-        if (!player.queue.current) player.destroy();
+        if (!player.queue.current) player.destroy().catch(() => {});
         return interaction.channel.send("Selección cancelada.");
       }
 
@@ -259,7 +260,7 @@ module.exports = async (client, interaction, args) => {
               },
               {
                 name: `${client.emotes.normal.clock}┆Termina a las`,
-                value: `<t:${(Date.now() / 1000 + track.duration / 1000).toFixed(0)}:f>`,
+                value: `<t:${(Date.now() / 1000 + track.length / 1000).toFixed(0)}:f>`,
                 inline: true,
               },
               {

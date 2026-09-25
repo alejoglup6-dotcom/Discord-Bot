@@ -34,10 +34,10 @@ module.exports = async (client, interaction, args) => {
       interaction,
     );
 
-  if (player.queue.size <= 1)
+  if (player.queue.size === 0)
     return client.errNormal(
       {
-        error: `¡Solo hay una canción en la cola!`,
+        error: `¡No hay canciones en la cola!`,
         type: "editreply",
       },
       interaction,

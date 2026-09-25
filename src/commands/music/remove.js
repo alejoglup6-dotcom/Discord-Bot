@@ -36,7 +36,7 @@ module.exports = async (client, interaction, args) => {
 
   let number = interaction.options.getNumber("number");
 
-  if (number > player.queue.size)
+  if (number < 1 || number > player.queue.size)
     return client.errNormal(
       {
         error: `La cola no tiene tantas canciones`,

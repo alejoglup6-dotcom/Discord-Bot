@@ -52,6 +52,8 @@ module.exports = async (client, interaction, args) => {
     lyrics = `No se encontró la letra de ${search} :x:`;
   }
 
+  if (lyrics.length > 4096) lyrics = `${lyrics.slice(0, 4093)}...`;
+
   client.embed(
     {
       title: `${client.emotes.normal.music}・Letra de ${search}`,

@@ -1,13 +1,5 @@
-const Discord = require("discord.js");
+const leave = require("./leave");
 
 module.exports = (client, player) => {
-  player.destroy();
-
-  const channel = client.channels.cache.get(player.textId);
-  client.errNormal(
-    {
-      error: "La música se detuvo. Me desconecté del canal",
-    },
-    channel,
-  );
+  leave(client, player, "La música se detuvo. Me desconecté del canal");
 };
