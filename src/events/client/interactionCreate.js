@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const Captcha = require("@haileybot/captcha-generator");
+const createCaptcha = require("../../assets/utils/captcha");
 
 const reactionSchema = require("../../database/models/reactionRoles");
 const banSchema = require("../../database/models/userBans");
@@ -122,22 +122,28 @@ module.exports = async (client, interaction) => {
       .findOne({ Guild: interaction.guild.id, Channel: interaction.channel.id })
       .lean();
     if (data) {
-      let captcha = new Captcha();
+      const captcha = createCaptcha();
 
       try {
-        var image = new Discord.AttachmentBuilder(captcha.JPEGStream, {
-          name: "captcha.jpeg",
-        });
+        const reply = captcha.image
+          ? {
+              files: [
+                new Discord.AttachmentBuilder(captcha.image, {
+                  name: "captcha.jpeg",
+                }),
+              ],
+            }
+          : { content: `Escribe este código para verificarte: **${captcha.value}**` };
 
         interaction
-          .reply({ files: [image], withResponse: true })
+          .reply({ ...reply, withResponse: true })
           .then(function (msg) {
             const filter = (s) => s.author.id == interaction.user.id;
 
             interaction.channel
-              .awaitMessages({ filter, max: 1 })
+              .awaitMessages({ filter, max: 1, time: 60000, errors: ["time"] })
               .then((response) => {
-                if (response.first().content === captcha.value) {
+                if (response.first().content.trim().toUpperCase() === captcha.value) {
                   response.first().delete();
                   msg.resource.message.delete();
 
@@ -153,7 +159,7 @@ module.exports = async (client, interaction) => {
                   var verifyUser = interaction.guild.members.cache.get(
                     interaction.user.id,
                   );
-                  verifyUser.roles.add(data.Role);
+                  verifyUser?.roles.add(data.Role).catch(() => {});
                 } else {
                   response.first().delete();
                   msg.resource.message.delete();
@@ -168,10 +174,14 @@ module.exports = async (client, interaction) => {
                     )
                     .then((msgError) => {
                       setTimeout(() => {
-                        msgError.delete();
+                        msgError?.delete().catch(() => {});
                       }, 2000);
                     });
                 }
+              })
+              .catch(() => {
+                // Se acabó el tiempo sin respuesta
+                msg.resource?.message?.delete().catch(() => {});
               });
           });
       } catch (error) {
