@@ -5,7 +5,7 @@ const { Chalk } = require('chalk');
 const chalk = new Chalk();
 
 const fs = require('fs');
-const { localize } = require('../../config/localizations');
+const { localize } = require('../../assets/utils/localizations');
 
 module.exports = (client) => {
     const interactionLogs = new Discord.WebhookClient({
