@@ -45,24 +45,18 @@ module.exports = {
         );
 
         if (message == "information") {
-          client
-            .simpleEmbed(
-              {
-                image: `https://media.discordapp.net/attachments/937337957419999272/937338297036967946/techpoint_channel_banner_about.jpg?width=812&height=221`,
-              },
-              interaction.channel,
-            )
+          Promise.resolve()
             .then(() => {
               client.embed(
                 {
                   title: `ℹ️・Información`,
                   author: {
-                    name: "TechPoint",
+                    name: "Drok",
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                   thumbnail:
-                    "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
+                    client.user.displayAvatarURL({ size: 1024 }),
                   fields: [
                     {
                       name: `👋┆¡Bienvenido a Bot Support!`,
@@ -78,13 +72,13 @@ module.exports = {
                     },
                     {
                       name: `🔗┆Nuestros otros servidores`,
-                      value: `[Servidor tech](https://discord.gg/bEJhVa6Ttv) - Recibe ayuda con código, tecnología y cripto mientras lees las últimas noticias\n[Apelación de baneos](https://discord.gg/htf9pHNRxA) - ¿Te banearon? Pide que te desbaneen`,
+                      value: `[Servidor tech](${client.config.discord.serverInvite}) - Recibe ayuda con código, tecnología y cripto mientras lees las últimas noticias\n[Apelación de baneos](${client.config.discord.serverInvite}) - ¿Te banearon? Pide que te desbaneen`,
                     },
                   ],
                   footer: {
-                    text: `© TechPoint - 2022`,
+                    text: `© Drok`,
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                 },
                 interaction.channel,
@@ -93,24 +87,18 @@ module.exports = {
         }
 
         if (message == "rules") {
-          client
-            .simpleEmbed(
-              {
-                image: `https://media.discordapp.net/attachments/937337957419999272/937338297968123904/techpoint_channel_banner_rules.jpg?width=812&height=221`,
-              },
-              interaction.channel,
-            )
+          Promise.resolve()
             .then(() => {
               client.embed(
                 {
                   title: `📃・Reglas`,
                   author: {
-                    name: "TechPoint",
+                    name: "Drok",
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                   thumbnail:
-                    "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
+                    client.user.displayAvatarURL({ size: 1024 }),
                   desc: `Estas son las reglas del servidor. Respétalas para que todos lo pasen bien. Los administradores y moderadores podrán aislar, expulsar o banear a su criterio`,
                   fields: [
                     {
@@ -155,9 +143,9 @@ module.exports = {
                     },
                   ],
                   footer: {
-                    text: `© TechPoint - 2022`,
+                    text: `© Drok`,
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                 },
                 interaction.channel,
@@ -166,29 +154,23 @@ module.exports = {
         }
 
         if (message == "applications") {
-          client
-            .simpleEmbed(
-              {
-                image: `https://media.discordapp.net/attachments/937337957419999272/938725909068918854/techpoint_channel_banner_applications.jpg?width=812&height=221`,
-              },
-              interaction.channel,
-            )
+          Promise.resolve()
             .then(() => {
               client.embed(
                 {
                   title: `💼・Solicitudes`,
                   author: {
-                    name: "TechPoint",
+                    name: "Drok",
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                   thumbnail:
-                    "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
+                    client.user.displayAvatarURL({ size: 1024 }),
                   desc: `¿Qué puede ser más divertido que trabajar en el mejor bot/servidor? Con frecuencia abrimos nuevos puestos a los que puedes postularte \n\nPero... ¿qué puedes esperar?`,
                   fields: [
                     {
                       name: `👥┆Un equipo muy agradable`,
-                      value: `¡En el equipo de Techpoint Network siempre hay buen ambiente y todos reciben el mismo trato!`,
+                      value: `¡En el equipo de Drok siempre hay buen ambiente y todos reciben el mismo trato!`,
                     },
                     {
                       name: `🥳┆Acceso al programa beta`,
@@ -212,9 +194,9 @@ module.exports = {
                     },
                   ],
                   footer: {
-                    text: `© TechPoint - 2022`,
+                    text: `© Drok`,
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                 },
                 interaction.channel,
@@ -223,24 +205,18 @@ module.exports = {
         }
 
         if (message == "helpdesk") {
-          client
-            .simpleEmbed(
-              {
-                image: `https://media.discordapp.net/attachments/937337957419999272/938725908687233034/techpoint_channel_banner_helpdesk.jpg?width=812&height=221`,
-              },
-              interaction.channel,
-            )
+          Promise.resolve()
             .then(() => {
               client.embed(
                 {
                   title: `🎫・Ayuda`,
                   author: {
-                    name: "TechPoint",
+                    name: "Drok",
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                   thumbnail:
-                    "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
+                    client.user.displayAvatarURL({ size: 1024 }),
                   desc: `¿Qué puede ser más divertido que trabajar en el mejor bot/servidor? Con frecuencia abrimos nuevos puestos a los que puedes postularte \n\nPero... ¿qué puedes esperar?`,
                   fields: [
                     {
@@ -257,9 +233,9 @@ module.exports = {
                     },
                   ],
                   footer: {
-                    text: `© TechPoint - 2022`,
+                    text: `© Drok`,
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                 },
                 interaction.channel,
@@ -268,43 +244,37 @@ module.exports = {
         }
 
         if (message == "network") {
-          client
-            .simpleEmbed(
-              {
-                image: `https://media.discordapp.net/attachments/937337957419999272/938725909387698216/techpoint_channel_banner_network.jpg?width=812&height=221`,
-              },
-              interaction.channel,
-            )
+          Promise.resolve()
             .then(() => {
               client.embed(
                 {
                   title: `🏢・Red`,
                   thumbnail:
-                    "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
+                    client.user.displayAvatarURL({ size: 1024 }),
                   author: {
-                    name: "TechPoint",
+                    name: "Drok",
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
-                  desc: `Techpoint Network es una red formada por 3 servidores. Cada servidor tiene su propia función: uno es para tecnología/programación/cripto y otro para soporte. También tenemos 1 servidor extra para apelaciones de baneos. Lee toda la información abajo`,
+                  desc: `Drok es una red formada por 3 servidores. Cada servidor tiene su propia función: uno es para tecnología/programación/cripto y otro para soporte. También tenemos 1 servidor extra para apelaciones de baneos. Lee toda la información abajo`,
                   fields: [
                     {
-                      name: `💻┇TechPoint`,
-                      value: `Este servidor se centra en todo lo relacionado con la tecnología. Por ejemplo, cifrado, cripto o los últimos gadgets. ¡Conoce gente nueva o aprende más sobre tecnología! Puedes unirte a este servidor haciendo clic en [este](https://discord.gg/bEJhVa6Ttv) enlace`,
+                      name: `💻┇Drok`,
+                      value: `Este servidor se centra en todo lo relacionado con la tecnología. Por ejemplo, cifrado, cripto o los últimos gadgets. ¡Conoce gente nueva o aprende más sobre tecnología! Puedes unirte a este servidor haciendo clic en [este](${client.config.discord.serverInvite}) enlace`,
                     },
                     {
                       name: `🤖┇Bot Support`,
-                      value: `Este es el servidor en el que estás ahora. Aquí encontrarás toda la información sobre este servidor. Puedes conseguir el enlace de este servidor haciendo clic en [este](https://discord.gg/GqhD6RNbzs) enlace`,
+                      value: `Este es el servidor en el que estás ahora. Aquí encontrarás toda la información sobre este servidor. Puedes conseguir el enlace de este servidor haciendo clic en [este](${client.config.discord.serverInvite}) enlace`,
                     },
                     {
-                      name: `🔨┇Apelaciones de baneo de TechPoint`,
-                      value: `Este servidor es para las personas baneadas de un servidor o de los bots. Aquí puedes abrir un ticket para pedir que te desbaneen y volver a participar en los servidores o usar los bots. Puedes unirte a este servidor haciendo clic en [este](https://discord.gg/q9jZrDk9n6) enlace`,
+                      name: `🔨┇Apelaciones de baneo de Drok`,
+                      value: `Este servidor es para las personas baneadas de un servidor o de los bots. Aquí puedes abrir un ticket para pedir que te desbaneen y volver a participar en los servidores o usar los bots. Puedes unirte a este servidor haciendo clic en [este](${client.config.discord.serverInvite}) enlace`,
                     },
                   ],
                   footer: {
-                    text: `© TechPoint - 2022`,
+                    text: `© Drok`,
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                 },
                 interaction.channel,
@@ -313,24 +283,18 @@ module.exports = {
         }
 
         if (message == "botinfo") {
-          client
-            .simpleEmbed(
-              {
-                image: `https://media.discordapp.net/attachments/937337957419999272/938725909668691978/techpoint_channel_banner_Bot.jpg?width=812&height=221`,
-              },
-              interaction.channel,
-            )
+          Promise.resolve()
             .then(() => {
               client.embed(
                 {
                   title: `ℹ・Información de los bots`,
                   author: {
-                    name: "TechPoint",
+                    name: "Drok",
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                   thumbnail:
-                    "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
+                    client.user.displayAvatarURL({ size: 1024 }),
                   desc: `Además de una comunidad, también mantenemos 2 bots públicos. ¡Todos están hechos para mejorar tu servidor!`,
                   fields: [
                     {
@@ -343,7 +307,7 @@ module.exports = {
                     },
                     {
                       name: `📨┆¿Cómo invito a los bots?`,
-                      value: `Puedes invitar a los bots con \`/invite\` o haciendo clic en los enlaces de abajo\n\n**Invitar a Bot** - [Invítalo aquí](https://discord.com/oauth2/authorize?&client_id=798144456528363550&scope=applications.commands+bot&permissions=8)\n**Invitar a Bot 2** - [Invítalo aquí](${client.config.discord.botInvite})`,
+                      value: `Puedes invitar a los bots con \`/invite\` o haciendo clic en los enlaces de abajo\n\n**Invitar a Bot** - [Invítalo aquí](${client.config.discord.botInvite})\n**Invitar a Bot 2** - [Invítalo aquí](${client.config.discord.botInvite})`,
                     },
                     {
                       name: `🎫┆¿Cómo consigo ayuda si la necesito?`,
@@ -351,9 +315,9 @@ module.exports = {
                     },
                   ],
                   footer: {
-                    text: `© TechPoint - 2022`,
+                    text: `© Drok`,
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                 },
                 interaction.channel,
@@ -364,14 +328,14 @@ module.exports = {
         if (message == "badges") {
           client.simpleEmbed(
             {
-              image: `https://media.discordapp.net/attachments/937337957419999272/938725908028751882/techpoint_channel_banner_soon.jpg?width=813&height=221`,
+              desc: `🥇・Insignias: ¡próximamente!`,
             },
             interaction.channel,
           );
           // .then(() => {
           //     client.embed({
           //         title: `🥇・Badges`,
-          //         thumbnail: "https://media.discordapp.net/attachments/937337957419999272/938725906728513576/techpoint_channel_banner_badges.jpg?width=813&height=221",
+          //         thumbnail: client.user.displayAvatarURL({ size: 1024 }),
           //         desc: `We at Bot have a special badge system! You can find your badge via the userinfo command. Read below what each badge means`,
           //         fields: [
           //             {
@@ -440,32 +404,26 @@ module.exports = {
           //             }
           //         ],
           //         footer: {
-          //             text: `© TechPoint - 2022`,
-          //             iconURL: "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812"
+          //             text: `© Drok`,
+          //             iconURL: client.user.displayAvatarURL({ size: 1024 })
           //         }
           //     }, interaction.channel)
           // })
         }
 
         if (message == "beta") {
-          client
-            .simpleEmbed(
-              {
-                image: `https://media.discordapp.net/attachments/937337957419999272/938725907097604116/techpoint_channel_banner_beta.jpg?width=813&height=221`,
-              },
-              interaction.channel,
-            )
+          Promise.resolve()
             .then(() => {
               client.embed(
                 {
                   title: `🐞・Béta`,
                   author: {
-                    name: "TechPoint",
+                    name: "Drok",
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                   thumbnail:
-                    "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
+                    client.user.displayAvatarURL({ size: 1024 }),
                   desc: `El programa beta de Bot es para actualizaciones nuevas que todavía tienen algunos bugs. ¡Gracias a este programa hay menos bugs en el lanzamiento! Todo se hace con otro bot, para que los usuarios actuales no se vean afectados por las pruebas beta`,
                   fields: [
                     {
@@ -482,9 +440,9 @@ module.exports = {
                     },
                   ],
                   footer: {
-                    text: `© TechPoint - 2022`,
+                    text: `© Drok`,
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                 },
                 interaction.channel,
@@ -493,24 +451,18 @@ module.exports = {
         }
 
         if (message == "credits") {
-          client
-            .simpleEmbed(
-              {
-                image: `https://media.discordapp.net/attachments/937337957419999272/938725907659644928/techpoint_channel_banner_credits.png?width=813&height=221`,
-              },
-              interaction.channel,
-            )
+          Promise.resolve()
             .then(() => {
               client.embed(
                 {
                   title: `${client.user.username}・Dcredits`,
                   author: {
-                    name: "TechPoint",
+                    name: "Drok",
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                   thumbnail:
-                    "https://media.discordapp.net/attachments/937337957419999272/937463192265846784/techpoint_logo_Bot.jpg?width=812&height=812",
+                    client.user.displayAvatarURL({ size: 1024 }),
                   fields: [
                     {
                       name: `ℹ️┆¿Qué son los Dcredits?`,
@@ -534,9 +486,9 @@ module.exports = {
                     },
                   ],
                   footer: {
-                    text: `© TechPoint - 2022`,
+                    text: `© Drok`,
                     iconURL:
-                      "https://media.discordapp.net/attachments/937337957419999272/937797574440681472/techpoint_logo-min.jpg?width=812&height=812",
+                      client.user.displayAvatarURL({ size: 1024 }),
                   },
                 },
                 interaction.channel,

@@ -4,58 +4,7 @@ const { Chalk } = require("chalk");
 const chalk = new Chalk();
 
 require("dotenv").config();
-const axios = require("axios");
 const Topgg = require("@top-gg/sdk");
-// Check if is up to date
-const { version } = require(".././package.json");
-axios
-    .get("https://api.github.com/repos/CorwinDev/Discord-Bot/releases/latest")
-    .then((res) => {
-        if (res.data.tag_name !== version) {
-            // Verify if the GitHub release is newer than the local package version
-            const currentVersion = version
-                .replace(/^v/, "")
-                .split(".")
-                .map(Number);
-            const latestVersion = res.data.tag_name
-                .replace(/^v/, "")
-                .split(".")
-                .map(Number);
-            let isNewer = false;
-
-            for (
-                let i = 0;
-                i < Math.max(currentVersion.length, latestVersion.length);
-                i++
-            ) {
-                const current = currentVersion[i] || 0;
-                const latest = latestVersion[i] || 0;
-
-                if (latest > current) {
-                    isNewer = true;
-                    break;
-                }
-
-                if (latest < current) {
-                    break;
-                }
-            }
-
-            if (isNewer) {
-                console.log(
-                    chalk.red.bgYellow(
-                        `Your bot is not up to date! Please update to the latest version!`,
-                        version + " -> " + res.data.tag_name,
-                    ),
-                );
-            }
-        }
-    })
-    .catch((err) => {
-        console.log(
-            chalk.red.bgYellow(`Failed to check if bot is up to date!`),
-        );
-    });
 
 const webhook = require("./config/webhooks.json");
 const config = require("./config/bot.js");
@@ -149,7 +98,7 @@ console.log(
     chalk.white(`...`),
 );
 console.log(`\u001b[0m`);
-console.log(chalk.red(`© CorwinDev | 2021 - ${new Date().getFullYear()}`));
+console.log(chalk.red(`© Drok | ${new Date().getFullYear()}`));
 console.log(chalk.red(`All rights reserved`));
 console.log(`\u001b[0m`);
 console.log(`\u001b[0m`);

@@ -8,9 +8,10 @@ module.exports = {
     discord: {
         id: process.env.DISCORD_ID,
         prefix: '!',
-        footer: `© Corwin 2021 - ${new Date().getFullYear()}`, 
+        footer: `© Drok ${new Date().getFullYear()}`, 
         botInvite: `https://discord.com/oauth2/authorize?&client_id=${process.env.DISCORD_ID}&scope=applications.commands+bot&permissions=8`,
-        serverInvite: "https://discord.gg/qHXxpQKC2H",
+        // Invitación a tu servidor de soporte (SUPPORT_SERVER en el .env)
+        serverInvite: process.env.SUPPORT_SERVER || "https://discord.com",
     },
 
     wordList: `Airplane

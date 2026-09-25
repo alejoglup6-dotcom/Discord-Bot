@@ -12,22 +12,12 @@ module.exports = async (client, interaction, args) => {
       fields: [
         {
           name: "👑┆Nombre del dueño",
-          value: `Corwin`,
-          inline: true,
-        },
-        {
-          name: "🏷┆Tag de Discord",
-          value: `</Corwin>#0001`,
+          value: `Drok`,
           inline: true,
         },
         {
           name: "🏢┆Organización",
-          value: `CoreWare`,
-          inline: true,
-        },
-        {
-          name: "🌐┆Sitio web",
-          value: `[https://corwindev.nl](https://corwindev.nl)`,
+          value: `Drok`,
           inline: true,
         },
       ],

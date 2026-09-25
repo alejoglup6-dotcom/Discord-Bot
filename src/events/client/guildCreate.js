@@ -73,7 +73,7 @@ module.exports = async (client, guild) => {
             },
             {
                 name: "☎️┆Necesito ayuda, ¿qué hago?",
-                value: `Puedes escribir por MD a <@755297485328482356> para pedir soporte o unirte al [[servidor de soporte]](${client.config.discord.serverInvite})`,
+                value: `Puedes pedir ayuda al equipo de Drok en el [[servidor de soporte]](${client.config.discord.serverInvite})`,
                 inline: false,
             },
             {
