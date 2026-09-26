@@ -209,6 +209,9 @@ manager.on("shardCreate", (shard) => {
 
 manager.spawn();
 
+// Webhook de Tebex (pagos de la tienda): solo si TEBEX_WEBHOOK_SECRET está en el .env
+require("./tebex/server").start(manager);
+
 // Webhooks
 const consoleLogs = new Discord.WebhookClient({
     id: webhook.consoleLogs.id,
