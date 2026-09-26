@@ -67,4 +67,9 @@ module.exports = async (client) => {
       });
     });
   }, 50000);
+
+  // Configuración inicial de los sistemas del servidor (SERVER_SETUP=true en el .env)
+  if (process.env.SERVER_SETUP === "true") {
+    require("../../assets/utils/serverSetup")(client);
+  }
 };
