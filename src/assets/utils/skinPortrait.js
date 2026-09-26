@@ -1,10 +1,11 @@
 // Retrato de la skin tipo foto de identificación: de la cabeza al pecho, ampliado, con fondo transparente
-// y un borde blanco alrededor del personaje.
+// y una luz desde atrás: un resplandor suave alrededor y los bordes del personaje un poco iluminados.
 // Parte de la imagen de cuerpo entero (open.mp o SAMP_SKIN_URL) y busca la figura por los píxeles no transparentes.
 const { createCanvas, loadImage } = require("canvas");
 
 const SIZE = 256;
-const OUTLINE = 5; // grosor del borde blanco en px
+const GLOW = 22; // difuminado del resplandor de atrás, en px
+const RIM = 0.45; // intensidad de la luz en los bordes del personaje (0-1)
 const cache = new Map(); // skin -> PNG (las imágenes no cambian)
 
 async function skinPortrait(url) {
@@ -45,7 +46,7 @@ async function skinPortrait(url) {
   fctx.imageSmoothingQuality = "high";
   fctx.drawImage(src, sx, sy, side, side, 0, 0, SIZE, SIZE);
 
-  // Silueta blanca para el borde
+  // Silueta blanca del personaje
   const silhouette = createCanvas(SIZE, SIZE);
   const sctx2 = silhouette.getContext("2d");
   sctx2.drawImage(figure, 0, 0);
@@ -53,14 +54,39 @@ async function skinPortrait(url) {
   sctx2.fillStyle = "#ffffff";
   sctx2.fillRect(0, 0, SIZE, SIZE);
 
-  // Fondo transparente: la silueta repetida alrededor forma el borde y encima va el personaje
+  // Solo la sombra difuminada de una imagen (la imagen se dibuja fuera del lienzo)
+  const blurred = (ctx, image, blur, alpha) => {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.shadowColor = "#ffffff";
+    ctx.shadowBlur = blur;
+    ctx.shadowOffsetX = SIZE * 2;
+    ctx.drawImage(image, -SIZE * 2, 0);
+    ctx.restore();
+  };
+
+  // Luz en los bordes: lo de fuera del personaje, difuminado hacia dentro y recortado a su forma
+  const outside = createCanvas(SIZE, SIZE);
+  const octx = outside.getContext("2d");
+  octx.fillStyle = "#ffffff";
+  octx.fillRect(0, 0, SIZE, SIZE);
+  octx.globalCompositeOperation = "destination-out";
+  octx.drawImage(figure, 0, 0);
+  const rim = createCanvas(SIZE, SIZE);
+  const rctx = rim.getContext("2d");
+  blurred(rctx, outside, 10, 1);
+  rctx.globalCompositeOperation = "destination-in";
+  rctx.drawImage(figure, 0, 0);
+
+  // Fondo transparente: resplandor de atrás, el personaje y la luz de los bordes encima
   const out = createCanvas(SIZE, SIZE);
   const ctx = out.getContext("2d");
-  for (let a = 0; a < 360; a += 15) {
-    const r = (a * Math.PI) / 180;
-    ctx.drawImage(silhouette, Math.round(Math.cos(r) * OUTLINE), Math.round(Math.sin(r) * OUTLINE));
-  }
+  blurred(ctx, silhouette, GLOW, 0.9);
+  blurred(ctx, silhouette, GLOW / 2, 0.6);
   ctx.drawImage(figure, 0, 0);
+  ctx.globalAlpha = RIM;
+  ctx.drawImage(rim, 0, 0);
+  ctx.globalAlpha = 1;
 
   const png = out.toBuffer("image/png");
   if (cache.size > 400) cache.delete(cache.keys().next().value);
