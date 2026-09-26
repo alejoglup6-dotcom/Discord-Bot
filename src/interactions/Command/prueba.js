@@ -6,6 +6,7 @@ const fortuna = require("../../database/fortuna");
 const catalog = require("../../assets/data/fortuna");
 const prizes = require("../../handlers/functions/fortunaPrizes");
 const { textChannel, roleByName } = require("../../assets/utils/guildLookup");
+const canvasLib = require("../../assets/utils/canvasLib");
 
 // Pruebas para el staff: ver que la bienvenida, la despedida, los contadores, las tablas y los premios funcionan
 module.exports = {
@@ -54,7 +55,9 @@ module.exports = {
       return ok(
         sub === "bienvenida" ? "Bienvenida enviada" : "Despedida enviada",
         `✅ Mensaje de prueba en ${r.channel}: [ver mensaje](${r.message.url})\n` +
-          (r.card ? "🖼️ La tarjeta con la foto se generó bien." : "⚠️ Sin tarjeta: la librería de imágenes (canvas) no funciona en el hosting; el resto del mensaje sí."),
+          (r.card
+            ? `🖼️ La tarjeta con la foto se generó bien (${canvasLib.libName()}).`
+            : `⚠️ Sin tarjeta, el resto del mensaje sí salió. Error: \`${(r.cardError || "desconocido").slice(0, 300)}\``),
       );
     }
 

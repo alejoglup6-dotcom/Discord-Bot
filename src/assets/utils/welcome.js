@@ -106,7 +106,12 @@ async function sendWelcome(client, member, info = {}) {
 
   let files;
   let image;
-  const png = await card("welcome", member).catch(() => null);
+  let cardError = null;
+  const png = await card("welcome", member).catch((err) => {
+    cardError = err.message;
+    console.log("Tarjeta de bienvenida:", err.message);
+    return null;
+  });
   if (png) {
     files = [new Discord.AttachmentBuilder(png, { name: "bienvenida.png" })];
     image = "attachment://bienvenida.png";
@@ -129,7 +134,7 @@ async function sendWelcome(client, member, info = {}) {
       channel,
     )
     .catch((err) => console.log("Bienvenida/despedida:", err.message));
-  return { channel, message, card: Boolean(png) };
+  return { channel, message, card: Boolean(png), cardError };
 }
 
 function duration(ms) {
@@ -167,7 +172,12 @@ async function sendLeave(client, member, info = {}) {
 
   let files;
   let image;
-  const png = await card("leave", member).catch(() => null);
+  let cardError = null;
+  const png = await card("leave", member).catch((err) => {
+    cardError = err.message;
+    console.log("Tarjeta de despedida:", err.message);
+    return null;
+  });
   if (png) {
     files = [new Discord.AttachmentBuilder(png, { name: "despedida.png" })];
     image = "attachment://despedida.png";
@@ -188,7 +198,7 @@ async function sendLeave(client, member, info = {}) {
       channel,
     )
     .catch((err) => console.log("Bienvenida/despedida:", err.message));
-  return { channel, message, card: Boolean(png) };
+  return { channel, message, card: Boolean(png), cardError };
 }
 
 module.exports = { sendWelcome, sendLeave, findChannel, fillTemplate };

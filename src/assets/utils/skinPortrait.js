@@ -1,7 +1,7 @@
 // Retrato de la skin tipo foto de identificación: de la cabeza al pecho, ampliado, con fondo transparente
 // y una luz desde atrás: un resplandor suave alrededor y los bordes del personaje un poco iluminados.
 // Parte de la imagen de cuerpo entero (open.mp o SAMP_SKIN_URL) y busca la figura por los píxeles no transparentes.
-const { createCanvas, loadImage } = require("canvas");
+const { createCanvas, loadImage, libName } = require("./canvasLib");
 
 const SIZE = 256;
 const GLOW = 22; // difuminado del resplandor de atrás, en px
@@ -54,14 +54,20 @@ async function skinPortrait(url) {
   sctx2.fillStyle = "#ffffff";
   sctx2.fillRect(0, 0, SIZE, SIZE);
 
-  // Solo la sombra difuminada de una imagen (la imagen se dibuja fuera del lienzo)
+  // Versión difuminada de una imagen blanca. @napi-rs/canvas tiene filtro de desenfoque; node-canvas no, así que
+  // ahí se usa la sombra de la imagen dibujada fuera del lienzo (en @napi-rs/canvas ese truco no dibuja nada).
   const blurred = (ctx, image, blur, alpha) => {
     ctx.save();
     ctx.globalAlpha = alpha;
-    ctx.shadowColor = "#ffffff";
-    ctx.shadowBlur = blur;
-    ctx.shadowOffsetX = SIZE * 2;
-    ctx.drawImage(image, -SIZE * 2, 0);
+    if (libName() === "@napi-rs/canvas") {
+      ctx.filter = `blur(${blur / 2}px)`;
+      ctx.drawImage(image, 0, 0);
+    } else {
+      ctx.shadowColor = "#ffffff";
+      ctx.shadowBlur = blur;
+      ctx.shadowOffsetX = SIZE * 2;
+      ctx.drawImage(image, -SIZE * 2, 0);
+    }
     ctx.restore();
   };
 

@@ -5,7 +5,7 @@
  * un atardecer de Los Santos dibujado aquí. La fuente (Poppins) va incluida porque muchos hostings no tienen.
  */
 const path = require("path");
-const { createCanvas, loadImage, registerFont } = require("canvas");
+const { createCanvas, loadImage, registerFont } = require("./canvasLib");
 
 const W = 1100;
 const H = 500;
@@ -14,9 +14,10 @@ let fontsReady = false;
 
 function loadFonts() {
   if (fontsReady) return;
-  registerFont(path.join(FONT_DIR, "Poppins-Bold.ttf"), { family: "Poppins", weight: "bold" });
-  registerFont(path.join(FONT_DIR, "Poppins-SemiBold.ttf"), { family: "Poppins SemiBold" });
-  registerFont(path.join(FONT_DIR, "Poppins-Medium.ttf"), { family: "Poppins Medium" });
+  // Un nombre de familia por grosor: así funciona igual con @napi-rs/canvas y con canvas
+  registerFont(path.join(FONT_DIR, "Poppins-Bold.ttf"), "PoppinsBold");
+  registerFont(path.join(FONT_DIR, "Poppins-SemiBold.ttf"), "PoppinsSemiBold");
+  registerFont(path.join(FONT_DIR, "Poppins-Medium.ttf"), "PoppinsMedium");
   fontsReady = true;
 }
 
@@ -208,24 +209,24 @@ async function makeCard(o) {
   titleGrad.addColorStop(0, theme.accent[0]);
   titleGrad.addColorStop(1, theme.accent[1]);
   ctx.fillStyle = titleGrad;
-  ctx.font = '38px "Poppins SemiBold"';
+  ctx.font = '38px PoppinsSemiBold';
   ctx.fillText(theme.title, x, 150);
 
   const name = printable(o.name, "Nuevo miembro");
   ctx.fillStyle = "#ffffff";
   ctx.shadowColor = "rgba(0,0,0,0.6)";
   ctx.shadowBlur = 12;
-  const shownName = fit(ctx, name, maxW, (s) => `bold ${s}px Poppins`, [72, 64, 56, 48, 42]);
+  const shownName = fit(ctx, name, maxW, (s) => `${s}px PoppinsBold`, [72, 64, 56, 48, 42]);
   ctx.fillText(shownName, x, 235);
   ctx.shadowBlur = 0;
 
   ctx.fillStyle = "rgba(255,255,255,0.82)";
   const sub = o.type === "leave" ? `dejó ${printable(o.guildName, "el servidor")}` : `a ${printable(o.guildName, "nuestro servidor")}`;
-  ctx.fillText(fit(ctx, sub, maxW, (s) => `${s}px "Poppins Medium"`, [32, 28, 24]), x, 290);
+  ctx.fillText(fit(ctx, sub, maxW, (s) => `${s}px PoppinsMedium`, [32, 28, 24]), x, 290);
 
   // Etiqueta con el número de miembro
   const badge = o.type === "leave" ? `Ahora somos ${o.memberCount.toLocaleString("es-ES")}` : `Miembro #${o.memberCount.toLocaleString("es-ES")}`;
-  ctx.font = '26px "Poppins SemiBold"';
+  ctx.font = '26px PoppinsSemiBold';
   const bw = ctx.measureText(badge).width + 44;
   const badgeGrad = ctx.createLinearGradient(x, 0, x + bw, 0);
   badgeGrad.addColorStop(0, theme.accent[0]);
