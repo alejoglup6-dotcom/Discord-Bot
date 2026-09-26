@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     User: String,
     FishingRod: { type: Boolean, default: false },
     FishingRodUsage: { type: Number, default: 0 },
 });
 
-module.exports = mongoose.model("economyItems", Schema);
+module.exports = db.model("economyItems", Schema);

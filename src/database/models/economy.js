@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     User: String,
     Money: Number,
     Bank: Number
 });
 
-module.exports = mongoose.model("economy", Schema);
+module.exports = db.model("economy", Schema);

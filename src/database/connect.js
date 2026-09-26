@@ -1,31 +1,24 @@
-const mongoose = require("mongoose");
 const { Chalk } = require("chalk");
 const chalk = new Chalk();
-const cache = require("ts-cache-mongoose");
-
-cache.init(mongoose, {
-  engine: "memory",
-  defaultTTL: "60 seconds",
-  maxEntries: 5000,
-});
+const odm = require("./odm");
+const samp = require("./samp");
 
 async function connect() {
-  mongoose.set("strictQuery", false);
+  console.log(
+    chalk.blue(chalk.bold(`Database`)),
+    chalk.white(`>>`),
+    chalk.red(`MySQL`),
+    chalk.green(`is connecting...`),
+  );
   try {
-    console.log(
-      chalk.blue(chalk.bold(`Database`)),
-      chalk.white(`>>`),
-      chalk.red(`MongoDB`),
-      chalk.green(`is connecting...`),
-    );
-    await mongoose.connect(process.env.MONGO_TOKEN);
+    await odm.connect();
   } catch (err) {
     console.log(
       chalk.red(`[ERROR]`),
       chalk.white(`>>`),
-      chalk.red(`MongoDB`),
+      chalk.red(`MySQL`),
       chalk.white(`>>`),
-      chalk.red(`Failed to connect to MongoDB!`),
+      chalk.red(`Failed to connect to MySQL!`),
       chalk.white(`>>`),
       chalk.red(`Error: ${err}`),
     );
@@ -33,28 +26,24 @@ async function connect() {
     process.exit(1);
   }
 
-  mongoose.connection.once("open", () => {
-    console.log(
-      chalk.blue(chalk.bold(`Database`)),
-      chalk.white(`>>`),
-      chalk.red(`MongoDB`),
-      chalk.green(`is ready!`),
-    );
-  });
+  console.log(
+    chalk.blue(chalk.bold(`Database`)),
+    chalk.white(`>>`),
+    chalk.red(`MySQL`),
+    chalk.green(`is ready!`),
+  );
 
-  mongoose.connection.on("error", (err) => {
-    console.log(
-      chalk.red(`[ERROR]`),
-      chalk.white(`>>`),
-      chalk.red(`Database`),
-      chalk.white(`>>`),
-      chalk.red(`Failed to connect to MongoDB!`),
-      chalk.white(`>>`),
-      chalk.red(`Error: ${err}`),
-    );
-    console.log(chalk.red("Exiting..."));
-    process.exit(1);
+  // Tablas del servidor de SA-MP: solo si la base de datos es la del gamemode
+  const hasSamp = await samp.init().catch((err) => {
+    console.log(chalk.red(`[ERROR]`), chalk.white(`>>`), chalk.red(`SA-MP`), chalk.white(`>>`), chalk.red(`${err}`));
+    return false;
   });
+  console.log(
+    chalk.blue(chalk.bold(`Database`)),
+    chalk.white(`>>`),
+    chalk.red(`SA-MP`),
+    hasSamp ? chalk.green(`tablas del servidor encontradas, /samp activo`) : chalk.yellow(`no hay tabla player, /samp desactivado`),
+  );
   return;
 }
 

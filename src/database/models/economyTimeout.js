@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     User: String,
     Beg: String,
@@ -17,4 +17,4 @@ const Schema = new mongoose.Schema({
     Present: String
 });
 
-module.exports = mongoose.model("economytimeout", Schema);
+module.exports = db.model("economytimeout", Schema);

@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     Words: Array
 });
 
-module.exports = mongoose.model("blacklist-words", Schema);
+module.exports = db.model("blacklist-words", Schema);

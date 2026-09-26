@@ -4,10 +4,11 @@
   "description": "Drok, un bot de Discord con más de 400 comandos para gestionar todo tu servidor",
   "main": "./src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test test/*.test.js",
     "start": "node . --trace-warnings",
     "dev": "nodemon . --trace-warnings",
-    "add-dev": "node src/dev.js"
+    "add-dev": "node src/dev.js",
+    "migrate-mongo": "node src/database/migrate-mongo.js"
   },
   "keywords": [
     "Music",
@@ -61,7 +62,7 @@
     "moment": "^2.29.4",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.6.3",
-    "mongoose": "^7.8.0",
+    "mysql2": "^3.24.4",
     "ms": "^2.1.3",
     "node-fetch": "^2.6.6",
     "parse-ms": "^2.1.0",
@@ -69,7 +70,6 @@
     "serialize-javascript": "^7.1.0",
     "shoukaku": "^4.3.0",
     "sourcebin": "^6.0.1",
-    "ts-cache-mongoose": "^2.2.1",
     "util": "^0.12.5",
     "xml2js": "^0.6.2",
     "zlib-sync": "^0.1.10"

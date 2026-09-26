@@ -51,6 +51,14 @@ const names = {
     voice: "voz",
 
     // Subcomandos y grupos
+    // /samp
+    link: "vincular",
+    unlink: "desvincular",
+    online: "conectados",
+    mute: "silenciar",
+    unmute: "quitar-silencio",
+    days: "dias",
+    minutes: "minutos",
     "8ball": "bola8",
     aboutme: "sobremi",
     accept: "aceptar",

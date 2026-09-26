@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     User: String,
     Message: {type: String, default: false}
 });
 
-module.exports = mongoose.model("afk", Schema);
+module.exports = db.model("afk", Schema);

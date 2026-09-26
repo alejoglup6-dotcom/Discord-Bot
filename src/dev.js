@@ -20,14 +20,12 @@ if (!process.argv[2]) {
 }
 require("dotenv").config("./.env");
 // Require database
-const mongoose = require("mongoose");
+const odm = require("./database/odm");
 // Require the model
 const model = require("./database/models/badge.js");
 // Connect to the database
-mongoose.set("strictQuery", false);
-// Await the connection
-mongoose
-  .connect(process.env.MONGO_TOKEN)
+odm
+  .connect()
   .then(() => {
     console.log(
       chalk.green(`[SUCCESS]`),
@@ -68,7 +66,7 @@ model
         chalk.red(`Developer Badge`),
         chalk.green(`has been added to the user!`),
       );
-      mongoose.connection.close();
+      await odm.close();
       process.exit(0);
     }
     if (data) {
@@ -84,7 +82,7 @@ model
         chalk.red(`Developer Badge`),
         chalk.green(`has been added to the user!`),
       );
-      mongoose.connection.close();
+      await odm.close();
       process.exit(0);
     }
   })

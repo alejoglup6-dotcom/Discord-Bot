@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     Name: String,
     Responce: String,
     Action: { type: String, default: "Normal" },
 });
 
-module.exports = mongoose.model("customCommandsAdvanced", Schema);
+module.exports = db.model("customCommandsAdvanced", Schema);

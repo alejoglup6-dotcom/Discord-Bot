@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     TicketID: Number,
     channelID: String,
@@ -9,4 +9,4 @@ const Schema = new mongoose.Schema({
     resolved: { type: Boolean, default: false }
 });
 
-module.exports = mongoose.model("ticketChannels", Schema);
+module.exports = db.model("ticketChannels", Schema);

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     Levels: { type: Boolean, default: false },
     Beta: { type: Boolean, default: false },
@@ -13,4 +13,4 @@ const Schema = new mongoose.Schema({
     Color: String 
 });
 
-module.exports = mongoose.model("functions", Schema);
+module.exports = db.model("functions", Schema);

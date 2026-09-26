@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     User: String,
     Count: Number,
 });
 
-module.exports = mongoose.model("count", Schema);
+module.exports = db.model("count", Schema);

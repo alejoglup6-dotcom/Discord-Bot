@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     User: String,
     Gender: { type: String, default: "" },
     Age: { type: String, default: "" },
@@ -18,4 +18,4 @@ const Schema = new mongoose.Schema({
     Birthday: { type: String, default: "" },
 });
 
-module.exports = mongoose.model("Profile", Schema);
+module.exports = db.model("Profile", Schema);

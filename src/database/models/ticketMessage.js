@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     openTicket: String,
     dmMessage: String
 });
 
-module.exports = mongoose.model("ticketMessage", Schema);
+module.exports = db.model("ticketMessage", Schema);

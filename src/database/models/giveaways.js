@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     messageId: String,
     channelId: String,
     guildId: String,
@@ -15,8 +15,8 @@ const Schema = new mongoose.Schema({
         inviteToParticipate: String,
         drawing: String,
         dropMessage: String,
-        winMessage: mongoose.Mixed,
-        embedFooter: mongoose.Mixed,
+        winMessage: db.Mixed,
+        embedFooter: db.Mixed,
         noWinner: String,
         winners: String,
         endedAt: String,
@@ -25,25 +25,25 @@ const Schema = new mongoose.Schema({
     thumbnail: String,
     hostedBy: String,
     winnerIds: { type: [String], default: undefined },
-    reaction: mongoose.Mixed,
+    reaction: db.Mixed,
     botsCanWin: Boolean,
-    embedColor: mongoose.Mixed,
-    embedColorEnd: mongoose.Mixed,
+    embedColor: db.Mixed,
+    embedColorEnd: db.Mixed,
     exemptPermissions: { type: [], default: undefined },
     exemptMembers: String,
     bonusEntries: String,
-    extraData: mongoose.Mixed,
+    extraData: db.Mixed,
     lastChance: {
         enabled: Boolean,
         content: String,
         threshold: Number,
-        embedColor: mongoose.Mixed
+        embedColor: db.Mixed
     },
     pauseOptions: {
         isPaused: Boolean,
         content: String,
         unPauseAfter: Number,
-        embedColor: mongoose.Mixed,
+        embedColor: db.Mixed,
         durationAfterPause: Number
     },
     isDrop: Boolean,
@@ -54,4 +54,4 @@ const Schema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("giveaways", Schema);
+module.exports = db.model("giveaways", Schema);
