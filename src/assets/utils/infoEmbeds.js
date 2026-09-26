@@ -12,35 +12,54 @@ function base(client, title, color) {
   return e;
 }
 
-function inviteEmbeds(client, guild, roles) {
+function inviteEmbeds(client, guild, roles, channels = {}) {
   const m = catalog.money;
   const p = client.config.discord.prefix;
+  const days = inviteConfig.MIN_ACCOUNT_DAYS;
+  const board = channels.board ? `${channels.board}` : "el canal de invitados";
   const tiers = roles
-    .map((r) => `${r.role ? `<@&${r.role.id}>` : `**${r.tier.role}**`} · **${r.tier.invites}** invitaciones → ${m(r.tier.money)}`)
+    .map((r) => `${r.role ? `<@&${r.role.id}>` : `**${r.tier.role}**`} · **${r.tier.invites}** válidas → ${m(r.tier.money)}`)
     .join("\n");
   return [
     base(client, "🎁・Recompensas por invitar", "#ff7a59").setDescription(
       `¡Trae a tus amigos a **${guild.name}** y gana premios!\n\n` +
-        `💵 **${m(inviteConfig.PER_INVITE)}** de la Fortuna por cada persona que entre con tu invitación.\n` +
-        `🏆 Y al llegar a cada nivel ganas un **rol** y un **premio extra**:\n\n${tiers}`,
+        `💵 **${m(inviteConfig.PER_INVITE)}** de la Fortuna por cada **invitado válido** que entre con tu enlace.\n` +
+        `🏆 Al llegar a cada nivel ganas un **rol** y un **premio extra**, automáticamente:\n\n${tiers}\n\n` +
+        `*El dinero es de la Fortuna del Discord (\`${p}fortuna\`), no del juego.*`,
     ),
-    base(client, "📨・Cómo invitar", "#5865F2").addFields(
+    base(client, "✅・¿Qué es una invitación válida?", "#2ecc71").setDescription(
+      `Una persona que entró con **tu enlace de invitación** y que:\n\n` +
+        `**1.** Tiene una cuenta de Discord con **más de ${days} días** de creada.\n` +
+        `**2.** **Sigue en el servidor.** Si se va, deja de contar para tus niveles.\n\n` +
+        `Tu progreso está en ${board}. Ahí verás tus invitaciones **válidas** y, aparte, las que están *sin premio* (cuentas nuevas).`,
+    ),
+    base(client, "🛡️・Medida de seguridad contra multicuentas", "#e67e22").setDescription(
+      `Para que nadie se aproveche del sistema creando cuentas falsas o multicuentas, **las cuentas de Discord con menos de ${days} días no cuentan** para las recompensas.\n\n` +
+        `• Pueden entrar y jugar normalmente: solo que **no dan dinero ni suben tu nivel**.\n` +
+        `• La regla es igual para todos y la aplica el bot de forma automática.\n` +
+        `• Hacer multicuentas o usar cuentas de otros para invitar se considera trampa: **se quitan los premios y hay sanción**.`,
+    ),
+    base(client, "📨・Cómo invitar y dudas frecuentes", "#5865F2").addFields(
       {
-        name: "1️⃣┆Crea tu invitación",
-        value: "Toca el nombre del servidor → **Invitar gente** → en ajustes pon que **no caduque** y copia el enlace.",
+        name: "1️⃣┆Crea tu enlace",
+        value: "Toca el nombre del servidor → **Invitar gente** → en ajustes pon que **no caduque** y copia el enlace. Usa siempre tu propio enlace.",
       },
-      { name: "2️⃣┆Compártela", value: "En tus redes, con amigos que jueguen SA-MP o en grupos de GTA." },
+      { name: "2️⃣┆Compártelo", value: "En tus redes, con amigos que jueguen SA-MP o en grupos de GTA." },
       {
         name: "3️⃣┆Mira tu progreso",
-        value: `\`/invitaciones ver\` · \`${p}invitaciones ver\`\nRanking: \`/invitaciones clasificacion\` · \`${p}invitaciones clasificacion\``,
+        value: `En ${board}, o con \`/invitaciones ver\` · \`${p}invitaciones ver\``,
       },
       {
-        name: "⚠️┆Reglas",
-        value:
-          `• Solo cuentan las cuentas de Discord con más de **${inviteConfig.MIN_ACCOUNT_DAYS} días**.\n` +
-          "• Si alguien sale, se descuenta de tus invitaciones (el dinero ya cobrado no se quita).\n" +
-          "• Cada persona paga una sola vez, aunque salga y vuelva a entrar.\n" +
-          "• Usar cuentas falsas o spam para invitar = pérdida de premios y sanción.",
+        name: "❓┆Invité a alguien y no me sumó",
+        value: `Puede ser que su cuenta tenga menos de ${days} días, que haya entrado con el enlace de otra persona o que ya haya salido del servidor.`,
+      },
+      {
+        name: "❓┆Si alguien se va, ¿pierdo el rol o el dinero?",
+        value: "No. Lo que ya ganaste se queda. Solo deja de contar para llegar al **siguiente** nivel.",
+      },
+      {
+        name: "❓┆¿Me pagan otra vez si sale y vuelve a entrar?",
+        value: "No. Cada persona da su premio una sola vez.",
       },
     ),
   ];

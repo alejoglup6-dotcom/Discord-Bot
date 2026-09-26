@@ -6,7 +6,11 @@ const { sendLeave } = require("../../assets/utils/welcome");
 
 module.exports = async (client, member) => {
     if (member.user?.bot) return;
-    const inviteByData = await invitedBy.findOne({ Guild: member.guild.id, User: member.id }).lean();
+    // Deja de contar como invitado activo (para los niveles de recompensas)
+    const inviteByData = await invitedBy.findOneAndUpdate(
+        { Guild: member.guild.id, User: member.id },
+        { $set: { Active: false } },
+    ).lean();
 
     let inviteData = null;
     if (inviteByData) {

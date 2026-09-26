@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 
 const invites = require("../../database/models/invites");
+const { validInvitesByUser } = require("../../database/inviteRewards");
+const inviteConfig = require("../../assets/data/invites");
 const samp = require("../../database/samp");
 const { textChannel } = require("../../assets/utils/guildLookup");
 
@@ -16,11 +18,17 @@ const money = (n) => "$" + Math.round(Number(n) || 0).toLocaleString("es-ES");
 const place = (i) => MEDALS[i] || `\`${String(i + 1).padStart(2)}.\``;
 
 async function invitesBoard(client, guild) {
-  const rows = (await invites.find({ Guild: guild.id }).lean()).filter((r) => (r.Invites || 0) > 0 || (r.Total || 0) > 0);
-  rows.sort((a, b) => (b.Invites || 0) - (a.Invites || 0) || (b.Total || 0) - (a.Total || 0));
+  const valid = await validInvitesByUser(guild.id);
+  const rows = (await invites.find({ Guild: guild.id }).lean())
+    .map((r) => ({ ...r, Valid: valid.get(r.User) || 0 }))
+    .filter((r) => r.Valid > 0 || (r.Invites || 0) > 0);
+  rows.sort((a, b) => b.Valid - a.Valid || (b.Invites || 0) - (a.Invites || 0));
   const lines = rows
     .slice(0, 20)
-    .map((r, i) => `${place(i)} <@${r.User}> · **${r.Invites || 0}** invitaciones` + ((r.Left || 0) > 0 ? ` *(${r.Left} salieron)*` : ""));
+    .map((r, i) => {
+      const others = (r.Invites || 0) - r.Valid;
+      return `${place(i)} <@${r.User}> · **${r.Valid}** válidas` + (others > 0 ? ` *(+${others} sin premio)*` : "");
+    });
   const info = textChannel(guild, /recompensas invitaciones/);
   return client
     .templateEmbed()
@@ -28,9 +36,10 @@ async function invitesBoard(client, guild) {
     .setColor("#ff7a59")
     .setDescription(
       (lines.length ? lines.join("\n") : "Todavía nadie invitó a nadie. ¡Sé el primero!") +
-        `\n\n🎁 Cada invitación da premios${info ? `: mira ${info}` : ""}.`,
+        `\n\n✅ **Válidas**: cuentas de Discord con más de ${inviteConfig.MIN_ACCOUNT_DAYS} días que siguen en el servidor. Son las que dan premios${info ? ` (mira ${info})` : ""}.` +
+        `\n🛡️ *Sin premio*: cuentas nuevas o de prueba; no cuentan para evitar multicuentas.`,
     )
-    .setFooter({ text: "Se actualiza cada 5 minutos · cuentan las personas que siguen en el servidor" });
+    .setFooter({ text: "Se actualiza cada 5 minutos" });
 }
 
 async function richestBoard(client, guild) {

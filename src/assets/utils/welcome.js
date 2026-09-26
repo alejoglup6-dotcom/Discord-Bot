@@ -53,7 +53,7 @@ async function card(type, member) {
 /**
  * @param {import("discord.js").Client} client
  * @param {import("discord.js").GuildMember} member
- * @param {object} [info] { inviter: User, invites: {Invites, Left}, reward: {paid, tiers, fake} }
+ * @param {object} [info] { inviter: User, invites: {Invites, Left}, reward: {paid, tiers, fake, valid} }
  */
 async function sendWelcome(client, member, info = {}) {
   const guild = member.guild;
@@ -83,15 +83,23 @@ async function sendWelcome(client, member, info = {}) {
     { name: "📅┆Cuenta creada", value: `<t:${Math.floor(member.user.createdTimestamp / 1000)}:D>\n<t:${Math.floor(member.user.createdTimestamp / 1000)}:R>`, inline: true },
     {
       name: "📨┆Invitado por",
-      value: inviter ? `<@${inviter.id}>\n${invites?.Invites ?? 1} invitaciones` : "Invitación directa",
+      value: inviter
+        ? `<@${inviter.id}>\n${reward?.valid ?? invites?.Invites ?? 1} invitaciones válidas`
+        : "Invitación directa",
       inline: true,
     },
     { name: "🚀┆Primeros pasos", value: steps.join("\n") },
   ];
+  if (inviter && reward?.fake) {
+    fields.push({
+      name: "🛡️┆Cuenta nueva",
+      value: `Esta cuenta de Discord tiene menos de ${require("../data/invites").MIN_ACCOUNT_DAYS} días: no suma para las recompensas de <@${inviter.id}> (medida contra multicuentas).`,
+    });
+  }
   if (reward?.tiers?.length) {
     fields.push({
       name: "🏆┆¡Nuevo nivel de invitaciones!",
-      value: reward.tiers.map((t) => `<@${inviter.id}> llegó a **${t.role}** (${t.invites} invitaciones)`).join("\n"),
+      value: reward.tiers.map((t) => `<@${inviter.id}> llegó a **${t.role}** (${t.invites} invitaciones válidas)`).join("\n"),
     });
   }
 

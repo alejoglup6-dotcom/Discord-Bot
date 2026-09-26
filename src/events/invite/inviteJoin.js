@@ -2,7 +2,7 @@ const discord = require('discord.js');
 
 const invites = require("../../database/models/invites");
 const invitedBy = require("../../database/models/inviteBy");
-const { onInvite } = require("../../database/inviteRewards");
+const { onInvite, isValidAccount } = require("../../database/inviteRewards");
 const { sendWelcome } = require("../../assets/utils/welcome");
 
 /**
@@ -25,14 +25,14 @@ module.exports = async (client, member, invite, inviter) => {
             { upsert: true, new: true },
         ).lean();
 
-        // Quién invitó a quién (una fila por miembro)
+        // Quién invitó a quién (una fila por miembro) y si la cuenta vale para premios
         await invitedBy.findOneAndUpdate(
             { Guild: member.guild.id, User: member.id },
-            { $set: { inviteUser: inviter.id } },
+            { $set: { inviteUser: inviter.id, Valid: isValidAccount(member.user), Active: true } },
             { upsert: true },
         );
 
-        reward = await onInvite(member.guild, inviter.id, member, inviteData.Invites).catch(() => null);
+        reward = await onInvite(member.guild, inviter.id, member).catch((e) => (console.log(e), null));
     }
 
     await sendWelcome(client, member, { inviter: invite ? inviter : null, invites: inviteData, reward });

@@ -161,6 +161,20 @@ test("invitaciones: conteo por miembro, premio una sola vez y cuentas nuevas no 
   assert.strictEqual(await money("inv1"), before);
 });
 
+test("multicuentas: cuentas nuevas no suben de nivel ni dan dinero", async () => {
+  const before = roleAdds.length;
+  for (const id of ["f1", "f2", "f3", "f4"]) {
+    await inviteJoin(client, member(id, { days: 1 }), { code: "x" }, { id: "inv2", username: "T", tag: "T" });
+  }
+  assert.strictEqual((await Economy.findOne({ Guild: G, User: "inv2" }).lean())?.Money || 0, 0);
+  assert.strictEqual(roleAdds.length, before);
+  const inv = await Invites.findOne({ Guild: G, User: "inv2" }).lean();
+  assert.strictEqual(inv.Invites, 4); // aparecen en la tabla como "sin premio"
+  const last = sent.filter((m) => m.channelId === "c002").pop().payload.embeds[0].data;
+  assert.ok(last.fields.some((f) => /Cuenta nueva/.test(f.name) && /multicuentas/.test(f.value)));
+  assert.match(last.fields.find((f) => /Invitado por/.test(f.name)).value, /0 invitaciones válidas/);
+});
+
 test("contadores: se encuentran por nombre y conservan su emoji", async () => {
   const r = await client.refreshStats(guild);
   const names = Object.fromEntries(r.map((x) => [x.field, x.to]));
@@ -199,7 +213,8 @@ test("premios semanales: la primera vez solo anota la fecha; después paga al to
 test("tablas: ranking de invitaciones y millonarios del juego", async () => {
   const boards = require("../src/handlers/functions/liveBoards");
   const inv = (await boards.invitesBoard(client, guild)).toJSON();
-  assert.match(inv.description, /🥇 <@inv1> · \*\*4\*\* invitaciones \*\(1 salieron\)\*/);
+  assert.match(inv.description, /🥇 <@inv1> · \*\*3\*\* válidas \*\(\+1 sin premio\)\*/);
+  assert.match(inv.description, /Medida|multicuentas/);
   assert.match(inv.description, /<#c004>/);
 
   await samp.init();
