@@ -1,5 +1,6 @@
 // Conecta los sistemas del bot con los canales del servidor de SampCity.
-// Se ejecuta al arrancar solo si en el .env está SERVER_SETUP=true.
+// Se ejecuta al arrancar si en el .env está SERVER_SETUP=true o si falta la configuración (por ejemplo, después
+// de pasar la base de datos de MongoDB a MySQL, que dejó vacías la verificación, los tickets, etc.).
 // Se puede repetir sin problemas: actualiza la configuración sin duplicarla.
 const { Chalk } = require("chalk");
 const chalk = new Chalk();
@@ -32,6 +33,11 @@ const setup = {
     Channel: "1553182867583012874", // ➕┆Crear sala
     ChannelName: "{emoji} {channel name}",
   },
+  // Botón "Verificarme" en ✅┆verificacion: da el rol 👤 USUARIO (desbloquea el resto del servidor)
+  verify: {
+    Channel: "1552764620479922176", // ✅┆verificacion
+    Role: "1552764514670477312", // 👤 USUARIO
+  },
   stats: {
     Members: "1553182876055638188",
     Boost: "1553182877267787827",
@@ -44,7 +50,7 @@ function log(text) {
   console.log(chalk.blue(chalk.bold(`Setup`)), chalk.white(`>>`), chalk.green(text));
 }
 
-module.exports = async (client) => {
+async function run(client) {
   const guild = client.guilds.cache.get(setup.guild);
   if (!guild) return;
 
@@ -115,6 +121,14 @@ module.exports = async (client) => {
       { upsert: true },
     );
 
+    // Verificación con captcha
+    const Verify = require("../../database/models/verify");
+    await Verify.findOneAndUpdate(
+      { Guild: guild.id },
+      { $set: setup.verify },
+      { upsert: true },
+    );
+
     // Estadísticas del servidor
     const Stats = require("../../database/models/stats");
     await Stats.findOneAndUpdate(
@@ -135,4 +149,23 @@ module.exports = async (client) => {
   } catch (error) {
     console.log(chalk.red(`Setup >> Error configurando los sistemas: ${error.message}`));
   }
+}
+
+// Al arrancar: con SERVER_SETUP=true siempre; si no, solo si falta la configuración (primera vez en MySQL)
+module.exports = async (client) => {
+  if (process.env.SERVER_SETUP === "true") return run(client);
+  const guild = client.guilds.cache.get(setup.guild);
+  if (!guild) return;
+  const Verify = require("../../database/models/verify");
+  const Tickets = require("../../database/models/tickets");
+  const [verify, tickets] = await Promise.all([
+    Verify.findOne({ Guild: guild.id }).lean().catch(() => null),
+    Tickets.findOne({ Guild: guild.id }).lean().catch(() => null),
+  ]);
+  if (!verify || !tickets) {
+    log("Falta la configuración del servidor (verificación, tickets...): se vuelve a guardar");
+    return run(client);
+  }
 };
+module.exports.run = run;
+module.exports.setup = setup;

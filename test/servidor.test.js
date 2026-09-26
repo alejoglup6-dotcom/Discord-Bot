@@ -262,3 +262,28 @@ test("/prueba: bienvenida y despedida de prueba, contadores y premios", async ()
   assert.match(r.description, /✅ Canal de anuncio: <#c007>/);
   assert.match(r.description, /✅ Rol: <@&rm>/);
 });
+
+test("configuración perdida en la migración: se vuelve a guardar sola al arrancar", async () => {
+  const serverSetup = require("../src/assets/utils/serverSetup");
+  const Verify = require("../src/database/models/verify");
+  const Tickets = require("../src/database/models/tickets");
+  const Welcome = require("../src/database/models/welcomeChannels");
+  const id = serverSetup.setup.guild;
+  const fake = { id, name: "SampCity", channels: { cache: new Collection() } };
+  const c = new EventEmitter();
+  Object.assign(c, client, { guilds: { cache: new Collection([[id, fake]]) } });
+  const snapshot = async () => [await Verify.findOne({ Guild: id }).lean(), await Tickets.findOne({ Guild: id }).lean()];
+  const before = await snapshot();
+  try {
+    await Verify.deleteMany({ Guild: id });
+    await serverSetup(c);
+    const [v, t] = await snapshot();
+    assert.deepStrictEqual([v.Channel, v.Role], [serverSetup.setup.verify.Channel, serverSetup.setup.verify.Role]);
+    assert.strictEqual(t.Channel, serverSetup.setup.tickets.Channel);
+    assert.strictEqual((await Welcome.findOne({ Guild: id }).lean()).Channel, serverSetup.setup.channels.welcomeChannels);
+  } finally {
+    // Deja la base de pruebas como estaba
+    if (!before[0]) await Verify.deleteMany({ Guild: id });
+    if (!before[1]) await Tickets.deleteMany({ Guild: id });
+  }
+});

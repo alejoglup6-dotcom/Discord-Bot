@@ -4,6 +4,7 @@ const createCaptcha = require("../../assets/utils/captcha");
 const reactionSchema = require("../../database/models/reactionRoles");
 const banSchema = require("../../database/models/userBans");
 const verify = require("../../database/models/verify");
+const { norm } = require("../../assets/utils/guildLookup");
 const Commands = require("../../database/models/customCommand");
 const CommandsSchema = require("../../database/models/customCommandAdvanced");
 const { helpList } = require("../../assets/utils/prefixCommands");
@@ -130,9 +131,16 @@ module.exports = async (client, interaction) => {
 
   // Verify system
   if (interaction.isButton() && interaction.customId == "Bot_verify") {
-    const data = await verify
+    let data = await verify
       .findOne({ Guild: interaction.guild.id, Channel: interaction.channel.id })
       .lean();
+    // Sin configuración guardada: el canal "verificacion" da el rol "USUARIO" (o VERIFY_ROLE del .env)
+    if (!data && norm(interaction.channel.name) === "verificacion") {
+      const role =
+        (process.env.VERIFY_ROLE && interaction.guild.roles.cache.get(process.env.VERIFY_ROLE)) ||
+        interaction.guild.roles.cache.find((r) => norm(r.name) === "usuario");
+      if (role) data = { Role: role.id };
+    }
     if (data) {
       const captcha = createCaptcha();
 
