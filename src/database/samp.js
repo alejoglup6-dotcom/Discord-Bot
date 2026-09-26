@@ -157,6 +157,15 @@ async function getTop(type, limit = 50) {
   return db.query(`SELECT p.name, ${t.value} AS value FROM player p ORDER BY ${t.column}, p.id LIMIT ?`, [limit]);
 }
 
+// Los que más dinero tienen en el juego (efectivo + banco), para la tabla de 💼┆millonarios
+async function getRichest(limit = 15) {
+  return db.query(
+    `SELECT p.name, p.cash, p.bank_money, (p.cash + p.bank_money) AS total, p.connected, p.level
+     FROM player p ORDER BY total DESC, p.id LIMIT ?`,
+    [limit],
+  );
+}
+
 // ---------------------------------------------------------------------------------------------------------------
 // Sanciones (hacen lo mismo que AddPlayerBan, /unban y /muteard del gamemode)
 
@@ -275,6 +284,7 @@ module.exports = {
   unlink,
   getOnlinePlayers,
   getTop,
+  getRichest,
   getActiveBan,
   ban,
   unban,

@@ -3,6 +3,7 @@ const { Chalk } = require("chalk");
 const chalk = new Chalk();
 
 const Schema = require("../../database/models/stats");
+const { norm } = require("../../assets/utils/guildLookup");
 
 /*
  * Contadores de estadísticas (canales de voz con "👤 Miembros: 123", etc.).
@@ -14,19 +15,42 @@ const Schema = require("../../database/models/stats");
  * - si falta el canal o el permiso de "Gestionar canales", se avisa una vez en la consola.
  */
 const COUNTERS = {
-  Members: ["👤", (g) => `Miembros: ${g.memberCount.toLocaleString("es-ES")}`],
-  Boost: ["💎", (g) => `Boosts: ${g.premiumSubscriptionCount || 0}`],
-  BoostTier: ["🥇", (g) => `Nivel: ${Number(g.premiumTier) || 0}`],
-  Channels: ["🔧", (g) => `Canales: ${g.channels.cache.size}`],
-  Roles: ["👔", (g) => `Roles: ${g.roles.cache.size}`],
-  Emojis: ["😛", (g) => `Emojis: ${g.emojis.cache.size}`],
-  AnimatedEmojis: ["🤡", (g) => `Emojis animados: ${g.emojis.cache.filter((e) => e.animated).size}`],
-  StaticEmojis: ["🤡", (g) => `Emojis estáticos: ${g.emojis.cache.filter((e) => !e.animated).size}`],
-  TextChannels: ["💬", (g) => `Canales de texto: ${g.channels.cache.filter((c) => c.type === Discord.ChannelType.GuildText).size}`],
-  VoiceChannels: ["🔊", (g) => `Canales de voz: ${g.channels.cache.filter((c) => c.type === Discord.ChannelType.GuildVoice).size}`],
-  NewsChannels: ["📢", (g) => `Canales de anuncios: ${g.channels.cache.filter((c) => c.type === Discord.ChannelType.GuildAnnouncement).size}`],
-  StageChannels: ["🎤", (g) => `Canales de escenario: ${g.channels.cache.filter((c) => c.type === Discord.ChannelType.GuildStageVoice).size}`],
+  Members: ["👤", "Miembros", (g) => g.memberCount.toLocaleString("es-ES")],
+  Boost: ["💎", "Boosts", (g) => g.premiumSubscriptionCount || 0],
+  BoostTier: ["🥇", "Nivel", (g) => Number(g.premiumTier) || 0],
+  Channels: ["🔧", "Canales", (g) => g.channels.cache.size],
+  Roles: ["👔", "Roles", (g) => g.roles.cache.size],
+  Emojis: ["😛", "Emojis", (g) => g.emojis.cache.size],
+  AnimatedEmojis: ["🤡", "Emojis animados", (g) => g.emojis.cache.filter((e) => e.animated).size],
+  StaticEmojis: ["🤡", "Emojis estáticos", (g) => g.emojis.cache.filter((e) => !e.animated).size],
+  TextChannels: ["💬", "Canales de texto", (g) => g.channels.cache.filter((c) => c.type === Discord.ChannelType.GuildText).size],
+  VoiceChannels: ["🔊", "Canales de voz", (g) => g.channels.cache.filter((c) => c.type === Discord.ChannelType.GuildVoice).size],
+  NewsChannels: ["📢", "Canales de anuncios", (g) => g.channels.cache.filter((c) => c.type === Discord.ChannelType.GuildAnnouncement).size],
+  StageChannels: ["🎤", "Canales de escenario", (g) => g.channels.cache.filter((c) => c.type === Discord.ChannelType.GuildStageVoice).size],
 };
+
+// Sin configuración: los canales de voz de la categoría "Estadísticas" que se llamen "Miembros: 9", etc.
+function discover(guild) {
+  const found = {};
+  const category = guild.channels.cache.find((c) => c.type === Discord.ChannelType.GuildCategory && /estadistica|stats/.test(norm(c.name)));
+  if (!category) return found;
+  const voices = guild.channels.cache.filter((c) => c.parentId === category.id && c.type === Discord.ChannelType.GuildVoice);
+  for (const [field, [, label]] of Object.entries(COUNTERS)) {
+    const re = new RegExp(`(^| )${norm(label)} [0-9]`);
+    const ch = voices.find((c) => re.test(norm(c.name)) && !Object.values(found).includes(c.id));
+    if (ch) found[field] = ch.id;
+  }
+  return found;
+}
+
+// Nombre nuevo: si el canal ya tiene "Etiqueta: número", solo se cambia el número (se conserva su emoji)
+function counterName(channel, template, [emoji, label, value], guild) {
+  const v = String(value(guild));
+  if (new RegExp(`${norm(label)} [0-9]`).test(norm(channel.name)) && /[0-9][0-9.,]*\s*$/.test(channel.name)) {
+    return channel.name.replace(/[0-9][0-9.,]*\s*$/, v);
+  }
+  return template.replace("{emoji}", emoji).replace("{name}", `${label}: ${v}`);
+}
 
 const MIN_RENAME_GAP = 5 * 60000;
 const INTERVAL = 10 * 60000;
@@ -45,19 +69,20 @@ module.exports = (client) => {
 
   // Devuelve la lista de cambios: [{ field, channel, from, to, done, reason }]
   client.refreshStats = async function (guild, { dryRun = false } = {}) {
-    const data = await Schema.findOne({ Guild: guild.id }).lean();
-    if (!data) return [];
+    const saved = await Schema.findOne({ Guild: guild.id }).lean();
+    const data = saved ? { ...discover(guild), ...Object.fromEntries(Object.entries(saved).filter(([, v]) => v)) } : discover(guild);
+    if (!Object.keys(COUNTERS).some((f) => data[f])) return [];
     const template = data.ChannelTemplate || "{emoji} {name}";
     const results = [];
-    for (const [field, [emoji, text]] of Object.entries(COUNTERS)) {
+    for (const [field, counter] of Object.entries(COUNTERS)) {
       if (!data[field]) continue;
       const channel = guild.channels.cache.get(data[field]);
       if (!channel) {
-        warn(`${guild.id}:${field}`, `${guild.name}: el canal del contador "${field}" ya no existe. Vuelve a crearlo con /montar o /estadisticas.`);
+        warn(`${guild.id}:${field}`, `${guild.name}: el canal del contador "${field}" ya no existe. Vuelve a crearlo con /estadisticas.`);
         results.push({ field, reason: "missing" });
         continue;
       }
-      const name = template.replace("{emoji}", emoji).replace("{name}", text(guild));
+      const name = counterName(channel, template, counter, guild);
       if (channel.name === name) {
         results.push({ field, channel, to: name, done: true, reason: "same" });
         continue;
@@ -87,17 +112,13 @@ module.exports = (client) => {
       setTimeout(() => {
         pending.delete(guild.id);
         client.refreshStats(guild).catch(() => {});
-      }, delay),
+      }, delay).unref(),
     );
   }
   client.scheduleStats = schedule;
 
   async function refreshAll() {
-    const all = await Schema.find({}).lean().catch(() => []);
-    for (const d of all) {
-      const guild = client.guilds.cache.get(d.Guild);
-      if (guild) await client.refreshStats(guild).catch(() => {});
-    }
+    for (const guild of client.guilds.cache.values()) await client.refreshStats(guild).catch(() => {});
   }
 
   client.once(Discord.Events.ClientReady, () => {
@@ -117,3 +138,7 @@ module.exports = (client) => {
   client.on(Discord.Events.GuildEmojiDelete, (e) => onGuild(e.guild));
   client.on(Discord.Events.GuildUpdate, (_old, guild) => onGuild(guild));
 };
+
+module.exports.counterName = counterName;
+module.exports.discover = discover;
+module.exports.COUNTERS = COUNTERS;

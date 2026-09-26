@@ -6,6 +6,7 @@ const config = require("../assets/data/invites");
 const Log = require("./models/inviteRewardLog");
 const Rewards = require("./models/inviteRewards");
 const fortuna = require("./fortuna");
+const { roleByName } = require("../assets/utils/guildLookup");
 
 const DAY = 86400000;
 
@@ -49,8 +50,9 @@ async function onInvite(guild, inviterId, member, invites) {
       await fortuna.addMoney(guild.id, inviterId, tier.money);
       result.paid += tier.money;
     }
+    // Rol configurado para ese nivel o, si no, el que tenga el nombre del nivel
     const reward = await Rewards.findOne({ Guild: guild.id, Invites: tier.invites }).lean();
-    const role = reward && guild.roles.cache.get(reward.Role);
+    const role = (reward && guild.roles.cache.get(reward.Role)) || roleByName(guild, tier.role);
     if (role) {
       const inviter = await guild.members.fetch(inviterId).catch(() => null);
       await inviter?.roles.add(role).catch(() => {});

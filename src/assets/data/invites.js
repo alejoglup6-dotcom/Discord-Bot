@@ -1,6 +1,6 @@
 /*
  * Recompensas por invitar gente al servidor de Discord. El dinero es el de la Fortuna / economía del bot
- * (no el del juego). Los roles los crea /montar si no existen.
+ * (no el del juego). Los roles se buscan por su nombre en el servidor.
  */
 module.exports = {
   // Pago por cada persona invitada que entra (una sola vez por persona, aunque salga y vuelva a entrar)

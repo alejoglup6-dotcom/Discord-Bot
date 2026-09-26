@@ -16,6 +16,7 @@ Bot de Discord multipropósito de **Drok**, con más de 400 comandos: moderació
 - Verificación con captcha
 - Comandos con `!` además de `/`: cualquier comando funciona escribiendo `!` delante (`!samp perfil Lelo_Drok`, `!economia depositar 500`) y hay atajos al estilo SampDroid (`!fortuna`, `!trabajar`, `!cauto sultan`, `!cuenta`...). `!comandos` los lista
 - Fortuna (`/fortuna`): minijuego de economía con oficios, autos, casas, negocios, empresas, armas y asaltos. Usa el dinero de `/economy` y no toca nada del juego. Precios y sueldos en `src/assets/data/fortuna.js`
+- Bienvenida y despedida con tarjeta (banner, foto del usuario, número de miembro, quién lo invitó); recompensas por invitar (dinero y roles por niveles); contadores de estadísticas que se actualizan solos; tablas en vivo de invitaciones (`🔔┆invitados`) y de los más ricos del juego (`💼┆millonarios`). Los canales y roles se encuentran por su nombre
 - Servidor de SA-MP (`/samp`): vincular la cuenta del juego, perfil, jugadores conectados, tops y sanciones (ban, tempban, unban, mute) para el staff
 
 ## Requisitos

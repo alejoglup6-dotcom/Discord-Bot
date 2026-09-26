@@ -1,7 +1,8 @@
 /*
  * Mensajes de bienvenida y despedida: tarjeta con banner y foto del usuario (welcomeCard.js) y un embed
  * con los datos del miembro, quién lo invitó y los primeros pasos en el servidor.
- * Canales: los de /configurar bienvenida y despedida (welcomeChannels / leaveChannels).
+ * Canales: los de /configurar bienvenida y despedida (welcomeChannels / leaveChannels) o, si no hay, los
+ * que se llamen "bienvenidas" y "despedidas".
  * Texto propio: si el servidor configuró inviteMessages, se usa como descripción con sus {variables}.
  */
 const Discord = require("discord.js");
@@ -9,16 +10,12 @@ const { makeCard } = require("./welcomeCard");
 const welcomeSchema = require("../../database/models/welcomeChannels");
 const leaveSchema = require("../../database/models/leaveChannels");
 const messages = require("../../database/models/inviteMessages");
-const Layout = require("../../database/models/serverLayout");
+const { configuredOrNamed, textChannel } = require("./guildLookup");
 
-const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-
-// Canal guardado por /montar o, si no, el primero cuyo nombre encaje
-async function findChannel(guild, key, pattern) {
-  const layout = await Layout.findOne({ Guild: guild.id }).lean().catch(() => null);
-  const saved = layout?.[key] && guild.channels.cache.get(layout[key]);
-  if (saved) return saved;
-  return guild.channels.cache.find((c) => c.type === Discord.ChannelType.GuildText && pattern.test(norm(c.name))) || null;
+// Canal configurado con /configurar o, si no, el que encaje por nombre
+async function findChannel(guild, schema, pattern) {
+  const data = schema ? await schema.findOne({ Guild: guild.id }).lean().catch(() => null) : null;
+  return configuredOrNamed(guild, data?.Channel, pattern);
 }
 
 function fillTemplate(text, member, inviter, invites) {
@@ -60,16 +57,13 @@ async function card(type, member) {
  */
 async function sendWelcome(client, member, info = {}) {
   const guild = member.guild;
-  const channelData = await welcomeSchema.findOne({ Guild: guild.id }).lean();
-  const channel = channelData && guild.channels.cache.get(channelData.Channel);
+  const channel = await findChannel(guild, welcomeSchema, /bienvenid|welcome/);
   if (!channel) return;
 
-  const [custom, rules, inviteInfo, fortunaInfo] = await Promise.all([
-    messages.findOne({ Guild: guild.id }).lean(),
-    findChannel(guild, "Rules", /norma|regla|rules/),
-    findChannel(guild, "InviteInfo", /invitacion/),
-    findChannel(guild, "FortunaInfo", /info-fortuna|fortuna/),
-  ]);
+  const custom = await messages.findOne({ Guild: guild.id }).lean();
+  const rules = textChannel(guild, /regla|norma|rules/);
+  const inviteInfo = textChannel(guild, /recompensas invitaciones|invitacion/);
+  const fortunaInfo = textChannel(guild, /info fortuna/);
   const { inviter, invites, reward } = info;
 
   const desc = custom?.inviteJoin
@@ -123,7 +117,7 @@ async function sendWelcome(client, member, info = {}) {
       },
       channel,
     )
-    .catch(() => {});
+    .catch((err) => console.log("Bienvenida/despedida:", err.message));
 }
 
 function duration(ms) {
@@ -142,8 +136,7 @@ function duration(ms) {
  */
 async function sendLeave(client, member, info = {}) {
   const guild = member.guild;
-  const channelData = await leaveSchema.findOne({ Guild: guild.id }).lean();
-  const channel = channelData && guild.channels.cache.get(channelData.Channel);
+  const channel = await findChannel(guild, leaveSchema, /despedid|goodbye/);
   if (!channel) return;
 
   const custom = await messages.findOne({ Guild: guild.id }).lean();
@@ -180,7 +173,7 @@ async function sendLeave(client, member, info = {}) {
       },
       channel,
     )
-    .catch(() => {});
+    .catch((err) => console.log("Bienvenida/despedida:", err.message));
 }
 
 module.exports = { sendWelcome, sendLeave, findChannel, fillTemplate };

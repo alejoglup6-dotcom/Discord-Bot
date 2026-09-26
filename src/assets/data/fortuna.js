@@ -97,7 +97,7 @@ const HEIST_FINE = [500, 2000];
 
 // Premios semanales: cada domingo a las 20:00 (FORTUNA_TZ del .env, por defecto hora de México) las 3 mayores
 // fortunas del servidor cobran el premio y la primera se lleva el rol "Magnate de la semana".
-// Solo en servidores donde /montar creó el canal de la Fortuna (ahí se anuncia).
+// Solo en servidores con un canal "fortuna" (ahí se anuncia) y el rol "💰 Magnate de la semana".
 const WEEKLY_PRIZES = [250000, 150000, 75000];
 const PRIZE_DAY = 0; // 0 = domingo
 const PRIZE_HOUR = 20;
