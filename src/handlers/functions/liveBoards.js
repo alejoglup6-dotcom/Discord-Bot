@@ -79,15 +79,22 @@ module.exports = (client) => {
     }
   }
 
-  async function update() {
+  // Devuelve qué tablas se publicaron en cada servidor (lo usa /prueba tablas)
+  async function update(only) {
     const sampReady = await samp.isAvailable().catch(() => false);
-    for (const guild of client.guilds.cache.values()) {
+    const done = [];
+    for (const guild of only ? [only] : client.guilds.cache.values()) {
       const inv = textChannel(guild, /^invitados$/);
-      if (inv) await publish(inv, await invitesBoard(client, guild)).catch((e) => console.log(e));
+      if (inv) await publish(inv, await invitesBoard(client, guild)).then(() => done.push(inv)).catch((e) => console.log(e));
       const rich = sampReady && textChannel(guild, /^millonarios$/);
-      if (rich) await publish(rich, await richestBoard(client, guild)).catch((e) => console.log(e));
+      if (rich) await publish(rich, await richestBoard(client, guild)).then(() => done.push(rich)).catch((e) => console.log(e));
     }
+    return done;
   }
+  client.updateLiveBoards = (guild) => {
+    last.clear(); // forzar la edición aunque no haya cambios
+    return update(guild);
+  };
 
   client.once(Discord.Events.ClientReady, () => {
     setTimeout(update, 20000);

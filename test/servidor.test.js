@@ -222,3 +222,43 @@ test("tablas: ranking de invitaciones y millonarios del juego", async () => {
   const [top] = await db.query("SELECT name, cash + bank_money AS total FROM player ORDER BY total DESC, id LIMIT 1");
   assert.ok(rich.description.startsWith(`🥇 ⚫ **${top.name.replace(/_/g, "\\_")}**`), rich.description.split("\n")[0]);
 });
+
+test("/prueba: bienvenida y despedida de prueba, contadores y premios", async () => {
+  const prueba = require("../src/interactions/Command/prueba");
+  const replies = [];
+  const run = async (sub) => {
+    const admin = { ...member("admin1", { name: "Admin" }), permissions: { has: () => true } };
+    const interaction = {
+      guild,
+      member: admin,
+      user: admin.user,
+      options: { getSubcommand: () => sub, getMember: () => null },
+      deferReply: async () => {},
+      deferred: true,
+      editReply: async (p) => (replies.push(p), p),
+    };
+    await prueba.run(client, interaction, []);
+    return replies[replies.length - 1].embeds[0].data;
+  };
+
+  sent.length = 0;
+  let r = await run("bienvenida");
+  const msg = sent.find((m) => m.channelId === "c002");
+  assert.ok(msg, "envía a 🎍┆bienvenidas");
+  assert.match(msg.payload.embeds[0].data.title, /^🧪 PRUEBA · /);
+  assert.strictEqual(msg.payload.content, undefined); // no menciona a nadie
+  assert.match(r.description, /<#c002>/);
+  assert.match(r.description, /tarjeta con la foto se generó bien/);
+
+  r = await run("despedida");
+  assert.ok(sent.find((m) => m.channelId === "c003"));
+
+  r = await run("contadores");
+  assert.match(r.title, /Contadores/);
+  assert.match(r.description, /Miembros/);
+
+  r = await run("premios");
+  assert.match(r.description, /Próximo reparto/);
+  assert.match(r.description, /✅ Canal de anuncio: <#c007>/);
+  assert.match(r.description, /✅ Rol: <@&rm>/);
+});

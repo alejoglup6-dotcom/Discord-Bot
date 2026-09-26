@@ -53,12 +53,13 @@ async function card(type, member) {
 /**
  * @param {import("discord.js").Client} client
  * @param {import("discord.js").GuildMember} member
- * @param {object} [info] { inviter: User, invites: {Invites, Left}, reward: {paid, tiers, fake, valid} }
+ * @param {object} [info] { inviter: User, invites: {Invites, Left}, reward: {paid, tiers, fake, valid}, test: bool }
+ * @returns {{ channel, message, card: boolean }} (message vacío si Discord no lo aceptó)
  */
 async function sendWelcome(client, member, info = {}) {
   const guild = member.guild;
   const channel = await findChannel(guild, welcomeSchema, /bienvenid|welcome/);
-  if (!channel) return;
+  if (!channel) return { channel: null };
 
   const custom = await messages.findOne({ Guild: guild.id }).lean();
   const rules = textChannel(guild, /regla|norma|rules/);
@@ -111,21 +112,24 @@ async function sendWelcome(client, member, info = {}) {
     image = "attachment://bienvenida.png";
   }
 
-  await client
+  // En modo prueba (/prueba bienvenida) no se menciona a nadie y el título lo indica
+  const test = info.test ? "🧪 PRUEBA · " : "";
+  const message = await client
     .embed(
       {
-        title: `👋・¡Bienvenido/a a ${guild.name}!`,
+        title: `${test}👋・¡Bienvenido/a a ${guild.name}!`,
         desc,
         thumbnail: member.user.displayAvatarURL({ size: 256 }),
         image,
         files,
         fields,
         color: "#ff7a59",
-        content: `${member}`,
+        content: info.test ? undefined : `${member}`,
       },
       channel,
     )
     .catch((err) => console.log("Bienvenida/despedida:", err.message));
+  return { channel, message, card: Boolean(png) };
 }
 
 function duration(ms) {
@@ -140,12 +144,13 @@ function duration(ms) {
 /**
  * @param {import("discord.js").Client} client
  * @param {import("discord.js").GuildMember} member
- * @param {object} [info] { inviterId, invites: {Invites, Left} }
+ * @param {object} [info] { inviterId, invites: {Invites, Left}, test: bool }
+ * @returns {{ channel, message, card: boolean }}
  */
 async function sendLeave(client, member, info = {}) {
   const guild = member.guild;
   const channel = await findChannel(guild, leaveSchema, /despedid|goodbye/);
-  if (!channel) return;
+  if (!channel) return { channel: null };
 
   const custom = await messages.findOne({ Guild: guild.id }).lean();
   const inviter = info.inviterId ? await client.users.fetch(info.inviterId).catch(() => null) : null;
@@ -168,10 +173,11 @@ async function sendLeave(client, member, info = {}) {
     image = "attachment://despedida.png";
   }
 
-  await client
+  const test = info.test ? "🧪 PRUEBA · " : "";
+  const message = await client
     .embed(
       {
-        title: `👋・¡Hasta pronto, ${member.displayName || member.user.username}!`,
+        title: `${test}👋・¡Hasta pronto, ${member.displayName || member.user.username}!`,
         desc,
         thumbnail: member.user.displayAvatarURL({ size: 256 }),
         image,
@@ -182,6 +188,7 @@ async function sendLeave(client, member, info = {}) {
       channel,
     )
     .catch((err) => console.log("Bienvenida/despedida:", err.message));
+  return { channel, message, card: Boolean(png) };
 }
 
 module.exports = { sendWelcome, sendLeave, findChannel, fillTemplate };
