@@ -12,6 +12,7 @@ const levelLogs = require("../../database/models/levelChannels");
 const Commands = require("../../database/models/customCommand");
 const CommandsSchema = require("../../database/models/customCommandAdvanced");
 const fetch = require("node-fetch");
+const { runPrefixCommand } = require("../../assets/utils/prefixCommands");
 
 /**
  *
@@ -397,4 +398,12 @@ module.exports = async (client, message) => {
       });
     }
   }
+
+  // Comandos de barra escritos con el prefijo (!samp perfil, !fortuna, !depositar 500...)
+  await runPrefixCommand(
+    client,
+    message,
+    message.content.slice(matchedPrefix.length),
+    matchedPrefix.startsWith("<@") ? prefix : matchedPrefix,
+  ).catch((err) => console.log(err));
 };

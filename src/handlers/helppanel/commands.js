@@ -133,6 +133,11 @@ module.exports = async (client) => {
             inline: true
         },
         {
+            name: `🕴️┆Fortuna`,
+            value: `\`/fortune help\``,
+            inline: true
+        },
+        {
             name: `🎮┆Servidor SA-MP`,
             value: `\`/samp help\``,
             inline: true
