@@ -1,131 +1,130 @@
 /*
- * Webhook de Tebex contra una copia de la base de datos del servidor (s107_Samp.sql cargado).
+ * Tienda Tebex contra una copia de la base de datos del servidor (s107_Samp.sql cargado) y una API de Tebex falsa.
  */
 require("dotenv").config({ quiet: true });
 const test = require("node:test");
 const assert = require("node:assert");
+const http = require("http");
 const db = require("../src/database/mysql");
 const tebex = require("../src/database/tebex");
-const { createServer, sign, validSignature, logEmbed } = require("../src/tebex/server");
+const { TebexQueue, logEmbed } = require("../src/tebex/queue");
 
-const SECRET = "secreto-de-prueba";
-const TXN = "tbx-test-" + Date.now();
+const BASE_ID = 900000000 + Math.floor(Math.random() * 1000000);
 let player;
-let server;
-let port;
+let api;
+let apiUrl;
 const notices = [];
-
-async function post(event, { secret = SECRET } = {}) {
-  const body = JSON.stringify(event);
-  const res = await fetch(`http://127.0.0.1:${port}/tebex`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "X-Signature": sign(body, secret) },
-    body,
-  });
-  return { status: res.status, body: await res.json() };
-}
-
-function payment(txn, username, products) {
-  return {
-    id: "evt-" + txn,
-    type: "payment.completed",
-    subject: {
-      transaction_id: txn,
-      price: { amount: 12.5, currency: "USD" },
-      customer: { email: "cliente@example.com", username: { id: "1", username } },
-      products: products.map(([name, quantity]) => ({ name, quantity, username: { id: "1", username } })),
-    },
-  };
-}
+// Estado de la API falsa
+const fake = { secret: "clave", offline: [], online: {}, players: [], deleted: [], nextCheck: 90 };
 
 test.before(async () => {
   await tebex.init();
-  [player] = await db.query("SELECT id, name, coins FROM player ORDER BY id LIMIT 1");
-  server = createServer({ secret: SECRET, checkIp: false, notify: async (e) => notices.push(e) });
-  await new Promise((r) => server.listen(0, "127.0.0.1", r));
-  port = server.address().port;
+  [player] = await db.query("SELECT id, name FROM player ORDER BY id LIMIT 1");
+  api = http.createServer((req, res) => {
+    const send = (status, body) => {
+      res.writeHead(status, { "Content-Type": "application/json" });
+      res.end(body === undefined ? "" : JSON.stringify(body));
+    };
+    if (req.headers["x-tebex-secret"] !== fake.secret) return send(403, { error_message: "Invalid secret" });
+    let raw = "";
+    req.on("data", (c) => (raw += c));
+    req.on("end", () => {
+      if (req.method === "GET" && req.url === "/queue") return send(200, { meta: { next_check: fake.nextCheck }, players: fake.players });
+      if (req.method === "GET" && req.url === "/queue/offline-commands") return send(200, { meta: { limited: false }, commands: fake.offline });
+      const m = req.url.match(/^\/queue\/online-commands\/(\d+)$/);
+      if (req.method === "GET" && m) return send(200, { commands: fake.online[m[1]] || [] });
+      if (req.method === "DELETE" && req.url === "/queue") {
+        fake.deleted.push(...JSON.parse(raw).ids);
+        return send(204);
+      }
+      send(404, {});
+    });
+  });
+  await new Promise((r) => api.listen(0, "127.0.0.1", r));
+  apiUrl = `http://127.0.0.1:${api.address().port}`;
 });
 
 test.after(async () => {
-  await db.query("DELETE FROM tebex_payments WHERE transaction_id LIKE 'tbx-test-%'");
-  await db.query("DELETE FROM discord_actions WHERE reason LIKE 'Tebex tbx-test-%'");
-  server.close();
+  await db.query("DELETE FROM tebex_commands WHERE command_id >= ?", [BASE_ID]);
+  await db.query("DELETE FROM discord_actions WHERE reason LIKE 'Tebex pago % / comando 9________'");
+  api.close();
   await db.close();
 });
 
-test("nombres de paquetes", () => {
-  assert.deepStrictEqual(tebex.parsePackage("100 Coins"), { coins: 100, vipDays: 0 });
-  assert.deepStrictEqual(tebex.parsePackage("Pack 250 RoleCoins"), { coins: 250, vipDays: 0 });
-  assert.deepStrictEqual(tebex.parsePackage("1.000 Coins"), { coins: 1000, vipDays: 0 });
-  assert.deepStrictEqual(tebex.parsePackage("VIP 60 días"), { coins: 0, vipDays: 60 });
-  assert.deepStrictEqual(tebex.parsePackage("Membresía VIP"), { coins: 0, vipDays: 30 });
-  assert.strictEqual(tebex.parsePackage("Camiseta"), null);
+const queue = (secret = fake.secret) => new TebexQueue({ secret, api: apiUrl, notify: async (e) => notices.push(e) });
+
+test("comandos de los paquetes", () => {
+  assert.deepStrictEqual(tebex.parseCommand("coins Juan_Perez 100"), { action: "coins", name: "Juan_Perez", value: 100 });
+  assert.deepStrictEqual(tebex.parseCommand("/VIP Juan_Perez 30"), { action: "vip", name: "Juan_Perez", value: 30 });
+  assert.strictEqual(tebex.parseCommand("coins Juan_Perez"), null);
+  assert.strictEqual(tebex.parseCommand("coins Juan_Perez 0"), null);
+  assert.strictEqual(tebex.parseCommand("give Juan 5"), null);
 });
 
-test("firma de Tebex", () => {
-  const body = '{"a":1}';
-  assert.ok(validSignature(Buffer.from(body), sign(body, SECRET), SECRET));
-  assert.ok(!validSignature(Buffer.from(body), sign(body, "otra"), SECRET));
-  assert.ok(!validSignature(Buffer.from(body), undefined, SECRET));
-});
+test("entrega coins, VIP y comandos de jugador conectado; una sola vez", async () => {
+  fake.offline = [
+    { id: BASE_ID + 1, command: `coins ${player.name} 250`, payment: 555, player: { name: player.name } },
+    { id: BASE_ID + 2, command: `vip ${player.name} 30`, payment: 555, player: { name: player.name } },
+  ];
+  fake.players = [{ id: 77, name: player.name }];
+  fake.online = { 77: [{ id: BASE_ID + 3, command: `coins ${player.name} 50`, payment: 556 }] };
+  fake.deleted = [];
 
-test("rechaza firmas malas y responde la validación", async () => {
-  const bad = await post({ id: "x", type: "validation.webhook" }, { secret: "otra" });
-  assert.strictEqual(bad.status, 403);
-  const ok = await post({ id: "abc-123", type: "validation.webhook" });
-  assert.deepStrictEqual(ok, { status: 200, body: { id: "abc-123" } });
-});
+  const r = await queue().poll();
+  assert.strictEqual(r.delivered, 3);
+  assert.strictEqual(r.wait, 90);
+  assert.deepStrictEqual(fake.deleted.sort(), [BASE_ID + 1, BASE_ID + 2, BASE_ID + 3]);
 
-test("solo IPs de Tebex", async () => {
-  const strict = createServer({ secret: SECRET });
-  await new Promise((r) => strict.listen(0, "127.0.0.1", r));
-  const res = await fetch(`http://127.0.0.1:${strict.address().port}/tebex`, { method: "POST", body: "{}" });
-  assert.strictEqual(res.status, 403);
-  strict.close();
-});
-
-test("pago completado: deja coins y VIP para el gamemode, una sola vez", async () => {
-  const txn = TXN + "-a";
-  const event = payment(txn, player.name, [["100 Coins", 2], ["VIP 30 días", 1]]);
-  const r = await post(event);
-  assert.strictEqual(r.status, 200);
-
-  const [row] = await db.query("SELECT * FROM tebex_payments WHERE transaction_id = ?", [txn]);
-  assert.strictEqual(row.status, "delivered");
-  assert.strictEqual(Number(row.player_id), Number(player.id));
-  assert.strictEqual(row.coins, 200);
-  assert.strictEqual(row.vip_days, 30);
-
-  const actions = await db.query("SELECT action, value, done FROM discord_actions WHERE reason = ? ORDER BY action", ["Tebex " + txn]);
-  assert.deepStrictEqual(actions.map((a) => [a.action, a.value, a.done]), [["coins", 200, 0], ["vip", 30, 0]]);
+  const actions = await db.query(
+    "SELECT action, value, done, by_name FROM discord_actions WHERE reason IN (?, ?, ?) ORDER BY id",
+    [1, 2, 3].map((n) => `Tebex pago ${n === 3 ? 556 : 555} / comando ${BASE_ID + n}`),
+  );
+  // Primero los del jugador conectado y luego los demás
+  assert.deepStrictEqual(actions.map((a) => [a.action, a.value, a.done, a.by_name]), [
+    ["coins", 50, 0, player.name],
+    ["coins", 250, 0, player.name],
+    ["vip", 30, 0, player.name],
+  ]);
   assert.match(notices.at(-1).title, /entregada/);
 
-  // Tebex reintenta el mismo pago: no se entrega dos veces ni se vuelve a avisar
+  // Si el borrado de la cola falló, Tebex los vuelve a mandar: no se entregan otra vez ni se avisa
   const n = notices.length;
-  assert.strictEqual((await post(event)).status, 200);
-  assert.strictEqual(Number((await db.query("SELECT COUNT(*) AS n FROM discord_actions WHERE reason = ?", ["Tebex " + txn]))[0].n), 2);
+  await queue().poll();
+  const again = await db.query(
+    "SELECT COUNT(*) AS n FROM discord_actions WHERE reason IN (?, ?, ?)",
+    [1, 2, 3].map((n) => `Tebex pago ${n === 3 ? 556 : 555} / comando ${BASE_ID + n}`),
+  );
+  assert.strictEqual(Number(again[0].n), 3);
   assert.strictEqual(notices.length, n);
 });
 
-test("cuenta que no existe: se registra y se avisa al staff", async () => {
-  const txn = TXN + "-b";
-  await post(payment(txn, "No_Existe_Nadie_999", [["50 Coins", 1]]));
-  const [row] = await db.query("SELECT status, player_id FROM tebex_payments WHERE transaction_id = ?", [txn]);
-  assert.strictEqual(row.status, "no_account");
-  assert.strictEqual(row.player_id, null);
-  assert.match(notices.at(-1).title, /no existe la cuenta/);
+test("cuenta inexistente y comando desconocido: se registran y se avisa al staff", async () => {
+  fake.players = [];
+  fake.offline = [
+    { id: BASE_ID + 10, command: "coins No_Existe_Nadie_999 100", payment: 600 },
+    { id: BASE_ID + 11, command: "darcoins algo", payment: 601 },
+  ];
+  await queue().poll();
+  const rows = await db.query("SELECT command_id, status, player_id FROM tebex_commands WHERE command_id IN (?, ?) ORDER BY command_id", [BASE_ID + 10, BASE_ID + 11]);
+  assert.deepStrictEqual(rows.map((r) => [Number(r.command_id), r.status, r.player_id]), [
+    [BASE_ID + 10, "no_account", null],
+    [BASE_ID + 11, "unknown", null],
+  ]);
+  assert.match(notices.at(-2).title, /no existe la cuenta/);
+  assert.match(notices.at(-1).title, /no reconocido/);
 });
 
-test("reembolso: marca el pago y avisa", async () => {
-  const txn = TXN + "-a";
-  await post({ id: "r1", type: "payment.refunded", subject: { transaction_id: txn } });
-  const [row] = await db.query("SELECT status FROM tebex_payments WHERE transaction_id = ?", [txn]);
-  assert.strictEqual(row.status, "refunded");
-  assert.match(notices.at(-1).title, /payment.refunded/);
+test("clave incorrecta: error claro y no se entrega nada", async () => {
+  await assert.rejects(queue("mala").poll(), /HTTP 403/);
 });
 
-test("embed de paquete desconocido", () => {
-  const e = logEmbed({ kind: "payment", status: "nothing", username: "A_B", player: { id: 1, name: "A_B" }, coins: 0, vipDays: 0, unknown: ["Camiseta"], products: ["1x Camiseta"], transactionId: "t", amount: 1, currency: "USD" });
-  assert.match(e.title, /no reconocido/);
-  assert.ok(e.fields.some((f) => /Camiseta/.test(f.value)));
+test("respeta un mínimo de espera", async () => {
+  fake.offline = [];
+  fake.nextCheck = 1;
+  assert.strictEqual((await queue().poll()).wait, 30);
+});
+
+test("embed de compra entregada", () => {
+  const e = logEmbed({ status: "delivered", action: "vip", value: 30, username: "A_B", player: { id: 1, name: "A_B" }, paymentId: 5, command: "vip A_B 30" });
+  assert.ok(e.fields.some((f) => /VIP \*\*30\*\* días/.test(f.value)));
 });
