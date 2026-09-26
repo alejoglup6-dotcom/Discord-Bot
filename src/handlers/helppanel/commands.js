@@ -133,6 +133,11 @@ module.exports = async (client) => {
             inline: true
         },
         {
+            name: `🎮┆Servidor SA-MP`,
+            value: `\`/samp help\``,
+            inline: true
+        },
+        {
             name: `😛┆Roles por reacción`,
             value: `\`/reactionroles help\``,
             inline: true

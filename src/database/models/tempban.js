@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     guildId: String,
     userId: String,
     expires: Date
 });
 
-module.exports = mongoose.model("tempban", Schema);
+module.exports = db.model("tempban", Schema);

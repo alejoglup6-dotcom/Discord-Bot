@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     Members: String,
     Boost: String,
@@ -19,4 +19,4 @@ const Schema = new mongoose.Schema({
     ChannelTemplate: String,
 });
 
-module.exports = mongoose.model("stats", Schema);
+module.exports = db.model("stats", Schema);

@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     Category: String,
     ChannelName: String,
     ChannelCount: { type: Number, default: 0 }
 });
 
-module.exports = mongoose.model("privatechannels", Schema);
+module.exports = db.model("privatechannels", Schema);

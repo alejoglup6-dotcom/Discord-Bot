@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     Category: String,
     Role: String,
@@ -9,4 +9,4 @@ const Schema = new mongoose.Schema({
     TicketCount: { type: Number, default: 0 },
 });
 
-module.exports = mongoose.model("tickets", Schema);
+module.exports = db.model("tickets", Schema);

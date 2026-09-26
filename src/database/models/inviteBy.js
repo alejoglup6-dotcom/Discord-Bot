@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     inviteUser: String,
     User: String,
 });
 
-module.exports = mongoose.model("inviteBy", Schema);
+module.exports = db.model("inviteBy", Schema);

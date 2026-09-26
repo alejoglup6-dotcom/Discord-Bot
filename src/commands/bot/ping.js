@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const mongoose = require("mongoose");
+const odm = require("../../database/odm");
 
 /**
  * @type {import("../../typings.d").Command}
@@ -18,8 +18,8 @@ module.exports = async (client, interaction, args) => {
         resultMessage.createdTimestamp - interaction.createdTimestamp,
       );
 
-      mongoose.connection.db.admin().ping(function (err, result) {
-        var mongooseSeconds = (result.ok % 60000) / 1000;
+      odm.ping().catch(() => -1).then((dbPing) => {
+        var dbSeconds = (dbPing % 60000) / 1000;
         var pingSeconds = (ping % 60000) / 1000;
         var apiSeconds = (client.ws.ping % 60000) / 1000;
 
@@ -40,7 +40,7 @@ module.exports = async (client, interaction, args) => {
               },
               {
                 name: "📂┆Latencia de la base de datos",
-                value: `${result.ok}ms (${mongooseSeconds}s)`,
+                value: dbPing < 0 ? "Sin conexión" : `${dbPing}ms (${dbSeconds}s)`,
                 inline: true,
               },
             ],

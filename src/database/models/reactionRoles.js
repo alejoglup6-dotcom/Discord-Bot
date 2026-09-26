@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     Message: String,
     Category: String,
     Roles: Object
 });
 
-module.exports = mongoose.model("reactionRoles", Schema);
+module.exports = db.model("reactionRoles", Schema);

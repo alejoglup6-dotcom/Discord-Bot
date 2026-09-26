@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     User: String,
     Invites: Number,
@@ -8,4 +8,4 @@ const Schema = new mongoose.Schema({
     Left: Number
 });
 
-module.exports = mongoose.model("invites", Schema);
+module.exports = db.model("invites", Schema);

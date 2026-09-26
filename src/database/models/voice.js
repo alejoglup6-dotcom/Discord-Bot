@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     Category: String,
     Channel: String,
@@ -8,4 +8,4 @@ const Schema = new mongoose.Schema({
     ChannelCount: { type: Number, default: 0 }
 });
 
-module.exports = mongoose.model("voice", Schema);
+module.exports = db.model("voice", Schema);

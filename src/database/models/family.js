@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const db = require('../odm');
 
-const Schema = new mongoose.Schema({
+const Schema = new db.Schema({
     Guild: String,
     User: String,
     Parent: { type: Array, default: null },
@@ -8,4 +8,4 @@ const Schema = new mongoose.Schema({
     Children: { type: Array, default: null },
 });
 
-module.exports = mongoose.model("family", Schema);
+module.exports = db.model("family", Schema);
