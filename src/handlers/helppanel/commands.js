@@ -134,16 +134,6 @@ module.exports = async (client) => {
             inline: true
         },
         {
-            name: `🕴️┆Fortuna`,
-            value: `\`/fortune help\``,
-            inline: true
-        },
-        {
-            name: `🎮┆Servidor SA-MP`,
-            value: `\`/samp help\``,
-            inline: true
-        },
-        {
             name: `😛┆Roles por reacción`,
             value: `\`/reactionroles help\``,
             inline: true
@@ -205,6 +195,35 @@ module.exports = async (client) => {
         const m = field.value.match(/^`\/([\w-]+)(?: (help))?`$/);
         if (m) field.value = bothForms(m[1], m[2], client.config.discord.prefix);
     }
+
+    // SA-MP y Fortuna van primero y con sus comandos principales (con / y con el atajo de !)
+    const p = client.config.discord.prefix;
+    const line = (slash, bang, desc) => `\`/${slash}\` · \`${p}${bang}\` ${desc}`;
+    fields.unshift(
+        {
+            name: `🎮┆Servidor SA-MP`,
+            value: [
+                line("samp perfil", "cuenta", "tu cuenta del juego, con la skin puesta"),
+                line("samp vincular", "vincular", "vincula tu Discord con tu cuenta"),
+                line("samp conectados", "conectados", "quién está jugando ahora"),
+                line("samp top", "topsamp", "rankings del servidor"),
+                `Todos: ${bothForms("samp", "help", p)} (staff: ban, tempban, unban, mute)`,
+            ].join("\n"),
+        },
+        {
+            name: `🕴️┆Fortuna`,
+            value: [
+                line("fortuna ver", "fortuna", "tu capital, propiedades y valor total"),
+                line("fortuna trabajos", "trabajos", "oficios; firma con " + p + "contrato"),
+                line("fortuna trabajar", "trabajar", "haz un turno de tu oficio"),
+                line("fortuna tienda", "autos", "autos, casas, negocios, empresas, armas"),
+                line("fortuna comprar", "cauto", "compra (y " + p + "vauto para vender)"),
+                line("fortuna cobrar", "cobrar", "cobra lo que generan tus propiedades"),
+                line("fortuna asaltar", "asaltar", "asalta un local con tu arma"),
+                `Todos: ${bothForms("fortune", "help", p)} · atajos: \`${p}comandos\``,
+            ].join("\n"),
+        },
+    );
 
     client.on(Discord.Events.InteractionCreate, async (interaction) => {
         if (!interaction.isStringSelectMenu()) return;
