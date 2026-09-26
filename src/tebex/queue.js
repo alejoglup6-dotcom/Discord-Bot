@@ -4,6 +4,8 @@
  * Se arranca una sola vez en el proceso principal (src/index.js), no en cada shard.
  * .env:
  *   TEBEX_SECRET        clave secreta del servidor creado en creator.tebex.io -> Game Servers
+ * Comandos de los paquetes: "coins {username} 100" / "vip {username} 30" (nombre del juego), o con el ID de Discord
+ * del comprador en tiendas con login de Discord ("coins {id} 100"): se entrega a la cuenta vinculada con !vincular.
  *   TEBEX_LOG_CHANNEL   opcional: canal para el registro de compras (si no, uno que se llame "compras" o "tebex")
  *
  * Tebex decide cada cuánto se consulta (meta.next_check): hay que respetarlo o revoca la clave.
@@ -21,6 +23,18 @@ function logEmbed(r) {
     no_account: "⚠️・Compra en Tebex SIN ENTREGAR: no existe la cuenta",
     unknown: "⚠️・Tebex: comando no reconocido",
   };
+  if (r.status === "not_linked") {
+    return {
+      title: "⏳・Compra en Tebex en espera: sin cuenta vinculada",
+      color: 0x5865f2,
+      fields: [
+        { name: "👤┆Comprador", value: `<@${r.discordId}> (\`${r.discordId}\`)`, inline: true },
+        { name: "🎁┆Entrega", value: what, inline: true },
+        { name: "🧾┆Pago", value: `\`${r.paymentId}\``, inline: true },
+        { name: "🛠️┆Qué pasa ahora", value: "Se le pidió por mensaje privado que vincule su cuenta con `!vincular`. En cuanto lo haga, la compra se entrega sola." },
+      ],
+    };
+  }
   const fields = [
     { name: "👤┆Cuenta", value: r.player ? `${r.player.name} (DB-ID ${r.player.id})` : `\`${r.username || "(vacío)"}\``, inline: true },
     { name: "🎁┆Entrega", value: what, inline: true },
@@ -43,9 +57,12 @@ class TebexQueue {
    * @param {(embed: object) => Promise<void>} [o.notify]
    * @param {string} [o.api] URL de la API (para pruebas)
    */
-  constructor({ secret, notify = async () => {}, api = API }) {
+  constructor({ secret, notify = async () => {}, notifyUser = async () => {}, api = API }) {
     this.secret = secret;
     this.notify = notify;
+    this.notifyUser = notifyUser;
+    // Compras en espera ya avisadas (para no repetir el aviso en cada vuelta)
+    this.waiting = new Set();
     this.api = api;
     this.timer = null;
   }
@@ -75,6 +92,16 @@ class TebexQueue {
     const done = [];
     for (const c of commands) {
       const r = await tebex.deliverCommand(c);
+      if (r.status === "not_linked") {
+        // Se queda en la cola de Tebex hasta que vincule su cuenta
+        if (!this.waiting.has(c.id)) {
+          this.waiting.add(c.id);
+          await this.notify(logEmbed(r)).catch((err) => console.log("Tebex (aviso en Discord):", err.message));
+          await this.notifyUser(r.discordId, r).catch((err) => console.log("Tebex (mensaje privado):", err.message));
+        }
+        continue;
+      }
+      this.waiting.delete(c.id);
       done.push(c.id);
       if (r.status !== "duplicate") await this.notify(logEmbed(r)).catch((err) => console.log("Tebex (aviso en Discord):", err.message));
     }
@@ -128,7 +155,26 @@ function start(manager) {
       { context: { embed, channelId: process.env.TEBEX_LOG_CHANNEL || null } },
     );
   };
-  return new TebexQueue({ secret, notify }).start();
+  // Mensaje privado al comprador que aún no vinculó su cuenta del juego
+  const notifyUser = async (discordId, r) => {
+    const what = r.action === "coins" ? `${r.value} coins` : `VIP por ${r.value} días`;
+    await manager.broadcastEval(
+      async (c, { discordId, text }) => {
+        const user = await c.users.fetch(discordId).catch(() => null);
+        if (user) await user.send(text).catch(() => {});
+      },
+      {
+        shard: 0,
+        context: {
+          discordId,
+          text:
+            `🛒 ¡Gracias por tu compra! Tienes **${what}** esperando, pero tu Discord no está vinculado con ninguna cuenta del juego.\n` +
+            "Escribe `!vincular Nombre_Apellido` en el servidor de Discord y sigue los pasos. En cuanto la vincules, la compra llega sola.",
+        },
+      },
+    );
+  };
+  return new TebexQueue({ secret, notify, notifyUser }).start();
 }
 
 module.exports = { start, TebexQueue, logEmbed };

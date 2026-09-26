@@ -114,6 +114,46 @@ test("cuenta inexistente y comando desconocido: se registran y se avisa al staff
   assert.match(notices.at(-1).title, /no reconocido/);
 });
 
+test("login de Discord: entrega a la cuenta vinculada o espera a que la vincule", async () => {
+  const linkedId = "111111111111111111";
+  const loneId = "222222222222222222";
+  await db.query("DELETE FROM discord_links WHERE discord_id IN (?, ?) OR player_id = ?", [linkedId, loneId, player.id]);
+  await db.query("INSERT INTO discord_links (player_id, discord_id) VALUES (?, ?)", [player.id, linkedId]);
+  try {
+    fake.players = [];
+    fake.deleted = [];
+    fake.offline = [
+      { id: BASE_ID + 20, command: `coins ${linkedId} 75`, payment: 700 },
+      { id: BASE_ID + 21, command: `vip ${loneId} 30`, payment: 701 },
+    ];
+    const dms = [];
+    const q = new TebexQueue({ secret: fake.secret, api: apiUrl, notify: async (e) => notices.push(e), notifyUser: async (id) => dms.push(id) });
+
+    await q.poll();
+    // El vinculado recibe; el otro se queda en la cola de Tebex y se le avisa una sola vez
+    assert.deepStrictEqual(fake.deleted, [BASE_ID + 20]);
+    const [row] = await db.query("SELECT player_id, status FROM tebex_commands WHERE command_id = ?", [BASE_ID + 20]);
+    assert.deepStrictEqual([Number(row.player_id), row.status], [Number(player.id), "delivered"]);
+    assert.strictEqual((await db.query("SELECT 1 FROM tebex_commands WHERE command_id = ?", [BASE_ID + 21])).length, 0);
+    assert.deepStrictEqual(dms, [loneId]);
+    assert.match(notices.at(-1).title, /en espera/);
+
+    fake.offline = [fake.offline[1]];
+    await q.poll();
+    assert.deepStrictEqual(dms, [loneId]);
+
+    // Lo vincula: en la siguiente vuelta se entrega
+    await db.query("DELETE FROM discord_links WHERE player_id = ?", [player.id]);
+    await db.query("INSERT INTO discord_links (player_id, discord_id) VALUES (?, ?)", [player.id, loneId]);
+    await q.poll();
+    assert.ok(fake.deleted.includes(BASE_ID + 21));
+    const [vip] = await db.query("SELECT action, value FROM discord_actions WHERE reason = ?", [`Tebex pago 701 / comando ${BASE_ID + 21}`]);
+    assert.deepStrictEqual([vip.action, vip.value], ["vip", 30]);
+  } finally {
+    await db.query("DELETE FROM discord_links WHERE discord_id IN (?, ?)", [linkedId, loneId]);
+  }
+});
+
 test("clave incorrecta: error claro y no se entrega nada", async () => {
   await assert.rejects(queue("mala").poll(), /HTTP 403/);
 });
