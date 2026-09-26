@@ -107,6 +107,29 @@ test("perfil: el dinero solo lo ven el dueño y el staff", async () => {
   assert.match((await run("profile", interaction("555"))).error, /No tienes una cuenta vinculada/);
 });
 
+test("perfil: skin guardada si está desconectado, la puesta ahora si está conectado", async () => {
+  const [{ skin }] = await db.query("SELECT skin FROM player WHERE id = ?", [player.id]);
+  const skinField = (e) => e.fields.find((f) => f.name.includes("Skin"));
+
+  let e = (await run("profile", interaction("555", { name: player.name }))).embed;
+  assert.strictEqual(skinField(e).value, String(skin));
+  assert.strictEqual(e.thumbnail, `https://assets.open.mp/assets/images/skins/${skin}.png`);
+
+  // El gamemode publica la skin del uniforme; solo cuenta mientras está conectado
+  await db.query("INSERT INTO discord_live (player_id, skin) VALUES (?, 280) ON DUPLICATE KEY UPDATE skin = 280", [player.id]);
+  e = (await run("profile", interaction("555", { name: player.name }))).embed;
+  assert.strictEqual(skinField(e).value, String(skin));
+  await db.query("UPDATE player SET connected = 1, playerid = 3 WHERE id = ?", [player.id]);
+  e = (await run("profile", interaction("555", { name: player.name }))).embed;
+  assert.strictEqual(skinField(e).value, "280 (puesta ahora)");
+  assert.strictEqual(e.thumbnail, "https://assets.open.mp/assets/images/skins/280.png");
+  await db.query("UPDATE player SET connected = ?, playerid = ? WHERE id = ?", [player.connected, player.playerid, player.id]);
+  await db.query("DELETE FROM discord_live WHERE player_id = ?", [player.id]);
+
+  // Skins personalizadas (más de 311) no tienen imagen en open.mp
+  assert.strictEqual(samp.skinImage(20001), null);
+});
+
 test("conectados y tops", async () => {
   await db.query("UPDATE player SET connected = 1, playerid = 7 WHERE id = ?", [player.id]);
   const r = await run("online", interaction("1"));

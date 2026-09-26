@@ -61,6 +61,9 @@ module.exports = async (client, interaction, args) => {
   }
   if (discordId) fields.push({ name: "🔗┆Discord", value: `<@${discordId}>`, inline: true });
 
+  const { skin, live } = samp.currentSkin(player);
+  fields.push({ name: "👕┆Skin", value: live ? `${skin} (puesta ahora)` : String(skin), inline: true });
+
   const ban = await samp.getActiveBan(player);
   if (ban)
     fields.push({
@@ -68,5 +71,8 @@ module.exports = async (client, interaction, args) => {
       value: `${ban.expires ? `Hasta <t:${ban.expires}:f>` : "Permanente"}${ban.text ? `\nRazón: ${ban.text}` : ""}`,
     });
 
-  client.embed({ title: `🎮・${client.samp.name(player.name)}`, fields, type: "editreply" }, interaction);
+  client.embed(
+    { title: `🎮・${client.samp.name(player.name)}`, fields, thumbnail: samp.skinImage(skin), type: "editreply" },
+    interaction,
+  );
 };

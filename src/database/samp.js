@@ -50,6 +50,13 @@ async function init() {
     PRIMARY KEY (id),
     KEY pending (done)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`);
+  // Skin que lleva puesta ahora cada jugador conectado (la escribe el gamemode cada 5 segundos)
+  await db.query(`CREATE TABLE IF NOT EXISTS discord_live (
+    player_id INT NOT NULL,
+    skin INT NOT NULL DEFAULT 0,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (player_id)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`);
   return true;
 }
 
@@ -69,21 +76,36 @@ async function isAvailable() {
 
 const PLAYER_FIELDS = `p.id, p.name, p.ip, p.reg_date, p.last_connection, p.time_playing, p.level, p.rep,
   p.connected, p.playerid, p.admin_level, p.vip, p.vip_expire_date, p.coins, p.cash, p.bank_account, p.bank_money,
-  p.phone_number, p.wanted_level, p.arrests_count, p.kills_count, p.mute, p.crew, c.name AS crew_name`;
+  p.phone_number, p.wanted_level, p.arrests_count, p.kills_count, p.mute, p.crew, c.name AS crew_name,
+  p.skin, lv.skin AS live_skin`;
+const PLAYER_JOINS = "LEFT JOIN crews c ON c.id = p.crew LEFT JOIN discord_live lv ON lv.player_id = p.id";
+
+// Skin que se ve ahora: la que lleva puesta si está conectado (uniformes incluidos), si no la guardada en la cuenta
+function currentSkin(player) {
+  const live = Number(player.connected) && player.live_skin !== null && player.live_skin !== undefined;
+  return { skin: Number(live ? player.live_skin : player.skin), live: Boolean(live) };
+}
+
+// Imagen de la skin. SAMP_SKIN_URL cambia la fuente ({skin} = número); las de open.mp van de 0 a 311.
+function skinImage(skin) {
+  const template = process.env.SAMP_SKIN_URL || "https://assets.open.mp/assets/images/skins/{skin}.png";
+  if (!process.env.SAMP_SKIN_URL && (skin < 0 || skin > 311)) return null;
+  return template.replace("{skin}", String(skin));
+}
 
 async function getPlayerByName(name) {
-  const rows = await db.query(`SELECT ${PLAYER_FIELDS} FROM player p LEFT JOIN crews c ON c.id = p.crew WHERE p.name = ?`, [name]);
+  const rows = await db.query(`SELECT ${PLAYER_FIELDS} FROM player p ${PLAYER_JOINS} WHERE p.name = ?`, [name]);
   return rows[0] || null;
 }
 
 async function getPlayerById(id) {
-  const rows = await db.query(`SELECT ${PLAYER_FIELDS} FROM player p LEFT JOIN crews c ON c.id = p.crew WHERE p.id = ?`, [id]);
+  const rows = await db.query(`SELECT ${PLAYER_FIELDS} FROM player p ${PLAYER_JOINS} WHERE p.id = ?`, [id]);
   return rows[0] || null;
 }
 
 async function getLinkedPlayer(discordId) {
   const rows = await db.query(
-    `SELECT ${PLAYER_FIELDS}, l.linked_at FROM discord_links l JOIN player p ON p.id = l.player_id LEFT JOIN crews c ON c.id = p.crew WHERE l.discord_id = ?`,
+    `SELECT ${PLAYER_FIELDS}, l.linked_at FROM discord_links l JOIN player p ON p.id = l.player_id ${PLAYER_JOINS} WHERE l.discord_id = ?`,
     [discordId],
   );
   return rows[0] || null;
@@ -243,6 +265,8 @@ module.exports = {
   LINK_CODE_MINUTES,
   init,
   isAvailable,
+  currentSkin,
+  skinImage,
   getPlayerByName,
   getPlayerById,
   getLinkedPlayer,
