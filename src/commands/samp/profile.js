@@ -1,4 +1,6 @@
+const { AttachmentBuilder } = require("discord.js");
 const samp = require("../../database/samp");
+const { skinPortrait } = require("../../assets/utils/skinPortrait");
 
 /**
  * @type {import("../../typings.d").Command}
@@ -71,8 +73,17 @@ module.exports = async (client, interaction, args) => {
       value: `${ban.expires ? `Hasta <t:${ban.expires}:f>` : "Permanente"}${ban.text ? `\nRazón: ${ban.text}` : ""}`,
     });
 
-  client.embed(
-    { title: `🎮・${client.samp.name(player.name)}`, fields, thumbnail: samp.skinImage(skin), type: "editreply" },
-    interaction,
-  );
+  // Foto de la cabeza al pecho; si no se puede generar, la imagen de cuerpo entero
+  const image = samp.skinImage(skin);
+  let thumbnail = image;
+  let files;
+  if (image) {
+    const portrait = await skinPortrait(image).catch(() => null);
+    if (portrait) {
+      files = [new AttachmentBuilder(portrait, { name: "skin.png" })];
+      thumbnail = "attachment://skin.png";
+    }
+  }
+
+  client.embed({ title: `🎮・${client.samp.name(player.name)}`, fields, thumbnail, files, type: "editreply" }, interaction);
 };
