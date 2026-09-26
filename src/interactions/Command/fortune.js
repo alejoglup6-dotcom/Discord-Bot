@@ -17,6 +17,9 @@ module.exports = {
         .setDescription("Tu fortuna: dinero, oficio, propiedades y valor total")
         .addUserOption((option) => option.setName("user").setDescription("Ver la fortuna de otro miembro").setRequired(false)),
     )
+    .addSubcommand((subcommand) =>
+      subcommand.setName("top").setDescription("Ranking de las mayores fortunas y premios semanales"),
+    )
     .addSubcommand((subcommand) => subcommand.setName("jobs").setDescription("Oficios disponibles y lo que pagan"))
     .addSubcommand((subcommand) =>
       subcommand

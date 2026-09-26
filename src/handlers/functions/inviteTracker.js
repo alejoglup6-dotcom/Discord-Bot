@@ -64,7 +64,10 @@ module.exports = async (client) => {
             })
             guildInvites.set(member.guild.id, codeUses);
 
-            const usedInvite = await newInvites.find(inv => cachedInvites.get(inv.code) < inv.uses);
+            // Sin la lista anterior (el bot acaba de arrancar) no se puede saber cuál se usó
+            if (!cachedInvites) return client.emit("inviteJoin", member, null, null);
+            // Una invitación que no estaba en memoria (recién creada) cuenta desde 0 usos
+            const usedInvite = await newInvites.find(inv => (cachedInvites.get(inv.code) ?? 0) < inv.uses);
             if (!usedInvite) return client.emit("inviteJoin", member, null, null);
 
             client.emit("inviteJoin", member, usedInvite, usedInvite.inviter);

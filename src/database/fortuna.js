@@ -220,7 +220,33 @@ async function heist(guild, user, now = Date.now()) {
   return { success: false, target, weapon, chance, fine, money };
 }
 
+// Ranking de fortunas del servidor: efectivo + banco + valor de propiedades y armas
+async function leaderboard(guild, limit = 10) {
+  const [wallets, owned] = await Promise.all([Economy.find({ Guild: guild }).lean(), Assets.find({ Guild: guild }).lean()]);
+  const users = new Map();
+  const get = (id) => {
+    if (!users.has(id)) users.set(id, { user: id, money: 0, bank: 0, properties: 0, count: 0 });
+    return users.get(id);
+  };
+  for (const w of wallets) {
+    const u = get(w.User);
+    u.money = Number(w.Money) || 0;
+    u.bank = Number(w.Bank) || 0;
+  }
+  for (const a of owned) {
+    const u = get(a.User);
+    u.properties += Number(a.Price) || 0;
+    u.count++;
+  }
+  return [...users.values()]
+    .map((u) => ({ ...u, total: u.money + u.bank + u.properties }))
+    .filter((u) => u.total > 0)
+    .sort((a, b) => b.total - a.total)
+    .slice(0, limit);
+}
+
 module.exports = {
+  leaderboard,
   wallet,
   addMoney,
   takeMoney,
