@@ -7,7 +7,7 @@ const test = require("node:test");
 const assert = require("node:assert");
 const db = require("../src/database/mysql");
 const samp = require("../src/database/samp");
-const { loadImage } = require("canvas");
+const { loadImage, createCanvas } = require("canvas");
 
 const out = [];
 const client = {
@@ -120,6 +120,10 @@ test("perfil: skin guardada si está desconectado, la puesta ahora si está cone
   assert.strictEqual(png.subarray(1, 4).toString(), "PNG");
   const img = await loadImage(png);
   assert.deepStrictEqual([img.width, img.height], [256, 256]);
+  // Fondo transparente (PNG): la esquina de arriba queda vacía
+  const c = createCanvas(256, 256).getContext("2d");
+  c.drawImage(img, 0, 0);
+  assert.strictEqual(c.getImageData(2, 2, 1, 1).data[3], 0);
 
   // El gamemode publica la skin del uniforme; solo cuenta mientras está conectado
   await db.query("INSERT INTO discord_live (player_id, skin) VALUES (?, 280) ON DUPLICATE KEY UPDATE skin = 280", [player.id]);

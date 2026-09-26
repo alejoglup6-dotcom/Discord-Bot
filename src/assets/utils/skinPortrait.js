@@ -1,8 +1,10 @@
-// Retrato de la skin tipo foto de identificación: de la cabeza al pecho, ampliado y con fondo liso.
+// Retrato de la skin tipo foto de identificación: de la cabeza al pecho, ampliado, con fondo transparente
+// y un borde blanco alrededor del personaje.
 // Parte de la imagen de cuerpo entero (open.mp o SAMP_SKIN_URL) y busca la figura por los píxeles no transparentes.
 const { createCanvas, loadImage } = require("canvas");
 
 const SIZE = 256;
+const OUTLINE = 5; // grosor del borde blanco en px
 const cache = new Map(); // skin -> PNG (las imágenes no cambian)
 
 async function skinPortrait(url) {
@@ -31,21 +33,34 @@ async function skinPortrait(url) {
   }
   const centerX = count ? sum / count : img.width / 2;
 
-  // Cuadro de la cabeza al pecho (~34% de la figura) con un poco de aire encima
+  // Cuadro de la cabeza al pecho (~34% de la figura, los hombros llegan a los lados) y aire encima para el borde
   const side = Math.round(height * 0.34);
   const sx = Math.round(centerX - side / 2);
-  const sy = Math.max(0, top - Math.round(side * 0.08));
+  const sy = top - Math.round(side * 0.06);
 
+  // Personaje recortado y ampliado
+  const figure = createCanvas(SIZE, SIZE);
+  const fctx = figure.getContext("2d");
+  fctx.imageSmoothingEnabled = true;
+  fctx.imageSmoothingQuality = "high";
+  fctx.drawImage(src, sx, sy, side, side, 0, 0, SIZE, SIZE);
+
+  // Silueta blanca para el borde
+  const silhouette = createCanvas(SIZE, SIZE);
+  const sctx2 = silhouette.getContext("2d");
+  sctx2.drawImage(figure, 0, 0);
+  sctx2.globalCompositeOperation = "source-in";
+  sctx2.fillStyle = "#ffffff";
+  sctx2.fillRect(0, 0, SIZE, SIZE);
+
+  // Fondo transparente: la silueta repetida alrededor forma el borde y encima va el personaje
   const out = createCanvas(SIZE, SIZE);
   const ctx = out.getContext("2d");
-  const bg = ctx.createLinearGradient(0, 0, 0, SIZE);
-  bg.addColorStop(0, "#d9e2ec");
-  bg.addColorStop(1, "#9fb3c8");
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, SIZE, SIZE);
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(src, sx, sy, side, side, 0, 0, SIZE, SIZE);
+  for (let a = 0; a < 360; a += 15) {
+    const r = (a * Math.PI) / 180;
+    ctx.drawImage(silhouette, Math.round(Math.cos(r) * OUTLINE), Math.round(Math.sin(r) * OUTLINE));
+  }
+  ctx.drawImage(figure, 0, 0);
 
   const png = out.toBuffer("image/png");
   if (cache.size > 400) cache.delete(cache.keys().next().value);
