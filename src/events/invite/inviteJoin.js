@@ -2,202 +2,38 @@ const discord = require('discord.js');
 
 const invites = require("../../database/models/invites");
 const invitedBy = require("../../database/models/inviteBy");
-const welcomeSchema = require("../../database/models/welcomeChannels");
-const messages = require("../../database/models/inviteMessages");
-const rewards = require("../../database/models/inviteRewards");
+const { onInvite, isValidAccount } = require("../../database/inviteRewards");
+const { sendWelcome } = require("../../assets/utils/welcome");
 
 /**
- * 
- * @param {import('../../typings.d').Client} client 
- * @param {discord.GuildMember} member 
- * @param {discord.Invite} invite 
- * @param {discord.User} inviter 
+ * Alguien entró al servidor (lo emite inviteTracker con la invitación que usó).
+ * @param {import('../../typings.d').Client} client
+ * @param {discord.GuildMember} member
+ * @param {discord.Invite} invite
+ * @param {discord.User} inviter
  */
 module.exports = async (client, member, invite, inviter) => {
-    const messageData = await messages.findOne({ Guild: member.guild.id });
+    if (member.user.bot) return;
+    let inviteData = null;
+    let reward = null;
 
-    if (!invite || !inviter) {
-        if (messageData && messageData.inviteJoin) {
-            var joinMessage = messageData.inviteJoin;
-            joinMessage = joinMessage.replace(`{user:username}`, member.user.username)
-            joinMessage = joinMessage.replace(`{user:discriminator}`, member.user.discriminator)
-            joinMessage = joinMessage.replace(`{user:tag}`, member.user.tag)
-            joinMessage = joinMessage.replace(`{user:mention}`, member)
+    if (invite && inviter && inviter.id !== member.id) {
+        // Suma atómica: dos entradas a la vez no se pisan
+        inviteData = await invites.findOneAndUpdate(
+            { Guild: member.guild.id, User: inviter.id },
+            { $inc: { Invites: 1, Total: 1 }, $setOnInsert: { Left: 0 } },
+            { upsert: true, new: true },
+        ).lean();
 
-            joinMessage = joinMessage.replace(`{inviter:username}`, "System")
-            joinMessage = joinMessage.replace(`{inviter:discriminator}`, "#0000")
-            joinMessage = joinMessage.replace(`{inviter:tag}`, "System#0000")
-            joinMessage = joinMessage.replace(`{inviter:mention}`, "System")
-            joinMessage = joinMessage.replace(`{inviter:invites}`, "∞")
-            joinMessage = joinMessage.replace(`{inviter:invites:left}`, "∞")
+        // Quién invitó a quién (una fila por miembro) y si la cuenta vale para premios
+        await invitedBy.findOneAndUpdate(
+            { Guild: member.guild.id, User: member.id },
+            { $set: { inviteUser: inviter.id, Valid: isValidAccount(member.user), Active: true } },
+            { upsert: true },
+        );
 
-            joinMessage = joinMessage.replace(`{guild:name}`, member.guild.name)
-            joinMessage = joinMessage.replace(`{guild:members}`, member.guild.memberCount)
-
-            welcomeSchema.findOne({ Guild: member.guild.id }).then(async (channelData ) => {
-                if (channelData) {
-
-                    var channel = member.guild.channels.cache.get(channelData.Channel)
-
-                    if (channel) {
-                        await client.embed({
-                            title: `👋・Bienvenida`,
-                            desc: joinMessage
-                        }, channel).catch(() => { })
-                    }
-                }
-            })
-        } else {
-            welcomeSchema.findOne({ Guild: member.guild.id }).then(async (channelData ) => {
-                if (channelData) {
-
-                    var channel = member.guild.channels.cache.get(channelData.Channel)
-
-                    if (channel) {
-                        client.embed({
-                            title: `👋・Bienvenida`,
-                            desc: `No puedo averiguar cómo entró **${member} | ${member.user.tag}**`
-                        }, channel).catch(() => { })
-                    }
-                }
-            })
-        }
+        reward = await onInvite(member.guild, inviter.id, member).catch((e) => (console.log(e), null));
     }
-    else {
-        const data = await invites.findOne({ Guild: member.guild.id, User: inviter.id });
 
-        if (data) {
-            data.Invites += 1;
-            data.Total += 1;
-            data.save();
-
-            if (messageData) {
-                var joinMessage = messageData.inviteJoin;
-                joinMessage = joinMessage.replace(`{user:username}`, member.user.username)
-                joinMessage = joinMessage.replace(`{user:discriminator}`, member.user.discriminator)
-                joinMessage = joinMessage.replace(`{user:tag}`, member.user.tag)
-                joinMessage = joinMessage.replace(`{user:mention}`, member)
-
-                joinMessage = joinMessage.replace(`{inviter:username}`, inviter.username)
-                joinMessage = joinMessage.replace(`{inviter:discriminator}`, inviter.discriminator)
-                joinMessage = joinMessage.replace(`{inviter:tag}`, inviter.tag)
-                joinMessage = joinMessage.replace(`{inviter:mention}`, inviter)
-                joinMessage = joinMessage.replace(`{inviter:invites}`, data.Invites)
-                joinMessage = joinMessage.replace(`{inviter:invites:left}`, data.Left)
-
-                joinMessage = joinMessage.replace(`{guild:name}`, member.guild.name)
-                joinMessage = joinMessage.replace(`{guild:members}`, member.guild.memberCount)
-
-                welcomeSchema.findOne({ Guild: member.guild.id }).then(async (channelData ) => {
-                    if (channelData) {
-
-                        var channel = member.guild.channels.cache.get(channelData.Channel)
-
-                        if (channel) {
-                            await client.embed({
-                                title: `👋・Bienvenida`,
-                                desc: joinMessage
-                            }, channel).catch(() => { })
-                        }
-                    }
-                })
-            }
-            else {
-                welcomeSchema.findOne({ Guild: member.guild.id }).then(async (channelData ) => {
-                    if (channelData) {
-
-                        var channel = member.guild.channels.cache.get(channelData.Channel)
-
-                        if (channel) {
-                            client.embed({
-                                title: `👋・Bienvenida`,
-                                desc: `**${member} | ${member.user.tag}** fue invitado por ${inviter.tag} **(${data.Invites} invitaciones)**`
-                            }, channel)
-                        }
-                    }
-                })
-            }
-
-            rewards.findOne({ Guild: member.guild.id, Invites: data.Invites }).then(async (data ) => {
-                if (data) {
-                    try {
-                        var role = member.guild.roles.cache.get(data.Role);
-                        member.roles.add(role);
-                    }
-                    catch { }
-                }
-            })
-        }
-        else {
-            new invites({
-                Guild: member.guild.id,
-                User: inviter.id,
-                Invites: 1,
-                Total: 1,
-                Left: 0
-            }).save();
-
-            if (messageData) {
-                var joinMessage = messageData.inviteJoin;
-                joinMessage = joinMessage.replace(`{user:username}`, member.user.username)
-                joinMessage = joinMessage.replace(`{user:discriminator}`, member.user.discriminator)
-                joinMessage = joinMessage.replace(`{user:tag}`, member.user.tag)
-                joinMessage = joinMessage.replace(`{user:mention}`, member)
-
-                joinMessage = joinMessage.replace(`{inviter:username}`, inviter.username)
-                joinMessage = joinMessage.replace(`{inviter:discriminator}`, inviter.discriminator)
-                joinMessage = joinMessage.replace(`{inviter:tag}`, inviter.tag)
-                joinMessage = joinMessage.replace(`{inviter:mention}`, inviter)
-                joinMessage = joinMessage.replace(`{inviter:invites}`, "1")
-                joinMessage = joinMessage.replace(`{inviter:invites:left}`, "0")
-
-                joinMessage = joinMessage.replace(`{guild:name}`, member.guild.name)
-                joinMessage = joinMessage.replace(`{guild:members}`, member.guild.memberCount)
-
-                welcomeSchema.findOne({ Guild: member.guild.id }).then(async (channelData ) => {
-                    if (channelData) {
-
-                        var channel = member.guild.channels.cache.get(channelData.Channel)
-
-                        if (channel) {
-                            await client.embed({
-                                title: `👋・Bienvenida`,
-                                desc: joinMessage
-                            }, channel).catch(() => { })
-                        }
-                    }
-                })
-            }
-            else {
-                welcomeSchema.findOne({ Guild: member.guild.id }).then(async (channelData ) => {
-                    if (channelData) {
-
-                        var channel = member.guild.channels.cache.get(channelData.Channel)
-
-                        if (channel) {
-                            await client.embed({
-                                title: `👋・Bienvenida`,
-                                desc: `**${member} | ${member.user.tag}** fue invitado por ${inviter.tag} **(1 invitación)**`
-                            }, channel).catch(() => { })
-                        }
-                    }
-                })
-            }
-        }
-
-        invitedBy.findOne({ Guild: member.guild.id }).then(async (data2 ) => {
-            if (data2) {
-                data2.inviteUser = inviter.id,
-                    data2.User = member.id
-                data2.save();
-            }
-            else {
-                new invitedBy({
-                    Guild: member.guild.id,
-                    inviteUser: inviter.id,
-                    User: member.id
-                }).save();
-            }
-        })
-    }
+    await sendWelcome(client, member, { inviter: invite ? inviter : null, invites: inviteData, reward });
 };

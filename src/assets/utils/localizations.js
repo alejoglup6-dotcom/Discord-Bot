@@ -21,6 +21,7 @@ const names = {
     economy: "economia",
     embed: "embed",
     family: "familia",
+    fortune: "fortuna",
     fun: "diversion",
     games: "juegos",
     giveaway: "sorteo",
@@ -51,6 +52,16 @@ const names = {
     voice: "voz",
 
     // Subcomandos y grupos
+    // /fortuna
+    overview: "ver",
+    jobs: "trabajos",
+    contract: "contrato",
+    resign: "renunciar",
+    sell: "vender",
+    collect: "cobrar",
+    heist: "asaltar",
+    job: "oficio",
+    item: "articulo",
     // /samp
     link: "vincular",
     unlink: "desvincular",
@@ -428,4 +439,4 @@ function localize(command) {
     return command;
 }
 
-module.exports = { localize };
+module.exports = { localize, names };

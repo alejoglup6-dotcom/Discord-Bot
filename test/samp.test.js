@@ -7,6 +7,7 @@ const test = require("node:test");
 const assert = require("node:assert");
 const db = require("../src/database/mysql");
 const samp = require("../src/database/samp");
+const { loadImage, createCanvas } = require("canvas");
 
 const out = [];
 const client = {
@@ -105,6 +106,41 @@ test("perfil: el dinero solo lo ven el dueño y el staff", async () => {
   const staff = (await run("profile", interaction(ADMIN_DISCORD, { user: { id: PLAYER_DISCORD } }))).embed;
   assert.ok(staff.fields.some((f) => f.name.includes("Efectivo")));
   assert.match((await run("profile", interaction("555"))).error, /No tienes una cuenta vinculada/);
+});
+
+test("perfil: skin guardada si está desconectado, la puesta ahora si está conectado", async () => {
+  const [{ skin }] = await db.query("SELECT skin FROM player WHERE id = ?", [player.id]);
+  const skinField = (e) => e.fields.find((f) => f.name.includes("Skin"));
+
+  let e = (await run("profile", interaction("555", { name: player.name }))).embed;
+  assert.strictEqual(skinField(e).value, String(skin));
+  // Foto de la cabeza al pecho generada a partir de la imagen de open.mp
+  assert.strictEqual(e.thumbnail, "attachment://skin.png");
+  const png = e.files[0].attachment;
+  assert.strictEqual(png.subarray(1, 4).toString(), "PNG");
+  const img = await loadImage(png);
+  assert.deepStrictEqual([img.width, img.height], [256, 256]);
+  // Fondo transparente (PNG): la esquina de arriba queda vacía
+  const c = createCanvas(256, 256).getContext("2d");
+  c.drawImage(img, 0, 0);
+  assert.strictEqual(c.getImageData(2, 2, 1, 1).data[3], 0);
+
+  // El gamemode publica la skin del uniforme; solo cuenta mientras está conectado
+  await db.query("INSERT INTO discord_live (player_id, skin) VALUES (?, 280) ON DUPLICATE KEY UPDATE skin = 280", [player.id]);
+  e = (await run("profile", interaction("555", { name: player.name }))).embed;
+  assert.strictEqual(skinField(e).value, String(skin));
+  await db.query("UPDATE player SET connected = 1, playerid = 3 WHERE id = ?", [player.id]);
+  e = (await run("profile", interaction("555", { name: player.name }))).embed;
+  assert.strictEqual(skinField(e).value, "280 (puesta ahora)");
+  assert.strictEqual(e.thumbnail, "attachment://skin.png");
+  await db.query("UPDATE player SET connected = ?, playerid = ? WHERE id = ?", [player.connected, player.playerid, player.id]);
+  await db.query("DELETE FROM discord_live WHERE player_id = ?", [player.id]);
+
+  // Skins personalizadas (más de 311) no tienen imagen en open.mp
+  assert.strictEqual(samp.skinImage(20001), null);
+  // Si no se puede generar la foto, queda la imagen de cuerpo entero
+  const { skinPortrait } = require("../src/assets/utils/skinPortrait");
+  await assert.rejects(skinPortrait("https://assets.open.mp/assets/images/skins/99999.png"));
 });
 
 test("conectados y tops", async () => {
