@@ -114,6 +114,25 @@ function tokenize(text) {
   return tokens;
 }
 
+// "/fortuna ver · !fortuna ver" (nombres en español, como los ve la gente con Discord en español)
+function bothForms(commandName, subName, prefix = "!", groupName) {
+  const path = [commandName, groupName, subName].filter(Boolean).map(shown).join(" ");
+  return `\`/${path}\` · \`${prefix}${path}\``;
+}
+
+// Lista de subcomandos de un comando con las dos formas (panel "ayuda" de cada categoría)
+function helpList(commandJson, prefix = "!") {
+  const lines = [];
+  for (const o of commandJson.options || []) {
+    if (o.type === T.SubcommandGroup) {
+      for (const s of o.options || []) lines.push(`${bothForms(commandJson.name, s.name, prefix, o.name)} - ${s.description}`);
+    } else if (o.type === T.Subcommand) {
+      lines.push(`${bothForms(commandJson.name, o.name, prefix)} - ${o.description}`);
+    }
+  }
+  return lines.join("\n");
+}
+
 function usage(prefix, commandJson, sub, group) {
   const parts = [prefix + shown(commandJson.name)];
   if (group) parts.push(shown(group.name));
@@ -415,16 +434,21 @@ function findSub(options, token) {
 }
 
 function helpEmbed(client, prefix) {
+  const slashOf = (a) => {
+    const x = ALIASES[a];
+    const extra = x.fixed ? " " + Object.values(x.fixed).join(" ") : "";
+    return `/${shown(x.command)} ${shown(x.sub)}${extra}`;
+  };
   const fields = HELP_SECTIONS.map(([title, list]) => ({
     name: title,
-    value: list.map((a) => `\`${prefix}${a}\``).join(" "),
+    value: list.map((a) => `\`${prefix}${a}\` (${slashOf(a)})`).join("\n"),
   }));
   fields.push({
     name: "⌨️ Todos los comandos",
     value:
       `Cualquier comando de barra también funciona con \`${prefix}\`: \`${prefix}comando subcomando opciones\`, ` +
       `por ejemplo \`${prefix}samp perfil Lelo_Drok\` o \`${prefix}economia depositar 500\`. ` +
-      `Para ver los de una categoría: \`${prefix}categoria ayuda\` (ej. \`${prefix}fortuna ayuda\`).`,
+      `Para ver los de una categoría: \`/fortuna ayuda\` o \`${prefix}fortuna ayuda\` (igual con las demás).`,
   });
   return { title: "⌨️・Comandos con " + prefix, fields };
 }
@@ -508,9 +532,8 @@ async function runPrefixCommand(client, message, text, prefix = "!") {
 
   // "ayuda" / "help" de cada categoría, igual que con la barra
   if (sub?.name === "help") {
-    const list = json.options.map((o) => `\`${prefix}${shown(json.name)} ${shown(o.name)}\` - ${o.description}`).join("\n");
     await client.embed(
-      { title: "❓・Panel de ayuda", desc: `Comandos de \`${shown(json.name)}\`\n\n${list}`, type: "reply" },
+      { title: "❓・Panel de ayuda", desc: `Comandos de \`${shown(json.name)}\`, con / o con ${prefix}\n\n${helpList(json, prefix)}`, type: "reply" },
       interaction,
     );
     return true;
@@ -522,4 +545,4 @@ async function runPrefixCommand(client, message, text, prefix = "!") {
   return true;
 }
 
-module.exports = { runPrefixCommand, tokenize, ALIASES, PrefixInteraction, PrefixOptions };
+module.exports = { runPrefixCommand, tokenize, ALIASES, PrefixInteraction, PrefixOptions, bothForms, helpList };

@@ -6,6 +6,8 @@ const banSchema = require("../../database/models/userBans");
 const verify = require("../../database/models/verify");
 const Commands = require("../../database/models/customCommand");
 const CommandsSchema = require("../../database/models/customCommandAdvanced");
+const { helpList } = require("../../assets/utils/prefixCommands");
+const { names } = require("../../assets/utils/localizations");
 /**
  * 
  * @param {import('../../typings.d').Client} client 
@@ -98,18 +100,13 @@ module.exports = async (client, interaction) => {
           interaction.options._subcommand !== null &&
           interaction.options.getSubcommand() == "help"
         ) {
-          const commands = interaction.client.commands
-            .filter((x) => x.data.name == interaction.commandName)
-            .map((x) =>
-              x.data.options
-                .map((c) => "`" + c.name + "` - " + c.description)
-                .join("\n"),
-            );
+          const command = interaction.client.commands.get(interaction.commandName);
+          const commands = helpList(command.data.toJSON(), client.config.discord.prefix);
 
           return client.embed(
             {
               title: `❓・Panel de ayuda`,
-              desc: `Consigue ayuda con los comandos de \`${interaction.commandName}\` \n\n${commands}`,
+              desc: `Comandos de \`${names[interaction.commandName] || interaction.commandName}\`, con / o con ${client.config.discord.prefix}\n\n${commands}`,
               type: "reply",
             },
             interaction,

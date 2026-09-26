@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const { bothForms } = require('../../assets/utils/prefixCommands');
 
 module.exports = async (client) => {
     const fields = [
@@ -199,6 +200,12 @@ module.exports = async (client) => {
         },
     ];
 
+    // Cada categoría con las dos formas: "/fortuna ayuda · !fortuna ayuda"
+    for (const field of fields) {
+        const m = field.value.match(/^`\/([\w-]+)(?: (help))?`$/);
+        if (m) field.value = bothForms(m[1], m[2], client.config.discord.prefix);
+    }
+
     client.on(Discord.Events.InteractionCreate, async (interaction) => {
         if (!interaction.isStringSelectMenu()) return;
 
@@ -281,7 +288,7 @@ module.exports = async (client) => {
                                 client.embed({
                                     title: `❓・Panel de ayuda`,
                                     desc: `¡Mira aquí todas las categorías de comandos del bot! \n\n[Invitar](${client.config.discord.botInvite}) | [Votar](https://top.gg/bot/${client.user.id}/vote)`,
-                                    fields: fields.slice(25, 49),
+                                    fields: fields.slice(24, 48),
                                     components: [row2, row],
                                     type: 'update'
                                 }, i)

@@ -105,7 +105,8 @@ test("mensajes que no son comandos no se tocan", async () => {
 
 test("!comandos lista los atajos", async () => {
   const r = await run("!comandos");
-  assert.match(r.text, /!fortuna/);
+  assert.match(r.text, /`!fortuna` \(\/fortuna ver\)/);
+  assert.match(r.text, /`!cauto` \(\/fortuna comprar autos\)/);
   assert.match(r.text, /!cuenta/);
 });
 
@@ -156,7 +157,7 @@ test("economía y ayuda de una categoría", async () => {
   assert.strictEqual(after.Bank, 1000);
 
   const h = await run("!fortuna ayuda");
-  assert.match(h.embed.description, /!fortuna asaltar/);
+  assert.match(h.embed.description, /`\/fortuna asaltar` · `!fortuna asaltar`/);
   const u = await run("!economia");
   assert.match(u.text, /Uso: !economia/);
 });
