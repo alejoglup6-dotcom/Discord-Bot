@@ -183,33 +183,44 @@ function banner(W = 1920, H = 1080, logo = L.principal) {
 save("banner-1920x1080", banner());
 save("banner-discord-960x540", banner(960, 540));
 
-// ---------------- 4b. Moneda CityCoins (marca nueva) ----------------
+// ---------------- 4b. Moneda CityCoins ----------------
+// Pedido del dueño: moneda completamente dorada, solo con las siglas "SC" en relieve (Russo One), también doradas.
+const GOLD_SC = { face: [[0, "#fff8d0"], [0.3, "#ffe07a"], [0.55, "#f2b21c"], [0.75, "#ffd84a"], [1, "#b87400"]], ext: ["#b07000", "#4a2a00"], rim: "rgba(255,250,215,.9)" };
 function coin(S = 1024) {
   const cv = createCanvas(S, S), c = cv.getContext("2d"), k = S / 1024, cx = S / 2, cy = S / 2, R = 460 * k;
-  const gold = (x0, y0, x1, y1) => { const g = c.createLinearGradient(x0, y0, x1, y1); g.addColorStop(0, "#fff6c2"); g.addColorStop(0.3, "#ffd23f"); g.addColorStop(0.6, "#e39b00"); g.addColorStop(0.8, "#ffe07a"); g.addColorStop(1, "#a86400"); return g; };
-  // canto
-  c.save(); c.shadowColor = "rgba(0,0,0,.55)"; c.shadowBlur = 40 * k; c.shadowOffsetY = 22 * k;
-  c.fillStyle = "#7a4a00"; c.beginPath(); c.arc(cx, cy + 26 * k, R, 0, 7); c.fill(); c.restore();
-  c.fillStyle = "#0a0202"; c.beginPath(); c.arc(cx, cy, R + 12 * k, 0, 7); c.fill();
-  c.fillStyle = gold(0, 0, S, S); c.beginPath(); c.arc(cx, cy, R, 0, 7); c.fill();
-  // estrías
-  c.strokeStyle = "rgba(110,60,0,.4)"; c.lineWidth = 5 * k;
-  for (let i = 0; i < 140; i++) { const a = i / 140 * Math.PI * 2; c.beginPath(); c.moveTo(cx + Math.cos(a) * R * 0.9, cy + Math.sin(a) * R * 0.9); c.lineTo(cx + Math.cos(a) * R * 0.985, cy + Math.sin(a) * R * 0.985); c.stroke(); }
-  // cara interior roja
-  c.fillStyle = gold(S, 0, 0, S); c.beginPath(); c.arc(cx, cy, R * 0.86, 0, 7); c.fill();
-  let g = c.createRadialGradient(cx, cy + R * 0.5, 10, cx, cy, R * 0.8); g.addColorStop(0, "#ff7a4a"); g.addColorStop(0.5, "#a3161f"); g.addColorStop(1, "#3a0610");
-  c.fillStyle = g; c.beginPath(); c.arc(cx, cy, R * 0.8, 0, 7); c.fill();
-  c.lineWidth = 8 * k; c.strokeStyle = "#0a0202"; c.stroke();
-  // texto en el borde
-  c.save(); c.font = `${58 * k}px Russo`; c.textAlign = "center"; c.textBaseline = "middle"; c.fillStyle = "#6b3a00";
-  const txt = "CITYCOINS", span = 1.05;
-  [...txt].forEach((ch, i) => { const a = -Math.PI / 2 - span / 2 + span * i / (txt.length - 1); c.save(); c.translate(cx + Math.cos(a) * R * 0.93, cy + Math.sin(a) * R * 0.93); c.rotate(a + Math.PI / 2); c.fillText(ch, 0, 0); c.restore(); });
-  c.restore();
-  // letras sc
-  const w = R * 1.32, h = SC.height * w / SC.width; c.drawImage(SC, cx - w / 2, cy - h / 2 - 8 * k, w, h);
-  // brillo
+  const lin = (x0, y0, x1, y1, stops) => { const g = c.createLinearGradient(x0, y0, x1, y1); for (const [o, col] of stops) g.addColorStop(o, col); return g; };
+  const GOLD = [[0, "#fff6c2"], [0.28, "#ffd23f"], [0.55, "#e39b00"], [0.78, "#ffe07a"], [1, "#a86400"]];
+  // sombra y canto (grosor de la moneda)
+  c.save(); c.shadowColor = "rgba(0,0,0,.55)"; c.shadowBlur = 40 * k; c.shadowOffsetY = 24 * k;
+  c.fillStyle = "#8a5400"; c.beginPath(); c.arc(cx, cy + 28 * k, R, 0, 7); c.fill(); c.restore();
+  for (let i = 28; i >= 0; i -= 2) { c.fillStyle = mix("#c98a10", "#6b3d00", i / 28); c.beginPath(); c.arc(cx, cy + i * k, R, 0, 7); c.fill(); }
+  // borde exterior con estrías
+  c.fillStyle = lin(0, 0, S, S, GOLD); c.beginPath(); c.arc(cx, cy, R, 0, 7); c.fill();
+  c.strokeStyle = "rgba(120,70,0,.35)"; c.lineWidth = 5 * k;
+  for (let i = 0; i < 150; i++) { const a = (i / 150) * Math.PI * 2; c.beginPath(); c.moveTo(cx + Math.cos(a) * R * 0.91, cy + Math.sin(a) * R * 0.91); c.lineTo(cx + Math.cos(a) * R * 0.99, cy + Math.sin(a) * R * 0.99); c.stroke(); }
+  // escalón hacia la cara: sombra arriba-izquierda y luz abajo-derecha (la cara queda hundida)
+  c.lineWidth = 16 * k; c.strokeStyle = lin(cx - R, cy - R, cx + R, cy + R, [[0, "#7a4600"], [0.5, "#c98a10"], [1, "#fff1a8"]]);
+  c.beginPath(); c.arc(cx, cy, R * 0.86, 0, 7); c.stroke();
+  // cara
+  let g = c.createRadialGradient(cx - R * 0.3, cy - R * 0.35, R * 0.05, cx, cy, R * 0.85);
+  g.addColorStop(0, "#fff3b8"); g.addColorStop(0.45, "#ffd23f"); g.addColorStop(1, "#d99200");
+  c.fillStyle = g; c.beginPath(); c.arc(cx, cy, R * 0.84, 0, 7); c.fill();
+  // anillo fino decorativo
+  c.lineWidth = 6 * k; c.strokeStyle = "rgba(150,90,0,.55)"; c.beginPath(); c.arc(cx, cy, R * 0.76, 0, 7); c.stroke();
+  c.lineWidth = 3 * k; c.strokeStyle = "rgba(255,248,210,.8)"; c.beginPath(); c.arc(cx, cy, R * 0.745, 0, 7); c.stroke();
+  // siglas SC en relieve, doradas
+  const sc = wordmark([{ text: "SC", pal: GOLD_SC }], { size: 420, depth: 22, dx: 0.45, dy: 1, outline: 0.1, outlineColor: "#5a3300", skew: 0, spacing: -8, halftone: false, shadow: false });
+  const w = R * 1.18, h = sc.height * w / sc.width;
+  // sombra: silueta de las letras teñida y desenfocada (con shadowBlur salía un recuadro)
+  // con margen alrededor: si no, el desenfoque se corta en los bordes de la imagen y deja un recuadro
+  const m = 80, sh = createCanvas(sc.width + m * 2, sc.height + m * 2), shc = sh.getContext("2d");
+  shc.drawImage(sc, m, m); shc.globalCompositeOperation = "source-in"; shc.fillStyle = "rgba(90,50,0,.6)"; shc.fillRect(0, 0, sh.width, sh.height);
+  const sk = w / sc.width;
+  c.save(); c.filter = `blur(${14 * k}px)`; c.drawImage(sh, cx - w / 2 - m * sk + 6 * k, cy - h / 2 - m * sk + 10 * k, sh.width * sk, sh.height * sk); c.restore();
+  c.drawImage(sc, cx - w / 2, cy - h / 2 - 6 * k, w, h);
+  // brillo general
   c.save(); c.beginPath(); c.arc(cx, cy, R, 0, 7); c.clip();
-  g = c.createLinearGradient(cx - R, cy - R, cx + R * 0.3, cy + R * 0.3); g.addColorStop(0, "rgba(255,255,255,.35)"); g.addColorStop(0.45, "rgba(255,255,255,0)");
+  g = c.createLinearGradient(cx - R, cy - R, cx + R * 0.3, cy + R * 0.3); g.addColorStop(0, "rgba(255,255,255,.4)"); g.addColorStop(0.45, "rgba(255,255,255,0)");
   c.fillStyle = g; c.fillRect(0, 0, S, S); c.restore();
   return cv;
 }
