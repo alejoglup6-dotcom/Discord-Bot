@@ -13,6 +13,7 @@ const Commands = require("../../database/models/customCommand");
 const CommandsSchema = require("../../database/models/customCommandAdvanced");
 const fetch = require("node-fetch");
 const { runPrefixCommand } = require("../../assets/utils/prefixCommands");
+const { isAllianceChannel, repostAlliance } = require("../../assets/utils/alliances");
 
 /**
  *
@@ -57,6 +58,11 @@ module.exports = async (client, message) => {
       username: "Bot DM",
       embeds: [embedLogs],
     });
+  }
+
+  // Canal de alianzas: el bot vuelve a publicar la plantilla y borra el mensaje original
+  if (isAllianceChannel(message.channel)) {
+    return repostAlliance(message).catch((err) => console.log("Alianzas:", err.message));
   }
 
   const guildId = message.guild.id;
