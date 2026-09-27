@@ -321,6 +321,94 @@ for (const [k, img] of Object.entries(AV)) { save(`avatar-bot-${k}`, img); save(
   save("avatar-bot-opciones", cv);
 }
 
+// ---------------- 4e. Robot del bot (foto de perfil circular) ----------------
+// Cabeza de robot con la estética de la marca: contorno negro grueso, extrusión 3D granate, bisel y brillo,
+// visor con ojos LED rosa/rojo, antena y el "sc" en la frente; fondo de atardecer (A) o neón (B).
+function robotHead(S, { accent = "red" } = {}) {
+  const cv = createCanvas(S, S), c = cv.getContext("2d"), k = S / 1024;
+  const cx = S / 2, hw = 560 * k, hh = 440 * k, hx = cx - hw / 2, hy = 330 * k, rad = 120 * k;
+  const head = (x, y, grow = 0) => { c.beginPath(); c.roundRect(x - grow, y - grow, hw + grow * 2, hh + grow * 2, rad + grow); };
+  const OUT = "#0a0202", depth = 30 * k;
+  // orejas (detrás de la cabeza)
+  for (const sgn of [-1, 1]) {
+    const ex = sgn < 0 ? hx - 95 * k : hx + hw - 15 * k, ey = hy + 140 * k;
+    for (let i = depth; i >= 0; i -= 2 * k) { c.fillStyle = i ? mix("#b3241c", "#3a0806", i / depth) : "#e8392f"; c.strokeStyle = OUT; c.lineWidth = 16 * k; c.beginPath(); c.roundRect(ex + i * 0.55, ey + i, 90 * k, 150 * k, 30 * k); if (!i) { c.stroke(); } c.fill(); }
+    const g = c.createLinearGradient(0, ey, 0, ey + 150 * k); g.addColorStop(0, "#ff9a86"); g.addColorStop(1, "#9e150f"); c.fillStyle = g; c.beginPath(); c.roundRect(ex, ey, 90 * k, 150 * k, 30 * k); c.fill(); c.lineWidth = 12 * k; c.stroke();
+    c.fillStyle = "#ffd0cb"; c.beginPath(); c.arc(ex + 45 * k, ey + 75 * k, 14 * k, 0, 7); c.fill(); c.lineWidth = 6 * k; c.stroke();
+  }
+  // antena
+  c.lineCap = "round"; c.strokeStyle = OUT; c.lineWidth = 34 * k; c.beginPath(); c.moveTo(cx, hy + 10 * k); c.lineTo(cx, hy - 130 * k); c.stroke();
+  c.strokeStyle = "#c9ccd8"; c.lineWidth = 16 * k; c.beginPath(); c.moveTo(cx, hy + 10 * k); c.lineTo(cx, hy - 130 * k); c.stroke();
+  c.save(); c.shadowColor = "#ff2e6e"; c.shadowBlur = 60 * k; c.fillStyle = "#e8392f"; c.beginPath(); c.arc(cx, hy - 160 * k, 52 * k, 0, 7); c.fill(); c.restore();
+  c.lineWidth = 14 * k; c.strokeStyle = OUT; c.beginPath(); c.arc(cx, hy - 160 * k, 52 * k, 0, 7); c.stroke();
+  let g = c.createRadialGradient(cx - 18 * k, hy - 180 * k, 4 * k, cx, hy - 160 * k, 52 * k); g.addColorStop(0, "#ffe3dd"); g.addColorStop(0.5, "#f24b3a"); g.addColorStop(1, "#9e150f");
+  c.fillStyle = g; c.beginPath(); c.arc(cx, hy - 160 * k, 45 * k, 0, 7); c.fill();
+  // sombra, contorno y extrusión 3D de la cabeza
+  c.save(); c.shadowColor = "rgba(0,0,0,.6)"; c.shadowBlur = 50 * k; c.shadowOffsetY = 30 * k; c.fillStyle = OUT; head(hx + depth * 0.55, hy + depth, 20 * k); c.fill(); c.restore();
+  for (let i = depth; i >= 0; i -= 2 * k) { c.fillStyle = OUT; head(hx + i * 0.55, hy + i, 20 * k); c.fill(); }
+  for (let i = depth; i >= 1; i -= 2 * k) { c.fillStyle = mix("#6c6f80", "#1e1f26", i / depth); head(hx + i * 0.55, hy + i); c.fill(); }
+  // cara metálica (cromo) con brillo arriba y trama de puntos abajo
+  const L = createCanvas(S, S), l = L.getContext("2d");
+  g = l.createLinearGradient(0, hy, 0, hy + hh); g.addColorStop(0, "#ffffff"); g.addColorStop(0.45, "#dfe2ec"); g.addColorStop(0.55, "#a7abbd"); g.addColorStop(1, "#e4e6ee");
+  l.fillStyle = g; l.beginPath(); l.roundRect(hx, hy, hw, hh, rad); l.fill();
+  l.globalCompositeOperation = "source-atop";
+  for (let yy = hy + hh * 0.72; yy < hy + hh; yy += 18 * k) { const t = (yy - hy - hh * 0.72) / (hh * 0.28); l.fillStyle = `rgba(40,20,30,${0.08 + t * 0.2})`; for (let xx = hx; xx < hx + hw; xx += 18 * k) { l.beginPath(); l.arc(xx + ((yy / (18 * k)) % 2) * 9 * k, yy, 3.4 * k * (0.6 + t), 0, 7); l.fill(); } }
+  c.drawImage(L, 0, 0);
+  c.lineWidth = 8 * k; c.strokeStyle = "rgba(255,255,255,.8)"; c.beginPath(); c.roundRect(hx + 12 * k, hy + 12 * k, hw - 24 * k, hh - 24 * k, rad - 12 * k); c.stroke();
+  // visor de cristal oscuro con ojos LED
+  const vx = hx + 60 * k, vy = hy + 110 * k, vw = hw - 120 * k, vh = 170 * k;
+  c.fillStyle = OUT; c.beginPath(); c.roundRect(vx - 14 * k, vy - 14 * k, vw + 28 * k, vh + 28 * k, 70 * k); c.fill();
+  g = c.createLinearGradient(0, vy, 0, vy + vh); g.addColorStop(0, "#3a0a1c"); g.addColorStop(1, "#0d0308"); c.fillStyle = g; c.beginPath(); c.roundRect(vx, vy, vw, vh, 60 * k); c.fill();
+  for (const ex of [vx + vw * 0.28, vx + vw * 0.72]) {
+    c.save(); c.shadowColor = accent === "red" ? "#ff2e6e" : "#4fd8ff"; c.shadowBlur = 55 * k;
+    g = c.createLinearGradient(0, vy + 40 * k, 0, vy + vh - 40 * k); g.addColorStop(0, "#ffe3dd"); g.addColorStop(0.5, "#ff7a86"); g.addColorStop(1, "#e8392f");
+    c.fillStyle = g; c.beginPath(); c.roundRect(ex - 62 * k, vy + 45 * k, 124 * k, vh - 90 * k, 40 * k); c.fill(); c.restore();
+  }
+  c.fillStyle = "rgba(255,255,255,.18)"; c.beginPath(); c.moveTo(vx + 40 * k, vy + 12 * k); c.lineTo(vx + 170 * k, vy + 12 * k); c.lineTo(vx + 110 * k, vy + vh - 12 * k); c.lineTo(vx + 10 * k, vy + vh - 12 * k); c.closePath(); c.fill();
+  // boca: rejilla
+  const mx = cx - 150 * k, my = hy + 320 * k, mw = 300 * k, mh = 64 * k;
+  c.fillStyle = OUT; c.beginPath(); c.roundRect(mx - 10 * k, my - 10 * k, mw + 20 * k, mh + 20 * k, 26 * k); c.fill();
+  c.fillStyle = "#2a0718"; c.beginPath(); c.roundRect(mx, my, mw, mh, 20 * k); c.fill();
+  for (let i = 1; i < 6; i++) { const x = mx + (mw / 6) * i; c.fillStyle = i % 2 ? "#e8392f" : "#f59d99"; c.fillRect(x - 5 * k, my + 10 * k, 10 * k, mh - 20 * k); }
+  // "sc" en la frente
+  const w = 170 * k, h = SC.height * w / SC.width; c.drawImage(SC, cx - w / 2, hy + 14 * k, w, h);
+  return cv;
+}
+const ROBOT = robotHead(1024);
+const robotAvatar = (bgNeon) => avatarBase(1024, (c, k, cx, cy, R) => {
+  if (bgNeon) {
+    let g = c.createLinearGradient(0, 0, 0, 1024); g.addColorStop(0, "#0b0410"); g.addColorStop(0.55, "#2a0718"); g.addColorStop(1, "#4a0b22"); c.fillStyle = g; c.fillRect(0, 0, 1024, 1024);
+    const hz = 1024 * 0.72; c.strokeStyle = "rgba(255,80,140,.5)"; c.lineWidth = 3;
+    for (let i = -12; i <= 12; i++) { c.beginPath(); c.moveTo(cx + i * 20, hz); c.lineTo(cx + i * 150, 1024); c.stroke(); }
+    for (let j = 0; j < 9; j++) { const y = hz + Math.pow(j / 8, 1.8) * (1024 - hz); c.beginPath(); c.moveTo(0, y); c.lineTo(1024, y); c.stroke(); }
+  } else sunsetScene(c, k, 1024);
+  const w = 1024 * 0.95, h = w; c.drawImage(ROBOT, cx - w / 2, cy - h / 2 + 30, w, h);
+  gloss(c, k, cx, cy, R);
+});
+const RA = robotAvatar(false), RB = robotAvatar(true);
+save("robot-bot-A", RA); save("robot-bot-A-512", scaleTo(RA, 512));
+save("robot-bot-B", RB); save("robot-bot-B-512", scaleTo(RB, 512));
+save("robot-cabeza-transparente", ROBOT);
+{
+  const W = 1500, H = 1000, cv = createCanvas(W, H), c = cv.getContext("2d");
+  c.fillStyle = "#0e0e12"; c.fillRect(0, 0, W, H);
+  c.font = "56px PBlack"; c.fillStyle = "#fff"; c.fillText("Robot del bot · 2 fondos", 60, 90);
+  [["A · Atardecer", RA], ["B · Neón", RB]].forEach(([n, img], i) => {
+    const x = 60 + i * 720;
+    c.save(); c.beginPath(); c.arc(x + 300, 440, 300, 0, 7); c.clip(); c.drawImage(img, x, 140, 600, 600); c.restore();
+    c.font = "40px PBlack"; c.fillStyle = "#fff"; c.fillText(n, x, 800);
+    for (const [j, bg, sub] of [[0, "#313338", "#b5bac1"], [1, "#ffffff", "#5c5e66"]]) {
+      const y = 830 + j * 80, xx = x + (j ? 0 : 0);
+      c.fillStyle = bg; c.beginPath(); c.roundRect(x, y, 640, 70, 12); c.fill();
+      c.save(); c.beginPath(); c.arc(x + 35, y + 35, 20, 0, 7); c.clip(); c.drawImage(scaleTo(img, 40), x + 15, y + 15); c.restore();
+      c.font = "24px PS"; c.fillStyle = "#e8392f"; c.fillText("SampCity", x + 68, y + 43); const nx = x + 68 + c.measureText("SampCity").width + 10;
+      c.fillStyle = "#5865f2"; c.beginPath(); c.roundRect(nx, y + 22, 52, 24, 5); c.fill(); c.font = "16px PS"; c.fillStyle = "#fff"; c.fillText("BOT", nx + 10, y + 40);
+      c.font = "22px PS"; c.fillStyle = sub; c.fillText("¡Hola! Escribe !comandos", nx + 70, y + 43);
+    }
+  });
+  save("robot-bot-opciones", cv);
+}
+
 // ---------------- 5. Manual de marca ----------------
 function manual() {
   const W = 2480, H = 3508, cv = createCanvas(W, H), c = cv.getContext("2d"); // A4 a 300 ppp

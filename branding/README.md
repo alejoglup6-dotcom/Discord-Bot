@@ -57,7 +57,11 @@ Probar siempre a 32 px (barra lateral de Discord).
 - Tienda Tebex: moneda **CityCoins** con la marca (oro con el "sc") y paquetes 100 / 500 / 1000
   (`marca/citycoin*.png`, `marca/citycoins-*.png`, generados en `scripts/marca.js`). La versión anterior está en `historial/`.
 - Emojis del servidor (128 px): `marca/emoji-*.png` → `:sampcity:`, `:citycoin:`, `:samp:`, `:city:`.
-- Perfil del bot: avatar `icono-cuadrado-512.png`, banner `marca/banner-perfil-bot-1360x480.png`.
+- **Ícono del servidor (actual):** `marca/avatar-bot-A-512.png` ("sc" sobre el atardecer, circular). Lo eligió el dueño.
+- **Foto del bot (actual):** robot `marca/robot-bot-B-512.png` (fondo neón); alternativa `robot-bot-A-512.png`
+  (atardecer) y la cabeza sola `robot-cabeza-transparente.png`. El dueño pidió que el bot "parezca un robot" pero con
+  la temática de la marca. Banner del perfil: `marca/banner-perfil-bot-1360x480.png`.
+- Opciones de avatar circular descartadas para el bot: `avatar-bot-B/C` (vista previa en `avatar-bot-opciones.png`).
 - Tarjetas de bienvenida/despedida del bot: `src/assets/utils/welcomeCard.js` (paleta de la marca, Russo One en el
   título y el logo `src/assets/brand/logo.png`).
 - Registro de lo aplicado en Discord: `docs/discord/`.
