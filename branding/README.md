@@ -54,7 +54,7 @@ Probar siempre a 32 px (barra lateral de Discord).
 ## Banners y otras piezas
 
 - `marca/banner-1920x1080.png` y `marca/banner-discord-960x540.png`.
-- Tienda Tebex: moneda **CityCoins** **completamente dorada**, solo con las siglas **"SC" en relieve** (Russo One,
+- Tienda Tebex: moneda **CityCoins** **completamente dorada**, solo con las siglas **"CC" (CityCoins) en relieve** (Russo One,
   mayúsculas, también doradas). Lo pidió así el dueño: nada de rosa/rojo en la moneda. Paquetes 100 / 500 / 1000
   (`marca/citycoin*.png`, `marca/citycoins-*.png`, generados en `scripts/marca.js`). La versión anterior está en `historial/`.
 - Emojis del servidor (128 px): `marca/emoji-*.png` → `:sampcity:`, `:citycoin:`, `:samp:`, `:city:`.

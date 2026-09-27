@@ -184,7 +184,7 @@ save("banner-1920x1080", banner());
 save("banner-discord-960x540", banner(960, 540));
 
 // ---------------- 4b. Moneda CityCoins ----------------
-// Pedido del dueño: moneda completamente dorada, solo con las siglas "SC" en relieve (Russo One), también doradas.
+// Pedido del dueño: moneda completamente dorada, solo con las siglas "CC" (CityCoins) en relieve (Russo One), también doradas.
 const GOLD_SC = { face: [[0, "#fff8d0"], [0.3, "#ffe07a"], [0.55, "#f2b21c"], [0.75, "#ffd84a"], [1, "#b87400"]], ext: ["#b07000", "#4a2a00"], rim: "rgba(255,250,215,.9)" };
 function coin(S = 1024) {
   const cv = createCanvas(S, S), c = cv.getContext("2d"), k = S / 1024, cx = S / 2, cy = S / 2, R = 460 * k;
@@ -209,7 +209,7 @@ function coin(S = 1024) {
   c.lineWidth = 6 * k; c.strokeStyle = "rgba(150,90,0,.55)"; c.beginPath(); c.arc(cx, cy, R * 0.76, 0, 7); c.stroke();
   c.lineWidth = 3 * k; c.strokeStyle = "rgba(255,248,210,.8)"; c.beginPath(); c.arc(cx, cy, R * 0.745, 0, 7); c.stroke();
   // siglas SC en relieve, doradas
-  const sc = wordmark([{ text: "SC", pal: GOLD_SC }], { size: 420, depth: 22, dx: 0.45, dy: 1, outline: 0.1, outlineColor: "#5a3300", skew: 0, spacing: -8, halftone: false, shadow: false });
+  const sc = wordmark([{ text: "CC", pal: GOLD_SC }], { size: 420, depth: 22, dx: 0.45, dy: 1, outline: 0.1, outlineColor: "#5a3300", skew: 0, spacing: -8, halftone: false, shadow: false });
   const w = R * 1.18, h = sc.height * w / sc.width;
   // sombra: silueta de las letras teñida y desenfocada (con shadowBlur salía un recuadro)
   // con margen alrededor: si no, el desenfoque se corta en los bordes de la imagen y deja un recuadro
