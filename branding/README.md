@@ -20,7 +20,7 @@ v3 estilo GTA (`v3-*`, la elegida) y la moneda CityCoins de Tebex (`citycoin*.pn
 ## Logotipo
 
 - Tipografía: **Russo One** (`fonts/RussoOne-Regular.ttf`, SIL OFL, se puede usar en la marca). Textos y piezas: Poppins.
-- Construcción (función `wordmark` de `scripts/marca.js`): tamaño 300, `letterSpacing -6px`, inclinación -0.06,
+- Construcción (función `wordmark` de `scripts/lib.js`, compartida por todos los scripts): tamaño 300, `letterSpacing -6px`, inclinación -0.06,
   extrusión de 26 capas hacia abajo-derecha, contorno exterior 0.2 del tamaño y 0.075 en el frente, "negrita"
   con trazo del mismo color (0.05), brillo en el 40 % superior, trama de puntos en la parte baja, borde interior claro.
 - Variantes (`marca/logo-*.png`, fondo transparente): `principal`, `principal-TM`, `plano` (sin 3D, como la referencia,
@@ -54,6 +54,8 @@ Probar siempre a 32 px (barra lateral de Discord).
 ## Banners y otras piezas
 
 - `marca/banner-1920x1080.png` y `marca/banner-discord-960x540.png`.
+- `marca/banner-beta-1920x1080.png`: convocatoria de beta testers ("fase beta" en 3D blanco + oro, sello verde
+  "ABIERTA", etiquetas con lo que se puede probar e invitación de Discord). Se genera con `scripts/beta.js`.
 - Tienda Tebex: moneda **CityCoins** **completamente dorada**, solo con las siglas **"CC" (CityCoins) en relieve** (Russo One,
   mayúsculas, también doradas). Lo pidió así el dueño: nada de rosa/rojo en la moneda. Paquetes 100 / 500 / 1000
   (`marca/citycoin*.png`, `marca/citycoins-*.png`, generados en `scripts/marca.js`). La versión anterior está en `historial/`.
@@ -87,6 +89,7 @@ para no parecer un clon de GTA.
 
 ```
 node branding/scripts/marca.js       # todo branding/marca
+node branding/scripts/beta.js        # banner de la fase beta
 node branding/scripts/citycoins.js   # moneda y paquetes CityCoins en branding/historial
 ```
 
