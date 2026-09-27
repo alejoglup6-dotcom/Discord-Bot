@@ -54,8 +54,13 @@ Probar siempre a 32 px (barra lateral de Discord).
 ## Banners y otras piezas
 
 - `marca/banner-1920x1080.png` y `marca/banner-discord-960x540.png`.
-- Tienda Tebex: moneda **CityCoins** y paquetes 100 / 500 / 1000 (`historial/citycoin*.png`, `scripts/citycoins.js`).
-- Tarjetas de bienvenida/despedida del bot: `src/assets/utils/welcomeCard.js` (paleta atardecer, Poppins).
+- Tienda Tebex: moneda **CityCoins** con la marca (oro con el "sc") y paquetes 100 / 500 / 1000
+  (`marca/citycoin*.png`, `marca/citycoins-*.png`, generados en `scripts/marca.js`). La versión anterior está en `historial/`.
+- Emojis del servidor (128 px): `marca/emoji-*.png` → `:sampcity:`, `:citycoin:`, `:samp:`, `:city:`.
+- Perfil del bot: avatar `icono-cuadrado-512.png`, banner `marca/banner-perfil-bot-1360x480.png`.
+- Tarjetas de bienvenida/despedida del bot: `src/assets/utils/welcomeCard.js` (paleta de la marca, Russo One en el
+  título y el logo `src/assets/brand/logo.png`).
+- Registro de lo aplicado en Discord: `docs/discord/`.
 
 ## Registro de marca (resumen de lo que se le explicó)
 

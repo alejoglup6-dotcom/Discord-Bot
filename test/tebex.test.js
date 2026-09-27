@@ -19,7 +19,8 @@ const fake = { secret: "clave", offline: [], online: {}, players: [], deleted: [
 
 test.before(async () => {
   await tebex.init();
-  [player] = await db.query("SELECT id, name FROM player ORDER BY id LIMIT 1");
+  // El último jugador: las otras pruebas usan los primeros y corren en paralelo (vinculan cuentas)
+  [player] = await db.query("SELECT id, name FROM player ORDER BY id DESC LIMIT 1");
   api = http.createServer((req, res) => {
     const send = (status, body) => {
       res.writeHead(status, { "Content-Type": "application/json" });

@@ -183,6 +183,61 @@ function banner(W = 1920, H = 1080, logo = L.principal) {
 save("banner-1920x1080", banner());
 save("banner-discord-960x540", banner(960, 540));
 
+// ---------------- 4b. Moneda CityCoins (marca nueva) ----------------
+function coin(S = 1024) {
+  const cv = createCanvas(S, S), c = cv.getContext("2d"), k = S / 1024, cx = S / 2, cy = S / 2, R = 460 * k;
+  const gold = (x0, y0, x1, y1) => { const g = c.createLinearGradient(x0, y0, x1, y1); g.addColorStop(0, "#fff6c2"); g.addColorStop(0.3, "#ffd23f"); g.addColorStop(0.6, "#e39b00"); g.addColorStop(0.8, "#ffe07a"); g.addColorStop(1, "#a86400"); return g; };
+  // canto
+  c.save(); c.shadowColor = "rgba(0,0,0,.55)"; c.shadowBlur = 40 * k; c.shadowOffsetY = 22 * k;
+  c.fillStyle = "#7a4a00"; c.beginPath(); c.arc(cx, cy + 26 * k, R, 0, 7); c.fill(); c.restore();
+  c.fillStyle = "#0a0202"; c.beginPath(); c.arc(cx, cy, R + 12 * k, 0, 7); c.fill();
+  c.fillStyle = gold(0, 0, S, S); c.beginPath(); c.arc(cx, cy, R, 0, 7); c.fill();
+  // estrías
+  c.strokeStyle = "rgba(110,60,0,.4)"; c.lineWidth = 5 * k;
+  for (let i = 0; i < 140; i++) { const a = i / 140 * Math.PI * 2; c.beginPath(); c.moveTo(cx + Math.cos(a) * R * 0.9, cy + Math.sin(a) * R * 0.9); c.lineTo(cx + Math.cos(a) * R * 0.985, cy + Math.sin(a) * R * 0.985); c.stroke(); }
+  // cara interior roja
+  c.fillStyle = gold(S, 0, 0, S); c.beginPath(); c.arc(cx, cy, R * 0.86, 0, 7); c.fill();
+  let g = c.createRadialGradient(cx, cy + R * 0.5, 10, cx, cy, R * 0.8); g.addColorStop(0, "#ff7a4a"); g.addColorStop(0.5, "#a3161f"); g.addColorStop(1, "#3a0610");
+  c.fillStyle = g; c.beginPath(); c.arc(cx, cy, R * 0.8, 0, 7); c.fill();
+  c.lineWidth = 8 * k; c.strokeStyle = "#0a0202"; c.stroke();
+  // texto en el borde
+  c.save(); c.font = `${58 * k}px Russo`; c.textAlign = "center"; c.textBaseline = "middle"; c.fillStyle = "#6b3a00";
+  const txt = "CITYCOINS", span = 1.05;
+  [...txt].forEach((ch, i) => { const a = -Math.PI / 2 - span / 2 + span * i / (txt.length - 1); c.save(); c.translate(cx + Math.cos(a) * R * 0.93, cy + Math.sin(a) * R * 0.93); c.rotate(a + Math.PI / 2); c.fillText(ch, 0, 0); c.restore(); });
+  c.restore();
+  // letras sc
+  const w = R * 1.32, h = SC.height * w / SC.width; c.drawImage(SC, cx - w / 2, cy - h / 2 - 8 * k, w, h);
+  // brillo
+  c.save(); c.beginPath(); c.arc(cx, cy, R, 0, 7); c.clip();
+  g = c.createLinearGradient(cx - R, cy - R, cx + R * 0.3, cy + R * 0.3); g.addColorStop(0, "rgba(255,255,255,.35)"); g.addColorStop(0.45, "rgba(255,255,255,0)");
+  c.fillStyle = g; c.fillRect(0, 0, S, S); c.restore();
+  return cv;
+}
+const COIN = coin(1024);
+save("citycoin", COIN);
+save("citycoin-128", scaleTo(COIN, 128));
+function coinPack(amount, n) {
+  const W = 1024, cv = createCanvas(W, W), c = cv.getContext("2d");
+  let g = c.createLinearGradient(0, 0, 0, W); g.addColorStop(0, "#1a0612"); g.addColorStop(0.6, "#5a0f1f"); g.addColorStop(1, "#d9442f"); c.fillStyle = g; c.fillRect(0, 0, W, W);
+  c.save(); c.translate(W / 2, W * 0.45); for (let i = 0; i < 24; i++) { c.rotate(Math.PI / 12); c.fillStyle = i % 2 ? "rgba(255,210,150,.08)" : "rgba(0,0,0,.08)"; c.beginPath(); c.moveTo(0, 0); c.lineTo(W, -70); c.lineTo(W, 70); c.fill(); } c.restore();
+  g = c.createRadialGradient(W / 2, W * 0.45, 10, W / 2, W * 0.45, 420); g.addColorStop(0, "rgba(255,210,120,.55)"); g.addColorStop(1, "rgba(255,120,60,0)"); c.fillStyle = g; c.fillRect(0, 0, W, W);
+  const pos = [[0, 0, 300], [-250, 110, 190], [250, 110, 190], [-140, 210, 160], [150, 220, 150]].slice(0, n);
+  for (const [dx, dy, r] of pos.slice(1).sort((a, b) => a[1] - b[1])) c.drawImage(COIN, W / 2 + dx - r, 400 + dy - r, r * 2, r * 2);
+  c.drawImage(COIN, W / 2 - 300, 400 - 300, 600, 600);
+  const num = wordmark([{ text: amount.toLocaleString("es-ES"), pal: P.gold }], { size: 260, depth: 20 });
+  const nw = Math.min(W * 0.8, num.width * 0.62), nh = num.height * nw / num.width; c.drawImage(num, (W - nw) / 2, 760 - nh / 2 + 10, nw, nh);
+  const lab = wordmark([{ text: "citycoins", pal: P.white }], { size: 200, depth: 10, halftone: false });
+  const lw = 420, lh = lab.height * lw / lab.width; c.drawImage(lab, (W - lw) / 2, 900, lw, lh);
+  return cv;
+}
+for (const [a, n] of [[100, 1], [500, 3], [1000, 5]]) save(`citycoins-${a}`, coinPack(a, n));
+
+// ---------------- 4c. Emojis (128 px) ----------------
+save("emoji-sc", scaleTo(SC, 128));
+save("emoji-citycoin", scaleTo(COIN, 128));
+save("emoji-samp", scaleTo(wordmark([{ text: "samp", pal: P.pink }], { size: 300, depth: 14 }), 128));
+save("emoji-city", scaleTo(wordmark([{ text: "city", pal: P.red }], { size: 300, depth: 14 }), 128));
+
 // ---------------- 5. Manual de marca ----------------
 function manual() {
   const W = 2480, H = 3508, cv = createCanvas(W, H), c = cv.getContext("2d"); // A4 a 300 ppp

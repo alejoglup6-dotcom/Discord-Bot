@@ -1,6 +1,6 @@
 /*
  * Tarjetas de bienvenida y despedida (1100x500): banner de fondo, foto del usuario con aro de color,
- * nombre, número de miembro y logo del servidor.
+ * nombre, número de miembro y el logo de sampcity (colores y tipografía de la marca, ver branding/README.md).
  * Fondo: WELCOME_BANNER del .env (URL de una imagen), si no el banner del servidor de Discord, y si no
  * un atardecer de Los Santos dibujado aquí. La fuente (Poppins) va incluida porque muchos hostings no tienen.
  */
@@ -18,12 +18,13 @@ function loadFonts() {
   registerFont(path.join(FONT_DIR, "Poppins-Bold.ttf"), "PoppinsBold");
   registerFont(path.join(FONT_DIR, "Poppins-SemiBold.ttf"), "PoppinsSemiBold");
   registerFont(path.join(FONT_DIR, "Poppins-Medium.ttf"), "PoppinsMedium");
+  registerFont(path.join(FONT_DIR, "RussoOne-Regular.ttf"), "RussoOne");
   fontsReady = true;
 }
 
 const THEMES = {
-  welcome: { accent: ["#ffb347", "#ff4f81"], title: "¡BIENVENIDO/A!", sky: ["#1b0f3b", "#6a1b6f", "#ff6b4a", "#ffc26b"] },
-  leave: { accent: ["#9aa5b1", "#ff5a5a"], title: "¡HASTA PRONTO!", sky: ["#0b1020", "#1d2745", "#4a3a64", "#8a5a6e"] },
+  welcome: { accent: ["#f59d99", "#e8392f"], title: "¡BIENVENIDO/A!", sky: ["#1a0612", "#5a0f1f", "#d9442f", "#ffb35c"] },
+  leave: { accent: ["#b8bcc8", "#9e150f"], title: "¡HASTA PRONTO!", sky: ["#0b0a12", "#2a0d18", "#5a1f2a", "#8a4a4e"] },
 };
 
 // La fuente no tiene emojis ni letras "de adorno": se quitan para que no salgan cuadrados
@@ -208,8 +209,12 @@ async function makeCard(o) {
   const titleGrad = ctx.createLinearGradient(x, 0, x + 420, 0);
   titleGrad.addColorStop(0, theme.accent[0]);
   titleGrad.addColorStop(1, theme.accent[1]);
+  ctx.font = '44px RussoOne';
+  ctx.lineJoin = "round";
+  ctx.lineWidth = 10;
+  ctx.strokeStyle = "#0a0202";
+  ctx.strokeText(theme.title, x, 150);
   ctx.fillStyle = titleGrad;
-  ctx.font = '38px PoppinsSemiBold';
   ctx.fillText(theme.title, x, 150);
 
   const name = printable(o.name, "Nuevo miembro");
@@ -234,11 +239,18 @@ async function makeCard(o) {
   ctx.fillStyle = badgeGrad;
   roundRect(ctx, x, 325, bw, 52, 26);
   ctx.fill();
-  ctx.fillStyle = "#1a1025";
+  ctx.fillStyle = "#ffffff";
   ctx.fillText(badge, x + 22, 360);
 
-  // Logo del servidor
-  if (o.guildIconURL) {
+  // Logo de sampcity arriba a la derecha (si no se puede cargar, el ícono del servidor)
+  let logoDrawn = false;
+  try {
+    const logo = await loadImage(path.join(__dirname, "../brand/logo.png"));
+    const lw = 260, lh = (logo.height * lw) / logo.width;
+    ctx.drawImage(logo, W - lw - 50, 50, lw, lh);
+    logoDrawn = true;
+  } catch {}
+  if (!logoDrawn && o.guildIconURL) {
     try {
       const icon = await loadImage(o.guildIconURL);
       const s = 70;
