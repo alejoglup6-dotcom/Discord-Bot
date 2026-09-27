@@ -238,6 +238,89 @@ save("emoji-citycoin", scaleTo(COIN, 128));
 save("emoji-samp", scaleTo(wordmark([{ text: "samp", pal: P.pink }], { size: 300, depth: 14 }), 128));
 save("emoji-city", scaleTo(wordmark([{ text: "city", pal: P.red }], { size: 300, depth: 14 }), 128));
 
+// ---------------- 4d. Foto de perfil del bot (circular) ----------------
+// Discord recorta el avatar en círculo: todo el diseño vive dentro del círculo y se revisa a 40 px (chat).
+function avatarBase(S, draw) {
+  const cv = createCanvas(S, S), c = cv.getContext("2d"), k = S / 1024, cx = S / 2, cy = S / 2, R = 500 * k;
+  c.save(); c.beginPath(); c.arc(cx, cy, R, 0, 7); c.clip(); draw(c, k, cx, cy, R); c.restore();
+  // aro: contorno negro + bisel rosa/rojo con brillo arriba
+  c.lineWidth = 40 * k; c.strokeStyle = "#0a0202"; c.beginPath(); c.arc(cx, cy, R - 20 * k, 0, 7); c.stroke();
+  const g = c.createLinearGradient(0, 0, 0, S); g.addColorStop(0, "#ffd0cb"); g.addColorStop(0.35, "#f59d99"); g.addColorStop(0.7, "#e8392f"); g.addColorStop(1, "#9e150f");
+  c.lineWidth = 22 * k; c.strokeStyle = g; c.beginPath(); c.arc(cx, cy, R - 30 * k, 0, 7); c.stroke();
+  c.lineWidth = 6 * k; c.strokeStyle = "rgba(255,255,255,.55)"; c.beginPath(); c.arc(cx, cy, R - 36 * k, Math.PI * 1.1, Math.PI * 1.9); c.stroke();
+  c.lineWidth = 6 * k; c.strokeStyle = "#0a0202"; c.beginPath(); c.arc(cx, cy, R - 44 * k, 0, 7); c.stroke();
+  return cv;
+}
+function sunsetScene(c, k, S, { city = true } = {}) {
+  let g = c.createLinearGradient(0, 0, 0, S); g.addColorStop(0, "#1a0612"); g.addColorStop(0.5, "#5a0f1f"); g.addColorStop(0.8, "#d9442f"); g.addColorStop(1, "#ffb35c");
+  c.fillStyle = g; c.fillRect(0, 0, S, S);
+  c.save(); c.translate(S / 2, S * 0.8); for (let i = 0; i < 24; i++) { c.rotate(Math.PI / 12); c.fillStyle = i % 2 ? "rgba(255,210,150,.09)" : "rgba(0,0,0,.07)"; c.beginPath(); c.moveTo(0, 0); c.lineTo(S, -60 * k); c.lineTo(S, 60 * k); c.fill(); } c.restore();
+  g = c.createRadialGradient(S / 2, S * 0.8, 10 * k, S / 2, S * 0.8, 300 * k); g.addColorStop(0, "#fff3c4"); g.addColorStop(0.45, "#ffb347"); g.addColorStop(1, "rgba(255,120,60,0)");
+  c.fillStyle = g; c.beginPath(); c.arc(S / 2, S * 0.8, 300 * k, 0, 7); c.fill();
+  if (!city) return;
+  let s = 11; const r = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
+  for (const [base, sc, col, win] of [[S * 0.84, 230 * k, "rgba(70,12,30,.9)", false], [S * 0.93, 190 * k, "#12030a", true]]) {
+    let x = 0; while (x < S) { const w = (45 + r() * 70) * k, h = sc * (0.35 + r() * 0.65); c.fillStyle = col; c.fillRect(x, base - h, w, h + S); if (win) { c.fillStyle = "rgba(255,190,110,.55)"; for (let y = base - h + 14 * k; y < base - 8 * k; y += 18 * k) for (let xx = x + 8 * k; xx < x + w - 10 * k; xx += 14 * k) if (r() < 0.3) c.fillRect(xx, y, 5 * k, 8 * k); } x += w + 5 * k; }
+  }
+  const palm = (x, base, h, lean) => { c.save(); c.strokeStyle = c.fillStyle = "#0a0206"; c.lineCap = "round"; const tx = x + lean * h * 0.14, ty = base - h; c.lineWidth = h * 0.05; c.beginPath(); c.moveTo(x, base); c.quadraticCurveTo(x, base - h * 0.5, tx, ty); c.stroke(); for (const a of [-2.7, -2.2, -1.6, -1.0, -0.45, 0, -3.1]) { const Lh = h * 0.45, ex = tx + Math.cos(a) * Lh, ey = ty + Math.sin(a) * Lh * 0.5 + Lh * 0.32, mx = tx + Math.cos(a) * Lh * 0.55, my = ty + Math.sin(a) * Lh * 0.55 - Lh * 0.1; c.beginPath(); c.moveTo(tx, ty); c.quadraticCurveTo(mx, my - h * 0.03, ex, ey); c.quadraticCurveTo(mx, my + h * 0.05, tx, ty); c.fill(); } c.restore(); };
+  palm(150 * k, S, 380 * k, 1); palm(880 * k, S, 330 * k, -1);
+}
+function gloss(c, k, cx, cy, R) { const g = c.createLinearGradient(0, cy - R, 0, cy); g.addColorStop(0, "rgba(255,255,255,.22)"); g.addColorStop(1, "rgba(255,255,255,0)"); c.fillStyle = g; c.beginPath(); c.ellipse(cx, cy - R * 0.45, R * 0.78, R * 0.42, 0, 0, 7); c.fill(); }
+function glowSparkle(c, x, y, r) { c.save(); c.shadowColor = "#fff"; c.shadowBlur = r; c.fillStyle = "#fff"; c.beginPath(); c.moveTo(x, y - r); c.quadraticCurveTo(x, y, x + r, y); c.quadraticCurveTo(x, y, x, y + r); c.quadraticCurveTo(x, y, x - r, y); c.quadraticCurveTo(x, y, x, y - r); c.fill(); c.restore(); }
+// A: atardecer de Los Santos con el "sc"
+const avatarA = (S = 1024) => avatarBase(S, (c, k, cx, cy, R) => {
+  sunsetScene(c, k, S);
+  const w = S * 0.64, h = SC.height * w / SC.width; c.drawImage(SC, cx - w / 2, cy * 0.9 - h / 2, w, h);
+  gloss(c, k, cx, cy, R); glowSparkle(c, 270 * k, 270 * k, 36 * k);
+});
+// B: noche neón (estilo synthwave) con el "sc" brillando
+const avatarB = (S = 1024) => avatarBase(S, (c, k, cx, cy, R) => {
+  let g = c.createLinearGradient(0, 0, 0, S); g.addColorStop(0, "#0b0410"); g.addColorStop(0.55, "#2a0718"); g.addColorStop(1, "#4a0b22"); c.fillStyle = g; c.fillRect(0, 0, S, S);
+  // suelo con rejilla en perspectiva
+  const hz = S * 0.7; c.strokeStyle = "rgba(255,80,140,.55)"; c.lineWidth = 3 * k;
+  for (let i = -12; i <= 12; i++) { c.beginPath(); c.moveTo(cx + i * 20 * k, hz); c.lineTo(cx + i * 150 * k, S); c.stroke(); }
+  for (let j = 0; j < 9; j++) { const y = hz + Math.pow(j / 8, 1.8) * (S - hz); c.beginPath(); c.moveTo(0, y); c.lineTo(S, y); c.stroke(); }
+  // sol retro con franjas detrás
+  c.save(); c.beginPath(); c.arc(cx, hz, 270 * k, Math.PI, 0); c.clip();
+  g = c.createLinearGradient(0, hz - 270 * k, 0, hz); g.addColorStop(0, "#ffd36b"); g.addColorStop(0.5, "#ff7a59"); g.addColorStop(1, "#e8392f");
+  c.fillStyle = g; c.fillRect(0, 0, S, S); c.fillStyle = "#2a0718"; for (let i = 0; i < 5; i++) c.fillRect(0, hz - 110 * k + i * 26 * k, S, (4 + i * 3) * k);
+  c.restore();
+  const w = S * 0.58, h = SC.height * w / SC.width, y = cy * 0.74 - h / 2;
+  c.save(); c.shadowColor = "#ff2e6e"; c.shadowBlur = 90 * k; c.drawImage(SC, cx - w / 2, y, w, h); c.restore();
+  c.drawImage(SC, cx - w / 2, y, w, h);
+  gloss(c, k, cx, cy, R); glowSparkle(c, 760 * k, 260 * k, 32 * k);
+});
+// C: logotipo apilado "samp / city" sobre el atardecer
+const STACK = stacked(PAIRS.principal);
+const avatarC = (S = 1024) => avatarBase(S, (c, k, cx, cy, R) => {
+  sunsetScene(c, k, S);
+  const w = S * 0.6, h = STACK.height * w / STACK.width; c.drawImage(STACK, cx - w / 2, cy * 0.92 - h / 2, w, h);
+  gloss(c, k, cx, cy, R);
+});
+const AV = { A: avatarA(), B: avatarB(), C: avatarC() };
+for (const [k, img] of Object.entries(AV)) { save(`avatar-bot-${k}`, img); save(`avatar-bot-${k}-512`, scaleTo(img, 512)); }
+// Vista previa: grande + en el chat de Discord (40 px) en tema oscuro y claro
+{
+  const W = 2100, H = 1150, cv = createCanvas(W, H), c = cv.getContext("2d");
+  c.fillStyle = "#0e0e12"; c.fillRect(0, 0, W, H);
+  c.font = "56px PBlack"; c.fillStyle = "#fff"; c.fillText("Foto de perfil del bot · 3 opciones", 60, 90);
+  const names = { A: "A · Atardecer", B: "B · Neón nocturno", C: "C · samp / city" };
+  Object.entries(AV).forEach(([k, img], i) => {
+    const x = 60 + i * 680;
+    c.save(); c.beginPath(); c.arc(x + 300, 440, 300, 0, 7); c.clip(); c.drawImage(img, x, 140, 600, 600); c.restore();
+    c.font = "40px PBlack"; c.fillStyle = "#fff"; c.fillText(names[k], x, 800);
+    for (const [j, bg, fg, sub] of [[0, "#313338", "#f2f3f5", "#b5bac1"], [1, "#ffffff", "#060607", "#5c5e66"]]) {
+      const y = 840 + j * 145; c.fillStyle = bg; c.beginPath(); c.roundRect(x, y, 620, 125, 14); c.fill();
+      c.save(); c.beginPath(); c.arc(x + 44, y + 44, 20, 0, 7); c.clip(); c.drawImage(scaleTo(img, 40), x + 24, y + 24); c.restore();
+      c.font = "26px PS"; c.fillStyle = "#e8392f"; c.fillText("SampCity", x + 80, y + 45);
+      const nx = x + 80 + c.measureText("SampCity").width + 10;
+      c.fillStyle = "#5865f2"; c.beginPath(); c.roundRect(nx, y + 24, 56, 26, 5); c.fill(); c.font = "18px PS"; c.fillStyle = "#fff"; c.fillText("BOT", nx + 10, y + 44);
+      c.font = "24px PS"; c.fillStyle = sub; c.fillText("¡Bienvenido/a a sampcity!", x + 80, y + 88);
+    }
+  });
+  save("avatar-bot-opciones", cv);
+}
+
 // ---------------- 5. Manual de marca ----------------
 function manual() {
   const W = 2480, H = 3508, cv = createCanvas(W, H), c = cv.getContext("2d"); // A4 a 300 ppp
