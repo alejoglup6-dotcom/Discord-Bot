@@ -190,6 +190,7 @@ module.exports = (client) => {
         fields: fields,
         content: content,
         components: components,
+        files: files,
         type: type
     }, interaction) {
         // El canal de destino puede no existir (por ejemplo, un canal de registros borrado)
@@ -211,6 +212,7 @@ module.exports = (client) => {
             embeds: [embed],
             content: content,
             components: components,
+            files: files,
             type: type
         }, interaction)
     }
@@ -257,6 +259,7 @@ module.exports = (client) => {
         embeds: embeds,
         content: content,
         components: components,
+        files: files,
         type: type
     }, interaction) {
         if (!interaction) return;
@@ -271,6 +274,7 @@ module.exports = (client) => {
                 embeds: embeds,
                 content: content,
                 components: components,
+                files: files,
                 withResponse: true
             }).catch(e => { });
         }
@@ -279,6 +283,7 @@ module.exports = (client) => {
                 embeds: embeds,
                 content: content,
                 components: components,
+                files: files,
                 withResponse: true
             }).catch(e => { });
         }
@@ -287,6 +292,7 @@ module.exports = (client) => {
                 embeds: embeds,
                 content: content,
                 components: components,
+                files: files,
                 withResponse: true
             }).catch(e => { });
         }
@@ -295,6 +301,7 @@ module.exports = (client) => {
                 embeds: embeds,
                 content: content,
                 components: components,
+                files: files,
                 withResponse: true
             }).catch(e => { });
         }
@@ -303,6 +310,7 @@ module.exports = (client) => {
                 embeds: embeds,
                 content: content,
                 components: components,
+                files: files,
                 withResponse: true,
                 flags: Discord.MessageFlags.Ephemeral
             }).catch(e => { });
@@ -312,6 +320,7 @@ module.exports = (client) => {
                 embeds: embeds,
                 content: content,
                 components: components,
+                files: files,
                 withResponse: true,
                 flags: Discord.MessageFlags.Ephemeral
             }).catch(e => { });
@@ -321,6 +330,7 @@ module.exports = (client) => {
                 embeds: embeds,
                 content: content,
                 components: components,
+                files: files,
                 withResponse: true
             }).catch(e => { });
         }

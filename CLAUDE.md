@@ -13,3 +13,8 @@
 - `/samp` lee las tablas del gamemode (`player`, `bans`, `bad_history`, `crews`) desde `src/database/samp.js` y
   comparte `discord_*` con `gamemodes/src/discord_link.pwn` del repo Backup. Si cambia algo de eso, hay que
   actualizar los dos repos.
+
+## Diseño y marca
+- Para cualquier diseño (logos, banners, íconos, tienda, anuncios) leer primero `branding/README.md`: gustos del
+  dueño (estilo GTA con volumen, nada plano, sin "roleplay", íconos en PNG), colores, tipografías y el historial.
+- Los PNG se regeneran con `node branding/scripts/marca.js` (y `branding/scripts/citycoins.js` para la moneda).

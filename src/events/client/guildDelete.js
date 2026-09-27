@@ -35,6 +35,10 @@ const schemaFiles = [
     "warnings",
     "wordsnake",
     "messageRewards",
+    "fortuna",
+    "fortunaAssets",
+    "inviteRewardLog",
+    "serverLayout",
 ]
 const schemas = schemaFiles.map(file => require(`../../database/models/${file}`));
 
