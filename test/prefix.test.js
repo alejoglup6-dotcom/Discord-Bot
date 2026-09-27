@@ -163,7 +163,8 @@ test("economía y ayuda de una categoría", async () => {
 });
 
 test("/samp con !: perfil por nombre y el código de vincular llega por MD", async () => {
-  const [p] = await db.query("SELECT name FROM player ORDER BY id LIMIT 1");
+  // Otro jugador que el de samp.test.js (corren a la vez y ese lo vincula y lo banea)
+  const [p] = await db.query("SELECT name FROM player WHERE admin_level = 0 ORDER BY id LIMIT 1 OFFSET 1");
   let r = await run(`!cuenta ${p.name}`);
   assert.strictEqual(r.embed.title, `🎮・${p.name.replace(/_/g, "\\_")}`);
 
