@@ -58,6 +58,8 @@ Probar siempre a 32 px (barra lateral de Discord).
   "ABIERTA", etiquetas con lo que se puede probar e invitación de Discord). Se genera con `scripts/beta.js`.
 - `marca/banner-beta-tester-1920x720.png`: canal 🧪┆beta-testers (escudo dorado "BT", "beta tester" en 3D, sello
   "CONFIDENCIAL", etiquetas obligaciones/beneficios/confidencialidad). Se genera con `scripts/beta-tester.js`.
+- `marca/banner-dinero-negro-1920x1080.png`: anuncio del sistema de dinero negro (fajos y bolsa dibujados a mano, "dinero"
+  en plata + "negro" en rojo, sello verde "NUEVO", fondo de noche con billetes). Se genera con `scripts/dinero-negro.js`.
 - Tienda Tebex: moneda **CityCoins** **completamente dorada**, solo con las siglas **"CC" (CityCoins) en relieve** (Russo One,
   mayúsculas, también doradas). Lo pidió así el dueño: nada de rosa/rojo en la moneda. Paquetes 100 / 500 / 1000
   (`marca/citycoin*.png`, `marca/citycoins-*.png`, generados en `scripts/marca.js`). La versión anterior está en `historial/`.
