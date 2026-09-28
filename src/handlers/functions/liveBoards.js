@@ -10,8 +10,8 @@ const { textChannel } = require("../../assets/utils/guildLookup");
  * Tablas que se actualizan solas (un mensaje del bot que se edita cada 5 minutos, solo si cambió):
  * - 🔔┆invitados: quién invitó a más gente al Discord (las invitaciones que siguen en el servidor).
  * - 💼┆millonarios: los que más dinero tienen en el juego (efectivo + banco, de la base de datos del servidor).
- * - 🏆┆ranking: horas jugadas esta semana (de lunes a domingo) y los que más logros tienen (/logros en el juego).
- * Los canales se buscan por su nombre ("invitados", "millonarios", "ranking"); si no existen, no se hace nada.
+ * - 🏆┆ranking-semanal: horas jugadas esta semana (de lunes a domingo) y los que más logros tienen (/logros en el juego).
+ * Los canales se buscan por su nombre ("invitados", "millonarios", "ranking-semanal"; "📈┆ranking" es de la fortuna); si no existen, no se hace nada.
  */
 const INTERVAL = 5 * 60000;
 const MEDALS = ["🥇", "🥈", "🥉"];
@@ -111,7 +111,7 @@ module.exports = (client) => {
       if (inv) await publish(inv, await invitesBoard(client, guild)).then(() => done.push(inv)).catch((e) => console.log(e));
       const rich = sampReady && textChannel(guild, /^millonarios$/);
       if (rich) await publish(rich, await richestBoard(client, guild)).then(() => done.push(rich)).catch((e) => console.log(e));
-      const rank = sampReady && textChannel(guild, /^ranking$/);
+      const rank = sampReady && textChannel(guild, /^ranking semanal$/);
       if (rank) await publish(rank, await weeklyBoard(client, guild)).then(() => done.push(rank)).catch((e) => console.log(e));
     }
     return done;
