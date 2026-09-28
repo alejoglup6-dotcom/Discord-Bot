@@ -166,6 +166,33 @@ async function getRichest(limit = 15) {
   );
 }
 
+// Ranking semanal (tabla player_week_time del gamemode, src/logros.pwn): horas activas de la semana actual.
+// La semana la cuenta el gamemode con su propia fecha; aqui se toma la mas reciente que haya.
+async function getWeeklyTime(limit = 15) {
+  const tables = await db.query("SHOW TABLES LIKE 'player_week_time'");
+  if (!tables.length) return [];
+  return db.query(
+    `SELECT p.name, w.seconds, p.connected, p.level
+     FROM player_week_time w JOIN player p ON p.id = w.player_id
+     WHERE w.week = (SELECT MAX(week) FROM player_week_time)
+     ORDER BY w.seconds DESC, p.id LIMIT ?`,
+    [limit],
+  );
+}
+
+// Los que mas logros tienen (tabla player_achievements; ach_id -1 es una marca interna, no cuenta)
+async function getAchievementTop(limit = 10) {
+  const tables = await db.query("SHOW TABLES LIKE 'player_achievements'");
+  if (!tables.length) return [];
+  return db.query(
+    `SELECT p.name, COUNT(*) AS total, p.connected
+     FROM player_achievements a JOIN player p ON p.id = a.player_id
+     WHERE a.ach_id >= 0 GROUP BY a.player_id, p.name, p.connected
+     ORDER BY total DESC, MIN(a.unlocked_at) LIMIT ?`,
+    [limit],
+  );
+}
+
 // ---------------------------------------------------------------------------------------------------------------
 // Sanciones (hacen lo mismo que AddPlayerBan, /unban y /muteard del gamemode)
 
@@ -285,6 +312,8 @@ module.exports = {
   getOnlinePlayers,
   getTop,
   getRichest,
+  getWeeklyTime,
+  getAchievementTop,
   getActiveBan,
   ban,
   unban,

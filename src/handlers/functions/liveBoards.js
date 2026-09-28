@@ -10,7 +10,8 @@ const { textChannel } = require("../../assets/utils/guildLookup");
  * Tablas que se actualizan solas (un mensaje del bot que se edita cada 5 minutos, solo si cambió):
  * - 🔔┆invitados: quién invitó a más gente al Discord (las invitaciones que siguen en el servidor).
  * - 💼┆millonarios: los que más dinero tienen en el juego (efectivo + banco, de la base de datos del servidor).
- * Los canales se buscan por su nombre ("invitados", "millonarios"); si no existen, no se hace nada.
+ * - 🏆┆ranking: horas jugadas esta semana (de lunes a domingo) y los que más logros tienen (/logros en el juego).
+ * Los canales se buscan por su nombre ("invitados", "millonarios", "ranking"); si no existen, no se hace nada.
  */
 const INTERVAL = 5 * 60000;
 const MEDALS = ["🥇", "🥈", "🥉"];
@@ -58,6 +59,28 @@ async function richestBoard(client, guild) {
     .setFooter({ text: "Se actualiza cada 5 minutos con los datos del servidor de juego" });
 }
 
+const hours = (sec) => {
+  const m = Math.floor((Number(sec) || 0) / 60);
+  return `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, "0")} min`;
+};
+
+async function weeklyBoard(client, guild) {
+  const [week, logros] = await Promise.all([samp.getWeeklyTime(15), samp.getAchievementTop(10)]);
+  const dot = (r) => (Number(r.connected) ? "🟢" : "⚫");
+  const weekLines = week.map((r, i) => `${place(i)} ${dot(r)} **${Discord.escapeMarkdown(r.name)}** · ${hours(r.seconds)} *(nivel ${r.level})*`);
+  const logroLines = logros.map((r, i) => `${place(i)} ${dot(r)} **${Discord.escapeMarkdown(r.name)}** · ${r.total} ${Number(r.total) === 1 ? "logro" : "logros"}`);
+  return client
+    .templateEmbed()
+    .setTitle(`🏆・Ranking semanal de ${guild.name}`)
+    .setColor("#e2c063")
+    .addFields(
+      { name: "⏱️ Más horas jugadas esta semana", value: weekLines.length ? weekLines.join("\n") : "Todavía nadie jugó esta semana." },
+      { name: "🎖️ Más logros conseguidos", value: logroLines.length ? logroLines.join("\n") : "Todavía nadie tiene logros." },
+    )
+    .setDescription("La semana va de lunes a domingo; solo cuenta el tiempo jugando de verdad (no en pausa). Mira tus logros con **/logros** en el juego.")
+    .setFooter({ text: "Se actualiza cada 5 minutos con los datos del servidor de juego" });
+}
+
 module.exports = (client) => {
   const messages = new Map(); // canal -> mensaje de la tabla
   const last = new Map(); // canal -> contenido publicado (para no editar si no cambió)
@@ -88,6 +111,8 @@ module.exports = (client) => {
       if (inv) await publish(inv, await invitesBoard(client, guild)).then(() => done.push(inv)).catch((e) => console.log(e));
       const rich = sampReady && textChannel(guild, /^millonarios$/);
       if (rich) await publish(rich, await richestBoard(client, guild)).then(() => done.push(rich)).catch((e) => console.log(e));
+      const rank = sampReady && textChannel(guild, /^ranking$/);
+      if (rank) await publish(rank, await weeklyBoard(client, guild)).then(() => done.push(rank)).catch((e) => console.log(e));
     }
     return done;
   }
@@ -103,3 +128,4 @@ module.exports = (client) => {
 };
 module.exports.invitesBoard = invitesBoard;
 module.exports.richestBoard = richestBoard;
+module.exports.weeklyBoard = weeklyBoard;
