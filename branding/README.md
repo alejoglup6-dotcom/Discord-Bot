@@ -96,6 +96,15 @@ node branding/scripts/marca.js       # todo branding/marca
 node branding/scripts/beta.js        # banner de la fase beta
 node branding/scripts/beta-tester.js # banner del canal de beta testers
 node branding/scripts/citycoins.js   # moneda y paquetes CityCoins en branding/historial
+node --expose-gc branding/scripts/shorts.js <material>   # shorts verticales para TikTok en branding/shorts (ver cabecera)
 ```
+
+## Shorts para TikTok / Reels (`scripts/shorts.js`)
+Videos verticales 1080x1920 de 15-20 s. Formato: gancho con texto grande en los 3 primeros segundos, un corte cada
+2-3 s (destello + zoom lento), textos de 6-8 palabras en Poppins Black con contorno negro dentro de la zona segura
+de TikTok (ni abajo del todo ni pegados a la derecha), marca pequeña arriba a la izquierda y tarjeta final con el
+logo 3D, "Android y PC", fase beta y el Discord. Van sin música: se les pone un sonido de moda al subirlos.
+El material (grabaciones, capturas y tomas de drone del repo Backup) no va al repo; `branding/shorts/` está ignorada.
+`MUESTRA=1` saca una imagen por escena para revisar el diseño sin montar el video.
 
 Las fuentes están en `fonts/` (Google Fonts, licencia SIL OFL en `fonts/OFL.txt`; Luckiest Guy es Apache 2.0).
