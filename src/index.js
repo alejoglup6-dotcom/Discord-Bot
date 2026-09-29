@@ -259,7 +259,7 @@ process.on("unhandledRejection", (error) => {
 });
 
 process.on("warning", (warn) => {
-    console.warn("Warning:", warn);
+    console.warn("Warning:", warn && warn.stack ? warn.stack : String(warn));
     const embed = new Discord.EmbedBuilder()
         .setTitle(`🚨・Nueva advertencia encontrada`)
         .addFields([
@@ -275,6 +275,5 @@ process.on("warning", (warn) => {
         })
         .catch(() => {
             console.log("Error sending warning to webhook");
-            console.log(warn);
         });
 });
