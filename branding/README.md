@@ -106,5 +106,8 @@ de TikTok (ni abajo del todo ni pegados a la derecha), marca pequeña arriba a l
 logo 3D, "Android y PC", fase beta y el Discord. Van sin música: se les pone un sonido de moda al subirlos.
 El material (grabaciones, capturas y tomas de drone del repo Backup) no va al repo; `branding/shorts/` está ignorada.
 `MUESTRA=1` saca una imagen por escena para revisar el diseño sin montar el video.
+Voz: `PIPER_VOZ=<modelo.onnx>` lee el guion de cada video (`VOCES` en el script) con [Piper](https://github.com/rhasspy/piper)
+(`pip install piper-tts`; voz usada: `es_MX-claude-high` de huggingface.co/rhasspy/piper-voices). Cada escena se alarga
+hasta que quepa su frase. Los nombres van escritos como se pronuncian ("Samp Siti", "Siti Coins").
 
 Las fuentes están en `fonts/` (Google Fonts, licencia SIL OFL en `fonts/OFL.txt`; Luckiest Guy es Apache 2.0).

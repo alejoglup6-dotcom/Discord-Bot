@@ -202,6 +202,31 @@ async function videos() {
   };
 }
 
+// ---------------------------------------------------------------- voz
+// Una frase por escena (la ultima, la tarjeta final). Escrito como se pronuncia ("Samp Siti") para la voz de Piper.
+const FINAL = "Samp Siti. En Android y PC. Estamos en fase beta: únete al Discord, el link está en la bio.";
+const VOCES = {
+  "1-presentacion": ["¿Buscas servidor de samp para Android?", "Llegó Samp Siti.", "Policía, bandas, y rol de verdad.",
+    "Un inventario cien por ciento propio.", "¿Trabajo honrado... o dinero negro?", "Catorce trabajos, casas, negocios y Siti Coins.", FINAL],
+  "2-policia": ["Imagina que estás en la zona segura de Pershing Square...", "y alguien decide romper las reglas.", "Ataca a un policía.",
+    "La policía se entera al instante, y le cae búsqueda.", FINAL],
+  "3-inventario": ["El inventario más limpio de samp Android.", "Ropa y accesorios: cabeza, espalda y manos.",
+    "Bolsillos y mochila. Hasta el dinero negro ocupa sitio.", "Usar, dar, hacer trato, o tirar.", "Y tu nivel, salud, comida y agua, siempre a la vista.", FINAL],
+  "4-los-santos": ["Los Santos te está esperando.", "Tu historia empieza aquí.", "Bienvenido a Samp Siti.", FINAL],
+  "5-trabajos": ["Catorce formas de ganar dinero en Samp Siti.",
+    "Camionero, taxista, mecánico, policía, médico, pizzero, basurero, leñador, granjero, cosechador, fumigador, carnicero, minero y gruero.",
+    "O el dinero negro. Tú decides.", "Tutorial al empezar, con cinco mil dólares de regalo. Y paga cada hora.", FINAL],
+};
+// PIPER_VOZ = modelo .onnx de Piper (p. ej. es_MX-claude-high.onnx). Sin él los videos salen sin voz.
+const VOZ = process.env.PIPER_VOZ;
+function wavDur(f) { const b = fs.readFileSync(f); return b.readUInt32LE(40) / b.readUInt32LE(28); }
+function locutar(texto) {
+  const dir = path.join(SRC, "voz"); fs.mkdirSync(dir, { recursive: true });
+  const f = path.join(dir, require("crypto").createHash("md5").update(VOZ + texto).digest("hex").slice(0, 12) + ".wav");
+  if (!fs.existsSync(f)) execFileSync("python3", ["-m", "piper", "-m", VOZ, "--length-scale", "0.92", "--sentence-silence", "0.15", "-f", f], { input: texto, stdio: ["pipe", "ignore", "ignore"] });
+  return { f, dur: wavDur(f) };
+}
+
 // ---------------------------------------------------------------- render
 // MUESTRA=1: en vez del video, una imagen por escena (al 70 % de cada una) para revisar el diseño
 async function muestra(nombre, escenas) {
@@ -220,10 +245,26 @@ async function render(nombre, escenas) {
   if (process.env.MUESTRA) return muestra(nombre, escenas);
   fs.mkdirSync(OUT, { recursive: true });
   const out = path.join(OUT, nombre + ".mp4");
+  // voz: cada escena dura al menos lo que su frase + 0,35 s
+  const pistas = [];
+  if (VOZ && VOCES[nombre]) {
+    let ini = 0;
+    escenas = escenas.map((e, i) => {
+      const txt = VOCES[nombre][i]; let d = e.d;
+      if (txt) { const v = locutar(txt); d = Math.max(e.d, v.dur + 0.45); pistas.push({ f: v.f, at: ini + 0.12 }); }
+      ini += d; return { ...e, d };
+    });
+  }
   const total = escenas.reduce((a, e) => a + e.d, 0), N = Math.round(total * FPS);
+  const audio = pistas.length
+    ? [...pistas.flatMap((p) => ["-i", p.f]), "-filter_complex",
+      pistas.map((p, i) => `[${i + 1}:a]aresample=44100,adelay=${Math.round(p.at * 1000)}:all=1,volume=1.6[v${i}]`).join(";") + ";" +
+      pistas.map((_, i) => `[v${i}]`).join("") + `amix=inputs=${pistas.length}:normalize=0,apad,atrim=0:${total.toFixed(2)},acompressor=threshold=-18dB:ratio=3,loudnorm=I=-14:TP=-1.5[a]`,
+      "-map", "0:v", "-map", "[a]"]
+    : ["-f", "lavfi", "-t", String(total), "-i", "anullsrc=r=44100:cl=stereo"];
   const ff = spawn(FF, ["-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", `${W}x${H}`, "-r", String(FPS), "-i", "-",
-    "-f", "lavfi", "-t", String(total), "-i", "anullsrc=r=44100:cl=stereo", "-c:v", "libx264", "-preset", "medium", "-crf", "19",
-    "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "96k", "-shortest", "-movflags", "+faststart", out], { stdio: ["pipe", "inherit", "inherit"] });
+    ...audio, "-c:v", "libx264", "-preset", "medium", "-crf", "19",
+    "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-ac", "2", "-shortest", "-movflags", "+faststart", out], { stdio: ["pipe", "inherit", "inherit"] });
   const cv = createCanvas(W, H), c = cv.getContext("2d");
   let ini = 0, e = 0;
   for (let f = 0; f < N; f++) {
