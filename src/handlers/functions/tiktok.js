@@ -34,7 +34,7 @@ async function fetchVideos() {
     .sort((a, b) => (BigInt(a.id) < BigInt(b.id) ? -1 : 1));
 }
 
-function announcement(video) {
+function announcement(video, rol) {
   const url = `https://www.tiktok.com/@${USER}/video/${video.id}`;
   const title = video.desc.replace(/#\S+/g, "").replace(/\s+/g, " ").trim();
   const row = new Discord.ActionRowBuilder().addComponents(
@@ -42,8 +42,9 @@ function announcement(video) {
     new Discord.ButtonBuilder().setStyle(Discord.ButtonStyle.Link).setLabel(`Seguir a @${USER}`).setEmoji("➕").setURL(`https://www.tiktok.com/@${USER}`),
   );
   return {
-    content: `🎬 **¡Nuevo video en nuestro TikTok!**${title ? `\n> ${title.slice(0, 300)}` : ""}\nDale like ❤️, comenta 💬 y compártelo 🔁 para que llegue a más gente.\n${url}`,
+    content: `${rol ? `${rol} · ` : ""}🎬 **¡Nuevo video en nuestro TikTok!**${title ? `\n> ${title.slice(0, 300)}` : ""}\nDale like ❤️, comenta 💬 y compártelo 🔁 para que llegue a más gente.\n${url}`,
     components: [row],
+    allowedMentions: { roles: rol ? [rol.id] : [] },
   };
 }
 
@@ -67,7 +68,8 @@ module.exports = (client) => {
         for (const v of videos) {
           if (seen.has(v.id)) continue;
           if (!first) {
-            const ok = await channel.send(announcement(v)).catch((e) => console.log("[tiktok]", e.message));
+            const rol = client.alertRole ? client.alertRole(guild, "tiktok") : null; // alerta 🔔 TikTok (alertas.js)
+            const ok = await channel.send(announcement(v, rol)).catch((e) => console.log("[tiktok]", e.message));
             if (!ok) continue; // se reintenta en la próxima vuelta
             posted++;
           }
