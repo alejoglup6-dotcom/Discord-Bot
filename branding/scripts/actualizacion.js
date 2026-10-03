@@ -15,9 +15,10 @@ const { createCanvas, GlobalFonts, P, PAIRS, wordmark, wm } = require("./lib");
 GlobalFonts.registerFromPath(path.join(__dirname, "../fonts/Poppins-ExtraBold.ttf"), "PXB");
 GlobalFonts.registerFromPath(path.join(__dirname, "../fonts/LuckiestGuy-Regular.ttf"), "Lucky");
 
+const MAIN = require.main === module;   // tambien se usa como libreria (nueva-ip.js)
 const IN = path.resolve(process.argv[2] || ".");
 const OUT = path.resolve(process.argv[3] || path.join(__dirname, "../marca/actualizacion-3oct"));
-fs.mkdirSync(OUT, { recursive: true });
+if (MAIN) fs.mkdirSync(OUT, { recursive: true });
 const INK = "#0a0202";
 
 // ---------------------------------------------------------------- "pintar" un render
@@ -153,7 +154,9 @@ function save(cv, name) {
   console.log("ok", f);
 }
 
-(async () => {
+module.exports = { paint, panel, label, bigText, sunsetBox, drawLogo, INK };
+
+if (MAIN) (async () => {
   const L = async (n) => loadImage(path.join(IN, n + ".png"));
   console.log("pintando escenas...");
   const img = {

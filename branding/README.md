@@ -91,7 +91,8 @@ para no parecer un clon de GTA.
 
 - `marca/actualizacion-3oct/`: piezas de la actualización del 3-oct-2026 al estilo de las portadas de GTA San Andreas
   (viñetas con borde negro grueso, color cálido, contornos entintados y trama en las sombras): `portada`, `trabajos`,
-  `facciones`, `cartel` y `gracias` (créditos a la comunidad). Las escenas son renders reales del juego hechos con
+  `facciones`, `cartel`, `gracias` (créditos a la comunidad) y `nueva-ip` (anuncio de la IP `sv.sampcity.app:7781`,
+  `scripts/nueva-ip.js`). Las escenas son renders reales del juego hechos con
   `tools/render` del repo Backup (ahora también dibuja vehículos: `CreateVehicle(modelo, x, y, z, ángulo, c1, c2)`),
   y `scripts/actualizacion.js` las "pinta" y las monta con el logo 3D.
 
