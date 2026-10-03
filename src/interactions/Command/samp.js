@@ -82,6 +82,22 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand
+        .setName("jail")
+        .setDescription("Manda a la cárcel del servidor a un jugador (Moderador)")
+        .addStringOption(nameOption)
+        .addIntegerOption((option) =>
+          option.setName("minutes").setDescription("Minutos de cárcel").setRequired(true).setMinValue(1).setMaxValue(1440),
+        )
+        .addStringOption((option) => option.setName("reason").setDescription("Razón").setRequired(true).setMaxLength(80)),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("unjail")
+        .setDescription("Saca de la cárcel del servidor a un jugador (Moderador)")
+        .addStringOption(nameOption),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("unmute")
         .setDescription("Quita el silencio del canal de dudas a un jugador (Ayudante)")
         .addStringOption(nameOption),

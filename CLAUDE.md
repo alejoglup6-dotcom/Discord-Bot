@@ -11,7 +11,8 @@
 - Los modelos (`src/database/models`) usan `src/database/odm.js`, compatible con mongoose: se escriben igual
   (`new db.Schema(...)`, `db.model(...)`) y cada uno es una tabla `bot_*` que se crea sola.
 - `/samp` lee las tablas del gamemode (`player`, `bans`, `bad_history`, `crews`) desde `src/database/samp.js` y
-  comparte `discord_*` con `gamemodes/src/discord_link.pwn` del repo Backup. Si cambia algo de eso, hay que
+  comparte `discord_*` con `gamemodes/src/discord_link.pwn` del repo Backup. `/whitelist` usa `whitelist` y
+  `whitelist_config` (`src/database/whitelist.js`), las mismas que `gamemodes/src/whitelist.pwn`. Si cambia algo de eso, hay que
   actualizar los dos repos.
 
 ## Diseño y marca

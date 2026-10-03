@@ -194,6 +194,36 @@ test("sanciones: permisos, ban, tempban, unban, mute", async () => {
   await db.query("UPDATE player SET admin_level = ? WHERE id = ?", [admin.admin_level, admin.id]);
 });
 
+test("carcel: /samp jail y unjail dejan la accion para el gamemode", async () => {
+  assert.match((await run("jail", interaction(PLAYER_DISCORD, { name: admin.name, minutes: 5, reason: "x" }))).error, /Necesitas el rango/);
+  assert.ok((await run("jail", interaction(ADMIN_DISCORD, { name: player.name, minutes: 15, reason: "dm en zona segura" }))).ok);
+  const [a] = await db.query("SELECT action, value, reason, by_name FROM discord_actions WHERE player_id = ? ORDER BY id DESC LIMIT 1", [player.id]);
+  assert.deepStrictEqual([a.action, Number(a.value), a.reason, a.by_name], ["jail", 900, "dm en zona segura", admin.name]);
+  // no esta en la carcel (el gamemode no ha aplicado nada en la base de pruebas)
+  assert.match((await run("unjail", interaction(ADMIN_DISCORD, { name: player.name }))).error, /no está en la cárcel/);
+  const [st] = await db.query("SELECT state FROM player WHERE id = ?", [player.id]);
+  await db.query("UPDATE player SET state = 6 WHERE id = ?", [player.id]);
+  assert.ok((await run("unjail", interaction(ADMIN_DISCORD, { name: player.name }))).ok);
+  const [u] = await db.query("SELECT action FROM discord_actions WHERE player_id = ? ORDER BY id DESC LIMIT 1", [player.id]);
+  assert.strictEqual(u.action, "unjail");
+  await db.query("UPDATE player SET state = ? WHERE id = ?", [st.state, player.id]);
+});
+
+test("sincronizacion: cuentas vinculadas, VIP, silencio y baneos", async () => {
+  const rows = await samp.getSyncRows();
+  const me = rows.find((r) => r.discord_id === PLAYER_DISCORD);
+  assert.ok(me, "la cuenta vinculada sale en la sincronizacion");
+  assert.strictEqual(Number(me.player_id), player.id);
+  const base = await samp.getMaxBanId();
+  const full = await samp.getPlayerById(player.id);
+  await samp.ban(full, admin, "prueba sync", 2);
+  const bans = await samp.getLinkedBans();
+  const b = bans.get(player.id);
+  assert.ok(b && b.banId > base && b.expires > Date.now() / 1000, "baneo temporal con su fin");
+  await samp.unban(full, admin);
+  assert.ok(!(await samp.getLinkedBans()).get(player.id));
+});
+
 test("desvincular", async () => {
   assert.ok((await run("unlink", interaction(PLAYER_DISCORD))).ok);
   assert.ok((await run("unlink", interaction(PLAYER_DISCORD))).error);

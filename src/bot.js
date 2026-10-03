@@ -168,6 +168,9 @@ const warnLogs = new Discord.WebhookClient({
     token: client.webhooks.warnLogs.token,
 });
 
+// Cada módulo de handlers/ espera "clientReady" por su cuenta (tablas, fortuna, estadísticas, TikTok...): más de 10
+client.setMaxListeners(25);
+
 // Load handlers
 fs.readdirSync("./src/handlers").forEach((dir) => {
     fs.readdirSync(`./src/handlers/${dir}`).forEach((handler) => {
@@ -214,7 +217,8 @@ process.on("unhandledRejection", (error) => {
 });
 
 process.on("warning", (warn) => {
-    console.warn("Warning:", warn);
+    // solo el texto: el objeto del aviso trae el cliente entero (con toda la configuración) y llena la consola
+    console.warn("Warning:", warn && warn.stack ? warn.stack : String(warn));
     const embed = new Discord.EmbedBuilder()
         .setTitle(`🚨・Nueva advertencia encontrada`)
         .addFields([
@@ -231,7 +235,6 @@ process.on("warning", (warn) => {
         })
         .catch(() => {
             console.log("Error sending warning to webhook");
-            console.log(warn);
         });
 });
 

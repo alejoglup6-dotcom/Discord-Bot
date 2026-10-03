@@ -68,6 +68,8 @@ const names = {
     online: "conectados",
     mute: "silenciar",
     unmute: "quitar-silencio",
+    jail: "carcel",
+    unjail: "sacar-carcel",
     days: "dias",
     minutes: "minutos",
     "8ball": "bola8",

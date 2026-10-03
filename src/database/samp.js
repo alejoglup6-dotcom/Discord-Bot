@@ -8,8 +8,8 @@ const db = require("./mysql");
 // Igual que ADMIN_LEVELS y el enum TYPE_* de snrp.pwn
 const ADMIN_LEVELS = ["Ciudadano", "Ayudante", "Moderador", "Operador", "Administrador", "Desarrollador"];
 const HISTORY = { WARNING: 0, KICK: 1, BAN: 2, TEMP_BAN: 3, UNBAN: 4 };
-// Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, tban/unban, ban)
-const REQUIRED_LEVEL = { mute: 1, unmute: 1, tempban: 3, unban: 3, ban: 4 };
+// Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, jail/unjail, tban/unban, ban)
+const REQUIRED_LEVEL = { mute: 1, unmute: 1, jail: 2, unjail: 2, tempban: 3, unban: 3, ban: 4 };
 const LINK_CODE_MINUTES = 10;
 
 let available = null;
@@ -166,6 +166,33 @@ async function getRichest(limit = 15) {
   );
 }
 
+// Ranking semanal (tabla player_week_time del gamemode, src/logros.pwn): horas activas de la semana actual.
+// La semana la cuenta el gamemode con su propia fecha; aqui se toma la mas reciente que haya.
+async function getWeeklyTime(limit = 15) {
+  const tables = await db.query("SHOW TABLES LIKE 'player_week_time'");
+  if (!tables.length) return [];
+  return db.query(
+    `SELECT p.name, w.seconds, p.connected, p.level
+     FROM player_week_time w JOIN player p ON p.id = w.player_id
+     WHERE w.week = (SELECT MAX(week) FROM player_week_time)
+     ORDER BY w.seconds DESC, p.id LIMIT ?`,
+    [limit],
+  );
+}
+
+// Los que mas logros tienen (tabla player_achievements; ach_id -1 es una marca interna, no cuenta)
+async function getAchievementTop(limit = 10) {
+  const tables = await db.query("SHOW TABLES LIKE 'player_achievements'");
+  if (!tables.length) return [];
+  return db.query(
+    `SELECT p.name, COUNT(*) AS total, p.connected
+     FROM player_achievements a JOIN player p ON p.id = a.player_id
+     WHERE a.ach_id >= 0 GROUP BY a.player_id, p.name, p.connected
+     ORDER BY total DESC, MIN(a.unlocked_at) LIMIT ?`,
+    [limit],
+  );
+}
+
 // ---------------------------------------------------------------------------------------------------------------
 // Sanciones (hacen lo mismo que AddPlayerBan, /unban y /muteard del gamemode)
 
@@ -268,6 +295,57 @@ async function isMuted(target) {
   return Boolean(Number(rows[0]?.muted));
 }
 
+// Cárcel (como /jail del juego): el gamemode la aplica al momento si está conectado o al iniciar sesión
+async function jail(target, admin, minutes, reason) {
+  return transaction(async (conn) => {
+    await queueAction(conn, target.id, "jail", minutes * 60, reason, admin.name);
+  });
+}
+
+async function unjail(target, admin) {
+  return transaction(async (conn) => {
+    await queueAction(conn, target.id, "unjail", 0, "", admin.name);
+  });
+}
+
+// state 6 = ROLEPLAY_STATE_JAIL en snrp.pwn
+async function isJailed(target) {
+  const rows = await db.query("SELECT state, police_jail_time FROM player WHERE id = ?", [target.id]);
+  return Number(rows[0]?.state) === 6;
+}
+
+// Cuentas vinculadas con lo que hay que reflejar en Discord (src/handlers/functions/sampSync.js)
+async function getSyncRows() {
+  return db.query(
+    `SELECT l.player_id, l.discord_id, p.name, p.vip, (p.vip > 0 AND p.vip_expire_date > NOW()) AS vip_on,
+            p.mute, UNIX_TIMESTAMP() AS now
+     FROM discord_links l JOIN player p ON p.id = l.player_id`,
+  );
+}
+
+// Baneo activo más reciente de cada cuenta vinculada: id, fin (0 = permanente)
+async function getLinkedBans() {
+  const rows = await db.query(
+    `SELECT l.player_id, l.discord_id, b.id AS ban_id, UNIX_TIMESTAMP(b.expire_date) AS expire_ts
+     FROM discord_links l JOIN player p ON p.id = l.player_id JOIN bans b ON b.name = p.name
+     ORDER BY b.id DESC`,
+  );
+  const now = Date.now() / 1000;
+  const out = new Map();
+  for (const r of rows) {
+    if (out.has(r.player_id)) continue;
+    const exp = Number(r.expire_ts) || 0;
+    if (exp && exp <= now) continue;
+    out.set(r.player_id, { discordId: r.discord_id, banId: Number(r.ban_id), expires: exp });
+  }
+  return out;
+}
+
+async function getMaxBanId() {
+  const rows = await db.query("SELECT COALESCE(MAX(id), 0) AS m FROM bans");
+  return Number(rows[0].m);
+}
+
 module.exports = {
   ADMIN_LEVELS,
   REQUIRED_LEVEL,
@@ -285,9 +363,17 @@ module.exports = {
   getOnlinePlayers,
   getTop,
   getRichest,
+  getWeeklyTime,
+  getAchievementTop,
   getActiveBan,
   ban,
   unban,
   setMute,
+  jail,
+  unjail,
+  isJailed,
+  getSyncRows,
+  getLinkedBans,
+  getMaxBanId,
   isMuted,
 };
