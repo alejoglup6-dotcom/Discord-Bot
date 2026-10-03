@@ -8,8 +8,8 @@ const db = require("./mysql");
 // Igual que ADMIN_LEVELS y el enum TYPE_* de snrp.pwn
 const ADMIN_LEVELS = ["Ciudadano", "Ayudante", "Moderador", "Operador", "Administrador", "Desarrollador"];
 const HISTORY = { WARNING: 0, KICK: 1, BAN: 2, TEMP_BAN: 3, UNBAN: 4 };
-// Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, tban/unban, ban)
-const REQUIRED_LEVEL = { mute: 1, unmute: 1, tempban: 3, unban: 3, ban: 4 };
+// Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, jail/unjail, tban/unban, ban)
+const REQUIRED_LEVEL = { mute: 1, unmute: 1, jail: 2, unjail: 2, tempban: 3, unban: 3, ban: 4 };
 const LINK_CODE_MINUTES = 10;
 
 let available = null;
@@ -295,6 +295,57 @@ async function isMuted(target) {
   return Boolean(Number(rows[0]?.muted));
 }
 
+// Cárcel (como /jail del juego): el gamemode la aplica al momento si está conectado o al iniciar sesión
+async function jail(target, admin, minutes, reason) {
+  return transaction(async (conn) => {
+    await queueAction(conn, target.id, "jail", minutes * 60, reason, admin.name);
+  });
+}
+
+async function unjail(target, admin) {
+  return transaction(async (conn) => {
+    await queueAction(conn, target.id, "unjail", 0, "", admin.name);
+  });
+}
+
+// state 6 = ROLEPLAY_STATE_JAIL en snrp.pwn
+async function isJailed(target) {
+  const rows = await db.query("SELECT state, police_jail_time FROM player WHERE id = ?", [target.id]);
+  return Number(rows[0]?.state) === 6;
+}
+
+// Cuentas vinculadas con lo que hay que reflejar en Discord (src/handlers/functions/sampSync.js)
+async function getSyncRows() {
+  return db.query(
+    `SELECT l.player_id, l.discord_id, p.name, p.vip, (p.vip > 0 AND p.vip_expire_date > NOW()) AS vip_on,
+            p.mute, UNIX_TIMESTAMP() AS now
+     FROM discord_links l JOIN player p ON p.id = l.player_id`,
+  );
+}
+
+// Baneo activo más reciente de cada cuenta vinculada: id, fin (0 = permanente)
+async function getLinkedBans() {
+  const rows = await db.query(
+    `SELECT l.player_id, l.discord_id, b.id AS ban_id, UNIX_TIMESTAMP(b.expire_date) AS expire_ts
+     FROM discord_links l JOIN player p ON p.id = l.player_id JOIN bans b ON b.name = p.name
+     ORDER BY b.id DESC`,
+  );
+  const now = Date.now() / 1000;
+  const out = new Map();
+  for (const r of rows) {
+    if (out.has(r.player_id)) continue;
+    const exp = Number(r.expire_ts) || 0;
+    if (exp && exp <= now) continue;
+    out.set(r.player_id, { discordId: r.discord_id, banId: Number(r.ban_id), expires: exp });
+  }
+  return out;
+}
+
+async function getMaxBanId() {
+  const rows = await db.query("SELECT COALESCE(MAX(id), 0) AS m FROM bans");
+  return Number(rows[0].m);
+}
+
 module.exports = {
   ADMIN_LEVELS,
   REQUIRED_LEVEL,
@@ -318,5 +369,11 @@ module.exports = {
   ban,
   unban,
   setMute,
+  jail,
+  unjail,
+  isJailed,
+  getSyncRows,
+  getLinkedBans,
+  getMaxBanId,
   isMuted,
 };
