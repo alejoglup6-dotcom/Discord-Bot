@@ -1,5 +1,5 @@
 /*
- * Moneda CityCoins e imágenes de paquetes para Tebex (100 / 500 / 1000). Salida: branding/historial.
+ * Moneda CityCoins e imágenes de paquetes (100 / 500 / 1000). Salida: branding/historial.
  * Uso (desde la raíz del repo): node branding/scripts/citycoins.js
  */
 const path = require("path");
