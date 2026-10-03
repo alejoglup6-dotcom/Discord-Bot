@@ -89,6 +89,12 @@ neón/synthwave, monogramas. Errores típicos: demasiado detalle para 32-48 px, 
 composición de Rockstar, poco contraste. Pricedown (Ray Larabie) es gratis para logos en imagen, pero no se usa
 para no parecer un clon de GTA.
 
+- `marca/actualizacion-3oct/`: piezas de la actualización del 3-oct-2026 al estilo de las portadas de GTA San Andreas
+  (viñetas con borde negro grueso, color cálido, contornos entintados y trama en las sombras): `portada`, `trabajos`,
+  `facciones`, `cartel` y `gracias` (créditos a la comunidad). Las escenas son renders reales del juego hechos con
+  `tools/render` del repo Backup (ahora también dibuja vehículos: `CreateVehicle(modelo, x, y, z, ángulo, c1, c2)`),
+  y `scripts/actualizacion.js` las "pinta" y las monta con el logo 3D.
+
 ## Regenerar
 
 ```
@@ -96,6 +102,7 @@ node branding/scripts/marca.js       # todo branding/marca
 node branding/scripts/beta.js        # banner de la fase beta
 node branding/scripts/beta-tester.js # banner del canal de beta testers
 node branding/scripts/citycoins.js   # moneda y paquetes CityCoins en branding/historial
+node branding/scripts/actualizacion.js <renders>       # piezas de la actualización (ver cabecera del script)
 node --expose-gc branding/scripts/shorts.js <material>   # shorts verticales para TikTok en branding/shorts (ver cabecera)
 ```
 
