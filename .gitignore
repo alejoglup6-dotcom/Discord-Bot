@@ -104,3 +104,5 @@ dist
 
 src/config/*
 branding/shorts/
+
+docs/permisos/*.html
