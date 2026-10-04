@@ -162,7 +162,10 @@ async function orderRoles(guild, dry, log) {
   log.push(`ordenar roles por jerarquía (${moved.length} se mueven: ${moved.slice(0, 8).join(", ")}${moved.length > 8 ? "..." : ""})`);
   if (dry) return;
   const role = (n) => (n.startsWith("\u0000") ? guild.roles.cache.get(n.slice(1)) : byName.get(n));
-  const positions = next.map((n, i) => ({ role: role(n), position: next.length - i }));
+  // con roles recien creados hay posiciones repetidas y next.length puede pasar del rol del bot: se cuenta desde debajo
+  // de el (Discord renumera solo al guardar)
+  const start = Math.min(next.length, Number.isFinite(top) ? top - 1 : next.length);
+  const positions = next.map((n, i) => ({ role: role(n), position: Math.max(1, start - i) }));
   await guild.roles
     .setPositions(positions)
     .catch(() => guild.roles.setPositions(positions.filter((p) => p.role.editable && !p.role.managed)))
