@@ -48,89 +48,106 @@ Hoy el juego tiene 6 niveles (0–5) y Discord tiene 8 roles de mando. Escala un
 
 ## 2. Facciones
 
-En cada facción, todos llevan el **rol de la facción** y, además, el de **su rango**. El rango más alto es el jefe.
+Rangos y vehículos definidos por el dueño (04/10/2026). En cada facción todos llevan el **rol de la facción** y, además,
+el de **su rango**; el rango más alto es el jefe. Entre paréntesis, el número de modelo del vehículo en GTA SA.
 
-### Policía (juego: SAPD, `FACTIONS_SAPD`)
+> Supuse que **cada rango puede usar también los vehículos de los rangos de abajo** (por eso el jefe tiene «todos los
+> anteriores»). Si no es así, cada rango usa solo los suyos.
 
-| Rango | Juego | Discord | Qué hay que hacer |
+### Policía (juego: SAPD, `FACTIONS_SAPD`) · color: el de policía de siempre
+
+| Rango | Juego | Discord | Vehículos |
 |---|---|---|---|
 | Facción | ✅ SAPD | ✅ 👮 POLICIA | — |
-| 1 | ✅ Cadete | 🆕 Cadete (Policía) | Crear el rol |
-| 2 | ✅ Oficial I | 🆕 Oficial I | Crear el rol |
-| 3 | ✅ Oficial II | 🆕 Oficial II | Crear el rol |
-| 4 | ✅ Oficial III | 🆕 Oficial III | Crear el rol |
-| 5 | ✅ Detective I | 🆕 Detective I | Crear el rol |
-| 6 | ✅ Detective II | 🆕 Detective II | Crear el rol |
-| 7 | ✅ Sargento | 🆕 Sargento (Policía) | Crear el rol |
-| 8 | ✅ Capitán | 🆕 Capitán (Policía) | Crear el rol |
-| 9 (jefe) | ✏️ Jefe Policía | ✏️ 👮 COMISARIO | Unificar como **Comisario** |
+| 1 | ✅ Cadete | 🆕 Cadete (Policía) | HPV1000 (523) |
+| 2 | ✅ Oficial I | 🆕 Oficial I (Policía) | Unidades LS (596), SF (597) y LV (598) |
+| 3 | ✅ Oficial II | 🆕 Oficial II (Policía) | Unidades LS, SF y LV |
+| 4 | ✅ Oficial III | 🆕 Oficial III (Policía) | Unidades LS, SF y LV |
+| 5 | 🆕 Oficial Mayor | 🆕 Oficial Mayor | Merit (551) |
+| 6 | ✏️ Detective (antes Detective I y II) | 🆕 Detective | Premier gris (426) |
+| 7 | ✅ Sargento | 🆕 Sargento (Policía) | Police Ranger (599) |
+| 8 | 🆕 Teniente | 🆕 Teniente (Policía) | Enforcer (427) |
+| 9 | ✅ Capitán | 🆕 Capitán (Policía) | Police Maverick (497) |
+| 10 | 🆕 Comandante | 🆕 Comandante | Buffalo (402) |
+| 11 | 🆕 Subjefe | 🆕 Subjefe (Policía) | Infernus (411) |
+| 12 (jefe) | ✏️ Comisario (antes Jefe Policía) | ✅ 👮 COMISARIO | Todos los anteriores |
 
-### FBI (`FACTIONS_FBI`)
+Paso de los rangos actuales: Cadete y Oficial I–III igual · Detective I y II → Detective · Sargento igual ·
+Capitán → Capitán (9) · Jefe Policía → Comisario (12). Los permisos que hoy piden rango 8 (objetos policiales) y 9
+(callsign) pasan a Capitán (9) y Comisario (12).
 
-| Rango | Juego | Discord | Qué hay que hacer |
+### Sheriff (🆕 facción nueva en el juego: LSSD) · color: amarillo
+
+| Rango | Juego | Discord | Vehículos |
 |---|---|---|---|
-| Facción | ✅ FBI | ✅ 🕵 FBI | — |
-| 1 | ✅ Agente | 🆕 Agente | Crear el rol |
-| 2 | ✅ Agente al mando | 🆕 Agente al mando | Crear el rol |
-| 3 | ✅ Asistente | 🆕 Asistente | Crear el rol |
-| 4 | ✅ Asistente al mando | 🆕 Asistente al mando | Crear el rol |
-| 5 | ✅ Ejecutivo | 🆕 Ejecutivo | Crear el rol |
-| 6 | ✅ Sub director | 🆕 Sub director | Crear el rol |
-| 7 (jefe) | ✅ Director | ✅ 🕵 DIRECTOR | — |
+| Facción | 🆕 LSSD | ✏️ 🎖 ALGUACIL | — (hoy está por encima de SHERIFF: hay que invertirlos) |
+| 1 | 🆕 Cadete | 🆕 Cadete (Sheriff) | Sanchez (468) |
+| 2 | 🆕 Oficial I | 🆕 Oficial I (Sheriff) | Unidades LS (596), SF (597) y LV (598), en amarillo |
+| 3 | 🆕 Oficial II | 🆕 Oficial II (Sheriff) | Unidades LS, SF y LV |
+| 4 | 🆕 Oficial III | 🆕 Oficial III (Sheriff) | Unidades LS, SF y LV |
+| 5 | 🆕 Sargento | 🆕 Sargento (Sheriff) | Police Ranger (599), Predator (430) |
+| 6 | 🆕 Teniente | 🆕 Teniente (Sheriff) | Enforcer (427), Buffalo (402) |
+| 7 | 🆕 Capitán | 🆕 Capitán (Sheriff) | FBI Rancher (490) |
+| 8 | 🆕 Sub Sheriff | 🆕 Sub Sheriff | Police Maverick (497) |
+| 9 (jefe) | 🆕 Sheriff | ✅ 🎖 SHERIFF | Todos los anteriores |
 
-### Militares (juego: SAEM, `FACTIONS_SAEM`; canal: milicia)
+### Militares (juego: SAEM, `FACTIONS_SAEM`; canal: milicia) · color: verde oliva
 
-| Rango | Juego | Discord | Qué hay que hacer |
+| Rango | Juego | Discord | Vehículos |
 |---|---|---|---|
 | Facción | ✅ SAEM | ✅ 🪖 MILITAR | — |
-| 1 | ✅ Cadete | 🆕 Cadete (Militar) | Crear el rol |
-| 2 | ✅ Soldado | 🆕 Soldado | Crear el rol |
-| 3 | ✅ Cabo | 🆕 Cabo | Crear el rol |
-| 4 | ✅ Teniente | 🆕 Teniente (Militar) | Crear el rol |
-| 5 | ✅ Capitán | 🆕 Capitán (Militar) | Crear el rol |
-| 6 | ✏️ General (sub jefe) | 🆕 Coronel | En el juego pasa a llamarse **Coronel** (sub jefe) |
-| 7 (jefe) | ✏️ Coronel (jefe) | ✅ 🪖 GENERAL | En el juego pasa a llamarse **General** (jefe), igual que en Discord y como en un ejército real |
+| 1 | ✏️ Soldado (antes Cadete) | 🆕 Soldado | FCR-900 (521) |
+| 2 | ✏️ Soldado de primera (antes Soldado) | 🆕 Soldado de primera | Sabre (475) |
+| 3 | ✅ Cabo | 🆕 Cabo | Mesa (500) |
+| 4 | 🆕 Cabo Primero | 🆕 Cabo Primero | Premier (426) |
+| 5 | 🆕 Cabo Mayor | 🆕 Cabo Mayor | Huntley (579) |
+| 6 | 🆕 Sargento | 🆕 Sargento (Militar) | Patriot (470), Predator (430) |
+| 7 | 🆕 Sargento Primero | 🆕 Sargento Primero | Sultan (560) |
+| 8 | 🆕 Subteniente | 🆕 Subteniente | Enforcer (427), Barracks (433) |
+| 9 | ✅ Teniente | 🆕 Teniente (Militar) | Police Maverick (497) |
+| 10 | 🆕 Teniente Coronel | 🆕 Teniente Coronel | Rhino (432) |
+| 11 | ✅ Capitán | 🆕 Capitán (Militar) | Hunter (425) |
+| 12 (jefe) | ✏️ General del ejército (antes Coronel) | ✅ 🪖 GENERAL | Hydra (520) y todos los anteriores |
 
-### Sheriff (🆕 facción nueva en el juego: LSSD)
+Paso de los rangos actuales: Cadete → Soldado · Soldado → Soldado de primera · Cabo igual · Teniente → Teniente (9) ·
+Capitán y General (sub jefe) → Capitán (11) · Coronel (jefe) → General del ejército (12).
 
-| Rango | Juego | Discord | Qué hay que hacer |
+### FBI (`FACTIONS_FBI`) · color: negro
+
+| Rango | Juego | Discord | Vehículos |
 |---|---|---|---|
-| Facción | 🆕 LSSD | ✏️ 🎖 ALGUACIL | El rol de facción pasa a ser **ALGUACIL**; hoy está por encima de SHERIFF y hay que invertirlos |
-| 1 | 🆕 Cadete | 🆕 Cadete (Sheriff) | Crear en los dos lados |
-| 2 | 🆕 Alguacil I | 🆕 Alguacil I | Crear en los dos lados |
-| 3 | 🆕 Alguacil II | 🆕 Alguacil II | Crear en los dos lados |
-| 4 | 🆕 Sargento | 🆕 Sargento (Sheriff) | Crear en los dos lados |
-| 5 | 🆕 Teniente | 🆕 Teniente (Sheriff) | Crear en los dos lados |
-| 6 | 🆕 Sub Sheriff | 🆕 Sub Sheriff | Crear en los dos lados |
-| 7 (jefe) | 🆕 Sheriff | ✅ 🎖 SHERIFF | Crear en el juego |
+| Facción | ✅ FBI | ✅ 🕵 FBI | — |
+| 1 | 🆕 Agente aspirante | 🆕 Agente aspirante | PCJ-600 (461) |
+| 2 | ✅ Agente | 🆕 Agente | Unidad Sentinel (405) |
+| 3 | ✏️ Agente segundo (antes Agente al mando) | 🆕 Agente segundo | Unidad policial (596/597/598) |
+| 4 | ✏️ Agente mayor (antes Asistente) | 🆕 Agente mayor | Huntley (579) |
+| 5 | ✏️ Agente investigador (antes Asistente al mando) | 🆕 Agente investigador | Sultan civil negro (560) |
+| 6 | ✏️ Agente supervisor (antes Ejecutivo) | 🆕 Agente supervisor | FBI Rancher (490), Predator (430) |
+| 7 | ✅ Subdirector | 🆕 Subdirector (FBI) | Police Maverick (497) |
+| 8 (jefe) | ✅ Director | ✅ 🕵 DIRECTOR | Cheetah (415) y todos los anteriores |
+
+Paso de los rangos actuales: cada uno sube un número (Agente 1 → 2 … Director 7 → 8); el 1 nuevo es Agente aspirante.
 
 ### Gobierno (🆕 facción nueva en el juego: GOB)
 
-| Rango | Juego | Discord | Qué hay que hacer |
+| Rango | Juego | Discord | Vehículos |
 |---|---|---|---|
-| Facción | 🆕 GOB | ✅ 💼 GOBIERNO | Crear la facción en el juego |
-| 1 | 🆕 Escolta | 🆕 Escolta | Crear en los dos lados |
-| 2 | 🆕 Funcionario | 🆕 Funcionario | Crear en los dos lados |
-| 3 | 🆕 Asesor | 🆕 Asesor | Crear en los dos lados |
-| 4 | 🆕 Secretario | 🆕 Secretario | Crear en los dos lados |
-| 5 | 🆕 Ministro | 🆕 Ministro | Crear en los dos lados |
-| 6 | 🆕 Vicegobernador | 🆕 Vicegobernador | Crear en los dos lados |
-| 7 (jefe) | 🆕 Gobernador | ✅ 🏛️ GOBERNADOR | Crear en el juego |
+| Facción | 🆕 GOB | ✅ 💼 GOBIERNO | — |
+| 1 | 🆕 Abogado | 🆕 Abogado | Premier (426) |
+| 2 | 🆕 Servicio secreto | 🆕 Servicio secreto | Huntley (579), Sultan (560), FBI Rancher (490), Maverick (487) |
+| 3 (jefe) | 🆕 Gobernador | ✅ 🏛️ GOBERNADOR | Todos los anteriores (falta definir uno propio) |
 
 ### Televisión (🆕 facción nueva en el juego: CITYTV)
 
-| Rango | Juego | Discord | Qué hay que hacer |
+| Rango | Juego | Discord | Vehículos |
 |---|---|---|---|
 | Facción | 🆕 CITYTV | ✏️ 📺 SATV | Unificar como **CITYTV** (así se llaman los canales) |
-| 1 | 🆕 Becario | 🆕 Becario | Crear en los dos lados |
-| 2 | 🆕 Camarógrafo | 🆕 Camarógrafo | Crear en los dos lados |
-| 3 | 🆕 Reportero | 🆕 Reportero | Crear en los dos lados |
-| 4 | 🆕 Presentador | 🆕 Presentador | Crear en los dos lados |
-| 5 | 🆕 Productor | 🆕 Productor | Crear en los dos lados |
-| 6 | 🆕 Subdirector | 🆕 Subdirector CITYTV | Crear en los dos lados |
-| 7 (jefe) | 🆕 Director | ✏️ 🎬 DIRECTOR SATV | Unificar como **DIRECTOR CITYTV** |
+| 1 | 🆕 Camarógrafo | 🆕 Camarógrafo | Newsvan (582), News Chopper (488) |
+| 2 | 🆕 Reportero | 🆕 Reportero | Newsvan (582), News Chopper (488) |
+| 3 (jefe) | 🆕 Director de prensa | ✏️ 🎬 DIRECTOR SATV | Premier azul cielo (426). Unificar el rol como **DIRECTOR DE PRENSA** |
 
 **Todas las facciones:** Juego → Discord. Entrar, subir de rango o salir en el juego cambia los roles solos.
+Para los rangos que se renumeran hay que migrar `pfactions.level` en la misma subida del gamemode.
 
 ### Bandas (`crews` y `crew_ranks`; cada banda inventa sus rangos)
 
@@ -278,7 +295,7 @@ suman las dos cifras y se usa la misma escala en los dos lados:
 
 | Dónde | Qué se crea o cambia |
 |---|---|
-| **Discord** | 44 roles nuevos (38 de rangos de facciones, Desarrollador y 5 de logros) más uno automático por cada banda. Unificar nombres: MODERADOR GLOBAL, COMISARIO, SATV → CITYTV y ALGUACIL ↔ SHERIFF. Borrar duplicados: 💎 VIP, 📱 Android y «📢 Avisos: …». Quitar el permiso de Administrador a 🥊 BETA. |
-| **Juego** | 4 niveles de staff nuevos y migración de `admin_level`. Cargos de staff. 3 facciones nuevas (LSSD, GOB, CITYTV) con sus rangos. Renombrar 3 rangos (Jefe Policía, General y Coronel). Títulos de nivel, insignias, `/advertir`, plataforma guardada y escala de referidos. |
+| **Discord** | 47 roles nuevos (41 de rangos de facciones, Desarrollador y 5 de logros) más uno automático por cada banda. Unificar nombres: MODERADOR GLOBAL, SATV → CITYTV, DIRECTOR SATV → DIRECTOR DE PRENSA y ALGUACIL ↔ SHERIFF. Borrar duplicados: 💎 VIP, 📱 Android y «📢 Avisos: …». Quitar el permiso de Administrador a 🥊 BETA. |
+| **Juego** | 4 niveles de staff nuevos y migración de `admin_level`. Cargos de staff. 3 facciones nuevas (LSSD, GOB, CITYTV) con sus rangos, vehículos y colores. Nuevos rangos de Policía (12), Militares (12) y FBI (8), con migración de `pfactions.level` y vehículos por rango. Títulos de nivel, insignias, `/advertir`, plataforma guardada y escala de referidos. |
 | **Bot** | Sincronización: al vincular, cuando el juego avisa de un cambio (`discord_actions`) y cada pocos minutos. Crea los roles que falten y no toca los roles «solo Discord». |
 | **Web** | Muestra los mismos nombres en el perfil, en Staff y en el Resumen. |
