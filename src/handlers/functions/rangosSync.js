@@ -311,7 +311,13 @@ module.exports = (client) => {
         await rangos.init();
         const r = await rangos.initQueue();
         queueReady = true;
-        if (!r.ok) console.log(`[rangos] sin triggers (${r.error}): solo la vuelta completa cada ${parseInt(process.env.RANGOS_SYNC_MINUTES) || 10} min`);
+        const min = parseInt(process.env.RANGOS_SYNC_MINUTES) || 10;
+        if (r.ok) console.log(`[rangos] al momento: cola de cambios activa (${r.triggers} triggers)`);
+        else
+          console.log(
+            `[rangos] al momento: cola de cambios activa (los cambios del juego llegan en segundos). Sin triggers (${r.error}): ` +
+              `lo que se cambie a mano en la base de datos llega en la vuelta completa (cada ${min} min)`,
+          );
       }
       const ids = await rangos.takeQueue();
       if (!ids.length) return;
