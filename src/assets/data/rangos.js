@@ -141,7 +141,7 @@ const REF_TIERS = [
 // Logros con rango: ach_id en player_achievements (índice de LOGROS en logros.pwn)
 const LOGRO_RANKS = { 8: "logro_vida", 11: "logro_profesional", 14: "logro_coleccionista", 19: "logro_placa", 20: "logro_constancia" };
 // Facciones del juego (pfactions.id_faction) -> prefijo de clave
-const FACTIONS = { 1: "sapd", 2: "fbi", 3: "saem", 4: "lssd", 5: "gob", 6: "citytv" };
+const FACTIONS = { 1: "sapd", 2: "fbi", 3: "saem", 4: "lssd", 5: "citytv", 6: "gob" };
 // Staff del juego (player.admin_level) -> clave
 const STAFF = {
   1: "staff_soporte",

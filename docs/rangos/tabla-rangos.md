@@ -17,7 +17,7 @@ nombre**. Si falta en uno, se crea; si existe con otro nombre, se unifica.
 |---|---|
 | Staff 0-9 (Soporte, Encargado, Co-Fundador, Fundador) | ✅ En el juego, el bot y la web. Los niveles viejos se pasan solos al arrancar. |
 | Rangos nuevos de Policía, Militares y FBI | ✅ Con migración automática de los jugadores. |
-| Facciones nuevas LSSD, Gobierno y CITYTV | ✅ Rangos, `/reclutar`, `/miembros`, `/fservicio`, radio, `/noticia` y `/gobierno`. El LSSD de servicio tiene los poderes de la policía (`/esposar`, `/multar`, `/arrestar`, `/nivel`, `/ref`, `/equiparse`, radio central…), con su rango pasado a la escala de la SAPD. |
+| Facciones nuevas LSSD (4), CITYTV (5) y Gobierno (6) | ✅ Rangos, `/reclutar`, `/miembros`, `/fservicio`, radio, `/noticia` y `/gobierno`. El LSSD de servicio tiene los poderes de la policía (`/esposar`, `/multar`, `/arrestar`, `/nivel`, `/ref`, `/equiparse`, radio central…), con su rango pasado a la escala de la SAPD. |
 | Vehículos por rango y colores | ✅ `/garaje` en el garaje de cada facción (se mueven con `/puntosmapa`). |
 | `/rango`, chat y cabeza | ✅ |
 | Sincronización con Discord | ✅ `RANGOS_SYNC` = dry/on en el bot. |

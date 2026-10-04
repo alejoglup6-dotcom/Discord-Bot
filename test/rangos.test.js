@@ -36,8 +36,8 @@ test("staff 1-9 y facciones nuevas (LSSD, Gobierno, CITYTV)", () => {
   assert.ok(rangos.computeAuto({ ...base, admin_level: 6 }).has("staff_encargado"));
   assert.ok(rangos.computeAuto({ ...base, admin_level: 9 }).has("staff_fundador"));
   assert.ok(rangos.computeAuto(base, { id_faction: 4, level: 9 }).has("lssd_9"));
-  assert.ok(rangos.computeAuto(base, { id_faction: 5, level: 2 }).has("gob_2"));
-  assert.ok(rangos.computeAuto(base, { id_faction: 6, level: 1 }).has("citytv_1"));
+  assert.ok(rangos.computeAuto(base, { id_faction: 6, level: 2 }).has("gob_2"));
+  assert.ok(rangos.computeAuto(base, { id_faction: 5, level: 1 }).has("citytv_1"));
   assert.ok(!data.RANKS.some((r) => r.mode === "pending"));
 });
 
