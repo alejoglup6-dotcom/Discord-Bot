@@ -11,10 +11,31 @@
 - Los modelos (`src/database/models`) usan `src/database/odm.js`, compatible con mongoose: se escriben igual
   (`new db.Schema(...)`, `db.model(...)`) y cada uno es una tabla `bot_*` que se crea sola.
 - `/samp` lee las tablas del gamemode (`player`, `bans`, `bad_history`, `crews`) desde `src/database/samp.js` y
-  comparte `discord_*` con `gamemodes/src/discord_link.pwn` del repo Backup. Si cambia algo de eso, hay que
+  comparte `discord_*` con `gamemodes/src/discord_link.pwn` del repo Backup. `/whitelist` usa `whitelist` y
+  `whitelist_config` (`src/database/whitelist.js`), las mismas que `gamemodes/src/whitelist.pwn`. Si cambia algo de eso, hay que
   actualizar los dos repos.
 
 ## Diseño y marca
 - Para cualquier diseño (logos, banners, íconos, tienda, anuncios) leer primero `branding/README.md`: gustos del
   dueño (estilo GTA con volumen, nada plano, sin "roleplay", íconos en PNG), colores, tipografías y el historial.
 - Los PNG se regeneran con `node branding/scripts/marca.js` (y `branding/scripts/citycoins.js` para la moneda).
+
+## Rangos (juego <-> Discord)
+- Lista jerárquica en `src/assets/data/rangos.js`: las MISMAS claves y el mismo orden que `RANGOS` de
+  `gamemodes/src/rangos.pwn` (repo Backup). Si se cambia una, cambiar la otra. Tabla y decisiones: `docs/rangos/`.
+- `src/handlers/functions/rangosSync.js` sincroniza los roles de las cuentas vinculadas (`RANGOS_SYNC` = off/dry/on);
+  reglas en `src/database/rangos.js` (pruebas en `test/rangos.test.js`). Rangos manuales: tabla `player_ranks`.
+- Además de los rangos, la sincronización pone y quita: sanciones (🔇 MUTEADO, ⛓️ JAIL OOC, ⚠️ ADVERTENCIA 1-3),
+  plataforma y país (tabla `player_status` y `pcharacter.country`), un rol por banda (`discord_crew_roles`) e insignias
+  automáticas (`autoBadges`: Donador, Usuario Diamante, Beta tester). También hace la limpieza de `CLEANUP` de
+  `src/assets/data/rangos.js` (duplicados, permiso de 🥊 BETA, orden SHERIFF/ALGUACIL). Pruebas con un servidor de
+  Discord simulado en `test/rangosSync.test.js`. `/samp advertir` y `/samp quitaradv` = `/adv` y `/quitaradv` del juego.
+
+## Verificación, tickets y estructura del Discord
+- Verificación = cuenta del juego vinculada desde la web (`/verificar` del repo Web, `discord_links`). El bot da 👤 USUARIO
+  y pone el apodo del personaje (`src/assets/utils/verification.js`, cada 30 s); `VERIFICACION` = on/suave/off.
+- Tickets: `src/assets/utils/ticketsPro.js` (tipos y formularios en `src/assets/data/tickets.js`, datos en `ticketInfo`).
+- Estructura del servidor: `src/assets/data/serverLayout.js`, aplicada con `/reorganizar` (`src/assets/utils/serverLayout.js`);
+  textos de normas y guía en `src/assets/utils/serverMessages.js`; estilo de mensajes en `src/assets/utils/brand.js`.
+  Los nombres conservan las palabras que el bot busca (bienvenida, fortuna, invitados, alianzas...).
+- Pruebas con servidor simulado: `test/verificacionTickets.test.js` (`test/helpers/fakeGuild.js`).

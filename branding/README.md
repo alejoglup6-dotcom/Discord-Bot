@@ -15,7 +15,7 @@ Antes de diseñar algo, leer esta guía y mirar `marca/_resumen.png` y `marca/ma
 - Siempre en español.
 
 Historial de propuestas en `historial/`: v1 plana (rechazada), v2 3D con otras tipografías (`v2-presentacion.png`),
-v3 estilo GTA (`v3-*`, la elegida) y la moneda CityCoins de Tebex (`citycoin*.png`).
+v3 estilo GTA (`v3-*`, la elegida) y la moneda CityCoins (`citycoin*.png`).
 
 ## Logotipo
 
@@ -56,7 +56,11 @@ Probar siempre a 32 px (barra lateral de Discord).
 - `marca/banner-1920x1080.png` y `marca/banner-discord-960x540.png`.
 - `marca/banner-beta-1920x1080.png`: convocatoria de beta testers ("fase beta" en 3D blanco + oro, sello verde
   "ABIERTA", etiquetas con lo que se puede probar e invitación de Discord). Se genera con `scripts/beta.js`.
-- Tienda Tebex: moneda **CityCoins** **completamente dorada**, solo con las siglas **"CC" (CityCoins) en relieve** (Russo One,
+- `marca/banner-beta-tester-1920x720.png`: canal 🧪┆beta-testers (escudo dorado "BT", "beta tester" en 3D, sello
+  "CONFIDENCIAL", etiquetas obligaciones/beneficios/confidencialidad). Se genera con `scripts/beta-tester.js`.
+- `marca/banner-dinero-negro-1920x1080.png`: anuncio del sistema de dinero negro (fajos y bolsa dibujados a mano, "dinero"
+  en plata + "negro" en rojo, sello verde "NUEVO", fondo de noche con billetes). Se genera con `scripts/dinero-negro.js`.
+- Moneda **CityCoins** **completamente dorada**, solo con las siglas **"CC" (CityCoins) en relieve** (Russo One,
   mayúsculas, también doradas). Lo pidió así el dueño: nada de rosa/rojo en la moneda. Paquetes 100 / 500 / 1000
   (`marca/citycoin*.png`, `marca/citycoins-*.png`, generados en `scripts/marca.js`). La versión anterior está en `historial/`.
 - Emojis del servidor (128 px): `marca/emoji-*.png` → `:sampcity:`, `:citycoin:`, `:samp:`, `:city:`.
@@ -85,12 +89,33 @@ neón/synthwave, monogramas. Errores típicos: demasiado detalle para 32-48 px, 
 composición de Rockstar, poco contraste. Pricedown (Ray Larabie) es gratis para logos en imagen, pero no se usa
 para no parecer un clon de GTA.
 
+- `marca/actualizacion-3oct/`: piezas de la actualización del 3-oct-2026 al estilo de las portadas de GTA San Andreas
+  (viñetas con borde negro grueso, color cálido, contornos entintados y trama en las sombras): `portada`, `trabajos`,
+  `facciones`, `cartel`, `gracias` (créditos a la comunidad) y `nueva-ip` (anuncio de la IP `sv.sampcity.app:7781`,
+  `scripts/nueva-ip.js`). Las escenas son renders reales del juego hechos con
+  `tools/render` del repo Backup (ahora también dibuja vehículos: `CreateVehicle(modelo, x, y, z, ángulo, c1, c2)`),
+  y `scripts/actualizacion.js` las "pinta" y las monta con el logo 3D.
+
 ## Regenerar
 
 ```
 node branding/scripts/marca.js       # todo branding/marca
 node branding/scripts/beta.js        # banner de la fase beta
+node branding/scripts/beta-tester.js # banner del canal de beta testers
 node branding/scripts/citycoins.js   # moneda y paquetes CityCoins en branding/historial
+node branding/scripts/actualizacion.js <renders>       # piezas de la actualización (ver cabecera del script)
+node --expose-gc branding/scripts/shorts.js <material>   # shorts verticales para TikTok en branding/shorts (ver cabecera)
 ```
+
+## Shorts para TikTok / Reels (`scripts/shorts.js`)
+Videos verticales 1080x1920 de 15-20 s. Formato: gancho con texto grande en los 3 primeros segundos, un corte cada
+2-3 s (destello + zoom lento), textos de 6-8 palabras en Poppins Black con contorno negro dentro de la zona segura
+de TikTok (ni abajo del todo ni pegados a la derecha), marca pequeña arriba a la izquierda y tarjeta final con el
+logo 3D, "Android y PC", fase beta y el Discord. Van sin música: se les pone un sonido de moda al subirlos.
+El material (grabaciones, capturas y tomas de drone del repo Backup) no va al repo; `branding/shorts/` está ignorada.
+`MUESTRA=1` saca una imagen por escena para revisar el diseño sin montar el video.
+Voz: `PIPER_VOZ=<modelo.onnx>` lee el guion de cada video (`VOCES` en el script) con [Piper](https://github.com/rhasspy/piper)
+(`pip install piper-tts`; voz usada: `es_MX-claude-high` de huggingface.co/rhasspy/piper-voices). Cada escena se alarga
+hasta que quepa su frase. Los nombres van escritos como se pronuncian ("Samp Siti", "Siti Coins").
 
 Las fuentes están en `fonts/` (Google Fonts, licencia SIL OFL en `fonts/OFL.txt`; Luckiest Guy es Apache 2.0).

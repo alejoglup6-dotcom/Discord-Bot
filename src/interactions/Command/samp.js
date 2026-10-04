@@ -57,7 +57,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("tempban")
-        .setDescription("Banea una cuenta del servidor durante unos días (Operador)")
+        .setDescription("Banea una cuenta del servidor durante unos días (Moderador Global)")
         .addStringOption(nameOption)
         .addIntegerOption((option) =>
           option.setName("days").setDescription("Días de baneo").setRequired(true).setMinValue(1).setMaxValue(9999),
@@ -67,7 +67,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("unban")
-        .setDescription("Quita el baneo de una cuenta del servidor (Operador)")
+        .setDescription("Quita el baneo de una cuenta del servidor (Moderador Global)")
         .addStringOption(nameOption),
     )
     .addSubcommand((subcommand) =>
@@ -82,9 +82,47 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand
+        .setName("jail")
+        .setDescription("Manda a la cárcel del servidor a un jugador (Moderador)")
+        .addStringOption(nameOption)
+        .addIntegerOption((option) =>
+          option.setName("minutes").setDescription("Minutos de cárcel").setRequired(true).setMinValue(1).setMaxValue(1440),
+        )
+        .addStringOption((option) => option.setName("reason").setDescription("Razón").setRequired(true).setMaxLength(80)),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("unjail")
+        .setDescription("Saca de la cárcel del servidor a un jugador (Moderador)")
+        .addStringOption(nameOption),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("unmute")
         .setDescription("Quita el silencio del canal de dudas a un jugador (Ayudante)")
         .addStringOption(nameOption),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("advertir")
+        .setDescription("Advierte a un jugador; con 1, 2 o 3 lleva el rol de advertencia (Moderador)")
+        .addStringOption(nameOption)
+        .addStringOption((option) => option.setName("reason").setDescription("Razón de la advertencia").setRequired(true).setMaxLength(80)),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("quitaradv")
+        .setDescription("Quita la última advertencia de un jugador (Moderador)")
+        .addStringOption(nameOption),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("socio")
+        .setDescription("Da la membresía de Socio (anual) a una cuenta del servidor (Encargado de Staff)")
+        .addStringOption(nameOption)
+        .addIntegerOption((option) =>
+          option.setName("days").setDescription("Días de Socio (365 = un año)").setRequired(true).setMinValue(1).setMaxValue(3650),
+        ),
     ),
 
   /**

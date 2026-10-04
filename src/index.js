@@ -209,9 +209,6 @@ manager.on("shardCreate", (shard) => {
 
 manager.spawn();
 
-// Tienda Tebex: entrega las compras pendientes (solo si TEBEX_SECRET está en el .env)
-require("./tebex/queue").start(manager);
-
 // Webhooks
 const consoleLogs = new Discord.WebhookClient({
     id: webhook.consoleLogs.id,
@@ -259,7 +256,7 @@ process.on("unhandledRejection", (error) => {
 });
 
 process.on("warning", (warn) => {
-    console.warn("Warning:", warn);
+    console.warn("Warning:", warn && warn.stack ? warn.stack : String(warn));
     const embed = new Discord.EmbedBuilder()
         .setTitle(`🚨・Nueva advertencia encontrada`)
         .addFields([
@@ -275,6 +272,5 @@ process.on("warning", (warn) => {
         })
         .catch(() => {
             console.log("Error sending warning to webhook");
-            console.log(warn);
         });
 });

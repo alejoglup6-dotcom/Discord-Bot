@@ -88,28 +88,15 @@ async function run(client) {
       { $set: setup.tickets },
       { upsert: true },
     );
+    // Panel de tickets nuevo (menú de tipos, src/assets/utils/ticketsPro.js); el viejo de un botón se cambia
+    const ticketsPro = require("./ticketsPro");
     const panel = guild.channels.cache.get(setup.tickets.Channel);
     const panelMessages = await panel?.messages.fetch({ limit: 20 }).catch(() => null);
-    const hasPanel = panelMessages?.some((m) =>
-      m.components.some((row) => row.components.some((c) => c.customId === "Bot_openticket")),
-    );
-    if (panel && !hasPanel) {
-      const Discord = require("discord.js");
-      const row = new Discord.ActionRowBuilder().addComponents(
-        new Discord.ButtonBuilder()
-          .setCustomId("Bot_openticket")
-          .setLabel("Abrir ticket")
-          .setStyle(Discord.ButtonStyle.Primary)
-          .setEmoji("🎫"),
-      );
-      await client.embed(
-        {
-          title: `🎫・Soporte de ${guild.name}`,
-          desc: `¿Necesitas ayuda del staff? Pulsa el botón para abrir un ticket y te atenderemos lo antes posible.`,
-          components: [row],
-        },
-        panel,
-      );
+    const panels = panelMessages?.filter((m) => m.author.id === client.user.id && ticketsPro.isPanelMessage(m));
+    const hasNew = panels?.some((m) => m.components.some((row) => row.components.some((c) => c.customId === "Bot_ticketType")));
+    if (panel && !hasNew) {
+      for (const m of panels?.values() || []) await m.delete().catch(() => {});
+      await panel.send(ticketsPro.panel(guild)).catch(() => {});
     }
     if (hadTickets) log("Tickets actualizados");
 

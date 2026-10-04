@@ -86,6 +86,12 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand.setName("unclaim").setDescription("Libera un ticket reclamado"),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("stats")
+        .setDescription("Estadísticas de los tickets: tipos, valoración y quién atiende más (staff)")
+        .addIntegerOption((o) => o.setName("days").setDescription("Días hacia atrás (30 por defecto)").setMinValue(1).setMaxValue(365)),
     ),
   /**
    * @param {Client} client

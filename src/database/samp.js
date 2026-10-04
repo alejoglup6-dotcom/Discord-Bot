@@ -4,12 +4,26 @@
  */
 const crypto = require("crypto");
 const db = require("./mysql");
+const { WARN_DAYS } = require("../assets/data/rangos");
 
 // Igual que ADMIN_LEVELS y el enum TYPE_* de snrp.pwn
-const ADMIN_LEVELS = ["Ciudadano", "Ayudante", "Moderador", "Operador", "Administrador", "Desarrollador"];
+const ADMIN_LEVELS = [
+  "Ciudadano",
+  "Soporte",
+  "Ayudante",
+  "Moderador",
+  "Moderador Global",
+  "Administrador",
+  "Encargado de Staff",
+  "Desarrollador",
+  "Co-Fundador",
+  "Fundador",
+];
 const HISTORY = { WARNING: 0, KICK: 1, BAN: 2, TEMP_BAN: 3, UNBAN: 4 };
-// Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, tban/unban, ban)
-const REQUIRED_LEVEL = { mute: 1, unmute: 1, tempban: 3, unban: 3, ban: 4 };
+// Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, jail/unjail, tban/unban, ban). Escala 0-9
+// desde el 04-oct-2026 (src/assets/data/rangos.js). socio: dar la membresía anual (aún no se vende).
+// advertir / quitaradv: como /adv y /quitaradv (Moderador).
+const REQUIRED_LEVEL = { mute: 2, unmute: 2, jail: 3, unjail: 3, advertir: 3, quitaradv: 3, tempban: 4, unban: 4, ban: 5, socio: 6 };
 const LINK_CODE_MINUTES = 10;
 
 let available = null;
@@ -166,6 +180,33 @@ async function getRichest(limit = 15) {
   );
 }
 
+// Ranking semanal (tabla player_week_time del gamemode, src/logros.pwn): horas activas de la semana actual.
+// La semana la cuenta el gamemode con su propia fecha; aqui se toma la mas reciente que haya.
+async function getWeeklyTime(limit = 15) {
+  const tables = await db.query("SHOW TABLES LIKE 'player_week_time'");
+  if (!tables.length) return [];
+  return db.query(
+    `SELECT p.name, w.seconds, p.connected, p.level
+     FROM player_week_time w JOIN player p ON p.id = w.player_id
+     WHERE w.week = (SELECT MAX(week) FROM player_week_time)
+     ORDER BY w.seconds DESC, p.id LIMIT ?`,
+    [limit],
+  );
+}
+
+// Los que mas logros tienen (tabla player_achievements; ach_id -1 es una marca interna, no cuenta)
+async function getAchievementTop(limit = 10) {
+  const tables = await db.query("SHOW TABLES LIKE 'player_achievements'");
+  if (!tables.length) return [];
+  return db.query(
+    `SELECT p.name, COUNT(*) AS total, p.connected
+     FROM player_achievements a JOIN player p ON p.id = a.player_id
+     WHERE a.ach_id >= 0 GROUP BY a.player_id, p.name, p.connected
+     ORDER BY total DESC, MIN(a.unlocked_at) LIMIT ?`,
+    [limit],
+  );
+}
+
 // ---------------------------------------------------------------------------------------------------------------
 // Sanciones (hacen lo mismo que AddPlayerBan, /unban y /muteard del gamemode)
 
@@ -219,6 +260,17 @@ async function queueAction(conn, playerId, action, value, reason, byName) {
   ]);
 }
 
+// Socio (membresía anual, player.vip = 3): el gamemode la aplica (discord_link.pwn, acción "socio"); los días de VIP
+// que le quedaban se suman. by_name = nombre de la cuenta, igual que las entregas de la tienda.
+async function grantSocio(target, days, admin) {
+  await db.query("INSERT INTO discord_actions (player_id, action, value, reason, by_name) VALUES (?, 'socio', ?, ?, ?)", [
+    target.id,
+    days,
+    `Socio dado por ${admin.name}`.slice(0, 128),
+    String(target.name).slice(0, 24),
+  ]);
+}
+
 async function ban(target, admin, reason, days = 0) {
   return transaction(async (conn) => {
     const historyId = await addHistory(conn, target.id, admin.id, days ? HISTORY.TEMP_BAN : HISTORY.BAN, reason);
@@ -263,12 +315,97 @@ async function setMute(target, admin, minutes, reason) {
   });
 }
 
+// Advertencias: bad_history type 0 de los últimos WARN_DAYS días (gamemodes/src/sanciones.pwn). Con 1, 2 o 3 el bot pone
+// el rol ⚠️ ADVERTENCIA 1, 2 o 3. "warn" avisa al jugador si está conectado.
+
+async function countWarnings(target, conn = null) {
+  const sql = "SELECT COUNT(*) AS n FROM bad_history WHERE id_player = ? AND type = ? AND date > DATE_SUB(NOW(), INTERVAL ? DAY)";
+  const params = [target.id, HISTORY.WARNING, WARN_DAYS];
+  const rows = conn ? (await conn.query(sql, params))[0] : await db.query(sql, params);
+  return Number(rows[0]?.n || 0);
+}
+
+async function warn(target, admin, reason) {
+  return transaction(async (conn) => {
+    await addHistory(conn, target.id, admin.id, HISTORY.WARNING, reason);
+    const n = await countWarnings(target, conn);
+    await queueAction(conn, target.id, "warn", n, reason, admin.name);
+    return n;
+  });
+}
+
+// Quita la última advertencia de las que cuentan. Devuelve las que le quedan, o -1 si no tenía.
+async function unwarn(target) {
+  return transaction(async (conn) => {
+    const [res] = await conn.query(
+      "DELETE FROM bad_history WHERE id_player = ? AND type = ? AND date > DATE_SUB(NOW(), INTERVAL ? DAY) ORDER BY date DESC LIMIT 1",
+      [target.id, HISTORY.WARNING, WARN_DAYS],
+    );
+    if (!res.affectedRows) return -1;
+    return countWarnings(target, conn);
+  });
+}
+
 async function isMuted(target) {
   const rows = await db.query("SELECT mute > UNIX_TIMESTAMP() AS muted FROM player WHERE id = ?", [target.id]);
   return Boolean(Number(rows[0]?.muted));
 }
 
+// Cárcel (como /jail del juego): el gamemode la aplica al momento si está conectado o al iniciar sesión
+async function jail(target, admin, minutes, reason) {
+  return transaction(async (conn) => {
+    await queueAction(conn, target.id, "jail", minutes * 60, reason, admin.name);
+  });
+}
+
+async function unjail(target, admin) {
+  return transaction(async (conn) => {
+    await queueAction(conn, target.id, "unjail", 0, "", admin.name);
+  });
+}
+
+// state 6 = ROLEPLAY_STATE_JAIL en snrp.pwn
+async function isJailed(target) {
+  const rows = await db.query("SELECT state, police_jail_time FROM player WHERE id = ?", [target.id]);
+  return Number(rows[0]?.state) === 6;
+}
+
+// Cuentas vinculadas con lo que hay que reflejar en Discord (src/handlers/functions/sampSync.js)
+async function getSyncRows() {
+  return db.query(
+    `SELECT l.player_id, l.discord_id, p.name, p.vip, (p.vip > 0 AND p.vip_expire_date > NOW()) AS vip_on,
+            p.mute, UNIX_TIMESTAMP() AS now
+     FROM discord_links l JOIN player p ON p.id = l.player_id`,
+  );
+}
+
+// Baneo activo más reciente de cada cuenta vinculada: id, fin (0 = permanente)
+async function getLinkedBans() {
+  const rows = await db.query(
+    `SELECT l.player_id, l.discord_id, b.id AS ban_id, UNIX_TIMESTAMP(b.expire_date) AS expire_ts
+     FROM discord_links l JOIN player p ON p.id = l.player_id JOIN bans b ON b.name = p.name
+     ORDER BY b.id DESC`,
+  );
+  const now = Date.now() / 1000;
+  const out = new Map();
+  for (const r of rows) {
+    if (out.has(r.player_id)) continue;
+    const exp = Number(r.expire_ts) || 0;
+    if (exp && exp <= now) continue;
+    out.set(r.player_id, { discordId: r.discord_id, banId: Number(r.ban_id), expires: exp });
+  }
+  return out;
+}
+
+async function getMaxBanId() {
+  const rows = await db.query("SELECT COALESCE(MAX(id), 0) AS m FROM bans");
+  return Number(rows[0].m);
+}
+
 module.exports = {
+  countWarnings,
+  warn,
+  unwarn,
   ADMIN_LEVELS,
   REQUIRED_LEVEL,
   LINK_CODE_MINUTES,
@@ -285,9 +422,18 @@ module.exports = {
   getOnlinePlayers,
   getTop,
   getRichest,
+  getWeeklyTime,
+  getAchievementTop,
   getActiveBan,
   ban,
   unban,
   setMute,
+  jail,
+  unjail,
+  isJailed,
+  getSyncRows,
+  getLinkedBans,
+  getMaxBanId,
   isMuted,
+  grantSocio,
 };

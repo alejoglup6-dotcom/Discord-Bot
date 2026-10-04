@@ -65,6 +65,7 @@ async function sendWelcome(client, member, info = {}) {
   const rules = textChannel(guild, /regla|norma|rules/);
   const inviteInfo = textChannel(guild, /recompensas invitaciones|invitacion/);
   const fortunaInfo = textChannel(guild, /info fortuna/);
+  const verifyChannel = textChannel(guild, /verifica/);
   const { inviter, invites, reward } = info;
 
   const desc = custom?.inviteJoin
@@ -73,7 +74,9 @@ async function sendWelcome(client, member, info = {}) {
 
   const steps = [
     rules ? `📜 Lee las normas en ${rules}` : null,
-    "🔗 Vincula tu cuenta del juego: `!vincular Nombre_Apellido`",
+    verifyChannel
+      ? `🔐 Verifícate con tu cuenta del juego en ${verifyChannel} (sin eso no ves el resto de canales)`
+      : `🔐 Verifícate con tu cuenta del juego en ${require("./brand").WEB()}/verificar`,
     "⌨️ Mira todo lo que puedes hacer: `!comandos`",
     fortunaInfo ? `🕴️ Juega a la Fortuna y gana premios: ${fortunaInfo}` : "🕴️ Juega a la Fortuna: `!fortuna`",
     inviteInfo ? `🎁 Invita amigos y gana recompensas: ${inviteInfo}` : null,
