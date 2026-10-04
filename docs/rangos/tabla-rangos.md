@@ -41,7 +41,7 @@ Hoy el juego tiene 6 niveles (0–5) y Discord tiene 8 roles de mando. Escala un
 | 🆕 Staff RPG | ✅ 🎮 STAFF RPG | Crear el cargo | Ambos |
 | 🆕 Staff CV | ✅ 🎙️ STAFF CV | Crear el cargo | Ambos |
 | 🆕 Organizador de eventos | ✅ 🎪 ORGANIZADOR DE EVENTOS | Crear el cargo (y permiso para `eventos.pwn`) | Ambos |
-| 🆕 Director de Contenido | 🆕 🎞️ DIRECTOR DE CONTENIDO | Crear en los dos lados. Encargado de los creadores de contenido: revisa las solicitudes y da o quita YouTuber, TikToker, Streamer y Socio | Ambos |
+| 🆕 Director de Contenido | 🆕 🎞️ DIRECTOR DE CONTENIDO | Crear en los dos lados. Encargado de los creadores de contenido: revisa las solicitudes y da o quita YouTuber, TikToker y Streamer | Ambos |
 | 🆕 Scripter | ✅ 💻 SCRIPTER | Crear el cargo | Ambos |
 | 🆕 Mapper | ✅ 🗺️ MAPPER | Crear el cargo (y permiso para `/puntosmapa`) | Ambos |
 
@@ -164,7 +164,8 @@ Para los rangos que se renumeran hay que migrar `pfactions.level` en la misma su
 
 | Juego | Discord | Qué hay que hacer | Sincroniza |
 |---|---|---|---|
-| ✅ VIP activo (`vip`, `vip_expire_date`) | ✅ 👑 VIP | Borrar el duplicado 💎 VIP; el rol se quita solo cuando vence | Juego → Discord |
+| ✅ VIP: membresía **mensual** (`vip = 1`, `vip_expire_date` + 30 días) | ✅ 👑 VIP | Borrar el duplicado 💎 VIP; el rol se quita solo cuando vence | Juego → Discord |
+| 🆕 Socio: membresía **anual**, extensión del VIP (`vip = 2`, `vip_expire_date` + 365 días) | ✅ 🥇 SOCIO | Crear en el juego: tiene todas las ventajas del VIP más las suyas propias (a definir) y su propio paquete en Tebex. Lleva **los dos roles**, 👑 VIP y 🥇 SOCIO; al vencer se pierden los dos | Juego → Discord |
 | 🆕 Donador (compró en la tienda Tebex) | ✅ 💸 DONADOR | Marcarlo en el juego al entregar una compra (`tebex_commands`) | Juego → Discord |
 | 🆕 Usuario Diamante (compras acumuladas ≥ 100 CityCoins, ajustable) | ✅ 💎 USUARIO DIAMANTE | Crear la insignia en el juego | Juego → Discord |
 | 🆕 Booster (insignia) | ✅ 🎉 CityBooster | Discord lo da solo al mejorar el servidor; el juego muestra la insignia | Discord → Juego |
@@ -222,9 +223,9 @@ el perfil de la web.
 | 🆕 YouTuber | ✅ 🔴 YOUTUBER | Ambos |
 | 🆕 TikToker | ✅ 🟣 TIKTOKER | Ambos |
 | 🆕 Streamer | ✅ 🎥 STREAMER | Ambos |
-| 🆕 Socio | ✅ 🥇 SOCIO | Ambos |
 
-Los cuatro roles de creadores los da o los quita el **🎞️ Director de Contenido** (cargo de staff, sección 1).
+Los tres roles de creadores los da o los quita el **🎞️ Director de Contenido** (cargo de staff, sección 1). 🥇 SOCIO
+no es de creadores: es la membresía anual (sección 3).
 
 ### Logros del juego (`logros.pwn`) que hoy no tienen rol
 
