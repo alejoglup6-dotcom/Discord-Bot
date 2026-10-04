@@ -51,8 +51,7 @@ Hoy el juego tiene 6 niveles (0–5) y Discord tiene 8 roles de mando. Escala un
 Rangos y vehículos definidos por el dueño (04/10/2026). En cada facción todos llevan el **rol de la facción** y, además,
 el de **su rango**; el rango más alto es el jefe. Entre paréntesis, el número de modelo del vehículo en GTA SA.
 
-> Supuse que **cada rango puede usar también los vehículos de los rangos de abajo** (por eso el jefe tiene «todos los
-> anteriores»). Si no es así, cada rango usa solo los suyos.
+> **Cada rango puede usar también los vehículos de todos los rangos de abajo** (confirmado por el dueño).
 
 ### Policía (juego: SAPD, `FACTIONS_SAPD`) · color: el de policía de siempre
 
@@ -105,12 +104,12 @@ Capitán → Capitán (9) · Jefe Policía → Comisario (12). Los permisos que 
 | 7 | 🆕 Sargento Primero | 🆕 Sargento Primero | Sultan (560) |
 | 8 | 🆕 Subteniente | 🆕 Subteniente | Enforcer (427), Barracks (433) |
 | 9 | ✅ Teniente | 🆕 Teniente (Militar) | Police Maverick (497) |
-| 10 | 🆕 Teniente Coronel | 🆕 Teniente Coronel | Rhino (432) |
-| 11 | ✅ Capitán | 🆕 Capitán (Militar) | Hunter (425) |
+| 10 | ✅ Capitán | 🆕 Capitán (Militar) | Hunter (425) |
+| 11 | 🆕 Teniente Coronel | 🆕 Teniente Coronel | Rhino (432) |
 | 12 (jefe) | ✏️ General del ejército (antes Coronel) | ✅ 🪖 GENERAL | Hydra (520) y todos los anteriores |
 
 Paso de los rangos actuales: Cadete → Soldado · Soldado → Soldado de primera · Cabo igual · Teniente → Teniente (9) ·
-Capitán y General (sub jefe) → Capitán (11) · Coronel (jefe) → General del ejército (12).
+Capitán → Capitán (10) · General (sub jefe) → Teniente Coronel (11) · Coronel (jefe) → General del ejército (12).
 
 ### FBI (`FACTIONS_FBI`) · color: negro
 
@@ -134,16 +133,17 @@ Paso de los rangos actuales: cada uno sube un número (Agente 1 → 2 … Direct
 |---|---|---|---|
 | Facción | 🆕 GOB | ✅ 💼 GOBIERNO | — |
 | 1 | 🆕 Abogado | 🆕 Abogado | Premier (426) |
-| 2 | 🆕 Servicio secreto | 🆕 Servicio secreto | Huntley (579), Sultan (560), FBI Rancher (490), Maverick (487) |
-| 3 (jefe) | 🆕 Gobernador | ✅ 🏛️ GOBERNADOR | Todos los anteriores (falta definir uno propio) |
+| 2 | 🆕 Agente del Servicio Secreto | 🆕 Servicio Secreto | Huntley (579), Sultan (560), FBI Rancher (490), Police Maverick (497) |
+| 3 | 🆕 Jefe del Servicio Secreto | 🆕 Jefe del Servicio Secreto | Los mismos que el Servicio Secreto |
+| 4 (jefe) | 🆕 Gobernador | ✅ 🏛️ GOBERNADOR | Todos los anteriores (falta definir uno propio) |
 
 ### Televisión (🆕 facción nueva en el juego: CITYTV)
 
 | Rango | Juego | Discord | Vehículos |
 |---|---|---|---|
 | Facción | 🆕 CITYTV | ✏️ 📺 SATV | Unificar como **CITYTV** (así se llaman los canales) |
-| 1 | 🆕 Camarógrafo | 🆕 Camarógrafo | Newsvan (582), News Chopper (488) |
-| 2 | 🆕 Reportero | 🆕 Reportero | Newsvan (582), News Chopper (488) |
+| 1 | 🆕 Reportero | 🆕 Reportero | Newsvan (582), News Chopper (488) |
+| 2 | 🆕 Camarógrafo | 🆕 Camarógrafo | Newsvan (582), News Chopper (488) |
 | 3 (jefe) | 🆕 Director de prensa | ✏️ 🎬 DIRECTOR SATV | Premier azul cielo (426). Unificar el rol como **DIRECTOR DE PRENSA** |
 
 **Todas las facciones:** Juego → Discord. Entrar, subir de rango o salir en el juego cambia los roles solos.
@@ -295,7 +295,7 @@ suman las dos cifras y se usa la misma escala en los dos lados:
 
 | Dónde | Qué se crea o cambia |
 |---|---|
-| **Discord** | 47 roles nuevos (41 de rangos de facciones, Desarrollador y 5 de logros) más uno automático por cada banda. Unificar nombres: MODERADOR GLOBAL, SATV → CITYTV, DIRECTOR SATV → DIRECTOR DE PRENSA y ALGUACIL ↔ SHERIFF. Borrar duplicados: 💎 VIP, 📱 Android y «📢 Avisos: …». Quitar el permiso de Administrador a 🥊 BETA. |
+| **Discord** | 48 roles nuevos (42 de rangos de facciones, Desarrollador y 5 de logros) más uno automático por cada banda. Unificar nombres: MODERADOR GLOBAL, SATV → CITYTV, DIRECTOR SATV → DIRECTOR DE PRENSA y ALGUACIL ↔ SHERIFF. Borrar duplicados: 💎 VIP, 📱 Android y «📢 Avisos: …». Quitar el permiso de Administrador a 🥊 BETA. |
 | **Juego** | 4 niveles de staff nuevos y migración de `admin_level`. Cargos de staff. 3 facciones nuevas (LSSD, GOB, CITYTV) con sus rangos, vehículos y colores. Nuevos rangos de Policía (12), Militares (12) y FBI (8), con migración de `pfactions.level` y vehículos por rango. Títulos de nivel, insignias, `/advertir`, plataforma guardada y escala de referidos. |
 | **Bot** | Sincronización: al vincular, cuando el juego avisa de un cambio (`discord_actions`) y cada pocos minutos. Crea los roles que falten y no toca los roles «solo Discord». |
 | **Web** | Muestra los mismos nombres en el perfil, en Staff y en el Resumen. |
