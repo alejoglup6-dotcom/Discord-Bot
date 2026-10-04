@@ -18,3 +18,9 @@
 - Para cualquier diseño (logos, banners, íconos, tienda, anuncios) leer primero `branding/README.md`: gustos del
   dueño (estilo GTA con volumen, nada plano, sin "roleplay", íconos en PNG), colores, tipografías y el historial.
 - Los PNG se regeneran con `node branding/scripts/marca.js` (y `branding/scripts/citycoins.js` para la moneda).
+
+## Rangos (juego <-> Discord)
+- Lista jerárquica en `src/assets/data/rangos.js`: las MISMAS claves y el mismo orden que `RANGOS` de
+  `gamemodes/src/rangos.pwn` (repo Backup). Si se cambia una, cambiar la otra. Tabla y decisiones: `docs/rangos/`.
+- `src/handlers/functions/rangosSync.js` sincroniza los roles de las cuentas vinculadas (`RANGOS_SYNC` = off/dry/on);
+  reglas en `src/database/rangos.js` (pruebas en `test/rangos.test.js`). Rangos manuales: tabla `player_ranks`.

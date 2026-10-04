@@ -6,7 +6,7 @@ const crypto = require("crypto");
 const db = require("./mysql");
 
 // Igual que ADMIN_LEVELS y el enum TYPE_* de snrp.pwn
-const ADMIN_LEVELS = ["Ciudadano", "Ayudante", "Moderador", "Operador", "Administrador", "Desarrollador"];
+const ADMIN_LEVELS = ["Ciudadano", "Ayudante", "Moderador", "Moderador Global", "Administrador", "Desarrollador"];
 const HISTORY = { WARNING: 0, KICK: 1, BAN: 2, TEMP_BAN: 3, UNBAN: 4 };
 // Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, tban/unban, ban)
 const REQUIRED_LEVEL = { mute: 1, unmute: 1, tempban: 3, unban: 3, ban: 4 };
