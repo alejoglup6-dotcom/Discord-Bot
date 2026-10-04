@@ -41,10 +41,10 @@ Plano en `src/assets/data/serverLayout.js`. Nuevo estilo: categorías `✦ NOMBR
 |---|---|---|
 | ✦ EMPIEZA AQUÍ | Todos | bienvenidas, verificacion, normas, soporte, primeros-pasos |
 | ✦ TICKETS ABIERTOS | Cada uno los suyos | (los tickets) |
-| ✦ NOVEDADES | Verificados | anuncios, actualizaciones, eventos, sorteos, alianzas, boosters |
+| ✦ NOVEDADES | Verificados | alertas, anuncios, actualizaciones, eventos, sorteos, encuestas, resultados-postulaciones, alianzas, boosters |
 | ✦ GUÍA DE LA CIUDAD | Verificados | descargas, preguntas, comandos, trabajos, bandas, habilidades, economia, citycoins, vip, socio, emojis |
-| ✦ LA CALLE | Verificados | general, off-topic, imagenes, capturas-rp, clips-rp, memes, creadores, directos, sugerencias, resenas, destacados, niveles, cumpleanos, despedidas |
-| ✦ FORTUNA E INVITACIONES | Verificados | info-fortuna, fortuna, millonarios, recompensas-invitaciones, invitados |
+| ✦ LA CALLE | Verificados | general, off-topic, imagenes, capturas-rp, clips-rp, memes, creadores, directos, tiktok, sugerencias, resenas, destacados, niveles, cumpleanos, despedidas |
+| ✦ FORTUNA Y RANKINGS | Verificados | info-fortuna, fortuna, millonarios, ranking-semanal, logros, recompensas-invitaciones, invitados |
 | ✦ MINIJUEGOS | Verificados | contar, adivina-el-numero, adivina-la-palabra, serpiente-de-palabras, minijuegos |
 | ✦ FACCIONES | Verificados | policia, sheriff, fbi, militar, gobierno, citytv, banda |
 

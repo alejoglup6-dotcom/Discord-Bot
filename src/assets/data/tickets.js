@@ -64,7 +64,7 @@ const TYPES = [
     desc: "Compras que no llegaron, pagos y membresías",
     minStaff: 5,
     fields: [
-      { id: "compra", label: "ID de la compra (correo de Tebex)", style: "short", max: 60, required: false },
+      { id: "compra", label: "Comprobante o ID de la compra", style: "short", max: 60, required: false },
       { id: "problema", label: "¿Qué compraste y qué pasó?", style: "long", max: 800 },
     ],
   },

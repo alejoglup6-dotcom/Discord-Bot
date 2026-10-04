@@ -1,10 +1,11 @@
 /*
- * Mensajes de información que publica el bot: recompensas por invitación y la Fortuna.
+ * Mensajes de información que publica el bot: recompensas por invitación, la Fortuna y los logros del juego.
  * Se usaron para 🎁┆recompensas-invitaciones y 💰┆info-fortuna; sirven para volver a publicarlos si cambian
  * los premios o el catálogo.
  */
 const catalog = require("../data/fortuna");
 const inviteConfig = require("../data/invites");
+const logros = require("../data/logros");
 
 function base(client, title, color) {
   const e = client.templateEmbed().setTitle(title);
@@ -114,4 +115,31 @@ function fortunaEmbeds(client, guild, magnate, saved) {
   ];
 }
 
-module.exports = { inviteEmbeds, fortunaEmbeds };
+// 🎖️┆logros: todos los logros del servidor de juego (/logros), con su premio y sus puntos
+function logrosEmbeds(client, guild, channels = {}) {
+  const m = (n) => "$" + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "."); // $2.000 (es-ES no pone punto a 4 cifras)
+  const all = logros.GROUPS.flatMap((g) => g.items);
+  const totalMoney = all.reduce((a, l) => a + l[2], 0);
+  const intro = base(client, `🎖️・Logros de ${guild.name}`, "#e2c063").setDescription(
+    `Mientras juegas vas consiguiendo **logros**. Cada uno se cobra **una sola vez** y da **dinero del juego** al momento.\n\n` +
+      `📋 En el juego: **/logros** muestra tu progreso (por ejemplo 12/25 horas).\n` +
+      `📢 Los marcados con 📢 se anuncian a todo el servidor cuando alguien los consigue.\n` +
+      `🏆 Los que más logros tienen salen en ${channels.ranking || "el ranking semanal"}.\n\n` +
+      `Hay **${all.length} logros** y en total dan **${m(totalMoney)}**.`,
+  );
+  const list = base(client, "📜・Lista de logros", "#e2c063");
+  for (const g of logros.GROUPS) {
+    list.addFields({
+      name: g.title,
+      value: g.items.map(([name, desc, prize, , loud]) => `${loud ? "📢 " : ""}**${name}** · ${desc} → **${m(prize)}**`).join("\n"),
+    });
+  }
+  const note = base(client, "ℹ️・Cómo funcionan", "#95a5a6").setDescription(
+    `• El progreso se revisa solo cada minuto: no hay que hacer nada para cobrar.\n` +
+      `• Los logros que ya cumplías cuando llegó el sistema quedaron **marcados sin dinero**; los nuevos sí pagan.\n` +
+      `• El dinero es del **juego** (efectivo), no de la Fortuna del Discord.`,
+  );
+  return [intro, list, note];
+}
+
+module.exports = { inviteEmbeds, fortunaEmbeds, logrosEmbeds };

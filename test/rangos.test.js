@@ -191,7 +191,10 @@ test("insignias automáticas: Donador, Diamante y Beta tester", async (t) => {
   if (!(await samp.isAvailable())) return t.skip("sin base de datos del servidor");
   const db = require("../src/database/mysql");
   await rangos.init();
-  await require("../src/database/tebex").init();
+  // la tienda Tebex se quitó (03-oct-2026); la tabla puede quedar de compras viejas: se crea aquí para la prueba
+  await db.query(`CREATE TABLE IF NOT EXISTS tebex_commands (command_id BIGINT NOT NULL, payment_id BIGINT NOT NULL DEFAULT 0,
+    command VARCHAR(255) NOT NULL DEFAULT '', username VARCHAR(64) NOT NULL DEFAULT '', player_id INT NULL, action VARCHAR(16) NOT NULL DEFAULT '',
+    value INT NOT NULL DEFAULT 0, status VARCHAR(16) NOT NULL, created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (command_id))`);
   const [p] = await db.query("SELECT id, DATE(reg_date) AS d FROM player WHERE reg_date > '2000-01-01' ORDER BY id LIMIT 1");
   const keys = ["insignia_donador", "insignia_diamante", "insignia_betatester"];
   const had = await db.query("SELECT rank_key FROM player_ranks WHERE player_id = ? AND rank_key IN (?)", [p.id, keys]);

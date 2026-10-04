@@ -200,6 +200,8 @@ const CREW_ROLE_PREFIX = "🏴 ";
 // Insignias automáticas (se guardan en player_ranks con source 'game', así también salen en el juego):
 //  - 💸 DONADOR: alguna compra entregada de la tienda Tebex (tebex_commands).
 //  - 💎 USUARIO DIAMANTE: coins compradas en total >= DIAMANTE_COINS (RANGOS_DIAMANTE_COINS en .env para cambiarlo).
+//    La tienda Tebex se quitó el 03-oct-2026: estas dos solo salen solas de las compras viejas (si queda la tabla
+//    tebex_commands); las nuevas se dan a mano (/darrango o el rol en Discord).
 //  - 🧪 BETA TESTER: cuenta creada durante la fase beta (RANGOS_BETA_DESDE y RANGOS_BETA_HASTA en .env, AAAA-MM-DD;
 //    sin RANGOS_BETA_DESDE no se da sola).
 //  - 🏆 CAMPEÓN DE EVENTOS: la da el juego con /ganadorevento (eventos.pwn).
