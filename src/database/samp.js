@@ -6,10 +6,22 @@ const crypto = require("crypto");
 const db = require("./mysql");
 
 // Igual que ADMIN_LEVELS y el enum TYPE_* de snrp.pwn
-const ADMIN_LEVELS = ["Ciudadano", "Ayudante", "Moderador", "Moderador Global", "Administrador", "Desarrollador"];
+const ADMIN_LEVELS = [
+  "Ciudadano",
+  "Soporte",
+  "Ayudante",
+  "Moderador",
+  "Moderador Global",
+  "Administrador",
+  "Encargado de Staff",
+  "Desarrollador",
+  "Co-Fundador",
+  "Fundador",
+];
 const HISTORY = { WARNING: 0, KICK: 1, BAN: 2, TEMP_BAN: 3, UNBAN: 4 };
-// Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, tban/unban, ban)
-const REQUIRED_LEVEL = { mute: 1, unmute: 1, tempban: 3, unban: 3, ban: 4 };
+// Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, tban/unban, ban). Escala 0-9 desde el
+// 04-oct-2026 (src/assets/data/rangos.js). socio: dar la membresía anual (aún no se vende).
+const REQUIRED_LEVEL = { mute: 2, unmute: 2, tempban: 4, unban: 4, ban: 5, socio: 6 };
 const LINK_CODE_MINUTES = 10;
 
 let available = null;
@@ -219,6 +231,17 @@ async function queueAction(conn, playerId, action, value, reason, byName) {
   ]);
 }
 
+// Socio (membresía anual, player.vip = 3): el gamemode la aplica (discord_link.pwn, acción "socio"); los días de VIP
+// que le quedaban se suman. by_name = nombre de la cuenta, igual que las entregas de la tienda.
+async function grantSocio(target, days, admin) {
+  await db.query("INSERT INTO discord_actions (player_id, action, value, reason, by_name) VALUES (?, 'socio', ?, ?, ?)", [
+    target.id,
+    days,
+    `Socio dado por ${admin.name}`.slice(0, 128),
+    String(target.name).slice(0, 24),
+  ]);
+}
+
 async function ban(target, admin, reason, days = 0) {
   return transaction(async (conn) => {
     const historyId = await addHistory(conn, target.id, admin.id, days ? HISTORY.TEMP_BAN : HISTORY.BAN, reason);
@@ -290,4 +313,5 @@ module.exports = {
   unban,
   setMute,
   isMuted,
+  grantSocio,
 };

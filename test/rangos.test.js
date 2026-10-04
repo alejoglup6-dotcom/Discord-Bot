@@ -19,7 +19,7 @@ test("cada rango tiene un rol distinto y las claves de facción existen", () => 
 });
 
 test("rangos automáticos: staff, facción, banda, nivel, economía y logros", () => {
-  const k = rangos.computeAuto({ ...base, admin_level: 3, level: 22, crew: 5, crew_rank: 0, bank_account: 1, bank_money: 1500000 }, { id_faction: 1, level: 12 }, new Set([19, 2]), 1);
+  const k = rangos.computeAuto({ ...base, admin_level: 4, level: 22, crew: 5, crew_rank: 0, bank_account: 1, bank_money: 1500000 }, { id_faction: 1, level: 12 }, new Set([19, 2]), 1);
   assert.deepStrictEqual(
     [...k].sort(),
     ["banda_lider", "eco_empresario", "eco_millonario", "logro_placa", "nivel_11", "sapd_12", "staff_modglobal"].sort(),
@@ -29,6 +29,16 @@ test("rangos automáticos: staff, facción, banda, nivel, economía y logros", (
   assert.deepStrictEqual([...k2].sort(), ["banda_miembro", "nivel_1", "saem_1"].sort());
   // rango por encima del máximo -> el más alto de la facción
   assert.ok(rangos.computeAuto(base, { id_faction: 2, level: 20 }).has("fbi_8"));
+});
+
+test("staff 1-9 y facciones nuevas (LSSD, Gobierno, CITYTV)", () => {
+  assert.ok(rangos.computeAuto({ ...base, admin_level: 1 }).has("staff_soporte"));
+  assert.ok(rangos.computeAuto({ ...base, admin_level: 6 }).has("staff_encargado"));
+  assert.ok(rangos.computeAuto({ ...base, admin_level: 9 }).has("staff_fundador"));
+  assert.ok(rangos.computeAuto(base, { id_faction: 4, level: 9 }).has("lssd_9"));
+  assert.ok(rangos.computeAuto(base, { id_faction: 5, level: 2 }).has("gob_2"));
+  assert.ok(rangos.computeAuto(base, { id_faction: 6, level: 1 }).has("citytv_1"));
+  assert.ok(!data.RANKS.some((r) => r.mode === "pending"));
 });
 
 test("VIP y Socio, con vencimiento", () => {
@@ -50,9 +60,10 @@ test("plan: pone lo del juego, quita lo que ya no tiene y no toca lo pendiente n
   const member = new Set([role("staff_admin"), role("fbi_2"), data.BY_KEY.get("fbi_2").group, role("staff_fundador"), "2026", "🔔 Anuncios", role("lssd_9")]);
   const p = rangos.plan(member, state, 0);
   for (const n of [role("sapd_7"), data.BY_KEY.get("sapd_7").group, role("nivel_3"), role("staff_moderador"), data.VIP_ROLE, data.LINKED_ROLE]) assert.ok(p.add.includes(n), n);
-  for (const n of [role("staff_admin"), role("fbi_2"), data.BY_KEY.get("fbi_2").group]) assert.ok(p.remove.includes(n), n);
-  // Fundador y Sheriff (aún no existen en el juego), año y avisos: no se tocan
-  for (const n of [role("staff_fundador"), "2026", "🔔 Anuncios", role("lssd_9")]) assert.ok(!p.remove.includes(n), n);
+  // el juego manda: lo que no tiene en el juego se quita (también Fundador y Sheriff, que ya existen en el juego)
+  for (const n of [role("staff_admin"), role("fbi_2"), data.BY_KEY.get("fbi_2").group, role("staff_fundador"), role("lssd_9")]) assert.ok(p.remove.includes(n), n);
+  // año y avisos: no se tocan
+  for (const n of ["2026", "🔔 Anuncios"]) assert.ok(!p.remove.includes(n), n);
   assert.ok(!p.add.includes(data.SOCIO_ROLE));
 });
 
@@ -91,5 +102,22 @@ test("linkedStates contra la base de datos de prueba", async (t) => {
     await db.query("DELETE FROM player_ranks WHERE player_id = ? AND rank_key = 'insignia_artista' AND source = 'game'", [p.id]);
     await db.query("DELETE FROM discord_links WHERE player_id = ?", [p.id]);
     for (const r of before) await db.query("INSERT INTO discord_links (player_id, discord_id, linked_at) VALUES (?, ?, ?)", [r.player_id, r.discord_id, r.linked_at]);
+  }
+});
+
+test("Socio: deja la acción para el gamemode", async (t) => {
+  const samp = require("../src/database/samp");
+  if (!(await samp.isAvailable())) return t.skip("sin base de datos del servidor");
+  const db = require("../src/database/mysql");
+  const [p] = await db.query("SELECT id, name FROM player ORDER BY id LIMIT 1");
+  await samp.grantSocio(p, 365, { name: "Prueba_Staff" });
+  const [row] = await db.query("SELECT * FROM discord_actions WHERE player_id = ? AND action = 'socio' ORDER BY id DESC LIMIT 1", [p.id]);
+  try {
+    assert.ok(row, "hay acción");
+    assert.strictEqual(Number(row.value), 365);
+    assert.strictEqual(row.by_name, p.name);
+    assert.strictEqual(Number(row.done), 0);
+  } finally {
+    if (row) await db.query("DELETE FROM discord_actions WHERE id = ?", [row.id]);
   }
 });

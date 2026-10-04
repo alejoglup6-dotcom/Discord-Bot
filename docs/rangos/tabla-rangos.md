@@ -11,6 +11,19 @@ nombre**. Si falta en uno, se crea; si existe con otro nombre, se unifica.
 - **Discord → Juego:** el staff da el rol en Discord y el juego lo muestra (insignia, etiqueta o permiso).
 - **Ambos:** se puede dar en cualquiera de los dos lados y se copia al otro.
 
+## Estado (04/10/2026)
+
+| Parte | Estado |
+|---|---|
+| Staff 0-9 (Soporte, Encargado, Co-Fundador, Fundador) | ✅ En el juego, el bot y la web. Los niveles viejos se pasan solos al arrancar. |
+| Rangos nuevos de Policía, Militares y FBI | ✅ Con migración automática de los jugadores. |
+| Facciones nuevas LSSD, Gobierno y CITYTV | ✅ Rangos, `/reclutar`, `/miembros`, `/fservicio`, radio, `/noticia` y `/gobierno`. Poderes de policía del LSSD: pendiente. |
+| Vehículos por rango y colores | ✅ `/garaje` en el garaje de cada facción (se mueven con `/puntosmapa`). |
+| `/rango`, chat y cabeza | ✅ |
+| Sincronización con Discord | ✅ `RANGOS_SYNC` = dry/on en el bot. |
+| Socio | ✅ El staff lo da con `/samp socio` o `/setvip <id> 3 <días>`. Venta pública y ventajas propias: aún no. |
+| Sanciones, plataforma y país (secciones 8 y 9) | Pendiente. |
+
 ---
 
 ## 1. Dirección y staff (`player.admin_level`)

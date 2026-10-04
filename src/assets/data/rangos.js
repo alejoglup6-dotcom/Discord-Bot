@@ -7,20 +7,20 @@
  *  - "auto":    sale de los datos del juego; el bot pone o quita el rol a las cuentas vinculadas.
  *  - "manual":  se da a mano (en el juego con /darrango o en Discord con el rol); se copia al otro lado (player_ranks).
  *  - "ref":     escalón de invitados (invitaciones de Discord + referidos del juego); el bot solo lo agrega.
- *  - "pending": aún no existe en el juego (nivel de staff o facción por crear): el bot no lo toca.
+ *  - "pending": aún no existe en el juego: el bot no lo toca (hoy no queda ninguno).
  * role: nombre exacto del rol en Discord; color: solo para los roles que el bot tiene que crear.
  * group: rol que se da además (el de la facción o el de miembro de banda).
  */
 const RANKS = [
-  { key: "staff_fundador", role: "🔱 FUNDADOR", cat: "staff", mode: "pending", color: "#f1c40f" },
-  { key: "staff_cofundador", role: "⚜️ CO-FUNDADOR", cat: "staff", mode: "pending", color: "#e67e22" },
+  { key: "staff_fundador", role: "🔱 FUNDADOR", cat: "staff", mode: "auto", color: "#f1c40f" },
+  { key: "staff_cofundador", role: "⚜️ CO-FUNDADOR", cat: "staff", mode: "auto", color: "#e67e22" },
   { key: "staff_desarrollador", role: "🛠️ DESARROLLADOR", cat: "staff", mode: "auto", color: "#ff4040" },
-  { key: "staff_encargado", role: "⭕ ENCARGADO STAFF", cat: "staff", mode: "pending", color: "#e74c3c" },
+  { key: "staff_encargado", role: "⭕ ENCARGADO STAFF", cat: "staff", mode: "auto", color: "#e74c3c" },
   { key: "staff_admin", role: "🛡️ ADMINISTRADOR", cat: "staff", mode: "auto", color: "#c0392b" },
   { key: "staff_modglobal", role: "👨‍💻 MODERADOR GLOBAL", cat: "staff", mode: "auto", color: "#9b59b6" },
   { key: "staff_moderador", role: "🧑‍💻 MODERADOR", cat: "staff", mode: "auto", color: "#8e44ad" },
   { key: "staff_ayudante", role: "🙋 AYUDANTE", cat: "staff", mode: "auto", color: "#3498db" },
-  { key: "staff_soporte", role: "🎫 SOPORTE", cat: "staff", mode: "pending", color: "#1abc9c" },
+  { key: "staff_soporte", role: "🎫 SOPORTE", cat: "staff", mode: "auto", color: "#1abc9c" },
   { key: "cargo_contenido", role: "🎞️ DIRECTOR DE CONTENIDO", cat: "cargo", mode: "manual", color: "#c2185b" },
   { key: "cargo_eventos", role: "🎪 ORGANIZADOR DE EVENTOS", cat: "cargo", mode: "manual" },
   { key: "cargo_facciones", role: "📝 EVALUADOR DE FACCIONES", cat: "cargo", mode: "manual" },
@@ -40,15 +40,15 @@ const RANKS = [
   { key: "sapd_3", role: "👮 Oficial II (Policía)", cat: "faccion", mode: "auto", color: "#3498db", group: "👮 POLICIA" },
   { key: "sapd_2", role: "👮 Oficial I (Policía)", cat: "faccion", mode: "auto", color: "#3498db", group: "👮 POLICIA" },
   { key: "sapd_1", role: "👮 Cadete (Policía)", cat: "faccion", mode: "auto", color: "#3498db", group: "👮 POLICIA" },
-  { key: "lssd_9", role: "🎖 SHERIFF", cat: "faccion", mode: "pending", group: "🎖 ALGUACIL" },
-  { key: "lssd_8", role: "🎖 Sub Sheriff", cat: "faccion", mode: "pending", color: "#f1c40f", group: "🎖 ALGUACIL" },
-  { key: "lssd_7", role: "🎖 Capitán (Sheriff)", cat: "faccion", mode: "pending", color: "#f1c40f", group: "🎖 ALGUACIL" },
-  { key: "lssd_6", role: "🎖 Teniente (Sheriff)", cat: "faccion", mode: "pending", color: "#f1c40f", group: "🎖 ALGUACIL" },
-  { key: "lssd_5", role: "🎖 Sargento (Sheriff)", cat: "faccion", mode: "pending", color: "#f1c40f", group: "🎖 ALGUACIL" },
-  { key: "lssd_4", role: "🎖 Oficial III (Sheriff)", cat: "faccion", mode: "pending", color: "#f1c40f", group: "🎖 ALGUACIL" },
-  { key: "lssd_3", role: "🎖 Oficial II (Sheriff)", cat: "faccion", mode: "pending", color: "#f1c40f", group: "🎖 ALGUACIL" },
-  { key: "lssd_2", role: "🎖 Oficial I (Sheriff)", cat: "faccion", mode: "pending", color: "#f1c40f", group: "🎖 ALGUACIL" },
-  { key: "lssd_1", role: "🎖 Cadete (Sheriff)", cat: "faccion", mode: "pending", color: "#f1c40f", group: "🎖 ALGUACIL" },
+  { key: "lssd_9", role: "🎖 SHERIFF", cat: "faccion", mode: "auto", group: "🎖 ALGUACIL" },
+  { key: "lssd_8", role: "🎖 Sub Sheriff", cat: "faccion", mode: "auto", color: "#f1c40f", group: "🎖 ALGUACIL" },
+  { key: "lssd_7", role: "🎖 Capitán (Sheriff)", cat: "faccion", mode: "auto", color: "#f1c40f", group: "🎖 ALGUACIL" },
+  { key: "lssd_6", role: "🎖 Teniente (Sheriff)", cat: "faccion", mode: "auto", color: "#f1c40f", group: "🎖 ALGUACIL" },
+  { key: "lssd_5", role: "🎖 Sargento (Sheriff)", cat: "faccion", mode: "auto", color: "#f1c40f", group: "🎖 ALGUACIL" },
+  { key: "lssd_4", role: "🎖 Oficial III (Sheriff)", cat: "faccion", mode: "auto", color: "#f1c40f", group: "🎖 ALGUACIL" },
+  { key: "lssd_3", role: "🎖 Oficial II (Sheriff)", cat: "faccion", mode: "auto", color: "#f1c40f", group: "🎖 ALGUACIL" },
+  { key: "lssd_2", role: "🎖 Oficial I (Sheriff)", cat: "faccion", mode: "auto", color: "#f1c40f", group: "🎖 ALGUACIL" },
+  { key: "lssd_1", role: "🎖 Cadete (Sheriff)", cat: "faccion", mode: "auto", color: "#f1c40f", group: "🎖 ALGUACIL" },
   { key: "saem_12", role: "🪖 GENERAL", cat: "faccion", mode: "auto", group: "🪖 MILITAR" },
   { key: "saem_11", role: "🪖 Teniente Coronel", cat: "faccion", mode: "auto", color: "#6b8e23", group: "🪖 MILITAR" },
   { key: "saem_10", role: "🪖 Capitán (Militar)", cat: "faccion", mode: "auto", color: "#6b8e23", group: "🪖 MILITAR" },
@@ -69,13 +69,13 @@ const RANKS = [
   { key: "fbi_3", role: "🕵 Agente segundo", cat: "faccion", mode: "auto", color: "#2c2f33", group: "🕵 FBI" },
   { key: "fbi_2", role: "🕵 Agente", cat: "faccion", mode: "auto", color: "#2c2f33", group: "🕵 FBI" },
   { key: "fbi_1", role: "🕵 Agente aspirante", cat: "faccion", mode: "auto", color: "#2c2f33", group: "🕵 FBI" },
-  { key: "gob_4", role: "🏛️ GOBERNADOR", cat: "faccion", mode: "pending", group: "💼 GOBIERNO" },
-  { key: "gob_3", role: "💼 Jefe del Servicio Secreto", cat: "faccion", mode: "pending", color: "#607d8b", group: "💼 GOBIERNO" },
-  { key: "gob_2", role: "💼 Servicio Secreto", cat: "faccion", mode: "pending", color: "#607d8b", group: "💼 GOBIERNO" },
-  { key: "gob_1", role: "💼 Abogado", cat: "faccion", mode: "pending", color: "#607d8b", group: "💼 GOBIERNO" },
-  { key: "citytv_3", role: "🎬 DIRECTOR DE PRENSA", cat: "faccion", mode: "pending", group: "📺 CITYTV" },
-  { key: "citytv_2", role: "📺 Camarógrafo", cat: "faccion", mode: "pending", color: "#87ceeb", group: "📺 CITYTV" },
-  { key: "citytv_1", role: "📺 Reportero", cat: "faccion", mode: "pending", color: "#87ceeb", group: "📺 CITYTV" },
+  { key: "gob_4", role: "🏛️ GOBERNADOR", cat: "faccion", mode: "auto", group: "💼 GOBIERNO" },
+  { key: "gob_3", role: "💼 Jefe del Servicio Secreto", cat: "faccion", mode: "auto", color: "#607d8b", group: "💼 GOBIERNO" },
+  { key: "gob_2", role: "💼 Servicio Secreto", cat: "faccion", mode: "auto", color: "#607d8b", group: "💼 GOBIERNO" },
+  { key: "gob_1", role: "💼 Abogado", cat: "faccion", mode: "auto", color: "#607d8b", group: "💼 GOBIERNO" },
+  { key: "citytv_3", role: "🎬 DIRECTOR DE PRENSA", cat: "faccion", mode: "auto", group: "📺 CITYTV" },
+  { key: "citytv_2", role: "📺 Camarógrafo", cat: "faccion", mode: "auto", color: "#87ceeb", group: "📺 CITYTV" },
+  { key: "citytv_1", role: "📺 Reportero", cat: "faccion", mode: "auto", color: "#87ceeb", group: "📺 CITYTV" },
   { key: "banda_lider", role: "🏴‍☠️ LIDER", cat: "banda", mode: "auto", group: "💀 MIEMBRO DE BANDA" },
   { key: "banda_miembro", role: "💀 MIEMBRO DE BANDA", cat: "banda", mode: "auto" },
   { key: "creador_streamer", role: "🎥 STREAMER", cat: "creador", mode: "manual" },
@@ -141,9 +141,19 @@ const REF_TIERS = [
 // Logros con rango: ach_id en player_achievements (índice de LOGROS en logros.pwn)
 const LOGRO_RANKS = { 8: "logro_vida", 11: "logro_profesional", 14: "logro_coleccionista", 19: "logro_placa", 20: "logro_constancia" };
 // Facciones del juego (pfactions.id_faction) -> prefijo de clave
-const FACTIONS = { 1: "sapd", 2: "fbi", 3: "saem" };
+const FACTIONS = { 1: "sapd", 2: "fbi", 3: "saem", 4: "lssd", 5: "gob", 6: "citytv" };
 // Staff del juego (player.admin_level) -> clave
-const STAFF = { 1: "staff_ayudante", 2: "staff_moderador", 3: "staff_modglobal", 4: "staff_admin", 5: "staff_desarrollador" };
+const STAFF = {
+  1: "staff_soporte",
+  2: "staff_ayudante",
+  3: "staff_moderador",
+  4: "staff_modglobal",
+  5: "staff_admin",
+  6: "staff_encargado",
+  7: "staff_desarrollador",
+  8: "staff_cofundador",
+  9: "staff_fundador",
+};
 
 const BY_KEY = new Map(RANKS.map((r) => [r.key, r]));
 

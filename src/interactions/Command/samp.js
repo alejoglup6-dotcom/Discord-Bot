@@ -57,7 +57,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("tempban")
-        .setDescription("Banea una cuenta del servidor durante unos días (Operador)")
+        .setDescription("Banea una cuenta del servidor durante unos días (Moderador Global)")
         .addStringOption(nameOption)
         .addIntegerOption((option) =>
           option.setName("days").setDescription("Días de baneo").setRequired(true).setMinValue(1).setMaxValue(9999),
@@ -67,7 +67,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("unban")
-        .setDescription("Quita el baneo de una cuenta del servidor (Operador)")
+        .setDescription("Quita el baneo de una cuenta del servidor (Moderador Global)")
         .addStringOption(nameOption),
     )
     .addSubcommand((subcommand) =>
@@ -85,6 +85,15 @@ module.exports = {
         .setName("unmute")
         .setDescription("Quita el silencio del canal de dudas a un jugador (Ayudante)")
         .addStringOption(nameOption),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("socio")
+        .setDescription("Da la membresía de Socio (anual) a una cuenta del servidor (Encargado de Staff)")
+        .addStringOption(nameOption)
+        .addIntegerOption((option) =>
+          option.setName("days").setDescription("Días de Socio (365 = un año)").setRequired(true).setMinValue(1).setMaxValue(3650),
+        ),
     ),
 
   /**
