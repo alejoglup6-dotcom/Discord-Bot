@@ -41,6 +41,7 @@ Hoy el juego tiene 6 niveles (0–5) y Discord tiene 8 roles de mando. Escala un
 | 🆕 Staff RPG | ✅ 🎮 STAFF RPG | Crear el cargo | Ambos |
 | 🆕 Staff CV | ✅ 🎙️ STAFF CV | Crear el cargo | Ambos |
 | 🆕 Organizador de eventos | ✅ 🎪 ORGANIZADOR DE EVENTOS | Crear el cargo (y permiso para `eventos.pwn`) | Ambos |
+| 🆕 Director de Contenido | 🆕 🎞️ DIRECTOR DE CONTENIDO | Crear en los dos lados. Encargado de los creadores de contenido: revisa las solicitudes y da o quita YouTuber, TikToker, Streamer y Socio | Ambos |
 | 🆕 Scripter | ✅ 💻 SCRIPTER | Crear el cargo | Ambos |
 | 🆕 Mapper | ✅ 🗺️ MAPPER | Crear el cargo (y permiso para `/puntosmapa`) | Ambos |
 
@@ -223,6 +224,8 @@ el perfil de la web.
 | 🆕 Streamer | ✅ 🎥 STREAMER | Ambos |
 | 🆕 Socio | ✅ 🥇 SOCIO | Ambos |
 
+Los cuatro roles de creadores los da o los quita el **🎞️ Director de Contenido** (cargo de staff, sección 1).
+
 ### Logros del juego (`logros.pwn`) que hoy no tienen rol
 
 | Juego | Discord | Qué hay que hacer |
@@ -295,7 +298,7 @@ suman las dos cifras y se usa la misma escala en los dos lados:
 
 | Dónde | Qué se crea o cambia |
 |---|---|
-| **Discord** | 48 roles nuevos (42 de rangos de facciones, Desarrollador y 5 de logros) más uno automático por cada banda. Unificar nombres: MODERADOR GLOBAL, SATV → CITYTV, DIRECTOR SATV → DIRECTOR DE PRENSA y ALGUACIL ↔ SHERIFF. Borrar duplicados: 💎 VIP, 📱 Android y «📢 Avisos: …». Quitar el permiso de Administrador a 🥊 BETA. |
+| **Discord** | 49 roles nuevos (42 de rangos de facciones, Desarrollador, Director de Contenido y 5 de logros) más uno automático por cada banda. Unificar nombres: MODERADOR GLOBAL, SATV → CITYTV, DIRECTOR SATV → DIRECTOR DE PRENSA y ALGUACIL ↔ SHERIFF. Borrar duplicados: 💎 VIP, 📱 Android y «📢 Avisos: …». Quitar el permiso de Administrador a 🥊 BETA. |
 | **Juego** | 4 niveles de staff nuevos y migración de `admin_level`. Cargos de staff. 3 facciones nuevas (LSSD, GOB, CITYTV) con sus rangos, vehículos y colores. Nuevos rangos de Policía (12), Militares (12) y FBI (8), con migración de `pfactions.level` y vehículos por rango. Títulos de nivel, insignias, `/advertir`, plataforma guardada y escala de referidos. |
 | **Bot** | Sincronización: al vincular, cuando el juego avisa de un cambio (`discord_actions`) y cada pocos minutos. Crea los roles que falten y no toca los roles «solo Discord». |
 | **Web** | Muestra los mismos nombres en el perfil, en Staff y en el Resumen. |
