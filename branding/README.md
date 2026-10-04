@@ -96,7 +96,8 @@ para no parecer un clon de GTA.
   `tools/render` del repo Backup (ahora también dibuja vehículos: `CreateVehicle(modelo, x, y, z, ángulo, c1, c2)`),
   y `scripts/actualizacion.js` las "pinta" y las monta con el logo 3D.
 - `marca/verificacion-4oct/`: anuncio del 4-oct-2026 con el mismo estilo. `verificacion` (los 3 pasos, con capturas
-  reales de sampcity.app/verificar a 420 px de ancho) y `rangos` (escalera del staff con los colores de los roles).
+  reales de sampcity.app/verificar a 420 px de ancho), `rangos` (escalera del staff con los colores de los roles) y
+  `registro` (crear la cuenta en la web, con la captura del formulario).
   `scripts/verificacion.js <carpeta con cartel.png, facciones.png, verificar.png y verificar-login.png>`.
 
 ## Regenerar

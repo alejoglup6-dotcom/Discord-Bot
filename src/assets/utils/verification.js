@@ -82,7 +82,7 @@ function panel(guild) {
       "**1.** Pulsa **Verificarme en la web** e inicia sesión con tu `Nombre_Apellido` y tu contraseña del juego.\n" +
       "**2.** Pulsa **Vincular con Discord** y acepta (solo vemos tu usuario e ID).\n" +
       "**3.** Vuelve aquí: en menos de un minuto se abren los canales y tu apodo pasa a ser el de tu personaje.\n\n" +
-      "¿Aún no tienes cuenta? Entra al servidor y regístrate; luego vuelve a este paso.\n" +
+      "¿Aún no tienes cuenta? Créala en la misma web con **Crear cuenta** (no hace falta entrar al juego).\n" +
       "¿Algo no funciona? Abre un ticket en el canal de soporte (está justo aquí arriba).",
   });
   const row = new Discord.ActionRowBuilder().addComponents(

@@ -6,7 +6,8 @@
  * Uso: node branding/scripts/verificacion.js <carpeta> [salida]
  *   <carpeta>: renders del juego (cartel.png, facciones.png; los de tools/render del repo Backup) y capturas de
  *   https://sampcity.app/verificar a 420 px de ancho (verificar.png y verificar-login.png, con el formulario abierto).
- *   salida por defecto: branding/marca/verificacion-4oct/ (verificacion.jpg y rangos.jpg)
+ *   salida por defecto: branding/marca/verificacion-4oct/ (verificacion.jpg, rangos.jpg y, si está la captura
+ *   verificar-registro.png del formulario de Crear cuenta, registro.jpg)
  */
 const path = require("path");
 const fs = require("fs");
@@ -109,8 +110,34 @@ function discordStep(c, x, y, w, h) {
       label(c, t, x + 20, py + ph - 60, 40, "left", "#E8392F", s);
     });
     c.font = "28px PXB"; c.fillStyle = "#ffffff"; c.textAlign = "center";
-    c.fillText("¿Sin cuenta? Entra al servidor y regístrate: sv.sampcity.app:7781", W / 2, H - 40);
+    c.fillText("¿Sin cuenta? Créala en la misma web con Crear cuenta", W / 2, H - 40);
     save(cv, "verificacion");
+  }
+
+  // ---------------------------------------------------------- 3. Registro desde la web
+  if (fs.existsSync(path.join(IN, "verificar-registro.png"))) {
+    const cv = createCanvas(W, H), c = cv.getContext("2d");
+    background(c, await L("piloto.png"), "dia");
+    drawLogo(c, 250, 92, 360);
+    bigText(c, "CREA TU CUENTA EN LA WEB", W / 2 + 120, 128, 92, "#ffffff", "center");
+    c.font = "34px PXB"; c.fillStyle = "#FFC9C4"; c.textAlign = "center";
+    c.fillText("Ya no hace falta entrar al juego para registrarte · sampcity.app", W / 2 + 120, 184);
+    c.textAlign = "left";
+    const reg = await L("verificar-registro.png");
+    panel(c, reg, 140, 250, 620, 760, [0.5, 0.5, 1.05]);
+    const steps = [
+      ["CREA TU CUENTA", "sampcity.app · Crear cuenta: Nombre_Apellido, correo y contraseña"],
+      ["VINCULA TU DISCORD", "En la misma web, sin entrar al juego: se abren todos los canales"],
+      ["ENTRA AL SERVIDOR", "sv.sampcity.app:7781 · la primera vez creas tu personaje"],
+    ];
+    steps.forEach(([t, s2], i) => {
+      const y = 300 + i * 230;
+      step(c, i + 1, 900, y + 40);
+      label(c, t, 990, y, 50, "left", "#E8392F", s2);
+    });
+    c.font = "28px PXB"; c.fillStyle = "#ffffff"; c.textAlign = "center";
+    c.fillText("Con la misma cuenta entras al juego y a la web", W / 2, H - 40);
+    save(cv, "registro");
   }
 
   // ---------------------------------------------------------- 2. Rangos del juego en Discord
