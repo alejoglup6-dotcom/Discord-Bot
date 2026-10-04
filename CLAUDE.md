@@ -24,3 +24,8 @@
   `gamemodes/src/rangos.pwn` (repo Backup). Si se cambia una, cambiar la otra. Tabla y decisiones: `docs/rangos/`.
 - `src/handlers/functions/rangosSync.js` sincroniza los roles de las cuentas vinculadas (`RANGOS_SYNC` = off/dry/on);
   reglas en `src/database/rangos.js` (pruebas en `test/rangos.test.js`). Rangos manuales: tabla `player_ranks`.
+- Además de los rangos, la sincronización pone y quita: sanciones (🔇 MUTEADO, ⛓️ JAIL OOC, ⚠️ ADVERTENCIA 1-3),
+  plataforma y país (tabla `player_status` y `pcharacter.country`), un rol por banda (`discord_crew_roles`) e insignias
+  automáticas (`autoBadges`: Donador, Usuario Diamante, Beta tester). También hace la limpieza de `CLEANUP` de
+  `src/assets/data/rangos.js` (duplicados, permiso de 🥊 BETA, orden SHERIFF/ALGUACIL). Pruebas con un servidor de
+  Discord simulado en `test/rangosSync.test.js`. `/samp advertir` y `/samp quitaradv` = `/adv` y `/quitaradv` del juego.

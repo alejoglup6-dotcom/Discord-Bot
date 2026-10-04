@@ -4,6 +4,7 @@
  */
 const crypto = require("crypto");
 const db = require("./mysql");
+const { WARN_DAYS } = require("../assets/data/rangos");
 
 // Igual que ADMIN_LEVELS y el enum TYPE_* de snrp.pwn
 const ADMIN_LEVELS = [
@@ -21,7 +22,8 @@ const ADMIN_LEVELS = [
 const HISTORY = { WARNING: 0, KICK: 1, BAN: 2, TEMP_BAN: 3, UNBAN: 4 };
 // Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, tban/unban, ban). Escala 0-9 desde el
 // 04-oct-2026 (src/assets/data/rangos.js). socio: dar la membresía anual (aún no se vende).
-const REQUIRED_LEVEL = { mute: 2, unmute: 2, tempban: 4, unban: 4, ban: 5, socio: 6 };
+// advertir / quitaradv: como /adv y /quitaradv (Moderador).
+const REQUIRED_LEVEL = { mute: 2, unmute: 2, advertir: 3, quitaradv: 3, tempban: 4, unban: 4, ban: 5, socio: 6 };
 const LINK_CODE_MINUTES = 10;
 
 let available = null;
@@ -286,12 +288,46 @@ async function setMute(target, admin, minutes, reason) {
   });
 }
 
+// Advertencias: bad_history type 0 de los últimos WARN_DAYS días (gamemodes/src/sanciones.pwn). Con 1, 2 o 3 el bot pone
+// el rol ⚠️ ADVERTENCIA 1, 2 o 3. "warn" avisa al jugador si está conectado.
+
+async function countWarnings(target, conn = null) {
+  const sql = "SELECT COUNT(*) AS n FROM bad_history WHERE id_player = ? AND type = ? AND date > DATE_SUB(NOW(), INTERVAL ? DAY)";
+  const params = [target.id, HISTORY.WARNING, WARN_DAYS];
+  const rows = conn ? (await conn.query(sql, params))[0] : await db.query(sql, params);
+  return Number(rows[0]?.n || 0);
+}
+
+async function warn(target, admin, reason) {
+  return transaction(async (conn) => {
+    await addHistory(conn, target.id, admin.id, HISTORY.WARNING, reason);
+    const n = await countWarnings(target, conn);
+    await queueAction(conn, target.id, "warn", n, reason, admin.name);
+    return n;
+  });
+}
+
+// Quita la última advertencia de las que cuentan. Devuelve las que le quedan, o -1 si no tenía.
+async function unwarn(target) {
+  return transaction(async (conn) => {
+    const [res] = await conn.query(
+      "DELETE FROM bad_history WHERE id_player = ? AND type = ? AND date > DATE_SUB(NOW(), INTERVAL ? DAY) ORDER BY date DESC LIMIT 1",
+      [target.id, HISTORY.WARNING, WARN_DAYS],
+    );
+    if (!res.affectedRows) return -1;
+    return countWarnings(target, conn);
+  });
+}
+
 async function isMuted(target) {
   const rows = await db.query("SELECT mute > UNIX_TIMESTAMP() AS muted FROM player WHERE id = ?", [target.id]);
   return Boolean(Number(rows[0]?.muted));
 }
 
 module.exports = {
+  countWarnings,
+  warn,
+  unwarn,
   ADMIN_LEVELS,
   REQUIRED_LEVEL,
   LINK_CODE_MINUTES,

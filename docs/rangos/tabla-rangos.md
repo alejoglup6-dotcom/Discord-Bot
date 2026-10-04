@@ -17,12 +17,17 @@ nombre**. Si falta en uno, se crea; si existe con otro nombre, se unifica.
 |---|---|
 | Staff 0-9 (Soporte, Encargado, Co-Fundador, Fundador) | ✅ En el juego, el bot y la web. Los niveles viejos se pasan solos al arrancar. |
 | Rangos nuevos de Policía, Militares y FBI | ✅ Con migración automática de los jugadores. |
-| Facciones nuevas LSSD, Gobierno y CITYTV | ✅ Rangos, `/reclutar`, `/miembros`, `/fservicio`, radio, `/noticia` y `/gobierno`. Poderes de policía del LSSD: pendiente. |
+| Facciones nuevas LSSD, Gobierno y CITYTV | ✅ Rangos, `/reclutar`, `/miembros`, `/fservicio`, radio, `/noticia` y `/gobierno`. El LSSD de servicio tiene los poderes de la policía (`/esposar`, `/multar`, `/arrestar`, `/nivel`, `/ref`, `/equiparse`, radio central…), con su rango pasado a la escala de la SAPD. |
 | Vehículos por rango y colores | ✅ `/garaje` en el garaje de cada facción (se mueven con `/puntosmapa`). |
 | `/rango`, chat y cabeza | ✅ |
 | Sincronización con Discord | ✅ `RANGOS_SYNC` = dry/on en el bot. |
 | Socio | ✅ El staff lo da con `/samp socio` o `/setvip <id> 3 <días>`. Venta pública y ventajas propias: aún no. |
-| Sanciones, plataforma y país (secciones 8 y 9) | Pendiente. |
+| Sanciones (sección 8) | ✅ 🔇 MUTEADO (`player.mute`), ⛓️ JAIL OOC (solo `/jail` del staff, no la cárcel de la policía) y ⚠️ ADVERTENCIA 1-3: `/adv` o `/advertir` en el juego y `/samp advertir` en Discord; cuentan las de los últimos 30 días; `/quitaradv` en los dos lados. A la tercera se avisa al staff: **la sanción automática y el ban en Discord siguen sin decidir**. |
+| Plataforma y país (sección 9) | ✅ 📱 ANDROID / 💻 PC se guardan al entrar al juego. País del personaje → su rol; si el juego no tiene país o plataforma, se queda lo que eligió en Discord. |
+| Rol por banda | ✅ «🏴 Nombre» con el color de la banda; se renombra y se borra con la banda. |
+| Insignias automáticas | ✅ 💸 DONADOR (compra entregada en Tebex), 💎 USUARIO DIAMANTE (≥ 100 coins compradas, `RANGOS_DIAMANTE_COINS`), 🏆 CAMPEÓN DE EVENTOS (`/ganadorevento` en el juego) y 🧪 BETA TESTER (cuenta creada entre `RANGOS_BETA_DESDE` y `RANGOS_BETA_HASTA`: **falta poner las fechas de la fase beta**). |
+| Limpieza de Discord | ✅ La hace el bot con `RANGOS_SYNC=on`: pasa a los miembros de 📱 Android y de los 5 «📢 Avisos: …» al rol bueno y los borra, borra 💎 VIP, quita Administrador a 🥊 BETA y pone 🎖 SHERIFF encima de 🎖 ALGUACIL. Con `dry` solo lo muestra. |
+| Pendiente de decidir | Vehículo propio del Gobernador; ventajas y venta del Socio; sanción automática a la 3.ª advertencia; ban en Discord al banear en el juego. |
 
 ---
 

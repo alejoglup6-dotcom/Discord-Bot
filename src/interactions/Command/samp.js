@@ -88,6 +88,19 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand
+        .setName("advertir")
+        .setDescription("Advierte a un jugador; con 1, 2 o 3 lleva el rol de advertencia (Moderador)")
+        .addStringOption(nameOption)
+        .addStringOption((option) => option.setName("reason").setDescription("Razón de la advertencia").setRequired(true).setMaxLength(80)),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("quitaradv")
+        .setDescription("Quita la última advertencia de un jugador (Moderador)")
+        .addStringOption(nameOption),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("socio")
         .setDescription("Da la membresía de Socio (anual) a una cuenta del servidor (Encargado de Staff)")
         .addStringOption(nameOption)

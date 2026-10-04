@@ -155,6 +155,94 @@ const STAFF = {
   9: "staff_fundador",
 };
 
+// ---------------------------------------------------------------------------------------------------------------
+// Roles que no son de la jerarquía (secciones 2, 3, 8 y 9 de la tabla). El juego manda: el bot los pone y los quita.
+
+// Sanciones: muteo (player.mute), cárcel administrativa (player_status.ooc_jail) y advertencias (bad_history type 0 de
+// los últimos WARN_DAYS días, igual que SANC_WARN_DAYS de gamemodes/src/sanciones.pwn)
+const SANCTION_ROLES = { muted: "🔇 MUTEADO", oocJail: "⛓️ JAIL OOC", warnings: ["⚠️ ADVERTENCIA 1", "⚠️ ADVERTENCIA 2", "⚠️ ADVERTENCIA 3"] };
+const WARN_DAYS = 30;
+
+// Plataforma (player_status.platform, se guarda al entrar al juego). Sin dato: el bot no toca estos roles.
+const PLATFORM_ROLES = { android: "📱 ANDROID", pc: "💻 PC" };
+
+// País del personaje (pcharacter.country, CC_COUNTRIES de char_creator.pwn) -> rol. Sin país en el juego: se queda el
+// que haya elegido en Discord. 🇭🇹 Haití no está en el juego: no se toca.
+const COUNTRY_ROLES = {
+  Colombia: "🇨🇴 Colombia",
+  Argentina: "🇦🇷 Argentina",
+  Mexico: "🇲🇽 México",
+  Venezuela: "🇻🇪 Venezuela",
+  Peru: "🇵🇪 Perú",
+  Chile: "🇨🇱 Chile",
+  Ecuador: "🇪🇨 Ecuador",
+  Uruguay: "🇺🇾 Uruguay",
+  Paraguay: "🇵🇾 Paraguay",
+  Bolivia: "🇧🇴 Bolivia",
+  Espana: "🇪🇸 España",
+  "Estados Unidos": "🇺🇸 Estados Unidos",
+  "Republica Dominicana": "🇩🇴 República Dominicana",
+  Cuba: "🇨🇺 Cuba",
+  "Puerto Rico": "🇵🇷 Puerto Rico",
+  Guatemala: "🇬🇹 Guatemala",
+  Honduras: "🇭🇳 Honduras",
+  "El Salvador": "🇸🇻 El Salvador",
+  Nicaragua: "🇳🇮 Nicaragua",
+  "Costa Rica": "🇨🇷 Costa Rica",
+  Panama: "🇵🇦 Panamá",
+  Brasil: "🇧🇷 Brasil",
+  Otro: "🌍 Otro país",
+};
+
+// Un rol por banda (tabla crews): "🏴 " + nombre, con el color de la banda. Se borra si la banda desaparece.
+const CREW_ROLE_PREFIX = "🏴 ";
+
+// Insignias automáticas (se guardan en player_ranks con source 'game', así también salen en el juego):
+//  - 💸 DONADOR: alguna compra entregada de la tienda Tebex (tebex_commands).
+//  - 💎 USUARIO DIAMANTE: coins compradas en total >= DIAMANTE_COINS (RANGOS_DIAMANTE_COINS en .env para cambiarlo).
+//  - 🧪 BETA TESTER: cuenta creada durante la fase beta (RANGOS_BETA_DESDE y RANGOS_BETA_HASTA en .env, AAAA-MM-DD;
+//    sin RANGOS_BETA_DESDE no se da sola).
+//  - 🏆 CAMPEÓN DE EVENTOS: la da el juego con /ganadorevento (eventos.pwn).
+const DIAMANTE_COINS = 100;
+
+// Limpieza de una sola vez (la hace el bot con RANGOS_SYNC=on; con dry solo la muestra):
+//  merge: se pasa a los miembros al rol nuevo y se borra el viejo (duplicados).
+//  remove: se borra sin más (💎 VIP: el VIP es 👑 VIP y sale del juego).
+//  noAdmin: se le quita el permiso de Administrador.
+//  above: [rol, rol que tiene que quedar debajo].
+const CLEANUP = {
+  merge: {
+    "📱 Android": "📱 ANDROID",
+    "📢 Avisos: Anuncios": "🔔 Anuncios",
+    "🎉 Avisos: Eventos": "🔔 Eventos",
+    "🎁 Avisos: Sorteos": "🔔 Sorteos",
+    "📊 Avisos: Encuestas": "🔔 Encuestas",
+    "🔄 Avisos: Actualizaciones": "🔔 Actualizaciones",
+  },
+  remove: ["💎 VIP"],
+  noAdmin: ["🥊 BETA"],
+  above: [["🎖 SHERIFF", "🎖 ALGUACIL"]],
+};
+
 const BY_KEY = new Map(RANKS.map((r) => [r.key, r]));
 
-module.exports = { RANKS, BY_KEY, VIP_ROLE, SOCIO_ROLE, LINKED_ROLE, RENAMES, LEVEL_MIN, REF_TIERS, LOGRO_RANKS, FACTIONS, STAFF };
+module.exports = {
+  RANKS,
+  BY_KEY,
+  VIP_ROLE,
+  SOCIO_ROLE,
+  LINKED_ROLE,
+  RENAMES,
+  LEVEL_MIN,
+  REF_TIERS,
+  LOGRO_RANKS,
+  FACTIONS,
+  STAFF,
+  SANCTION_ROLES,
+  WARN_DAYS,
+  PLATFORM_ROLES,
+  COUNTRY_ROLES,
+  CREW_ROLE_PREFIX,
+  DIAMANTE_COINS,
+  CLEANUP,
+};

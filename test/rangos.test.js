@@ -79,6 +79,28 @@ test("plan: rangos manuales en los dos sentidos y escalón de invitados", () => 
   assert.ok(!p.add.includes(data.LINKED_ROLE)); // ya lo tenía
 });
 
+test("plan: sanciones, plataforma, país y rol de banda", () => {
+  const sr = data.SANCTION_ROLES;
+  const crews = new Map([[5, "🏴 Los Verdes"], [6, "🏴 Otra"]]);
+  const state = { auto: new Set(), vip: false, socio: false, manual: new Map(), gameRefs: 0, muted: true, oocJail: false, warnings: 5, platform: "android", country: "Mexico", crewId: 5 };
+  const member = new Set([sr.oocJail, sr.warnings[0], data.PLATFORM_ROLES.pc, "🇦🇷 Argentina", "🏴 Otra", "🇭🇹 Haití"]);
+  const p = rangos.plan(member, state, 0, crews);
+  for (const n of [sr.muted, sr.warnings[2], data.PLATFORM_ROLES.android, "🇲🇽 México", "🏴 Los Verdes"]) assert.ok(p.add.includes(n), n);
+  for (const n of [sr.oocJail, sr.warnings[0], data.PLATFORM_ROLES.pc, "🇦🇷 Argentina", "🏴 Otra"]) assert.ok(p.remove.includes(n), n);
+  assert.ok(!p.remove.includes("🇭🇹 Haití")); // no está en el juego: no se toca
+  // sin plataforma ni país en el juego: se queda lo que eligió en Discord
+  const q = rangos.plan(new Set([data.PLATFORM_ROLES.pc, "🇦🇷 Argentina"]), { ...state, platform: null, country: null, crewId: null, muted: false, warnings: 0 }, 0, crews);
+  assert.ok(!q.remove.includes(data.PLATFORM_ROLES.pc) && !q.remove.includes("🇦🇷 Argentina"));
+  assert.ok(!q.add.some((n) => n.startsWith("🏴 ")));
+});
+
+test("los países del juego tienen rol", () => {
+  // CC_COUNTRIES de gamemodes/src/char_creator.pwn
+  const game = ["Colombia", "Argentina", "Mexico", "Venezuela", "Peru", "Chile", "Ecuador", "Uruguay", "Paraguay", "Bolivia", "Espana", "Estados Unidos", "Republica Dominicana", "Cuba", "Puerto Rico", "Guatemala", "Honduras", "El Salvador", "Nicaragua", "Costa Rica", "Panama", "Brasil", "Otro"];
+  for (const c of game) assert.ok(data.COUNTRY_ROLES[c], c);
+  assert.strictEqual(new Set(Object.values(data.COUNTRY_ROLES)).size, game.length);
+});
+
 test.after(() => require("../src/database/mysql").close());
 
 test("linkedStates contra la base de datos de prueba", async (t) => {
@@ -119,5 +141,76 @@ test("Socio: deja la acción para el gamemode", async (t) => {
     assert.strictEqual(Number(row.done), 0);
   } finally {
     if (row) await db.query("DELETE FROM discord_actions WHERE id = ?", [row.id]);
+  }
+});
+
+test("sanciones, plataforma, país y banda contra la base de datos de prueba", async (t) => {
+  const samp = require("../src/database/samp");
+  if (!(await samp.isAvailable())) return t.skip("sin base de datos del servidor");
+  const db = require("../src/database/mysql");
+  await rangos.init();
+  const [p] = await db.query("SELECT id, name, mute, crew FROM player ORDER BY id LIMIT 1");
+  const DISCORD = "900000000000000778";
+  const before = await db.query("SELECT * FROM discord_links WHERE player_id = ?", [p.id]);
+  const hadStatus = await db.query("SELECT * FROM player_status WHERE player_id = ?", [p.id]);
+  const hadChar = await db.query("SELECT country FROM pcharacter WHERE id_player = ?", [p.id]);
+  try {
+    await db.query("DELETE FROM discord_links WHERE player_id = ?", [p.id]);
+    await db.query("INSERT INTO discord_links (player_id, discord_id) VALUES (?, ?)", [p.id, DISCORD]);
+    await db.query("UPDATE player SET mute = UNIX_TIMESTAMP() + 600 WHERE id = ?", [p.id]);
+    await db.query("REPLACE INTO player_status (player_id, platform, ooc_jail) VALUES (?, 'android', 1)", [p.id]);
+    if (hadChar.length) await db.query("UPDATE pcharacter SET country = 'Peru' WHERE id_player = ?", [p.id]);
+    else await db.query("INSERT INTO pcharacter (id_player, country) VALUES (?, 'Peru')", [p.id]);
+    const n1 = await samp.warn(p, { id: 0, name: "Prueba_Staff" }, "prueba");
+    const n2 = await samp.warn(p, { id: 0, name: "Prueba_Staff" }, "prueba");
+    assert.strictEqual(n2, n1 + 1);
+    const st = (await rangos.linkedStates()).find((s) => s.playerId === Number(p.id));
+    assert.strictEqual(st.muted, true);
+    assert.strictEqual(st.oocJail, true);
+    assert.strictEqual(st.platform, "android");
+    assert.strictEqual(st.country, "Peru");
+    assert.strictEqual(st.warnings, n2);
+    assert.strictEqual(await samp.unwarn(p), n2 - 1);
+    assert.strictEqual(await samp.unwarn(p), n2 - 2);
+    const crews = await rangos.crews();
+    if (crews.length) assert.ok(crews[0].name.startsWith(data.CREW_ROLE_PREFIX) && /^#[0-9a-f]{6}$/.test(crews[0].color));
+  } finally {
+    await db.query("DELETE FROM discord_actions WHERE player_id = ? AND action = 'warn' AND by_name = 'Prueba_Staff'", [p.id]);
+    await db.query("UPDATE player SET mute = ? WHERE id = ?", [p.mute, p.id]);
+    await db.query("DELETE FROM player_status WHERE player_id = ?", [p.id]);
+    for (const r of hadStatus) await db.query("INSERT INTO player_status (player_id, platform, ooc_jail) VALUES (?, ?, ?)", [r.player_id, r.platform, r.ooc_jail]);
+    if (hadChar.length) await db.query("UPDATE pcharacter SET country = ? WHERE id_player = ?", [hadChar[0].country, p.id]);
+    else await db.query("DELETE FROM pcharacter WHERE id_player = ?", [p.id]);
+    await db.query("DELETE FROM discord_links WHERE player_id = ?", [p.id]);
+    for (const r of before) await db.query("INSERT INTO discord_links (player_id, discord_id, linked_at) VALUES (?, ?, ?)", [r.player_id, r.discord_id, r.linked_at]);
+  }
+});
+
+test("insignias automáticas: Donador, Diamante y Beta tester", async (t) => {
+  const samp = require("../src/database/samp");
+  if (!(await samp.isAvailable())) return t.skip("sin base de datos del servidor");
+  const db = require("../src/database/mysql");
+  await rangos.init();
+  await require("../src/database/tebex").init();
+  const [p] = await db.query("SELECT id, DATE(reg_date) AS d FROM player WHERE reg_date > '2000-01-01' ORDER BY id LIMIT 1");
+  const keys = ["insignia_donador", "insignia_diamante", "insignia_betatester"];
+  const had = await db.query("SELECT rank_key FROM player_ranks WHERE player_id = ? AND rank_key IN (?)", [p.id, keys]);
+  const ids = [990000001, 990000002];
+  try {
+    await db.query("DELETE FROM player_ranks WHERE player_id = ? AND rank_key IN (?)", [p.id, keys]);
+    await db.query("INSERT INTO tebex_commands (command_id, player_id, action, value, status) VALUES (?, ?, 'coins', 60, 'delivered'), (?, ?, 'coins', 50, 'delivered')", [ids[0], p.id, ids[1], p.id]);
+    const day = new Date(p.d).toISOString().slice(0, 10);
+    await rangos.autoBadges({ RANGOS_BETA_DESDE: day, RANGOS_BETA_HASTA: day });
+    const got = (await db.query("SELECT rank_key, source FROM player_ranks WHERE player_id = ? AND rank_key IN (?)", [p.id, keys])).map((r) => r.rank_key);
+    for (const k of keys) assert.ok(got.includes(k), k);
+    // con más coins de las compradas no es Diamante
+    await db.query("DELETE FROM player_ranks WHERE player_id = ? AND rank_key IN (?)", [p.id, keys]);
+    await rangos.autoBadges({ RANGOS_DIAMANTE_COINS: "500" });
+    const got2 = (await db.query("SELECT rank_key FROM player_ranks WHERE player_id = ? AND rank_key IN (?)", [p.id, keys])).map((r) => r.rank_key);
+    assert.deepStrictEqual(got2, ["insignia_donador"]);
+  } finally {
+    await db.query("DELETE FROM tebex_commands WHERE command_id IN (?)", [ids]);
+    await db.query("DELETE FROM player_ranks WHERE player_id = ? AND rank_key IN (?) AND source = 'game'", [p.id, keys]);
+    for (const r of had) await db.query("INSERT IGNORE INTO player_ranks (player_id, rank_key, source) VALUES (?, ?, 'game')", [p.id, r.rank_key]);
   }
 });
