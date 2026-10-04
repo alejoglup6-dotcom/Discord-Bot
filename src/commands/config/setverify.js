@@ -54,20 +54,7 @@ module.exports = async (client, interaction, args) => {
       interaction,
     );
 
-    const row = new Discord.ActionRowBuilder().addComponents(
-      new Discord.ButtonBuilder()
-        .setCustomId("Bot_verify")
-        .setEmoji("✅")
-        .setStyle(Discord.ButtonStyle.Success),
-    );
-
-    client.embed(
-      {
-        title: `${interaction.guild.name}・verificación`,
-        desc: `Haz clic en el botón para verificarte`,
-        components: [row],
-      },
-      channel,
-    );
+    // Panel nuevo: la verificación es vinculando la cuenta del juego en la web (src/assets/utils/verification.js)
+    await channel.send(require("../../assets/utils/verification").panel(interaction.guild)).catch(() => {});
   }
 };
