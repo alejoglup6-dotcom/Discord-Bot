@@ -76,6 +76,14 @@ const RANKS = [
   { key: "citytv_3", role: "🎬 DIRECTOR DE PRENSA", cat: "faccion", mode: "auto", group: "📺 CITYTV" },
   { key: "citytv_2", role: "📺 Camarógrafo", cat: "faccion", mode: "auto", color: "#87ceeb", group: "📺 CITYTV" },
   { key: "citytv_1", role: "📺 Reportero", cat: "faccion", mode: "auto", color: "#87ceeb", group: "📺 CITYTV" },
+  { key: "ems_8", role: "🚑 DIRECTOR MÉDICO", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_7", role: "🚑 Subdirector Médico", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_6", role: "🚑 Médico Especialista", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_5", role: "🚑 Médico", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_4", role: "🚑 Enfermero", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_3", role: "🚑 Paramédico Senior", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_2", role: "🚑 Paramédico", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_1", role: "🚑 Practicante", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
   { key: "banda_lider", role: "🏴‍☠️ LIDER", cat: "banda", mode: "auto", group: "💀 MIEMBRO DE BANDA" },
   { key: "banda_miembro", role: "💀 MIEMBRO DE BANDA", cat: "banda", mode: "auto" },
   { key: "creador_streamer", role: "🎥 STREAMER", cat: "creador", mode: "manual" },
@@ -141,7 +149,7 @@ const REF_TIERS = [
 // Logros con rango: ach_id en player_achievements (índice de LOGROS en logros.pwn)
 const LOGRO_RANKS = { 8: "logro_vida", 11: "logro_profesional", 14: "logro_coleccionista", 19: "logro_placa", 20: "logro_constancia" };
 // Facciones del juego (pfactions.id_faction) -> prefijo de clave
-const FACTIONS = { 1: "sapd", 2: "fbi", 3: "saem", 4: "lssd", 5: "citytv", 6: "gob" };
+const FACTIONS = { 1: "sapd", 2: "fbi", 3: "saem", 4: "lssd", 5: "citytv", 6: "gob", 7: "ems" };
 // Staff del juego (player.admin_level) -> clave
 const STAFF = {
   1: "staff_soporte",

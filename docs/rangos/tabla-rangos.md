@@ -165,6 +165,23 @@ Paso de los rangos actuales: cada uno sube un número (Agente 1 → 2 … Direct
 | 2 | 🆕 Camarógrafo | 🆕 Camarógrafo | Newsvan (582), News Chopper (488) |
 | 3 (jefe) | 🆕 Director de prensa | ✏️ 🎬 DIRECTOR SATV | Premier azul cielo (426). Unificar el rol como **DIRECTOR DE PRENSA** |
 
+### Emergencias médicas (🆕 facción 7: EMS, 04-oct-2026)
+
+De servicio (`/fservicio` o `/ems`) tienen los poderes del médico (heridos en el mapa, `/curar`, revivir) y les llegan
+las llamadas al **112** con distancia y Aceptar/Rechazar. Garaje frente al hospital All Saints.
+
+| Rango | Juego | Discord | Vehículos |
+|---|---|---|---|
+| Facción | 🆕 EMS | 🆕 🚑 EMS | — |
+| 1 | 🆕 Practicante | 🆕 🚑 Practicante | Ambulancia (416) |
+| 2 | 🆕 Paramédico | 🆕 🚑 Paramédico | + FCR-900 (521) |
+| 3 | 🆕 Paramédico Senior | 🆕 🚑 Paramédico Senior | Los anteriores |
+| 4 | 🆕 Enfermero | 🆕 🚑 Enfermero | + Huntley (579) |
+| 5 | 🆕 Médico | 🆕 🚑 Médico | Los anteriores |
+| 6 | 🆕 Médico Especialista | 🆕 🚑 Médico Especialista | + Raindance (563) |
+| 7 | 🆕 Subdirector Médico | 🆕 🚑 Subdirector Médico | Los anteriores |
+| 8 (jefe) | 🆕 Director Médico | 🆕 🚑 DIRECTOR MÉDICO | + Sultan (560) |
+
 **Todas las facciones:** Juego → Discord. Entrar, subir de rango o salir en el juego cambia los roles solos.
 Para los rangos que se renumeran hay que migrar `pfactions.level` en la misma subida del gamemode.
 

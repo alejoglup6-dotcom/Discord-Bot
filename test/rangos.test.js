@@ -217,3 +217,14 @@ test("insignias automáticas: Donador, Diamante y Beta tester", async (t) => {
     for (const r of had) await db.query("INSERT IGNORE INTO player_ranks (player_id, rank_key, source) VALUES (?, ?, 'game')", [p.id, r.rank_key]);
   }
 });
+
+test("las claves de RANKS son las mismas y en el mismo orden que RANGOS de rangos.pwn (repo Backup)", (t) => {
+  const fs = require("fs");
+  const path = require("path");
+  const file = process.env.RANGOS_PWN || path.join(__dirname, "../../Backup/gamemodes/src/rangos.pwn");
+  if (!fs.existsSync(file)) return t.skip("no esta el repo Backup al lado");
+  const pwn = fs.readFileSync(file, "latin1");
+  const keys = [...pwn.matchAll(/^\s*\{"([a-z0-9_]+)",\s*"/gm)].map((m) => m[1]);
+  const data = require("../src/assets/data/rangos");
+  assert.deepStrictEqual(keys, data.RANKS.map((r) => r.key));
+});

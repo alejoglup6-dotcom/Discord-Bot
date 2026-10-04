@@ -16,6 +16,7 @@ const FACTIONS = [
   { id: 4, name: "LSSD (Sheriff)", max: 9 },
   { id: 5, name: "CITYTV", max: 3 },
   { id: 6, name: "Gobierno", max: 4 },
+  { id: 7, name: "EMS", max: 8 },
 ];
 
 // Igual que ADMIN_LEVELS de snrp.pwn
