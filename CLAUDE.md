@@ -33,7 +33,9 @@
 - Al momento: el gamemode (`DiscordSync_Queue` y `DiscordRankWatch` de `discord_link.pwn`) apunta en `discord_sync_queue` cada
   cuenta que cambia y el bot la sincroniza a los 2 s (`syncPlayers`). Si MySQL lo permite, el bot crea además triggers
   (`rangos.initQueue`) para los cambios hechos fuera del juego. La vuelta completa queda de respaldo.
-- Orden de los roles: el de `RANKS` (`orderRoles`/`orderNames`); los roles que no son rangos no se mueven.
+- Orden de los roles: todos los rangos de `RANKS` arriba en su orden (bandas, SOCIO y VIP tras MIEMBRO DE BANDA), luego 👤 USUARIO
+  y debajo el resto (sanciones, años, plataforma, países, avisos). Los roles de bots o con permisos que no son rangos (BETA,
+  BOTS) se quedan pegados al rango de encima (`desiredOrder`/`orderNames`/`orderRoles`).
 
 ## /juego (comandos del juego para el Fundador)
 - `src/assets/data/juego.js` (lista de subcomandos y su acción) y `src/assets/utils/juego.js` (comprobaciones). Solo

@@ -20,7 +20,7 @@ const invites = require("../../database/inviteRewards");
  * Limpieza (una vez, CLEANUP de src/assets/data/rangos.js): pasa los duplicados al rol bueno y los borra, borra 💎 VIP,
  * quita el permiso de Administrador a 🥊 BETA y pone 🎖 SHERIFF por encima de 🎖 ALGUACIL.
  *
- * Orden: los roles de rangos se ponen en el orden de RANKS (orderRoles); los demás roles no se mueven.
+ * Orden (orderRoles): todos los rangos en el orden de RANKS, luego 👤 USUARIO y debajo los demás roles.
  * Al momento: triggers de la base de datos apuntan en discord_sync_queue cada cuenta que cambia (staff, facción, VIP,
  * nivel, banda, sanciones...) y el bot la sincroniza a los pocos segundos (rangos.initQueue / takeQueue).
  *
@@ -93,9 +93,10 @@ async function cleanup(guild, dry, log, fetched) {
   }
 }
 
-// Orden de los roles de rangos: el de RANKS (el primero, el más alto). El rol de grupo de una facción (👮 POLICIA...)
-// va justo debajo de su último rango.
-function desiredOrder() {
+// Orden de los roles, de arriba abajo: los rangos en el orden de RANKS (staff y cargos, facciones con su rol de grupo
+// debajo del último rango, bandas con el rol de cada banda, SOCIO y VIP, creadores, insignias, economía, logros y
+// niveles) y luego 👤 USUARIO. current: los nombres que hay, para meter los roles de banda ("🏴 ...").
+function desiredOrder(current = []) {
   const out = [], seen = new Set();
   const push = (n) => {
     if (n && !seen.has(n)) {
@@ -107,50 +108,39 @@ function desiredOrder() {
     push(r.role);
     const next = data.RANKS[i + 1];
     if (r.group && (!next || next.group !== r.group)) push(r.group);
+    if (r.key === "banda_miembro") {
+      for (const n of current) if (n.startsWith(data.CREW_ROLE_PREFIX)) push(n);
+      push(data.SOCIO_ROLE);
+      push(data.VIP_ROLE);
+    }
   });
+  push(data.LINKED_ROLE);
   return out;
 }
 
-// current: nombres de los roles de arriba abajo. Devuelve el orden nuevo: los roles de rangos que ya están bien
-// ordenados entre sí (la secuencia más larga) no se mueven, ni tampoco los demás roles; los que están fuera de sitio
-// (los creados nuevos quedan al fondo) se ponen justo debajo del rango que les toca encima. unplaced: roles sin
-// sitio todavía (Discord deja los nuevos empatados al fondo): nunca sirven de referencia, siempre se recolocan.
-function orderNames(current, desired = desiredOrder(), unplaced = new Set()) {
-  const idx = new Map(desired.map((n, i) => [n, i]));
-  const managed = current.filter((n) => idx.has(n));
-  const anchors = managed.filter((n) => !unplaced.has(n));
-  // subsecuencia creciente más larga (por su puesto en desired)
-  const seq = anchors.map((n) => idx.get(n));
-  const tails = [], prev = new Array(seq.length).fill(-1), tailIdx = [];
-  seq.forEach((v, i) => {
-    let lo = 0, hi = tails.length;
-    while (lo < hi) {
-      const mid = (lo + hi) >> 1;
-      if (tails[mid] < v) lo = mid + 1;
-      else hi = mid;
+// current: nombres de los roles de arriba abajo. Devuelve el orden nuevo: arriba lo que ya estaba por encima del
+// primer rango (bots), luego todos los rangos en orden y debajo todo lo demás (sanciones, plataforma, países, años,
+// avisos...) en el orden que tenía. sticky: roles que no son rangos pero van pegados al rango que tienen encima
+// (los que tienen permisos o se muestran aparte, p. ej. 🥊 BETA o 🤖 BOTS).
+function orderNames(current, desired = desiredOrder(current), sticky = new Set()) {
+  const want = new Set(desired);
+  const first = current.findIndex((n) => want.has(n));
+  if (first < 0) return current.slice();
+  const attached = new Map(), rest = [];
+  let anchor = null;
+  for (const n of current.slice(first)) {
+    if (want.has(n)) {
+      anchor = n;
+      continue;
     }
-    tails[lo] = v;
-    tailIdx[lo] = i;
-    prev[i] = lo > 0 ? tailIdx[lo - 1] : -1;
-  });
-  const keep = new Set();
-  for (let i = tailIdx[tails.length - 1] ?? -1; i >= 0; i = prev[i]) keep.add(anchors[i]);
-
-  const out = current.filter((n) => !idx.has(n) || keep.has(n));
-  const placed = new Set(out);
-  for (const n of desired) {
-    if (!managed.includes(n) || keep.has(n)) continue;
-    let k = idx.get(n) - 1;
-    while (k >= 0 && !placed.has(desired[k])) k--;
-    if (k >= 0) out.splice(out.indexOf(desired[k]) + 1, 0, n);
-    else {
-      let j = idx.get(n) + 1;
-      while (j < desired.length && !placed.has(desired[j])) j++;
-      out.splice(j < desired.length ? out.indexOf(desired[j]) : out.length, 0, n);
-    }
-    placed.add(n);
+    if (sticky.has(n) && anchor) {
+      if (!attached.has(anchor)) attached.set(anchor, []);
+      attached.get(anchor).push(n);
+    } else rest.push(n);
   }
-  return out;
+  const have = new Set(current), out = current.slice(0, first);
+  for (const d of desired) if (have.has(d)) out.push(d, ...(attached.get(d) || []));
+  return out.concat(rest);
 }
 
 async function orderRoles(guild, dry, log) {
@@ -162,12 +152,13 @@ async function orderRoles(guild, dry, log) {
   for (const r of list) if (!byName.has(r.name)) byName.set(r.name, r);
   // nombre repetido: solo se ordena el primero; los demás quedan donde están, pegados al anterior
   const current = list.map((r) => (byName.get(r.name) === r ? r.name : `\u0000${r.id}`));
-  const count = new Map();
-  for (const r of list) count.set(r.position, (count.get(r.position) || 0) + 1);
-  const unplaced = new Set(list.filter((r) => count.get(r.position) > 1).map((r) => r.name));
-  const next = orderNames(current, desiredOrder(), unplaced);
+  const desired = desiredOrder(current);
+  const want = new Set(desired);
+  const sticky = new Set(list.filter((r) => (r.managed || r.hoist || (r.permissions?.bitfield ?? 0n) > 0n) && !want.has(r.name)).map((r) => r.name));
+  for (const n of current) if (n.startsWith("\u0000")) sticky.add(n);
+  const next = orderNames(current, desired, sticky);
   if (next.every((n, i) => n === current[i])) return;
-  const moved = next.filter((n, i) => n !== current[i] && !n.startsWith("\u0000") && desiredOrder().includes(n));
+  const moved = next.filter((n, i) => n !== current[i] && !n.startsWith("\u0000") && want.has(n));
   log.push(`ordenar roles por jerarquía (${moved.length} se mueven: ${moved.slice(0, 8).join(", ")}${moved.length > 8 ? "..." : ""})`);
   if (dry) return;
   const role = (n) => (n.startsWith("\u0000") ? guild.roles.cache.get(n.slice(1)) : byName.get(n));

@@ -119,30 +119,36 @@ test("limpieza: duplicados, 💎 VIP, permiso de 🥊 BETA y SHERIFF encima de A
   }
 });
 
-test("orden por jerarquía: los roles creados al fondo suben a su sitio y los demás no se mueven", () => {
+test("orden por jerarquía: todos los rangos arriba en su orden y los demás roles debajo de 👤 USUARIO", () => {
   // como estaba el Discord el 04-oct-2026 (de arriba abajo)
   const current = [
     "🔱 FUNDADOR", "⚜️ CO-FUNDADOR", "🥊 BETA", "⭕ ENCARGADO STAFF", "🛡️ ADMINISTRADOR", "🎫 SOPORTE", "🤖 BOTS",
-    "🎖 SHERIFF", "🎖 ALGUACIL", "👮 COMISARIO", "👮 POLICIA", "👤 USUARIO", "🔔 Anuncios",
-    "🛠️ DESARROLLADOR", "👮 Subjefe", "👮 Cadete (Policía)", "🎖 Sub Sheriff",
+    "🎖 SHERIFF", "🎖 ALGUACIL", "👮 COMISARIO", "🥇 SOCIO", "👑 VIP", "👤 USUARIO", "🔇 MUTEADO", "🔔 Anuncios",
+    "👮 POLICIA", "🛠️ DESARROLLADOR", "👮 Subjefe", "👮 Cadete (Policía)", "🎖 Sub Sheriff", "🏴 Los Malditos", "🟣 TIKTOKER",
   ];
-  // los cuatro últimos se crearon nuevos: en Discord quedan empatados en la posición 1
-  const out = sync.orderNames(current, sync.desiredOrder(), new Set(current.slice(-4)));
+  // BETA y BOTS tienen permisos o se ven aparte: se quedan pegados al rango de encima
+  const out = sync.orderNames(current, sync.desiredOrder(current), new Set(["🥊 BETA", "🤖 BOTS"]));
   const at = (n) => out.indexOf(n);
   assert.strictEqual(out.length, current.length);
-  // DESARROLLADOR entre CO-FUNDADOR y ENCARGADO
+  assert.deepStrictEqual([...out].sort(), [...current].sort());
+  // DESARROLLADOR entre CO-FUNDADOR y ENCARGADO; BETA sigue debajo de CO-FUNDADOR y BOTS de SOPORTE
   assert.ok(at("⚜️ CO-FUNDADOR") < at("🛠️ DESARROLLADOR") && at("🛠️ DESARROLLADOR") < at("⭕ ENCARGADO STAFF"));
+  assert.ok(at("⚜️ CO-FUNDADOR") < at("🥊 BETA") && at("🥊 BETA") < at("⭕ ENCARGADO STAFF"));
+  assert.strictEqual(at("🤖 BOTS"), at("🎫 SOPORTE") + 1);
   // policía: COMISARIO, sus rangos y el rol POLICIA; luego el Sheriff con los suyos y ALGUACIL
   const police = ["👮 COMISARIO", "👮 Subjefe", "👮 Cadete (Policía)", "👮 POLICIA", "🎖 SHERIFF", "🎖 Sub Sheriff", "🎖 ALGUACIL"];
   assert.deepStrictEqual(out.filter((n) => police.includes(n)), police);
-  // los que no son rangos siguen en su orden y con sus vecinos
-  assert.deepStrictEqual(out.filter((n) => ["🥊 BETA", "🤖 BOTS", "👤 USUARIO", "🔔 Anuncios"].includes(n)), ["🥊 BETA", "🤖 BOTS", "👤 USUARIO", "🔔 Anuncios"]);
-  assert.ok(at("🔔 Anuncios") > at("🎖 ALGUACIL"));
+  // bandas, SOCIO y VIP debajo de los rangos de banda; TIKTOKER y todo rango por encima de USUARIO
+  assert.ok(at("🎖 ALGUACIL") < at("🏴 Los Malditos") && at("🏴 Los Malditos") < at("🥇 SOCIO") && at("🥇 SOCIO") < at("👑 VIP"));
+  assert.ok(at("🟣 TIKTOKER") < at("👤 USUARIO") && at("👑 VIP") < at("👤 USUARIO"));
+  // el resto (sanciones, avisos...) debajo de USUARIO, en su orden
+  assert.deepStrictEqual(out.slice(at("👤 USUARIO") + 1), ["🔇 MUTEADO", "🔔 Anuncios"]);
   // ya ordenado: no cambia nada
-  assert.deepStrictEqual(sync.orderNames(out), out);
-  // el orden deseado sigue la lista RANKS
+  assert.deepStrictEqual(sync.orderNames(out, sync.desiredOrder(out), new Set(["🥊 BETA", "🤖 BOTS"])), out);
+  // el orden deseado sigue la lista RANKS y termina en USUARIO
   const d = sync.desiredOrder();
   assert.ok(d.indexOf("🔱 FUNDADOR") < d.indexOf("🛠️ DESARROLLADOR") && d.indexOf("🛠️ DESARROLLADOR") < d.indexOf("🎫 SOPORTE"));
+  assert.strictEqual(d[d.length - 1], "👤 USUARIO");
 });
 
 test("al momento: los triggers apuntan los cambios y se sincroniza solo esa cuenta", async (t) => {
