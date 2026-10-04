@@ -121,6 +121,67 @@ function refTier(total) {
   return data.REF_TIERS.find((t) => total >= t.min)?.key || null;
 }
 
+/*
+ * Sincronización al momento: cada cambio que importa para los roles apunta la cuenta en discord_sync_queue (triggers
+ * de la base de datos, así vale para el juego, /juego, la web o un UPDATE a mano) y el bot la recoge a los pocos
+ * segundos. [tabla, columna del jugador, condición en UPDATE (null = cualquier cambio)]
+ */
+const QUEUE_SOURCES = [
+  ["player", "id", "NOT (OLD.admin_level <=> NEW.admin_level AND OLD.level <=> NEW.level AND OLD.vip <=> NEW.vip AND OLD.vip_expire_date <=> NEW.vip_expire_date AND OLD.bank_account <=> NEW.bank_account AND OLD.bank_money <=> NEW.bank_money AND OLD.crew <=> NEW.crew AND OLD.crew_rank <=> NEW.crew_rank AND OLD.mute <=> NEW.mute AND OLD.name <=> NEW.name)"],
+  ["pfactions", "id_player", null],
+  ["player_ranks", "player_id", null],
+  ["player_status", "player_id", null],
+  ["bad_history", "id_player", null],
+  ["discord_links", "player_id", null],
+  ["pcharacter", "id_player", "NOT (OLD.country <=> NEW.country)"],
+  ["player_achievements", "player_id", null],
+  ["properties", "id_player", "NOT (OLD.id_player <=> NEW.id_player)"],
+  ["referral_uses", "owner_id", null],
+];
+
+// Crea la cola y los triggers (se pueden volver a crear sin problema). { ok, error } si el usuario de MySQL no
+// tiene permiso para triggers: entonces solo queda la vuelta completa.
+async function initQueue() {
+  await db.query(`CREATE TABLE IF NOT EXISTS discord_sync_queue (
+    player_id INT NOT NULL,
+    changed_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    PRIMARY KEY (player_id)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`);
+  const tables = new Set(
+    (await db.query("SELECT TABLE_NAME AS t FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE()")).map((r) => r.t),
+  );
+  let made = 0;
+  try {
+    for (const [table, col, cond] of QUEUE_SOURCES) {
+      if (!tables.has(table)) continue;
+      for (const ev of ["INSERT", "UPDATE", "DELETE"]) {
+        const row = ev === "DELETE" ? "OLD" : "NEW";
+        const name = `bot_q_${table}_${ev.toLowerCase()}`.slice(0, 64);
+        let body = `INSERT INTO discord_sync_queue (player_id) VALUES (${row}.${col}) ON DUPLICATE KEY UPDATE changed_at = CURRENT_TIMESTAMP(3)`;
+        if (ev === "UPDATE") {
+          // si cambia de dueño (propiedades, facción...), también el de antes
+          body = `BEGIN IF ${cond || "TRUE"} THEN ${body}; IF NOT (OLD.${col} <=> NEW.${col}) THEN INSERT INTO discord_sync_queue (player_id) VALUES (OLD.${col}) ON DUPLICATE KEY UPDATE changed_at = CURRENT_TIMESTAMP(3); END IF; END IF; END`;
+        } else if (table === "player") continue; // altas y bajas de cuentas: no hace falta
+        await db.query(`DROP TRIGGER IF EXISTS ${name}`);
+        await db.query(`CREATE TRIGGER ${name} AFTER ${ev} ON ${table} FOR EACH ROW ${body}`);
+        made++;
+      }
+    }
+    return { ok: true, triggers: made };
+  } catch (e) {
+    return { ok: false, error: e.code || e.message, triggers: made };
+  }
+}
+
+// Cuentas que cambiaron desde la última vez (y las quita de la cola)
+async function takeQueue(limit = 200) {
+  const rows = await db.query("SELECT player_id, changed_at FROM discord_sync_queue ORDER BY changed_at LIMIT ?", [limit]);
+  if (!rows.length) return [];
+  // solo se borra si no volvió a cambiar mientras tanto
+  for (const r of rows) await db.query("DELETE FROM discord_sync_queue WHERE player_id = ? AND changed_at = ?", [r.player_id, r.changed_at]);
+  return rows.map((r) => Number(r.player_id)).filter((id) => id > 0);
+}
+
 async function safeQuery(sql, params) {
   try {
     return await db.query(sql, params);
@@ -129,12 +190,14 @@ async function safeQuery(sql, params) {
   }
 }
 
-// Estado de todas las cuentas vinculadas: [{ discordId, playerId, name, auto: Set, vip, socio, manual: Map(key -> source), gameRefs }]
-async function linkedStates() {
+// Estado de las cuentas vinculadas (todas, o solo las de onlyIds): [{ discordId, playerId, name, auto: Set, vip, socio, manual: Map(key -> source), gameRefs }]
+async function linkedStates(onlyIds = null) {
+  if (onlyIds && !onlyIds.length) return [];
   const players = await db.query(
     `SELECT dl.discord_id, p.id, p.name, p.admin_level, p.level, p.vip, p.vip_expire_date, p.bank_account, p.bank_money, p.crew, p.crew_rank,
        p.mute > UNIX_TIMESTAMP() AS muted
-     FROM discord_links dl JOIN player p ON p.id = dl.player_id`,
+     FROM discord_links dl JOIN player p ON p.id = dl.player_id${onlyIds ? " WHERE p.id IN (?)" : ""}`,
+    onlyIds ? [onlyIds] : [],
   );
   if (!players.length) return [];
   const ids = players.map((p) => p.id);
@@ -263,6 +326,9 @@ async function setRefTier(playerId, key) {
 }
 
 module.exports = {
+  initQueue,
+  takeQueue,
+  QUEUE_SOURCES,
   init,
   computeAuto,
   vipState,

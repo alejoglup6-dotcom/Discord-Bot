@@ -30,6 +30,10 @@
   automáticas (`autoBadges`: Donador, Usuario Diamante, Beta tester). También hace la limpieza de `CLEANUP` de
   `src/assets/data/rangos.js` (duplicados, permiso de 🥊 BETA, orden SHERIFF/ALGUACIL). Pruebas con un servidor de
   Discord simulado en `test/rangosSync.test.js`. `/samp advertir` y `/samp quitaradv` = `/adv` y `/quitaradv` del juego.
+- Al momento: el gamemode (`DiscordSync_Queue` y `DiscordRankWatch` de `discord_link.pwn`) apunta en `discord_sync_queue` cada
+  cuenta que cambia y el bot la sincroniza a los 2 s (`syncPlayers`). Si MySQL lo permite, el bot crea además triggers
+  (`rangos.initQueue`) para los cambios hechos fuera del juego. La vuelta completa queda de respaldo.
+- Orden de los roles: el de `RANKS` (`orderRoles`/`orderNames`); los roles que no son rangos no se mueven.
 
 ## /juego (comandos del juego para el Fundador)
 - `src/assets/data/juego.js` (lista de subcomandos y su acción) y `src/assets/utils/juego.js` (comprobaciones). Solo
