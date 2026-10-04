@@ -31,6 +31,13 @@
   `src/assets/data/rangos.js` (duplicados, permiso de 🥊 BETA, orden SHERIFF/ALGUACIL). Pruebas con un servidor de
   Discord simulado en `test/rangosSync.test.js`. `/samp advertir` y `/samp quitaradv` = `/adv` y `/quitaradv` del juego.
 
+## /juego (comandos del juego para el Fundador)
+- `src/assets/data/juego.js` (lista de subcomandos y su acción) y `src/assets/utils/juego.js` (comprobaciones). Solo
+  `admin_level` 9 con la cuenta vinculada. Cada uno deja una fila en `discord_actions` y el gamemode la aplica en
+  `DiscordAdmin_Apply` (`gamemodes/src/discord_link.pwn`): si se añade o cambia una acción, cambiar los dos repos.
+- La contraseña viaja como `salt:hash` (SHA256 como `SHA256_PassHash`), nunca en claro. Pruebas: `test/juego.test.js`.
+- El staff lo manda el juego (decidido el 04-oct-2026): `/juego staff` cambia el nivel y la sincronización pone el rol.
+
 ## Verificación, tickets y estructura del Discord
 - Verificación = cuenta del juego vinculada desde la web (`/verificar` del repo Web, `discord_links`). El bot da 👤 USUARIO
   y pone el apodo del personaje (`src/assets/utils/verification.js`, cada 30 s); `VERIFICACION` = on/suave/off.

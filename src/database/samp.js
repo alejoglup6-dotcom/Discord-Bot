@@ -22,8 +22,8 @@ const ADMIN_LEVELS = [
 const HISTORY = { WARNING: 0, KICK: 1, BAN: 2, TEMP_BAN: 3, UNBAN: 4 };
 // Rango mínimo de cada comando, igual que los flags: del gamemode (muteard, jail/unjail, tban/unban, ban). Escala 0-9
 // desde el 04-oct-2026 (src/assets/data/rangos.js). socio: dar la membresía anual (aún no se vende).
-// advertir / quitaradv: como /adv y /quitaradv (Moderador).
-const REQUIRED_LEVEL = { mute: 2, unmute: 2, jail: 3, unjail: 3, advertir: 3, quitaradv: 3, tempban: 4, unban: 4, ban: 5, socio: 6 };
+// advertir / quitaradv: como /adv y /quitaradv (Moderador). juego: /juego, comandos del juego desde Discord (Fundador).
+const REQUIRED_LEVEL = { mute: 2, unmute: 2, jail: 3, unjail: 3, advertir: 3, quitaradv: 3, tempban: 4, unban: 4, ban: 5, socio: 6, juego: 9 };
 const LINK_CODE_MINUTES = 10;
 
 let available = null;
@@ -260,6 +260,29 @@ async function queueAction(conn, playerId, action, value, reason, byName) {
   ]);
 }
 
+// Acción de /juego para el gamemode (DiscordAdmin_Apply de discord_link.pwn). Devuelve el id de la fila.
+async function queueGameAction(playerId, action, value, reason, byName) {
+  const r = await db.query("INSERT INTO discord_actions (player_id, action, value, reason, by_name) VALUES (?, ?, ?, ?, ?)", [
+    playerId,
+    action,
+    value,
+    (reason || "").slice(0, 128),
+    (byName || "").slice(0, 24),
+  ]);
+  return r.insertId;
+}
+
+// Espera a que el gamemode marque la acción como hecha (la revisa cada 5 s). true = aplicada.
+async function waitAction(id, ms = 12000, every = 1000) {
+  const until = Date.now() + ms;
+  for (;;) {
+    const rows = await db.query("SELECT done FROM discord_actions WHERE id = ?", [id]);
+    if (!rows[0] || Number(rows[0].done)) return Boolean(rows[0]);
+    if (Date.now() >= until) return false;
+    await new Promise((r) => setTimeout(r, every));
+  }
+}
+
 // Socio (membresía anual, player.vip = 3): el gamemode la aplica (discord_link.pwn, acción "socio"); los días de VIP
 // que le quedaban se suman. by_name = nombre de la cuenta, igual que las entregas de la tienda.
 async function grantSocio(target, days, admin) {
@@ -436,4 +459,6 @@ module.exports = {
   getMaxBanId,
   isMuted,
   grantSocio,
+  queueGameAction,
+  waitAction,
 };
