@@ -165,7 +165,7 @@ Para los rangos que se renumeran hay que migrar `pfactions.level` en la misma su
 | Juego | Discord | Qué hay que hacer | Sincroniza |
 |---|---|---|---|
 | ✅ VIP: membresía **mensual** (`vip = 1`, `vip_expire_date` + 30 días) | ✅ 👑 VIP | Borrar el duplicado 💎 VIP; el rol se quita solo cuando vence | Juego → Discord |
-| 🆕 Socio: membresía **anual**, extensión del VIP (`vip = 2`, `vip_expire_date` + 365 días) | ✅ 🥇 SOCIO | Crear en el juego: tiene todas las ventajas del VIP más las suyas propias (a definir) y su propio paquete en Tebex. Lleva **los dos roles**, 👑 VIP y 🥇 SOCIO; al vencer se pierden los dos | Juego → Discord |
+| 🆕 Socio: membresía **anual**, extensión del VIP (`vip = 2`, `vip_expire_date` + 365 días) | ✅ 🥇 SOCIO | **Solo se compra desde Discord**: ni en el juego ni en la tienda web. Al comprarla, el bot guarda `vip = 2` y la fecha de vencimiento en la cuenta vinculada, y el juego le da todas las ventajas del VIP. Lleva **los dos roles**, 👑 VIP y 🥇 SOCIO; al vencer se pierden los dos. **Aún no disponible:** ventajas propias del Socio y qué pasa con los días de VIP que le quedaban | Discord → Juego |
 | 🆕 Donador (compró en la tienda Tebex) | ✅ 💸 DONADOR | Marcarlo en el juego al entregar una compra (`tebex_commands`) | Juego → Discord |
 | 🆕 Usuario Diamante (compras acumuladas ≥ 100 CityCoins, ajustable) | ✅ 💎 USUARIO DIAMANTE | Crear la insignia en el juego | Juego → Discord |
 | 🆕 Booster (insignia) | ✅ 🎉 CityBooster | Discord lo da solo al mejorar el servidor; el juego muestra la insignia | Discord → Juego |
