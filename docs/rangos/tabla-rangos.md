@@ -273,7 +273,6 @@ suman las dos cifras y se usa la misma escala en los dos lados:
 
 | Juego | Discord | Qué hay que hacer | Sincroniza |
 |---|---|---|---|
-| ✅ Año de registro (`reg_date`) | ✅ 2021 … 2026 | Rol del año en que se creó la cuenta del juego | Juego → Discord |
 | ✅ Entra desde Android (se detecta al conectar) | ✅ 📱 ANDROID | Guardar la plataforma en la base de datos; borrar el duplicado 📱 Android | Juego → Discord |
 | ✅ Entra desde PC | ✅ 💻 PC | Igual | Juego → Discord |
 | ✅ País de origen (creador de personaje, `pcharacter.country`) | ✅ 23 roles de país + 🌍 Otro país | Dar el rol del país; si en el juego no hay país, se toma el de Discord | Ambos |
@@ -285,6 +284,7 @@ suman las dos cifras y se usa la misma escala en los dos lados:
 | Discord | Motivo |
 |---|---|
 | 🔔 Anuncios, Actualizaciones, TikTok, Eventos, Sorteos, Encuestas, Ofertas, Fortuna, Directos, Postulaciones, Alianzas | Son para recibir menciones; los elige cada uno. Se borran los 5 duplicados «📢 Avisos: …» |
+| 2021, 2022, 2023, 2024, 2025, 2026 | Roles de año: se quedan solo en Discord, sin conexión con el juego ni la web (decisión del dueño) |
 | 🤖 BOTS, 🌇 SampCity, Tebex, DISBOARD.org | Bots e integraciones |
 | 🥊 BETA | Rol de pruebas con permiso de Administrador: **quitarle ese permiso** |
 | 🎈, 🎵 | Sin nombre ni uso conocido: revisar si se borran |
