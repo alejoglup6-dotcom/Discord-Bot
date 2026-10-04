@@ -164,8 +164,8 @@ Para los rangos que se renumeran hay que migrar `pfactions.level` en la misma su
 
 | Juego | Discord | Qué hay que hacer | Sincroniza |
 |---|---|---|---|
-| ✅ VIP: membresía **mensual** (`vip = 1`, `vip_expire_date` + 30 días) | ✅ 👑 VIP | Borrar el duplicado 💎 VIP; el rol se quita solo cuando vence | Juego → Discord |
-| 🆕 Socio: membresía **anual**, extensión del VIP (`vip = 2`, `vip_expire_date` + 365 días) | ✅ 🥇 SOCIO | **Solo se compra desde Discord**: ni en el juego ni en la tienda web. Al comprarla, el bot guarda `vip = 2` y la fecha de vencimiento en la cuenta vinculada, y el juego le da todas las ventajas del VIP. Lleva **los dos roles**, 👑 VIP y 🥇 SOCIO; al vencer se pierden los dos. **Aún no disponible:** ventajas propias del Socio y qué pasa con los días de VIP que le quedaban | Discord → Juego |
+| ✅ VIP: membresía **mensual** (`vip = 2`, `vip_expire_date` + 30 días) | ✅ 👑 VIP | Borrar el duplicado 💎 VIP; el rol se quita solo cuando vence | Juego → Discord |
+| 🆕 Socio: membresía **anual**, extensión del VIP (`vip = 3`, `vip_expire_date` + 365 días) | ✅ 🥇 SOCIO | **Solo se compra desde Discord**: ni en el juego ni en la tienda web. Al comprarla, el bot guarda `vip = 3` y la fecha de vencimiento en la cuenta vinculada, y el juego le da todas las ventajas del VIP. Lleva **los dos roles**, 👑 VIP y 🥇 SOCIO; al vencer se pierden los dos. **Aún no disponible:** ventajas propias del Socio y qué pasa con los días de VIP que le quedaban | Discord → Juego |
 | 🆕 Donador (compró en la tienda Tebex) | ✅ 💸 DONADOR | Marcarlo en el juego al entregar una compra (`tebex_commands`) | Juego → Discord |
 | 🆕 Usuario Diamante (compras acumuladas ≥ 100 CityCoins, ajustable) | ✅ 💎 USUARIO DIAMANTE | Crear la insignia en el juego | Juego → Discord |
 | 🆕 Booster (insignia) | ✅ 🎉 CityBooster | Discord lo da solo al mejorar el servidor; el juego muestra la insignia | Discord → Juego |
@@ -292,6 +292,132 @@ suman las dos cifras y se usa la misma escala en los dos lados:
 | 🤖 BOTS, 🌇 SampCity, Tebex, DISBOARD.org | Bots e integraciones |
 | 🥊 BETA | Rol de pruebas con permiso de Administrador: **quitarle ese permiso** |
 | 🎈, 🎵 | Sin nombre ni uso conocido: revisar si se borran |
+
+---
+
+## 11. Jerarquía y cómo se muestran en el juego
+
+Lista de **mayor a menor**: es la misma, con las mismas claves, en el juego (`gamemodes/src/rangos.pwn`) y en el bot
+(`src/assets/data/rangos.js`).
+
+- **Chat:** delante del nombre va **[VIP] o [SOCIO] siempre** (si lo tiene) y después **el rango más alto** que tenga.
+  Con máscara no se ve nada.
+- **Sobre la cabeza:** con **`/rango`** el jugador elige cuál se ve: solo puede elegir los que tiene. También puede
+  elegir «Automático» (el más alto, por defecto) o «Ninguno». El VIP o Socio se ve siempre.
+- **`/darrango <jugador>`:** da o quita los rangos manuales. Un Administrador o más puede darlos todos; el
+  Director de Contenido, solo los de creadores.
+- «Aún no» = existe en la lista, pero en el juego todavía no hay cómo tenerlo (nivel de staff o facción por crear).
+
+| # | Rango | Grupo | Cómo se obtiene |
+|---|---|---|---|
+| 1 | 🔱 FUNDADOR | Staff | Aún no |
+| 2 | ⚜️ CO-FUNDADOR | Staff | Aún no |
+| 3 | 🛠️ DESARROLLADOR | Staff | Automático |
+| 4 | ⭕ ENCARGADO STAFF | Staff | Aún no |
+| 5 | 🛡️ ADMINISTRADOR | Staff | Automático |
+| 6 | 👨‍💻 MODERADOR GLOBAL | Staff | Automático |
+| 7 | 🧑‍💻 MODERADOR | Staff | Automático |
+| 8 | 🙋 AYUDANTE | Staff | Automático |
+| 9 | 🎫 SOPORTE | Staff | Aún no |
+| 10 | 🎞️ DIRECTOR DE CONTENIDO | Cargos del staff | A mano (/darrango o rol en Discord) |
+| 11 | 🎪 ORGANIZADOR DE EVENTOS | Cargos del staff | A mano (/darrango o rol en Discord) |
+| 12 | 📝 EVALUADOR DE FACCIONES | Cargos del staff | A mano (/darrango o rol en Discord) |
+| 13 | 🎮 STAFF RPG | Cargos del staff | A mano (/darrango o rol en Discord) |
+| 14 | 🎙️ STAFF CV | Cargos del staff | A mano (/darrango o rol en Discord) |
+| 15 | 💻 SCRIPTER | Cargos del staff | A mano (/darrango o rol en Discord) |
+| 16 | 🗺️ MAPPER | Cargos del staff | A mano (/darrango o rol en Discord) |
+| 17 | 👮 COMISARIO | Facciones (del jefe hacia abajo) | Automático |
+| 18 | 👮 Subjefe | Facciones (del jefe hacia abajo) | Automático |
+| 19 | 👮 Comandante | Facciones (del jefe hacia abajo) | Automático |
+| 20 | 👮 Capitán (Policía) | Facciones (del jefe hacia abajo) | Automático |
+| 21 | 👮 Teniente (Policía) | Facciones (del jefe hacia abajo) | Automático |
+| 22 | 👮 Sargento (Policía) | Facciones (del jefe hacia abajo) | Automático |
+| 23 | 👮 Detective | Facciones (del jefe hacia abajo) | Automático |
+| 24 | 👮 Oficial Mayor | Facciones (del jefe hacia abajo) | Automático |
+| 25 | 👮 Oficial III (Policía) | Facciones (del jefe hacia abajo) | Automático |
+| 26 | 👮 Oficial II (Policía) | Facciones (del jefe hacia abajo) | Automático |
+| 27 | 👮 Oficial I (Policía) | Facciones (del jefe hacia abajo) | Automático |
+| 28 | 👮 Cadete (Policía) | Facciones (del jefe hacia abajo) | Automático |
+| 29 | 🎖 SHERIFF | Facciones (del jefe hacia abajo) | Aún no |
+| 30 | 🎖 Sub Sheriff | Facciones (del jefe hacia abajo) | Aún no |
+| 31 | 🎖 Capitán (Sheriff) | Facciones (del jefe hacia abajo) | Aún no |
+| 32 | 🎖 Teniente (Sheriff) | Facciones (del jefe hacia abajo) | Aún no |
+| 33 | 🎖 Sargento (Sheriff) | Facciones (del jefe hacia abajo) | Aún no |
+| 34 | 🎖 Oficial III (Sheriff) | Facciones (del jefe hacia abajo) | Aún no |
+| 35 | 🎖 Oficial II (Sheriff) | Facciones (del jefe hacia abajo) | Aún no |
+| 36 | 🎖 Oficial I (Sheriff) | Facciones (del jefe hacia abajo) | Aún no |
+| 37 | 🎖 Cadete (Sheriff) | Facciones (del jefe hacia abajo) | Aún no |
+| 38 | 🪖 GENERAL | Facciones (del jefe hacia abajo) | Automático |
+| 39 | 🪖 Teniente Coronel | Facciones (del jefe hacia abajo) | Automático |
+| 40 | 🪖 Capitán (Militar) | Facciones (del jefe hacia abajo) | Automático |
+| 41 | 🪖 Teniente (Militar) | Facciones (del jefe hacia abajo) | Automático |
+| 42 | 🪖 Subteniente | Facciones (del jefe hacia abajo) | Automático |
+| 43 | 🪖 Sargento Primero | Facciones (del jefe hacia abajo) | Automático |
+| 44 | 🪖 Sargento (Militar) | Facciones (del jefe hacia abajo) | Automático |
+| 45 | 🪖 Cabo Mayor | Facciones (del jefe hacia abajo) | Automático |
+| 46 | 🪖 Cabo Primero | Facciones (del jefe hacia abajo) | Automático |
+| 47 | 🪖 Cabo | Facciones (del jefe hacia abajo) | Automático |
+| 48 | 🪖 Soldado de primera | Facciones (del jefe hacia abajo) | Automático |
+| 49 | 🪖 Soldado | Facciones (del jefe hacia abajo) | Automático |
+| 50 | 🕵 DIRECTOR | Facciones (del jefe hacia abajo) | Automático |
+| 51 | 🕵 Subdirector | Facciones (del jefe hacia abajo) | Automático |
+| 52 | 🕵 Agente supervisor | Facciones (del jefe hacia abajo) | Automático |
+| 53 | 🕵 Agente investigador | Facciones (del jefe hacia abajo) | Automático |
+| 54 | 🕵 Agente mayor | Facciones (del jefe hacia abajo) | Automático |
+| 55 | 🕵 Agente segundo | Facciones (del jefe hacia abajo) | Automático |
+| 56 | 🕵 Agente | Facciones (del jefe hacia abajo) | Automático |
+| 57 | 🕵 Agente aspirante | Facciones (del jefe hacia abajo) | Automático |
+| 58 | 🏛️ GOBERNADOR | Facciones (del jefe hacia abajo) | Aún no |
+| 59 | 💼 Jefe del Servicio Secreto | Facciones (del jefe hacia abajo) | Aún no |
+| 60 | 💼 Servicio Secreto | Facciones (del jefe hacia abajo) | Aún no |
+| 61 | 💼 Abogado | Facciones (del jefe hacia abajo) | Aún no |
+| 62 | 🎬 DIRECTOR DE PRENSA | Facciones (del jefe hacia abajo) | Aún no |
+| 63 | 📺 Camarógrafo | Facciones (del jefe hacia abajo) | Aún no |
+| 64 | 📺 Reportero | Facciones (del jefe hacia abajo) | Aún no |
+| 65 | 🏴‍☠️ LIDER | Bandas | Automático |
+| 66 | 💀 MIEMBRO DE BANDA | Bandas | Automático |
+| 67 | 🎥 STREAMER | Creadores de contenido | A mano (/darrango o rol en Discord) |
+| 68 | 🔴 YOUTUBER | Creadores de contenido | A mano (/darrango o rol en Discord) |
+| 69 | 🟣 TIKTOKER | Creadores de contenido | A mano (/darrango o rol en Discord) |
+| 70 | 👑 Leyenda del Servidor | Reconocimientos | Automático (invitados) |
+| 71 | 🏆 CAMPEÓN DE EVENTOS | Reconocimientos | A mano (/darrango o rol en Discord) |
+| 72 | 🌟 MIEMBRO DESTACADO | Reconocimientos | A mano (/darrango o rol en Discord) |
+| 73 | 💰 Magnate de la semana | Reconocimientos | A mano (/darrango o rol en Discord) |
+| 74 | 💎 Embajador Diamante | Reconocimientos | Automático (invitados) |
+| 75 | 🥇 Embajador Oro | Reconocimientos | Automático (invitados) |
+| 76 | 🥈 Embajador Plata | Reconocimientos | Automático (invitados) |
+| 77 | 🥉 Embajador Bronce | Reconocimientos | Automático (invitados) |
+| 78 | 📨 Reclutador | Reconocimientos | Automático (invitados) |
+| 79 | 💎 USUARIO DIAMANTE | Reconocimientos | A mano (/darrango o rol en Discord) |
+| 80 | 💸 DONADOR | Reconocimientos | A mano (/darrango o rol en Discord) |
+| 81 | 🎉 CityBooster | Reconocimientos | A mano (/darrango o rol en Discord) |
+| 82 | 🎨 ARTISTA | Reconocimientos | A mano (/darrango o rol en Discord) |
+| 83 | 🐛 BUG HUNTER | Reconocimientos | A mano (/darrango o rol en Discord) |
+| 84 | 🧪 BETA TESTER | Reconocimientos | A mano (/darrango o rol en Discord) |
+| 85 | 💰 EMPRESARIO | Economía | Automático |
+| 86 | 💵 MILLONARIO | Economía | Automático |
+| 87 | 🎖️ PLACA DE HONOR | Logros | Automático |
+| 88 | 🏙️ VIDA EN LA CIUDAD | Logros | Automático |
+| 89 | 🧰 PROFESIONAL | Logros | Automático |
+| 90 | 🚗 COLECCIONISTA | Logros | Automático |
+| 91 | 📅 CONSTANCIA | Logros | Automático |
+| 92 | 🐙·USUARIO Γ CASHE | Títulos de nivel | Automático |
+| 93 | ⚡·USUARIO λ RELAMPAGO | Títulos de nivel | Automático |
+| 94 | 🌊·USUARIO Φ TSUNAMI | Títulos de nivel | Automático |
+| 95 | 💥·USUARIO φ FURIA | Títulos de nivel | Automático |
+| 96 | 🌻·USUARIO ρ ARBOL | Títulos de nivel | Automático |
+| 97 | 🌱·USUARIO ξ PLANTA | Títulos de nivel | Automático |
+| 98 | ♦️·USUARIO θ PLATA | Títulos de nivel | Automático |
+| 99 | ⚔️·USUARIO η HIERRO | Títulos de nivel | Automático |
+| 100 | 🗿·USUARIO ζ ROCA | Títulos de nivel | Automático |
+| 101 | 🌕·USUARIO ε PIEDRA | Títulos de nivel | Automático |
+| 102 | 🌀·USUARIO δ TERREMOTO | Títulos de nivel | Automático |
+| 103 | 🌍·USUARIO γ TIERRA | Títulos de nivel | Automático |
+| 104 | 🗻·USUARIO β BARRO | Títulos de nivel | Automático |
+| 105 | 🌴·USUARIO α ARENA | Títulos de nivel | Automático |
+
+Fuera de la jerarquía: **👑 VIP** (`vip = 2`, mensual) y **🥇 SOCIO** (`vip = 3`, anual, aún no se vende),
+que se muestran siempre; **👤 USUARIO** (cuenta vinculada).
 
 ---
 
