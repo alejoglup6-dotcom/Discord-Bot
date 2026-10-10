@@ -59,3 +59,10 @@
 - La economía vieja (`/economy`, `!depositar`...) se unió a la Fortuna: la cartera es el modelo `economy`
   (`src/database/migrar-banco.js` pasa el banco viejo). `!banco` abre el resumen de la Fortuna.
 
+
+## Respuestas en el chat (regla del dueño)
+- Al hacer un cambio: hacerlo y responder lo mínimo. Sin explicaciones largas, recomendaciones, comentarios ni sugerencias.
+- Si el usuario dice "haz X": se hace X y punto.
+- Solo dar sugerencias si las pide, y en pocas palabras.
+- Mantener lo indispensable: qué archivo subir al host (nombre, tamaño, carpeta) cuando aplique.
+- Responder siempre en español.
