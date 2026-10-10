@@ -136,12 +136,35 @@ function controls(priorityKey = "normal") {
     new Discord.ActionRowBuilder().addComponents(
       new Discord.ButtonBuilder().setCustomId("Bot_transcriptTicket").setLabel("Transcripción").setEmoji("📝").setStyle(Discord.ButtonStyle.Secondary),
       new Discord.ButtonBuilder().setCustomId("Bot_noticeTicket").setLabel("Avisar al autor").setEmoji("🔔").setStyle(Discord.ButtonStyle.Secondary),
+      ...(require("./iaTickets").enabled()
+        ? [new Discord.ButtonBuilder().setCustomId("Bot_tpia_sum").setLabel("Resumen IA").setEmoji("🤖").setStyle(Discord.ButtonStyle.Secondary)] // solo staff (lo comprueba el botón)
+        : []),
     ),
   ];
 }
 
-async function onForm(client, interaction) {
-  const type = BY_KEY.get(interaction.customId.split(":")[1]);
+// pre = { typeKey, answers, dupOf } cuando viene del botón "Es distinto, abrir mi ticket" (ticketsDuplicados.js)
+const opening = new Set(); // "guild:user" con un ticket creándose ahora mismo (doble clic en el formulario)
+const lastOpen = new Map(); // "guild:user" -> cuándo abrió su último ticket
+const OPEN_GAP_MS = (Number.isFinite(parseFloat(process.env.TICKETS_ESPERA)) ? parseFloat(process.env.TICKETS_ESPERA) : 60) * 1000; // TICKETS_ESPERA=segundos entre tickets del mismo usuario
+
+async function onForm(client, interaction, pre) {
+  const key = `${interaction.guild?.id}:${interaction.user.id}`;
+  if (opening.has(key)) return interaction.reply({ content: "Ya estoy creando tu ticket, espera un momento.", ...ephemeral }).catch(() => {});
+  const wait = OPEN_GAP_MS - (Date.now() - (lastOpen.get(key) || 0));
+  if (wait > 0) return interaction.reply({ content: `Espera ${Math.ceil(wait / 1000)} s antes de abrir otro ticket.`, ...ephemeral }).catch(() => {});
+  opening.add(key);
+  try {
+    await onFormInner(client, interaction, pre);
+    if (await openTicketOf(interaction.guild, interaction.user.id).catch(() => null)) lastOpen.set(key, Date.now());
+    if (lastOpen.size > 500) for (const [k, t] of lastOpen) if (Date.now() - t > OPEN_GAP_MS) lastOpen.delete(k);
+  } finally {
+    opening.delete(key);
+  }
+}
+
+async function onFormInner(client, interaction, pre) {
+  const type = BY_KEY.get(pre?.typeKey || interaction.customId.split(":")[1]);
   if (!type) return;
   await interaction.deferReply(ephemeral).catch(() => {});
   const guild = interaction.guild;
@@ -150,10 +173,20 @@ async function onForm(client, interaction) {
   if (!category) return interaction.editReply({ content: "Los tickets aún no están configurados (/setup tickets)." }).catch(() => {});
   if (await openTicketOf(guild, interaction.user.id)) return interaction.editReply({ content: "Ya tienes un ticket abierto." }).catch(() => {});
 
-  const answers = type.fields.map((f) => ({ label: f.label, value: (interaction.fields.getTextInputValue(f.id) || "").trim() })).filter((a) => a.value);
-  config.TicketCount = (Number(config.TicketCount) || 0) + 1;
-  await config.save();
-  const num = config.TicketCount;
+  const answers = pre?.answers || type.fields.map((f) => ({ label: f.label, value: (interaction.fields.getTextInputValue(f.id) || "").trim() })).filter((a) => a.value);
+
+  // Fallos: si ya hay un reporte parecido, se le enseña antes de abrir otro ticket (no depende de la IA)
+  if (type.key === "bug" && !pre) {
+    const dup = require("./ticketsDuplicados");
+    const matches = await dup.find(guild.id, interaction.user.id, answers).catch(() => []);
+    if (matches.length) {
+      dup.remember(guild.id, interaction.user.id, { typeKey: type.key, answers, dupOf: matches.map((m) => dup.ticketNum(m.info)) });
+      return interaction.editReply(dup.prompt(matches)).catch(() => {});
+    }
+  }
+  // el número se reserva de forma atómica: dos tickets a la vez ya no repiten número ni nombre de canal
+  const bumped = await Tickets.findOneAndUpdate({ Guild: guild.id }, { $inc: { TicketCount: 1 } }, { new: true }).lean().exec().catch(() => null);
+  const num = Number(bumped?.TicketCount) || (Number(config.TicketCount) || 0) + 1;
   const id = String(num).padStart(4, "0");
 
   const support = config.Role && guild.roles.cache.get(config.Role);
@@ -203,11 +236,17 @@ async function onForm(client, interaction) {
       { name: "Cuenta del juego", value: accountText, inline: true },
       { name: "Prioridad", value: `${PRIORITIES[0].emoji} ${PRIORITIES[0].label}`, inline: true },
       { name: "Atiende", value: "Nadie todavía", inline: true },
+      ...(pre?.dupOf?.length ? [{ name: "🔎 Posible duplicado de", value: `${require("./ticketsDuplicados").dupText(pre.dupOf)} (el autor dice que su caso es distinto)` }] : []),
     ],
   });
   const mentions = [interaction.user.toString(), ...[support, ...extra].filter(Boolean).map((r) => r.toString())].join(" ");
   const first = await channel.send({ content: mentions, embeds: [embed], components: controls() }).catch(() => null);
   await first?.pin().catch(() => {});
+
+  // IA: respuesta automática en los tipos que lo permiten (no bloquea la apertura del ticket)
+  require("./iaTickets")
+    .onOpen(client, channel, { user: interaction.user, type, answers, acc })
+    .catch((e) => console.log("IA tickets:", e.message));
 
   const logs = config.Logs && guild.channels.cache.get(config.Logs);
   if (logs)
@@ -260,6 +299,7 @@ async function onClaim(client, interaction) {
   if (info) {
     info.claimedBy = interaction.user.id;
     info.claimedAt = new Date();
+    if (info.aiState !== "done") info.aiState = "staff"; // un staff atiende: la IA se calla
     await info.save();
   }
   await editField(interaction, "Atiende", `${interaction.user}`);
@@ -360,6 +400,7 @@ async function closeTicket(client, guild, channel, by, reason) {
   }
 
   await channel.setName(`「🔒」cerrado-${id}`).catch(() => {});
+  if (info) require("./iaTickets").onClose(client, guild, channel).catch(() => {}); // resumen y categoría con IA, sin esperar
   const del = hours("deleteH");
   await channel
     .send({
@@ -392,6 +433,14 @@ async function onRate(client, interaction) {
   if (info.rating) return interaction.update({ components: [] }).catch(() => {});
   info.rating = stars;
   await info.save();
+  if (stars <= 2 && info.aiHandled) {
+    // valoración baja en un ticket donde contestó la IA: se anota como hueco de conocimiento
+    let answers = [];
+    try { answers = JSON.parse(info.answers || "[]"); } catch {}
+    require("./iaCorrecciones")
+      .recordGap(guildId, { question: `${BY_KEY.get(info.type)?.label || info.type}: ${answers.map((a) => a.value).join(" ")}`.slice(0, 300), kind: "ticket-valoracion" })
+      .catch(() => {});
+  }
   await interaction.update({ components: [] }).catch(() => {});
   await interaction.followUp({ content: `¡Gracias! Valoraste la atención con ${"★".repeat(stars)}${"☆".repeat(5 - stars)}.` }).catch(() => {});
   const guild = client.guilds.cache.get(guildId);
@@ -418,6 +467,8 @@ async function handle(client, interaction) {
   const id = interaction.customId || "";
   if (id.startsWith("Bot_tp_rate:")) return (await onRate(client, interaction)), true;
   if (!interaction.guild) return false;
+  if (id.startsWith("Bot_tpia_")) return require("./iaTickets").handle(client, interaction);
+  if (id.startsWith("Bot_tp_dup:")) return require("./ticketsDuplicados").handle(client, interaction, onForm);
   if (id === "Bot_ticketType" || id === "Bot_openticket") return (await onSelect(client, interaction)), true;
   if (id.startsWith("Bot_tp_form:") && interaction.isModalSubmit()) return (await onForm(client, interaction)), true;
   if (id === "Bot_tp_claim") return (await onClaim(client, interaction)), true;
@@ -475,7 +526,16 @@ async function stats(guildId, days = 30) {
   for (const t of all) if (t.claimedBy) byStaff[t.claimedBy] = (byStaff[t.claimedBy] || 0) + 1;
   const claimed = all.filter((t) => t.claimedAt && t.openedAt);
   const firstResponseMin = claimed.length ? claimed.reduce((s, t) => s + (new Date(t.claimedAt) - new Date(t.openedAt)), 0) / claimed.length / 60000 : 0;
-  return { total: all.length, open, avg, rated: rated.length, byType, byStaff, firstResponseMin };
+  // IA: en cuántos tickets contestó, cuántos se resolvieron solo con ella y cuántos terminaron pidiendo al staff
+  const aiHandled = all.filter((t) => t.aiHandled);
+  const ai = {
+    handled: aiHandled.length,
+    resolved: aiHandled.filter((t) => t.aiState === "done" && !t.claimedBy).length,
+    toStaff: aiHandled.filter((t) => t.aiState === "staff").length,
+    byCategory: {},
+  };
+  for (const t of all) if (t.aiCategory) ai.byCategory[t.aiCategory] = (ai.byCategory[t.aiCategory] || 0) + 1;
+  return { total: all.length, open, avg, rated: rated.length, byType, byStaff, firstResponseMin, ai };
 }
 
-module.exports = { panel, isPanelMessage, handle, closeTicket, sweep, stats, staffRolesFrom, isStaff, controls, snowflakeTime, onForm, onSelect };
+module.exports = { panel, isPanelMessage, handle, closeTicket, sweep, stats, staffRolesFrom, isStaff, playerSummary, controls, snowflakeTime, onForm, onSelect };

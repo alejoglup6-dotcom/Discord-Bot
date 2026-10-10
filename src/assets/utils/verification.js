@@ -28,9 +28,12 @@ function verifiedRole(guild) {
 // Apodo = nombre de la cuenta del juego (máximo 32 caracteres en Discord)
 const nickFor = (name) => String(name || "").slice(0, 32);
 
-async function links() {
+// Sin argumento carga todas las vinculaciones (tarea periódica); con discordId solo la de ese usuario (botón)
+async function links(discordId = null) {
   const rows = await db.query(
-    "SELECT dl.discord_id, dl.linked_at, p.id, p.name FROM discord_links dl JOIN player p ON p.id = dl.player_id",
+    "SELECT dl.discord_id, dl.linked_at, p.id, p.name FROM discord_links dl JOIN player p ON p.id = dl.player_id" +
+      (discordId ? " WHERE dl.discord_id = ?" : ""),
+    discordId ? [String(discordId)] : [],
   );
   return new Map(rows.map((r) => [String(r.discord_id), { playerId: Number(r.id), name: r.name, linkedAt: r.linked_at }]));
 }
@@ -98,7 +101,7 @@ async function onButton(client, interaction) {
   const role = verifiedRole(interaction.guild);
   let link = null;
   try {
-    link = (await links()).get(interaction.user.id) || null;
+    link = (await links(interaction.user.id)).get(interaction.user.id) || null;
   } catch {
     return interaction.editReply({ content: "No puedo consultar las cuentas ahora mismo. Inténtalo en un minuto." }).catch(() => {});
   }

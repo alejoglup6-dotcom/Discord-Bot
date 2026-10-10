@@ -1,6 +1,6 @@
 /*
  * Catálogo de la Fortuna: minijuego de economía de Discord con temática del servidor de SA-MP.
- * Usa el mismo dinero que /economy (efectivo y banco) y NO toca nada del juego.
+ * Usa la cartera del modelo economy (Money = efectivo, Bank = banco heredado) y NO toca nada del juego.
  * Para cambiar precios, sueldos o esperas basta con editar este archivo.
  */
 

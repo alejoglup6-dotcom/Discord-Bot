@@ -52,3 +52,10 @@
   textos de normas y guía en `src/assets/utils/serverMessages.js`; estilo de mensajes en `src/assets/utils/brand.js`.
   Los nombres conservan las palabras que el bot busca (bienvenida, fortuna, invitados, alianzas...).
 - Pruebas con servidor simulado: `test/verificacionTickets.test.js` (`test/helpers/fakeGuild.js`).
+
+## IA y economía
+- IA del bot: `src/assets/utils/ia*.js` (proveedores en `iaProviders.js`, claves y módulos en `.env`, ver `.env.example`) y `/ia`.
+  El caché de embeddings se guarda en `.cache/` (no en `src/`, que reiniciaría el bot con nodemon/pm2 --watch).
+- La economía vieja (`/economy`, `!depositar`...) se unió a la Fortuna: la cartera es el modelo `economy`
+  (`src/database/migrar-banco.js` pasa el banco viejo). `!banco` abre el resumen de la Fortuna.
+

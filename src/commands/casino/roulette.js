@@ -11,10 +11,9 @@ module.exports = async (client, interaction, args) => {
   Schema.findOne({ Guild: interaction.guild.id, User: user.id }).then(
     async (data) => {
       if (data) {
-        function isOdd(num) {
-          if (num % 2 == 0) return false;
-          else if (num % 2 == 1) return true;
-        }
+        // Colores reales de la ruleta europea (0 es verde). Rojo y negro pagan 1:1 y el verde 35:1,
+        // con lo que la casa se queda 2.7% (antes negro daba +54% y rojo +22% al jugador).
+        const RED = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36];
 
         let colour = interaction.options.getString("color");
         let money = parseInt(interaction.options.getNumber("amount"));
@@ -27,6 +26,11 @@ module.exports = async (client, interaction, args) => {
             interaction,
           );
         colour = colour.toLowerCase();
+        if (!Number.isFinite(money) || money <= 0)
+          return client.errNormal(
+            { error: `¡La apuesta debe ser un número positivo!`, type: "editreply" },
+            interaction,
+          );
         if (money > data.Money)
           return client.errNormal(
             { error: `¡Estás apostando más de lo que tienes!`, type: "editreply" },
@@ -42,44 +46,51 @@ module.exports = async (client, interaction, args) => {
             interaction,
           );
 
+
+        // Descuenta la apuesta de forma atómica (evita apuestas paralelas y saldo negativo)
+        const _debit = await Schema.updateOne(
+          { Guild: interaction.guild.id, User: user.id, Money: { $gte: money } },
+          { $inc: { Money: -money } },
+        );
+        if (!_debit.modifiedCount)
+          return client.errNormal(
+            { error: `¡Estás apostando más de lo que tienes!`, type: "editreply" },
+            interaction,
+          );
+        const stake = money;
         if (random == 0 && colour == 2) {
           // Green
-          money *= 15;
+          money *= 35;
 
-          data.Money += money;
-          data.save();
+          await Schema.updateOne({ Guild: interaction.guild.id, User: user.id }, { $inc: { Money: stake + money } });
 
           client.embed(
             {
-              title: `🎰・Multiplicador: 15x`,
+              title: `🎰・Pago 35:1`,
               desc: `Ganaste **${client.emotes.economy.coins} $${money}**`,
               type: "editreply",
             },
             interaction,
           );
-        } else if (isOdd(random) && colour == 1) {
+        } else if (RED.includes(random) && colour == 1) {
           // Red
-          money = parseInt(money * 1.5);
-          data.Money += money;
-          data.save();
+          await Schema.updateOne({ Guild: interaction.guild.id, User: user.id }, { $inc: { Money: stake + money } });
 
           client.embed(
             {
-              title: `🎰・Multiplicador: 1.5x`,
+              title: `🎰・Pago 1:1`,
               desc: `Ganaste **${client.emotes.economy.coins} $${money}**`,
               type: "editreply",
             },
             interaction,
           );
-        } else if (!isOdd(random) && colour == 0) {
+        } else if (random !== 0 && !RED.includes(random) && colour == 0) {
           // Black
-          money = parseInt(money * 2);
-          data.Money += money;
-          data.save();
+          await Schema.updateOne({ Guild: interaction.guild.id, User: user.id }, { $inc: { Money: stake + money } });
 
           client.embed(
             {
-              title: `🎰・Multiplicador: 2x`,
+              title: `🎰・Pago 1:1`,
               desc: `Ganaste **${client.emotes.economy.coins} $${money}**`,
               type: "editreply",
             },
@@ -87,8 +98,7 @@ module.exports = async (client, interaction, args) => {
           );
         } else {
           // Wrong
-          data.Money -= money;
-          data.save();
+          // La apuesta ya se descontó al inicio
 
           client.embed(
             {

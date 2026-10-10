@@ -3,6 +3,9 @@ const Discord = require("discord.js");
 const Schema = require("../../database/models/functions");
 const Schema2 = require("../../database/models/channelList");
 
+// discord.gg/xxx, discord.com/invite/xxx, discordapp.com/invite/xxx (sin importar mayúsculas)
+const INVITE_RE = /(?:discord\.gg|discord(?:app)?\.com\/invite)\/[a-z0-9-]+/i;
+
 module.exports = (client) => {
   client
     .on(Discord.Events.MessageCreate, async (message) => {
@@ -21,7 +24,7 @@ module.exports = (client) => {
           if (data.AntiInvite == true) {
             const { content } = message;
 
-            const code = content.split("discord.gg/")[1];
+            const code = INVITE_RE.test(content);
             if (code) {
               Schema2.findOne({ Guild: message.guild.id })
                 .lean()
@@ -39,7 +42,7 @@ module.exports = (client) => {
                       return;
                     }
 
-                    message.delete();
+                    message.delete().catch(() => {});
 
                     client.embed(
                       {
@@ -57,7 +60,7 @@ module.exports = (client) => {
                       )
                     )
                       return;
-                    message.delete();
+                    message.delete().catch(() => {});
 
                     client.embed(
                       {
@@ -72,7 +75,8 @@ module.exports = (client) => {
                 },
                 );
             }
-          } else if (data.AntiLinks == true) {
+          }
+          if (data.AntiLinks == true && !(data.AntiInvite == true && INVITE_RE.test(message.content))) {
             const { content } = message;
 
             if (
@@ -96,7 +100,7 @@ module.exports = (client) => {
                       return;
                     }
 
-                    message.delete();
+                    message.delete().catch(() => {});
 
                     client.embed(
                       {
@@ -114,7 +118,7 @@ module.exports = (client) => {
                       )
                     )
                       return;
-                    message.delete();
+                    message.delete().catch(() => {});
 
                     client.embed(
                       {
@@ -152,7 +156,7 @@ module.exports = (client) => {
           if (data.AntiInvite == true) {
             const { content } = newMessage;
 
-            const code = content.split("discord.gg/")[1];
+            const code = INVITE_RE.test(content);
             if (code) {
               Schema2.findOne({ Guild: newMessage.guild.id })
                 .lean()
@@ -170,7 +174,7 @@ module.exports = (client) => {
                       return;
                     }
 
-                    newMessage.delete();
+                    newMessage.delete().catch(() => {});
                     let error = new Discord.EmbedBuilder()
                       .setTitle(`${client.emotes.normal.error}・Moderación`)
                       .setAuthor(client.user.username, client.user.avatarURL())
@@ -198,7 +202,7 @@ module.exports = (client) => {
                       )
                     )
                       return;
-                    newMessage.delete();
+                    newMessage.delete().catch(() => {});
                     let error = new Discord.EmbedBuilder()
                       .setTitle(`${client.emotes.normal.error}・Moderación`)
                       .setAuthor(client.user.username, client.user.avatarURL())
@@ -223,7 +227,8 @@ module.exports = (client) => {
                 },
                 );
             }
-          } else if (data.AntiLinks == true) {
+          }
+          if (data.AntiLinks == true && !(data.AntiInvite == true && INVITE_RE.test(newMessage.content))) {
             const { guild, member, content } = newMessage;
 
             if (
@@ -247,7 +252,7 @@ module.exports = (client) => {
                       return;
                     }
 
-                    newMessage.delete();
+                    newMessage.delete().catch(() => {});
                     var error = new Discord.EmbedBuilder()
                       .setTitle(`${client.emotes.normal.error}・Moderación`)
                       .setAuthor(client.user.username, client.user.avatarURL())
@@ -273,7 +278,7 @@ module.exports = (client) => {
                       )
                     )
                       return;
-                    newMessage.delete();
+                    newMessage.delete().catch(() => {});
                     var error = new Discord.EmbedBuilder()
                       .setTitle(`${client.emotes.normal.error}・Moderación`)
                       .setAuthor(client.user.username, client.user.avatarURL())

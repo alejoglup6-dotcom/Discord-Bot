@@ -296,6 +296,23 @@ function plan(memberRoles, state, discordRefs = 0, crewRoles = new Map()) {
 
   // manuales: el que se da en un lado aparece en el otro
   const saveManual = [], deleteManual = [];
+
+  // roles "extra" (🎫 SOPORTE): se pueden tener además del rango de staff principal, así que nunca se quitan por tener
+  // otro rango. admin_level 1 lo pone el juego; con otro rango se comporta como manual (se da en Discord o con /darrango).
+  const isStaff = [...state.auto].some((k) => k.startsWith("staff_"));
+  for (const r of data.RANKS) {
+    if (r.mode !== "extra") continue;
+    const has = memberRoles.has(r.role), source = state.manual.get(r.key);
+    if (!isStaff) {
+      // ya no es staff: se quita el rol y lo que se guardó desde Discord
+      if (has) remove.add(r.role);
+      if (source === "discord") deleteManual.push(r.key);
+    } else if (state.auto.has(r.key)) {
+      add.add(r.role); // soporte (nivel 1) en el juego
+    } else if (has && !source) saveManual.push(r.key);
+    else if (!has && source === "game") add.add(r.role);
+    else if (!has && source === "discord") deleteManual.push(r.key);
+  }
   for (const r of data.RANKS) {
     if (r.mode !== "manual") continue;
     const has = memberRoles.has(r.role), source = state.manual.get(r.key);

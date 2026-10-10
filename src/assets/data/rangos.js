@@ -7,6 +7,9 @@
  *  - "auto":    sale de los datos del juego; el bot pone o quita el rol a las cuentas vinculadas.
  *  - "manual":  se da a mano (en el juego con /darrango o en Discord con el rol); se copia al otro lado (player_ranks).
  *  - "ref":     escalón de invitados (invitaciones de Discord + referidos del juego); el bot solo lo agrega.
+ *  - "extra":   rol de staff que se puede tener ADEMÁS del rango principal (🎫 SOPORTE). Con admin_level 1 lo pone el juego;
+ *               con otro rango de staff (p. ej. ADMINISTRADOR) se da a mano como "manual" (Discord <-> player_ranks) y el bot
+ *               no lo quita. Si la cuenta deja de ser staff, se le quita.
  *  - "pending": aún no existe en el juego: el bot no lo toca (hoy no queda ninguno).
  * role: nombre exacto del rol en Discord; color: solo para los roles que el bot tiene que crear.
  * group: rol que se da además (el de la facción o el de miembro de banda).
@@ -20,7 +23,7 @@ const RANKS = [
   { key: "staff_modglobal", role: "👨‍💻 MODERADOR GLOBAL", cat: "staff", mode: "auto", color: "#9b59b6" },
   { key: "staff_moderador", role: "🧑‍💻 MODERADOR", cat: "staff", mode: "auto", color: "#8e44ad" },
   { key: "staff_ayudante", role: "🙋 AYUDANTE", cat: "staff", mode: "auto", color: "#3498db" },
-  { key: "staff_soporte", role: "🎫 SOPORTE", cat: "staff", mode: "auto", color: "#1abc9c" },
+  { key: "staff_soporte", role: "🎫 SOPORTE", cat: "staff", mode: "extra", color: "#1abc9c" },
   { key: "cargo_contenido", role: "🎞️ DIRECTOR DE CONTENIDO", cat: "cargo", mode: "manual", color: "#c2185b" },
   { key: "cargo_eventos", role: "🎪 ORGANIZADOR DE EVENTOS", cat: "cargo", mode: "manual" },
   { key: "cargo_facciones", role: "📝 EVALUADOR DE FACCIONES", cat: "cargo", mode: "manual" },

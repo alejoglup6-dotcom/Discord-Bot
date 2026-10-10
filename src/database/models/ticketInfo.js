@@ -19,6 +19,12 @@ const Schema = new db.Schema({
     closedBy: String,
     reason: String,
     rating: Number,
+    // IA en tickets (src/assets/utils/iaTickets.js)
+    aiState: String,       // "" = la IA puede contestar | "staff" = pidieron al staff o hubo un humano (la IA se calla) | "done" = resuelto con la IA
+    aiReplies: { type: Number, default: 0 },
+    aiHandled: { type: Boolean, default: false }, // la IA llegó a contestar al usuario
+    aiSummary: String,     // resumen de 2 líneas al cerrar
+    aiCategory: String,    // categoría corta al cerrar
 });
 
 module.exports = db.model("ticketInfo", Schema);

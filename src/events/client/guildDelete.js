@@ -10,7 +10,6 @@ const schemaFiles = [
     "countChannel",
     "customCommand",
     "economy",
-    "economyTimeout",
     "family",
     "functions",
     "guessNumber",

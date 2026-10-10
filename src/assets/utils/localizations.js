@@ -18,7 +18,6 @@ const names = {
     "custom-commands": "comandos-personalizados",
     config: "configuracion",
     developers: "desarrolladores",
-    economy: "economia",
     embed: "embed",
     family: "familia",
     fortune: "fortuna",

@@ -1,4 +1,8 @@
 const slotItems = ["🍇", "🍉", "🍊", "🍎", "🍓", "🍒"];
+// Pagos (ganancia neta sobre la apuesta). Con 6 símbolos: tres iguales 1/36, par exacto 5/12, nada 5/9.
+// Con 10x y 0.5x la casa se queda ~6.9% a largo plazo (antes 9x y 2x daban +53% al jugador: imprimía dinero).
+const SLOTS_TRIPLE = 10;
+const SLOTS_PAIR = 0.5;
 const Discord = require("discord.js");
 const ms = require("parse-ms");
 
@@ -21,26 +25,43 @@ module.exports = async (client, interaction, args) => {
             { usage: "slots [cantidad]", type: "editreply" },
             interaction,
           );
+        if (!Number.isFinite(money) || money <= 0)
+          return client.errNormal(
+            { error: `¡La apuesta debe ser un número positivo!`, type: "editreply" },
+            interaction,
+          );
         if (money > data.Money)
           return client.errNormal(
             { error: `¡Estás apostando más de lo que tienes!`, type: "editreply" },
             interaction,
           );
 
+
+        // Descuenta la apuesta de forma atómica (evita apuestas paralelas y saldo negativo)
+        const _debit = await Schema.updateOne(
+          { Guild: interaction.guild.id, User: user.id, Money: { $gte: money } },
+          { $inc: { Money: -money } },
+        );
+        if (!_debit.modifiedCount)
+          return client.errNormal(
+            { error: `¡Estás apostando más de lo que tienes!`, type: "editreply" },
+            interaction,
+          );
+        const stake = money;
         let number = [];
         for (let i = 0; i < 3; i++) {
           number[i] = Math.floor(Math.random() * slotItems.length);
         }
 
         if (number[0] == number[1] && number[1] == number[2]) {
-          money *= 9;
+          money *= SLOTS_TRIPLE; // ganancia neta de 10x la apuesta
           win = true;
         } else if (
           number[0] == number[1] ||
           number[0] == number[2] ||
           number[1] == number[2]
         ) {
-          money *= 2;
+          money = Math.floor(money * SLOTS_PAIR); // ganancia neta de 0.5x la apuesta
           win = true;
         }
 
@@ -72,8 +93,7 @@ module.exports = async (client, interaction, args) => {
             interaction,
           );
 
-          data.Money += money;
-          data.save();
+          await Schema.updateOne({ Guild: interaction.guild.id, User: user.id }, { $inc: { Money: stake + money } });
         } else {
           client.embed(
             {
@@ -86,8 +106,7 @@ module.exports = async (client, interaction, args) => {
             interaction,
           );
 
-          data.Money -= money;
-          data.save();
+          // La apuesta ya se descontó al inicio
         }
       } else {
         client.errNormal(

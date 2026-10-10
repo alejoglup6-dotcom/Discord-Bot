@@ -7,9 +7,6 @@ data.addSubcommand((s) => s.setName("help").setDescription("Lista de comandos de
 for (const c of COMMANDS) {
   data.addSubcommand((s) => {
     s.setName(c.sub).setDescription(c.desc.slice(0, 100));
-    if (!c.noTarget) {
-      s.addStringOption((o) => o.setName("name").setDescription("Nombre de la cuenta en el juego (Nombre_Apellido)").setRequired(true).setMaxLength(24));
-    }
     for (const opt of c.opts) {
       if (opt.type === "string") {
         s.addStringOption((o) => o.setName(opt.name).setDescription(opt.desc).setRequired(true).setMaxLength(opt.maxLength || 100));
@@ -22,6 +19,11 @@ for (const c of COMMANDS) {
           return o;
         });
       }
+    }
+    // Discord exige las obligatorias primero: el jugador (nombre o @) va al final; hay que poner uno de los dos
+    if (!c.noTarget) {
+      s.addStringOption((o) => o.setName("name").setDescription("Jugador por nombre de cuenta (Nombre_Apellido) o usa 'usuario'").setMaxLength(24));
+      s.addUserOption((o) => o.setName("usuario").setDescription("Jugador por su @ de Discord (con la cuenta vinculada) o usa 'name'"));
     }
     return s;
   });

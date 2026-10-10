@@ -8,6 +8,7 @@ module.exports = (client) => {
     if (busy) return;
     busy = true;
     await tickets.sweep(client).catch((e) => console.log("[tickets]", e.message));
+    await require("../../assets/utils/ticketsResumen").tick(client).catch((e) => console.log("[tickets] resumen:", e.message)); // resumen semanal para el staff
     busy = false;
   };
   client.once(Discord.Events.ClientReady, () => {

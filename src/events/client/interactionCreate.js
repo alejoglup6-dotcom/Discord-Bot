@@ -16,9 +16,20 @@ module.exports = async (client, interaction) => {
   // Tickets (src/assets/utils/ticketsPro.js): menú, formularios y botones; también las valoraciones, que llegan por MD
   if (
     (interaction.isButton() || interaction.isStringSelectMenu() || interaction.isModalSubmit()) &&
-    /^Bot_(tp_|ticketType$|openticket$|closeticket$)/.test(interaction.customId)
+    /^Bot_(tp_|tpia_|ticketType$|openticket$|closeticket$)/.test(interaction.customId)
   ) {
     if (await require("../../assets/utils/ticketsPro").handle(client, interaction)) return;
+  }
+
+  // IA: botones 👍/👎 bajo las respuestas (src/assets/utils/iaFeedback.js)
+  if (interaction.isButton() && /^Bot_ia_(up|down)$/.test(interaction.customId) && interaction.guild) {
+    try {
+      if (await require("../../assets/utils/iaFeedback").handle(client, interaction)) return;
+    } catch (err) {
+      console.log("IA feedback:", err.message);
+      if (!interaction.replied && !interaction.deferred) interaction.reply({ content: "😵 Intenta de nuevo.", flags: Discord.MessageFlags.Ephemeral }).catch(() => {});
+      return;
+    }
   }
 
   // El bot solo funciona dentro de servidores

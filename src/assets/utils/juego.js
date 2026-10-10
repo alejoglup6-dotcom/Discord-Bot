@@ -115,7 +115,8 @@ function help(client, interaction) {
         "Solo el **Fundador** (rango 9 en el juego, con la cuenta vinculada). Se aplican al momento si el jugador está " +
         "conectado y, los de la cuenta, también si no lo está.\n\n" +
         lines.join("\n") +
-        "\n\nBan, tempban, cárcel, silencio, advertencias y Socio siguen en `/samp`.",
+        "\n\nEl jugador se indica con su nombre (`Nombre_Apellido`) o con su @ de Discord (tiene que tener la cuenta " +
+        "vinculada; si no, se le avisa por MD). Con prefijo: `!juego coins @usuario 10`.\n\nBan, tempban, cárcel, silencio, advertencias y Socio siguen en `/samp`.",
       type: "editreply",
     },
     interaction,
@@ -132,7 +133,7 @@ async function run(client, interaction) {
 
   let target = null;
   if (!cmd.noTarget) {
-    target = await client.samp.target(interaction, me);
+    target = await client.samp.target(interaction, me, { warnUnlinked: cmd.sub });
     if (!target) return;
     if (cmd.online && !Number(target.connected)) {
       return client.errNormal({ error: `${target.name} no está conectado: este comando solo funciona con el jugador en el servidor`, type: "editreply" }, interaction);
