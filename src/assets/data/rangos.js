@@ -7,6 +7,9 @@
  *  - "auto":    sale de los datos del juego; el bot pone o quita el rol a las cuentas vinculadas.
  *  - "manual":  se da a mano (en el juego con /darrango o en Discord con el rol); se copia al otro lado (player_ranks).
  *  - "ref":     escalón de invitados (invitaciones de Discord + referidos del juego); el bot solo lo agrega.
+ *  - "extra":   rol de staff que se puede tener ADEMÁS del rango principal (🎫 SOPORTE). Con admin_level 1 lo pone el juego;
+ *               con otro rango de staff (p. ej. ADMINISTRADOR) se da a mano como "manual" (Discord <-> player_ranks) y el bot
+ *               no lo quita. Si la cuenta deja de ser staff, se le quita.
  *  - "pending": aún no existe en el juego: el bot no lo toca (hoy no queda ninguno).
  * role: nombre exacto del rol en Discord; color: solo para los roles que el bot tiene que crear.
  * group: rol que se da además (el de la facción o el de miembro de banda).
@@ -20,7 +23,7 @@ const RANKS = [
   { key: "staff_modglobal", role: "👨‍💻 MODERADOR GLOBAL", cat: "staff", mode: "auto", color: "#9b59b6" },
   { key: "staff_moderador", role: "🧑‍💻 MODERADOR", cat: "staff", mode: "auto", color: "#8e44ad" },
   { key: "staff_ayudante", role: "🙋 AYUDANTE", cat: "staff", mode: "auto", color: "#3498db" },
-  { key: "staff_soporte", role: "🎫 SOPORTE", cat: "staff", mode: "auto", color: "#1abc9c" },
+  { key: "staff_soporte", role: "🎫 SOPORTE", cat: "staff", mode: "extra", color: "#1abc9c" },
   { key: "cargo_contenido", role: "🎞️ DIRECTOR DE CONTENIDO", cat: "cargo", mode: "manual", color: "#c2185b" },
   { key: "cargo_eventos", role: "🎪 ORGANIZADOR DE EVENTOS", cat: "cargo", mode: "manual" },
   { key: "cargo_facciones", role: "📝 EVALUADOR DE FACCIONES", cat: "cargo", mode: "manual" },
@@ -76,6 +79,14 @@ const RANKS = [
   { key: "citytv_3", role: "🎬 DIRECTOR DE PRENSA", cat: "faccion", mode: "auto", group: "📺 CITYTV" },
   { key: "citytv_2", role: "📺 Camarógrafo", cat: "faccion", mode: "auto", color: "#87ceeb", group: "📺 CITYTV" },
   { key: "citytv_1", role: "📺 Reportero", cat: "faccion", mode: "auto", color: "#87ceeb", group: "📺 CITYTV" },
+  { key: "ems_8", role: "🚑 DIRECTOR MÉDICO", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_7", role: "🚑 Subdirector Médico", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_6", role: "🚑 Médico Especialista", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_5", role: "🚑 Médico", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_4", role: "🚑 Enfermero", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_3", role: "🚑 Paramédico Senior", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_2", role: "🚑 Paramédico", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
+  { key: "ems_1", role: "🚑 Practicante", cat: "faccion", mode: "auto", color: "#ff5a5f", group: "🚑 EMS" },
   { key: "banda_lider", role: "🏴‍☠️ LIDER", cat: "banda", mode: "auto", group: "💀 MIEMBRO DE BANDA" },
   { key: "banda_miembro", role: "💀 MIEMBRO DE BANDA", cat: "banda", mode: "auto" },
   { key: "creador_streamer", role: "🎥 STREAMER", cat: "creador", mode: "manual" },
@@ -141,7 +152,7 @@ const REF_TIERS = [
 // Logros con rango: ach_id en player_achievements (índice de LOGROS en logros.pwn)
 const LOGRO_RANKS = { 8: "logro_vida", 11: "logro_profesional", 14: "logro_coleccionista", 19: "logro_placa", 20: "logro_constancia" };
 // Facciones del juego (pfactions.id_faction) -> prefijo de clave
-const FACTIONS = { 1: "sapd", 2: "fbi", 3: "saem", 4: "lssd", 5: "citytv", 6: "gob" };
+const FACTIONS = { 1: "sapd", 2: "fbi", 3: "saem", 4: "lssd", 5: "citytv", 6: "gob", 7: "ems" };
 // Staff del juego (player.admin_level) -> clave
 const STAFF = {
   1: "staff_soporte",

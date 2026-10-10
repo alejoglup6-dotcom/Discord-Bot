@@ -4,7 +4,7 @@
   "description": "Drok, un bot de Discord con más de 400 comandos para gestionar todo tu servidor",
   "main": "./src/index.js",
   "scripts": {
-    "test": "node --test test/*.test.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
     "start": "node . --trace-warnings",
     "dev": "nodemon . --trace-warnings",
     "add-dev": "node src/dev.js",

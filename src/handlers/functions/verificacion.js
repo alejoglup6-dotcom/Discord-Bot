@@ -42,7 +42,7 @@ module.exports = (client) => {
   client.on("guildMemberAdd", async (member) => {
     if (v.MODE() === "off") return;
     try {
-      const link = (await v.links()).get(member.id);
+      const link = (await v.links(member.id)).get(member.id);
       const role = v.verifiedRole(member.guild);
       if (link && role) await v.applyMember(member, link, role, () => {}, { welcome: false });
     } catch {}

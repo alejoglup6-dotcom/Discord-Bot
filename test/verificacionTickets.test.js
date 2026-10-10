@@ -2,6 +2,7 @@
  * Verificación con la cuenta del juego, tickets nuevos y reorganización del servidor, con un servidor de Discord
  * simulado (test/helpers/fakeGuild.js) y la copia de la base de datos. Deja la base como estaba.
  */
+process.env.TICKETS_ESPERA = "0"; // la prueba abre varios tickets seguidos (en el bot hay 60 s de espera)
 require("dotenv").config({ quiet: true });
 const test = require("node:test");
 const assert = require("node:assert");

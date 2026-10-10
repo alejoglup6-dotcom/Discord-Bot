@@ -30,6 +30,19 @@
   automáticas (`autoBadges`: Donador, Usuario Diamante, Beta tester). También hace la limpieza de `CLEANUP` de
   `src/assets/data/rangos.js` (duplicados, permiso de 🥊 BETA, orden SHERIFF/ALGUACIL). Pruebas con un servidor de
   Discord simulado en `test/rangosSync.test.js`. `/samp advertir` y `/samp quitaradv` = `/adv` y `/quitaradv` del juego.
+- Al momento: el gamemode (`DiscordSync_Queue` y `DiscordRankWatch` de `discord_link.pwn`) apunta en `discord_sync_queue` cada
+  cuenta que cambia y el bot la sincroniza a los 2 s (`syncPlayers`). Si MySQL lo permite, el bot crea además triggers
+  (`rangos.initQueue`) para los cambios hechos fuera del juego. La vuelta completa queda de respaldo.
+- Orden de los roles: todos los rangos de `RANKS` arriba en su orden (bandas, SOCIO y VIP tras MIEMBRO DE BANDA), luego 👤 USUARIO
+  y debajo el resto (sanciones, años, plataforma, países, avisos). Los roles de bots o con permisos que no son rangos (BETA,
+  BOTS) se quedan pegados al rango de encima (`desiredOrder`/`orderNames`/`orderRoles`).
+
+## /juego (comandos del juego para el Fundador)
+- `src/assets/data/juego.js` (lista de subcomandos y su acción) y `src/assets/utils/juego.js` (comprobaciones). Solo
+  `admin_level` 9 con la cuenta vinculada. Cada uno deja una fila en `discord_actions` y el gamemode la aplica en
+  `DiscordAdmin_Apply` (`gamemodes/src/discord_link.pwn`): si se añade o cambia una acción, cambiar los dos repos.
+- La contraseña viaja como `salt:hash` (SHA256 como `SHA256_PassHash`), nunca en claro. Pruebas: `test/juego.test.js`.
+- El staff lo manda el juego (decidido el 04-oct-2026): `/juego staff` cambia el nivel y la sincronización pone el rol.
 
 ## Verificación, tickets y estructura del Discord
 - Verificación = cuenta del juego vinculada desde la web (`/verificar` del repo Web, `discord_links`). El bot da 👤 USUARIO
@@ -39,3 +52,10 @@
   textos de normas y guía en `src/assets/utils/serverMessages.js`; estilo de mensajes en `src/assets/utils/brand.js`.
   Los nombres conservan las palabras que el bot busca (bienvenida, fortuna, invitados, alianzas...).
 - Pruebas con servidor simulado: `test/verificacionTickets.test.js` (`test/helpers/fakeGuild.js`).
+
+## IA y economía
+- IA del bot: `src/assets/utils/ia*.js` (proveedores en `iaProviders.js`, claves y módulos en `.env`, ver `.env.example`) y `/ia`.
+  El caché de embeddings se guarda en `.cache/` (no en `src/`, que reiniciaría el bot con nodemon/pm2 --watch).
+- La economía vieja (`/economy`, `!depositar`...) se unió a la Fortuna: la cartera es el modelo `economy`
+  (`src/database/migrar-banco.js` pasa el banco viejo). `!banco` abre el resumen de la Fortuna.
+

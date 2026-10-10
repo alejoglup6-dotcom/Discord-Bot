@@ -1,6 +1,6 @@
 /*
  * Fortuna: minijuego de economía de Discord (oficios, propiedades, armas y asaltos).
- * Usa el dinero de /economy (modelo economy: Money = efectivo, Bank = banco) y no toca nada del juego.
+ * Su cartera es el modelo economy (Money = efectivo, Bank = banco heredado de la economía anterior) y no toca nada del juego.
  * El catálogo (precios, sueldos, esperas) está en src/assets/data/fortuna.js.
  */
 const Economy = require("./models/economy");
@@ -110,7 +110,7 @@ async function contract(guild, user, jobQuery) {
   const list = await assets(guild, user);
   const missing = Object.entries(job.needs || {}).filter(([cat, n]) => count(list, cat) < n);
   if (missing.length) return { error: "needs", job, missing: missing.map(([cat]) => catalog.CATEGORIES[cat]) };
-  await Fortuna.updateOne({ Guild: guild, User: user }, { $set: { Job: job.id, JobSince: Date.now(), LastWork: 0 } });
+  await Fortuna.updateOne({ Guild: guild, User: user }, { $set: { Job: job.id, JobSince: Date.now() } });
   return { job };
 }
 
@@ -148,17 +148,25 @@ async function buy(guild, user, categoryQuery, itemQuery) {
   const item = catalog.findItem(category.id, itemQuery);
   if (!item) return { error: "no_item", category };
   const now = Date.now();
-  // Se crea la fila solo si no la tenía (atómico); si ya existía, no se cobra
+  // Primero se cobra (atómico) y después se crea la propiedad. Antes se creaba gratis primero: con un /sell
+  // en paralelo se podía vender una propiedad aún sin pagar.
+  // Si ya la tiene se avisa antes de mirar el dinero (si no, decia "no te alcanza" a quien ya la tenia)
+  if (await Assets.findOne({ Guild: guild, User: user, Category: category.id, Item: item.id }).lean()) {
+    return { error: "owned", category, item };
+  }
+  if (!(await takeMoney(guild, user, item.price))) {
+    const w = await wallet(guild, user);
+    return { error: "no_money", category, item, missing: item.price - w.money };
+  }
+  // La fila se crea solo si no la tenía (atómico); si ya existía, se devuelve el dinero
   const before = await Assets.findOneAndUpdate(
     { Guild: guild, User: user, Category: category.id, Item: item.id },
     { $setOnInsert: { Price: item.price, BoughtAt: now, LastCollect: now } },
     { upsert: true },
   ).lean();
-  if (before) return { error: "owned", category, item };
-  if (!(await takeMoney(guild, user, item.price))) {
-    await Assets.deleteOne({ Guild: guild, User: user, Category: category.id, Item: item.id });
-    const w = await wallet(guild, user);
-    return { error: "no_money", category, item, missing: item.price - w.money };
+  if (before) {
+    await addMoney(guild, user, item.price);
+    return { error: "owned", category, item };
   }
   return { category, item, money: (await wallet(guild, user)).money };
 }
@@ -215,8 +223,9 @@ async function heist(guild, user, now = Date.now()) {
   }
   // Multa: se paga con lo que tenga en efectivo
   const w = await wallet(guild, user);
-  const fine = Math.min(w.money, rand(catalog.HEIST_FINE));
-  const money = fine > 0 ? await addMoney(guild, user, -fine) : w.money;
+  let fine = Math.min(w.money, rand(catalog.HEIST_FINE));
+  if (fine > 0 && !(await takeMoney(guild, user, fine))) fine = 0; // gastó el dinero justo ahora: sin multa
+  const money = (await wallet(guild, user)).money;
   return { success: false, target, weapon, chance, fine, money };
 }
 

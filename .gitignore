@@ -104,3 +104,8 @@ dist
 
 src/config/*
 branding/shorts/
+
+docs/permisos/*.html
+
+# cache de la IA (se regenera)
+src/assets/data/.ia-embeddings.json

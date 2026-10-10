@@ -7,7 +7,11 @@ const Schema = require("../../database/models/economy");
  */
 module.exports = async (client, interaction, args) => {
   let user = interaction.user;
-  var result = Math.ceil(Math.random() * 12);
+  // Punto de estrellón con ventaja de la casa de 6%: P(llegar a x) = 0.94 / x, tope 5x.
+  // Cada paso del juego sube el multiplicador 0.2; "result" es el último paso que se llega a mostrar.
+  // (Antes: paso 1..12 al azar. Retirarse siempre en 1.2x pagaba +20% sin riesgo, y hasta +120% antes de arreglar el pago.)
+  const crashPoint = Math.min(5, 0.94 / (1 - Math.random()));
+  var result = Math.max(0, Math.floor((crashPoint - 1) / 0.2 + 1e-9));
 
   Schema.findOne({ Guild: interaction.guild.id, User: user.id }).then(
     async (data) => {
@@ -19,11 +23,28 @@ module.exports = async (client, interaction, args) => {
             interaction,
           );
 
+        if (!Number.isFinite(money) || money <= 0)
+          return client.errNormal(
+            { error: `¡La apuesta debe ser un número positivo!`, type: "editreply" },
+            interaction,
+          );
         if (money > data.Money)
           return client.errNormal(
             { error: `¡Estás apostando más de lo que tienes!`, type: "editreply" },
             interaction,
           );
+
+        // Descuenta la apuesta de forma atómica (evita apuestas paralelas y saldo negativo)
+        const _debit = await Schema.updateOne(
+          { Guild: interaction.guild.id, User: user.id, Money: { $gte: money } },
+          { $inc: { Money: -money } },
+        );
+        if (!_debit.modifiedCount)
+          return client.errNormal(
+            { error: `¡Estás apostando más de lo que tienes!`, type: "editreply" },
+            interaction,
+          );
+        let settled = false; // evita pagar y perder la misma partida
 
         const row = new Discord.ActionRowBuilder().addComponents(
           new Discord.ButtonBuilder()
@@ -74,15 +95,8 @@ module.exports = async (client, interaction, args) => {
                 return;
               } else if (index === result) {
                 clearInterval(crashInterval);
-                Schema.findOne({
-                  Guild: interaction.guild.id,
-                  User: user.id,
-                }).then(async (data) => {
-                  if (data) {
-                    data.Money -= money;
-                    data.save();
-                  }
-                });
+                if (settled) return;
+                settled = true; // la apuesta ya se descontó al inicio
 
                 return client.embed(
                   {
@@ -136,19 +150,17 @@ module.exports = async (client, interaction, args) => {
                 if (i.customId == "crash_stop") {
                   clearInterval(crashInterval);
                   i.deferUpdate();
+                  if (settled) return; // ya se estrelló: no se paga
+                  settled = true;
 
                   index = result + 1;
-                  const profit = money * multiplier;
+                  const payout = Math.floor(money * multiplier); // apuesta + ganancia
+                  const profit = payout - money;
 
-                  Schema.findOne({
-                    Guild: interaction.guild.id,
-                    User: user.id,
-                  }).then(async (data) => {
-                    if (data) {
-                      data.Money += parseInt(profit);
-                      data.save();
-                    }
-                  });
+                  await Schema.updateOne(
+                    { Guild: interaction.guild.id, User: user.id },
+                    { $inc: { Money: payout } },
+                  );
 
                   return client.embed(
                     {
@@ -170,16 +182,8 @@ module.exports = async (client, interaction, args) => {
               .catch(async () => {
                 clearInterval(crashInterval);
                 index = result + 1;
-
-                Schema.findOne({
-                  Guild: interaction.guild.id,
-                  User: user.id,
-                }).then(async (data) => {
-                  if (data) {
-                    data.Money -= money;
-                    data.save();
-                  }
-                });
+                if (settled) return;
+                settled = true; // la apuesta ya se descontó al inicio
                 return client.embed(
                   {
                     desc: `Resultados del crash de ${user}`,

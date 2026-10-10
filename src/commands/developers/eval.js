@@ -6,6 +6,14 @@ const { inspect } = require("util");
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
+  // eval ejecuta código arbitrario con acceso total al bot: apagado por defecto.
+  // Actívalo solo si lo necesitas con ENABLE_EVAL=true en el .env.
+  if (process.env.ENABLE_EVAL !== "true")
+    return client.errNormal(
+      { error: "Eval está desactivado en este entorno.", type: "editreply" },
+      interaction,
+    );
+
   const webhookClientLogs = new Discord.WebhookClient({
     id: client.webhooks.evalLogs.id,
     token: client.webhooks.evalLogs.token,

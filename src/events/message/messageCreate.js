@@ -2,7 +2,6 @@ const Discord = require("discord.js");
 
 const Functions = require("../../database/models/functions");
 const afk = require("../../database/models/afk");
-const chatBotSchema = require("../../database/models/chatbot-channel");
 const messagesSchema = require("../../database/models/messages");
 const messageSchema = require("../../database/models/levelMessages");
 const messageRewards = require("../../database/models/messageRewards");
@@ -11,9 +10,16 @@ const levelRewards = require("../../database/models/levelRewards");
 const levelLogs = require("../../database/models/levelChannels");
 const Commands = require("../../database/models/customCommand");
 const CommandsSchema = require("../../database/models/customCommandAdvanced");
-const fetch = require("node-fetch");
 const { runPrefixCommand } = require("../../assets/utils/prefixCommands");
 const { isAllianceChannel, repostAlliance } = require("../../assets/utils/alliances");
+const ia = require("../../assets/utils/iaChat");
+
+// Un solo WebhookClient para los logs de MD (antes se creaba uno por cada mensaje)
+let _dmlog = null;
+// Caché de ajustes del servidor: evita un upsert transaccional por cada mensaje
+const _settingsCache = new Map();
+const SETTINGS_TTL = 30 * 1000;
+const SETTINGS_MAX = 5000;
 
 /**
  *
@@ -22,12 +28,11 @@ const { isAllianceChannel, repostAlliance } = require("../../assets/utils/allian
  * @returns
  */
 module.exports = async (client, message) => {
-  const dmlog = new Discord.WebhookClient({
-    id: client.webhooks.dmLogs.id,
-    token: client.webhooks.dmLogs.token,
-  });
-
-  if (message.author.bot) return;
+  if (message.author.bot) {
+    // Único caso en que se lee a otro bot: el "!juego coins @usuario N" de Tebex (ver assets/utils/tebexJuego.js)
+    if (message.guild) await require("../../assets/utils/tebexJuego").onBotMessage(client, message);
+    return;
+  }
 
   if (message.channel.type === Discord.ChannelType.DM) {
     let embedLogs = new Discord.EmbedBuilder()
@@ -54,11 +59,28 @@ module.exports = async (client, message) => {
         value: `${message.attachments.first()?.url}`,
         inline: false,
       });
-    return dmlog.send({
-      username: "Bot DM",
-      embeds: [embedLogs],
-    });
+    if (!_dmlog)
+      _dmlog = new Discord.WebhookClient({
+        id: client.webhooks.dmLogs.id,
+        token: client.webhooks.dmLogs.token,
+      });
+    return _dmlog
+      .send({
+        username: "Bot DM",
+        embeds: [embedLogs],
+      })
+      .catch((err) => console.log("DM log:", err.message));
   }
+
+  // IA en tickets: silencia a la IA si escribe un staff y contesta al autor si toca (ver assets/utils/iaTickets.js)
+  require("../../assets/utils/iaTickets")
+    .onMessage(client, message)
+    .catch((err) => console.log("IA tickets:", err.message));
+
+  // Moderación asistida: solo avisa al staff (apagada salvo IA_MODERACION=1; ver assets/utils/iaModeracion.js)
+  require("../../assets/utils/iaModeracion")
+    .onMessage(client, message)
+    .catch((err) => console.log("IA moderación:", err.message));
 
   // Canal de alianzas: el bot vuelve a publicar la plantilla y borra el mensaje original
   if (isAllianceChannel(message.channel)) {
@@ -68,13 +90,21 @@ module.exports = async (client, message) => {
   const guildId = message.guild.id;
   const userId = message.author.id;
 
-  const guildSettings = await Functions.findOneAndUpdate(
-    { Guild: guildId },
-    { $setOnInsert: { Prefix: client.config.discord.prefix } },
-    { new: true, upsert: true },
-  )
-    .lean()
-    .exec();
+  let guildSettings;
+  const cached = _settingsCache.get(guildId);
+  if (cached && cached.exp > Date.now()) {
+    guildSettings = cached.value;
+  } else {
+    guildSettings = await Functions.findOneAndUpdate(
+      { Guild: guildId },
+      { $setOnInsert: { Prefix: client.config.discord.prefix } },
+      { new: true, upsert: true },
+    )
+      .lean()
+      .exec();
+    if (_settingsCache.size >= SETTINGS_MAX) _settingsCache.delete(_settingsCache.keys().next().value);
+    _settingsCache.set(guildId, { value: guildSettings, exp: Date.now() + SETTINGS_TTL });
+  }
 
   if (guildSettings && !guildSettings.Prefix) {
     Functions.updateOne(
@@ -244,41 +274,12 @@ module.exports = async (client, message) => {
       });
   }
 
-  // Chat bot
-  chatBotSchema
-    .findOne({ Guild: message.guild.id })
-    .lean()
-    .cache("60 seconds")
-    .exec()
-    .then(async (data) => {
-      if (!data) return;
-      if (message.channel.id !== data.Channel) return;
-      if (process.env.OPENAI) {
-        fetch(`https://api.openai.com/v1/chat/completions`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + process.env.OPENAI,
-          },
-          body: JSON.stringify({
-            model: "gpt-4o-mini",
-            messages: [
-              {
-                role: "user",
-                content: message.content,
-              },
-            ],
-          }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            const reply = data?.choices?.[0]?.message?.content;
-            if (!reply) return;
-            return message.reply({ content: reply.slice(0, 2000) });
-          })
-          .catch(() => {});
-      }
-    });
+  // IA: responde solo si la mencionan o si responden a un mensaje suyo (ver assets/utils/iaChat.js)
+  const aiTrigger = await ia.detectTrigger(client, message, prefix).catch((err) => {
+    console.log("IA:", err.message);
+    return null;
+  });
+  if (aiTrigger) ia.respond(client, message, aiTrigger).catch((err) => console.log("IA:", err.message));
 
   // Sticky messages
   try {
@@ -304,6 +305,9 @@ module.exports = async (client, message) => {
       data.save();
     });
   } catch {}
+
+  // La IA ya se encarga de este mensaje
+  if (aiTrigger) return;
 
   // Prefix
   const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

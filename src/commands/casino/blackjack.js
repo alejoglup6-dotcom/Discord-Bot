@@ -18,12 +18,28 @@ module.exports = async (client, interaction, args) => {
             { usage: "blackjack [cantidad]", type: "editreply" },
             interaction,
           );
+        if (!Number.isFinite(money) || money <= 0)
+          return client.errNormal(
+            { error: `¡La apuesta debe ser un número positivo!`, type: "editreply" },
+            interaction,
+          );
         if (money > data.Money)
           return client.errNormal(
             { error: `¡Estás apostando más de lo que tienes!`, type: "editreply" },
             interaction,
           );
 
+
+        // Descuenta la apuesta de forma atómica (evita apuestas paralelas y saldo negativo)
+        const _debit = await Schema.updateOne(
+          { Guild: interaction.guild.id, User: user.id, Money: { $gte: money } },
+          { $inc: { Money: -money } },
+        );
+        if (!_debit.modifiedCount)
+          return client.errNormal(
+            { error: `¡Estás apostando más de lo que tienes!`, type: "editreply" },
+            interaction,
+          );
         var numCardsPulled = 0;
         var gameOver = false;
         var player = {
@@ -94,14 +110,17 @@ module.exports = async (client, interaction, args) => {
         };
         deck.initialize();
         deck.shuffle();
+        let settled = false;
         async function bet(outcome) {
-          if (outcome === "win") {
-            data.Money += money;
-            data.save();
+          // La apuesta ya se descontó al iniciar. Solo se liquida una vez por partida.
+          if (settled) return;
+          settled = true;
+          if (outcome === "win" && player.score === 21 && dealer.score === 21) outcome = "push";
+          if (outcome === "push") {
+            await Schema.updateOne({ Guild: interaction.guild.id, User: user.id }, { $inc: { Money: money } });
           }
-          if (outcome === "lose") {
-            data.Money -= money;
-            data.save();
+          if (outcome === "win") {
+            await Schema.updateOne({ Guild: interaction.guild.id, User: user.id }, { $inc: { Money: money * 2 } });
           }
         }
 
@@ -271,6 +290,7 @@ module.exports = async (client, interaction, args) => {
             dealer.score < 21
           ) {
             gameOver = true;
+            bet("push");
             endMsg(`¡Empate!`, `El bot tenía ${dealer.score.toString()}`, `RED`);
           }
         }

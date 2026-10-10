@@ -57,7 +57,13 @@ function fakeGuild(names) {
     roles.set(id, role);
     return role;
   };
-  guild.roles = { cache: roles, create: async ({ name, color }) => Object.assign(mkRole(name), { hexColor: color || "#000000" }) };
+  guild.roles = {
+    cache: roles,
+    create: async ({ name, color }) => Object.assign(mkRole(name, { position: 1 }), { hexColor: color || "#000000" }),
+    async setPositions(list) {
+      for (const { role, position } of list) role.position = position;
+    },
+  };
   for (const n of names) mkRole(typeof n === "string" ? n : n.name, typeof n === "string" ? {} : n);
   const addMember = (id, roleNames) => {
     const set = new Collection();
@@ -110,6 +116,77 @@ test("limpieza: duplicados, 💎 VIP, permiso de 🥊 BETA y SHERIFF encima de A
   } finally {
     await db.query("DELETE FROM discord_crew_roles WHERE guild_id = '900000000000000999'");
     for (const r of before) await db.query("INSERT INTO discord_crew_roles VALUES (?, ?, ?)", [r.guild_id, r.crew_id, r.role_id]);
+  }
+});
+
+test("orden por jerarquía: todos los rangos arriba en su orden y los demás roles debajo de 👤 USUARIO", () => {
+  // como estaba el Discord el 04-oct-2026 (de arriba abajo)
+  const current = [
+    "🔱 FUNDADOR", "⚜️ CO-FUNDADOR", "🥊 BETA", "⭕ ENCARGADO STAFF", "🛡️ ADMINISTRADOR", "🎫 SOPORTE", "🤖 BOTS",
+    "🎖 SHERIFF", "🎖 ALGUACIL", "👮 COMISARIO", "🥇 SOCIO", "👑 VIP", "👤 USUARIO", "🔇 MUTEADO", "🔔 Anuncios",
+    "👮 POLICIA", "🛠️ DESARROLLADOR", "👮 Subjefe", "👮 Cadete (Policía)", "🎖 Sub Sheriff", "🏴 Los Malditos", "🟣 TIKTOKER",
+  ];
+  // BETA y BOTS tienen permisos o se ven aparte: se quedan pegados al rango de encima
+  const out = sync.orderNames(current, sync.desiredOrder(current), new Set(["🥊 BETA", "🤖 BOTS"]));
+  const at = (n) => out.indexOf(n);
+  assert.strictEqual(out.length, current.length);
+  assert.deepStrictEqual([...out].sort(), [...current].sort());
+  // DESARROLLADOR entre CO-FUNDADOR y ENCARGADO; BETA sigue debajo de CO-FUNDADOR y BOTS de SOPORTE
+  assert.ok(at("⚜️ CO-FUNDADOR") < at("🛠️ DESARROLLADOR") && at("🛠️ DESARROLLADOR") < at("⭕ ENCARGADO STAFF"));
+  assert.ok(at("⚜️ CO-FUNDADOR") < at("🥊 BETA") && at("🥊 BETA") < at("⭕ ENCARGADO STAFF"));
+  assert.strictEqual(at("🤖 BOTS"), at("🎫 SOPORTE") + 1);
+  // policía: COMISARIO, sus rangos y el rol POLICIA; luego el Sheriff con los suyos y ALGUACIL
+  const police = ["👮 COMISARIO", "👮 Subjefe", "👮 Cadete (Policía)", "👮 POLICIA", "🎖 SHERIFF", "🎖 Sub Sheriff", "🎖 ALGUACIL"];
+  assert.deepStrictEqual(out.filter((n) => police.includes(n)), police);
+  // bandas, SOCIO y VIP debajo de los rangos de banda; TIKTOKER y todo rango por encima de USUARIO
+  assert.ok(at("🎖 ALGUACIL") < at("🏴 Los Malditos") && at("🏴 Los Malditos") < at("🥇 SOCIO") && at("🥇 SOCIO") < at("👑 VIP"));
+  assert.ok(at("🟣 TIKTOKER") < at("👤 USUARIO") && at("👑 VIP") < at("👤 USUARIO"));
+  // el resto (sanciones, avisos...) debajo de USUARIO, en su orden
+  assert.deepStrictEqual(out.slice(at("👤 USUARIO") + 1), ["🔇 MUTEADO", "🔔 Anuncios"]);
+  // ya ordenado: no cambia nada
+  assert.deepStrictEqual(sync.orderNames(out, sync.desiredOrder(out), new Set(["🥊 BETA", "🤖 BOTS"])), out);
+  // el orden deseado sigue la lista RANKS y termina en USUARIO
+  const d = sync.desiredOrder();
+  assert.ok(d.indexOf("🔱 FUNDADOR") < d.indexOf("🛠️ DESARROLLADOR") && d.indexOf("🛠️ DESARROLLADOR") < d.indexOf("🎫 SOPORTE"));
+  assert.strictEqual(d[d.length - 1], "👤 USUARIO");
+});
+
+test("al momento: los triggers apuntan los cambios y se sincroniza solo esa cuenta", async (t) => {
+  const samp = require("../src/database/samp");
+  if (!(await samp.isAvailable())) return t.skip("sin base de datos del servidor");
+  const db = require("../src/database/mysql");
+  const rangos = require("../src/database/rangos");
+  await rangos.init();
+  // sin permiso para triggers (MySQL con registro binario y sin SUPER) la cola solo la llena el gamemode
+  const r = await rangos.initQueue();
+  const triggers = r.ok;
+  if (triggers) assert.ok(r.triggers >= 5);
+  const gameQueues = (id) => !triggers && db.query("INSERT INTO discord_sync_queue (player_id) VALUES (?) ON DUPLICATE KEY UPDATE changed_at = CURRENT_TIMESTAMP(3)", [id]);
+  const [p] = await db.query("SELECT id, admin_level, cash FROM player ORDER BY id LIMIT 1");
+  const DISCORD = "900000000000000777";
+  await db.query("DELETE FROM discord_links WHERE player_id = ? OR discord_id = ?", [p.id, DISCORD]);
+  try {
+    await rangos.takeQueue(); // vacía lo que hubiera
+    // un cambio que no importa (dinero en mano) no se apunta
+    await db.query("UPDATE player SET cash = cash + 1 WHERE id = ?", [p.id]);
+    assert.deepStrictEqual(await rangos.takeQueue(), []);
+    // vincular y subir a Desarrollador: se apunta una vez
+    await db.query("INSERT INTO discord_links (player_id, discord_id) VALUES (?, ?)", [p.id, DISCORD]);
+    await db.query("UPDATE player SET admin_level = 7 WHERE id = ?", [p.id]);
+    await gameQueues(p.id);
+    assert.deepStrictEqual(await rangos.takeQueue(), [p.id]);
+    assert.deepStrictEqual(await rangos.takeQueue(), []);
+
+    const { guild, addMember } = fakeGuild(["🛡️ ADMINISTRADOR", "🛠️ DESARROLLADOR", "👤 USUARIO"]);
+    const m = addMember(DISCORD, ["🛡️ ADMINISTRADOR"]);
+    await sync.syncPlayers(guild, [p.id], false);
+    const names = new Set(m.roles.cache.map((x) => x.name));
+    assert.ok(names.has("🛠️ DESARROLLADOR") && !names.has("🛡️ ADMINISTRADOR"), [...names].join(", "));
+  } finally {
+    await db.query("DELETE FROM discord_links WHERE discord_id = ?", [DISCORD]);
+    await db.query("UPDATE player SET admin_level = ?, cash = ? WHERE id = ?", [p.admin_level, p.cash, p.id]);
+    await db.query("DELETE FROM discord_sync_queue WHERE player_id = ?", [p.id]);
+    await db.query("DELETE FROM discord_crew_roles WHERE guild_id = '900000000000000999'");
   }
 });
 

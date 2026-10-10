@@ -148,18 +148,15 @@ test("fortuna con atajos al estilo SampDroid", async () => {
   assert.deepStrictEqual(errors, []);
 });
 
-test("economía y ayuda de una categoría", async () => {
-  const before = (await Economy.findOne({ Guild: G, User: U })).Money;
-  const r = await run("!depositar 1k");
+test("fortuna (la economía vieja se unió a ella) y ayuda de una categoría", async () => {
+  // !banco ahora abre el resumen de la Fortuna; /economy y !depositar ya no existen
+  const r = await run("!banco");
   assert.ok(r.handled);
-  const after = await Economy.findOne({ Guild: G, User: U });
-  assert.strictEqual(after.Money, before - 1000);
-  assert.strictEqual(after.Bank, 1000);
+  const viejo = await run("!depositar 1k");
+  assert.ok(!viejo.handled, "!depositar ya no es un comando");
 
   const h = await run("!fortuna ayuda");
   assert.match(h.embed.description, /`\/fortuna asaltar` · `!fortuna asaltar`/);
-  const u = await run("!economia");
-  assert.match(u.text, /Uso: !economia/);
 });
 
 test("/samp con !: perfil por nombre y el código de vincular llega por MD", async () => {

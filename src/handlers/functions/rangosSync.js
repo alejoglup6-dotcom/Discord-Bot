@@ -20,8 +20,13 @@ const invites = require("../../database/inviteRewards");
  * Limpieza (una vez, CLEANUP de src/assets/data/rangos.js): pasa los duplicados al rol bueno y los borra, borra 💎 VIP,
  * quita el permiso de Administrador a 🥊 BETA y pone 🎖 SHERIFF por encima de 🎖 ALGUACIL.
  *
+ * Orden (orderRoles): todos los rangos en el orden de RANKS, luego 👤 USUARIO y debajo los demás roles.
+ * Al momento: triggers de la base de datos apuntan en discord_sync_queue cada cuenta que cambia (staff, facción, VIP,
+ * nivel, banda, sanciones...) y el bot la sincroniza a los pocos segundos (rangos.initQueue / takeQueue).
+ *
  * Variables: RANGOS_SYNC = off (por defecto) | dry (solo muestra en la consola lo que haría) | on.
- *            RANGOS_SYNC_MINUTES (10 por defecto) y RANGOS_GUILD (id del servidor; si no, todos).
+ *            RANGOS_SYNC_MINUTES (vuelta completa, 10 por defecto), RANGOS_COLA_SEGUNDOS (cada cuánto se mira la
+ *            cola, 2 por defecto) y RANGOS_GUILD (id del servidor; si no, todos).
  */
 const MODE = () => String(process.env.RANGOS_SYNC || "off").toLowerCase();
 
@@ -88,6 +93,85 @@ async function cleanup(guild, dry, log, fetched) {
   }
 }
 
+// Orden de los roles, de arriba abajo: los rangos en el orden de RANKS (staff y cargos, facciones con su rol de grupo
+// debajo del último rango, bandas con el rol de cada banda, SOCIO y VIP, creadores, insignias, economía, logros y
+// niveles) y luego 👤 USUARIO. current: los nombres que hay, para meter los roles de banda ("🏴 ...").
+function desiredOrder(current = []) {
+  const out = [], seen = new Set();
+  const push = (n) => {
+    if (n && !seen.has(n)) {
+      seen.add(n);
+      out.push(n);
+    }
+  };
+  data.RANKS.forEach((r, i) => {
+    push(r.role);
+    const next = data.RANKS[i + 1];
+    if (r.group && (!next || next.group !== r.group)) push(r.group);
+    if (r.key === "banda_miembro") {
+      for (const n of current) if (n.startsWith(data.CREW_ROLE_PREFIX)) push(n);
+      push(data.SOCIO_ROLE);
+      push(data.VIP_ROLE);
+    }
+  });
+  push(data.LINKED_ROLE);
+  return out;
+}
+
+// current: nombres de los roles de arriba abajo. Devuelve el orden nuevo: arriba lo que ya estaba por encima del
+// primer rango (bots), luego todos los rangos en orden y debajo todo lo demás (sanciones, plataforma, países, años,
+// avisos...) en el orden que tenía. sticky: roles que no son rangos pero van pegados al rango que tienen encima
+// (los que tienen permisos o se muestran aparte, p. ej. 🥊 BETA o 🤖 BOTS).
+function orderNames(current, desired = desiredOrder(current), sticky = new Set()) {
+  const want = new Set(desired);
+  const first = current.findIndex((n) => want.has(n));
+  if (first < 0) return current.slice();
+  const attached = new Map(), rest = [];
+  let anchor = null;
+  for (const n of current.slice(first)) {
+    if (want.has(n)) {
+      anchor = n;
+      continue;
+    }
+    if (sticky.has(n) && anchor) {
+      if (!attached.has(anchor)) attached.set(anchor, []);
+      attached.get(anchor).push(n);
+    } else rest.push(n);
+  }
+  const have = new Set(current), out = current.slice(0, first);
+  for (const d of desired) if (have.has(d)) out.push(d, ...(attached.get(d) || []));
+  return out.concat(rest);
+}
+
+async function orderRoles(guild, dry, log) {
+  const top = guild.members?.me?.roles?.highest?.position ?? Infinity;
+  const list = [...guild.roles.cache.values()]
+    .filter((r) => r.id !== guild.id && r.position < top)
+    .sort((a, b) => b.position - a.position || (BigInt(a.id) < BigInt(b.id) ? -1 : 1));
+  const byName = new Map();
+  for (const r of list) if (!byName.has(r.name)) byName.set(r.name, r);
+  // nombre repetido: solo se ordena el primero; los demás quedan donde están, pegados al anterior
+  const current = list.map((r) => (byName.get(r.name) === r ? r.name : `\u0000${r.id}`));
+  const desired = desiredOrder(current);
+  const want = new Set(desired);
+  const sticky = new Set(list.filter((r) => (r.managed || r.hoist || (r.permissions?.bitfield ?? 0n) > 0n) && !want.has(r.name)).map((r) => r.name));
+  for (const n of current) if (n.startsWith("\u0000")) sticky.add(n);
+  const next = orderNames(current, desired, sticky);
+  if (next.every((n, i) => n === current[i])) return;
+  const moved = next.filter((n, i) => n !== current[i] && !n.startsWith("\u0000") && want.has(n));
+  log.push(`ordenar roles por jerarquía (${moved.length} se mueven: ${moved.slice(0, 8).join(", ")}${moved.length > 8 ? "..." : ""})`);
+  if (dry) return;
+  const role = (n) => (n.startsWith("\u0000") ? guild.roles.cache.get(n.slice(1)) : byName.get(n));
+  // con roles recien creados hay posiciones repetidas y next.length puede pasar del rol del bot: se cuenta desde debajo
+  // de el (Discord renumera solo al guardar)
+  const start = Math.min(next.length, Number.isFinite(top) ? top - 1 : next.length);
+  const positions = next.map((n, i) => ({ role: role(n), position: Math.max(1, start - i) }));
+  await guild.roles
+    .setPositions(positions)
+    .catch(() => guild.roles.setPositions(positions.filter((p) => p.role.editable && !p.role.managed)))
+    .catch((e) => log.push(`  error al ordenar: ${e.message}`));
+}
+
 // Un rol por banda: lo crea, lo renombra o le cambia el color, y borra el de las bandas que ya no existen.
 // Devuelve Map crew_id -> nombre del rol.
 async function crewRoles(guild, dry, log) {
@@ -130,33 +214,56 @@ async function syncGuild(guild, dry) {
   const fetched = { done: false };
   await cleanup(guild, dry, log, fetched);
   await ensureRoles(guild, dry, log);
+  await orderRoles(guild, dry, log);
   const crews = await crewRoles(guild, dry, log);
+  lastCrews.set(guild.id, crews);
   const states = await rangos.linkedStates();
   if (!states.length) return log;
   if (!fetched.done) await guild.members.fetch().catch(() => null);
-  const roleByName = (n) => guild.roles.cache.find((r) => r.name === n);
 
   for (const st of states) {
     const member = guild.members.cache.get(st.discordId);
     if (!member || member.user.bot) continue;
-    const discordRefs = await invites.validInvites(guild.id, st.discordId).catch(() => 0);
-    const p = rangos.plan(new Set(member.roles.cache.map((r) => r.name)), st, discordRefs, crews);
-    const add = p.add.map(roleByName).filter((r) => r && r.editable);
-    const remove = p.remove.map(roleByName).filter((r) => r && r.editable);
-    if (add.length || remove.length || p.saveManual.length || p.deleteManual.length)
-      log.push(
-        `${member.user.tag} (${st.name}):` +
-          (add.length ? ` +[${add.map((r) => r.name).join(", ")}]` : "") +
-          (remove.length ? ` -[${remove.map((r) => r.name).join(", ")}]` : "") +
-          (p.saveManual.length ? ` juego+[${p.saveManual.join(", ")}]` : "") +
-          (p.deleteManual.length ? ` juego-[${p.deleteManual.join(", ")}]` : ""),
-      );
-    if (dry) continue;
-    if (add.length) await member.roles.add(add, "Rangos del juego").catch((e) => log.push(`  error al agregar: ${e.message}`));
-    if (remove.length) await member.roles.remove(remove, "Rangos del juego").catch((e) => log.push(`  error al quitar: ${e.message}`));
-    for (const k of p.saveManual) await rangos.saveManual(st.playerId, k).catch(() => {});
-    for (const k of p.deleteManual) await rangos.deleteManual(st.playerId, k).catch(() => {});
-    if (p.refKey && !st.manual.has(p.refKey)) await rangos.setRefTier(st.playerId, p.refKey).catch(() => {});
+    await applyMember(guild, member, st, crews, dry, log);
+  }
+  return log;
+}
+
+// Pone y quita los roles de un miembro según su cuenta del juego
+async function applyMember(guild, member, st, crews, dry, log) {
+  const roleByName = (n) => guild.roles.cache.find((r) => r.name === n);
+  const discordRefs = await invites.validInvites(guild.id, st.discordId).catch(() => 0);
+  const p = rangos.plan(new Set(member.roles.cache.map((r) => r.name)), st, discordRefs, crews);
+  const add = p.add.map(roleByName).filter((r) => r && r.editable);
+  const remove = p.remove.map(roleByName).filter((r) => r && r.editable);
+  if (add.length || remove.length || p.saveManual.length || p.deleteManual.length)
+    log.push(
+      `${member.user.tag} (${st.name}):` +
+        (add.length ? ` +[${add.map((r) => r.name).join(", ")}]` : "") +
+        (remove.length ? ` -[${remove.map((r) => r.name).join(", ")}]` : "") +
+        (p.saveManual.length ? ` juego+[${p.saveManual.join(", ")}]` : "") +
+        (p.deleteManual.length ? ` juego-[${p.deleteManual.join(", ")}]` : ""),
+    );
+  if (dry) return;
+  if (add.length) await member.roles.add(add, "Rangos del juego").catch((e) => log.push(`  error al agregar: ${e.message}`));
+  if (remove.length) await member.roles.remove(remove, "Rangos del juego").catch((e) => log.push(`  error al quitar: ${e.message}`));
+  for (const k of p.saveManual) await rangos.saveManual(st.playerId, k).catch(() => {});
+  for (const k of p.deleteManual) await rangos.deleteManual(st.playerId, k).catch(() => {});
+  if (p.refKey && !st.manual.has(p.refKey)) await rangos.setRefTier(st.playerId, p.refKey).catch(() => {});
+}
+
+// Al momento: solo las cuentas que cambiaron (cola discord_sync_queue, la llenan los triggers de la base de datos)
+const lastCrews = new Map();
+async function syncPlayers(guild, ids, dry) {
+  const log = [];
+  const states = await rangos.linkedStates(ids);
+  if (!states.length) return log;
+  let crews = lastCrews.get(guild.id);
+  if (!crews) lastCrews.set(guild.id, (crews = await crewRoles(guild, dry, log)));
+  for (const st of states) {
+    const member = guild.members.cache.get(st.discordId) || (await guild.members.fetch(st.discordId).catch(() => null));
+    if (!member || member.user.bot) continue;
+    await applyMember(guild, member, st, crews, dry, log);
   }
   return log;
 }
@@ -185,11 +292,49 @@ module.exports = (client) => {
       busy = false;
     }
   }
+  // Cola de cambios: cada pocos segundos se mira si el juego cambió algo (una consulta pequeña) y se sincroniza solo a
+  // esas cuentas. La vuelta completa queda de respaldo cada RANGOS_SYNC_MINUTES.
+  let queueReady = false, quickBusy = false;
+  async function quick() {
+    const mode = MODE();
+    if ((mode !== "on" && mode !== "dry") || quickBusy || busy) return;
+    quickBusy = true;
+    try {
+      if (!queueReady) {
+        if (!(await samp.isAvailable())) return;
+        await rangos.init();
+        const r = await rangos.initQueue();
+        queueReady = true;
+        const min = parseInt(process.env.RANGOS_SYNC_MINUTES) || 10;
+        if (r.ok) console.log(`[rangos] al momento: cola de cambios activa (${r.triggers} triggers)`);
+        else
+          console.log(
+            `[rangos] al momento: cola de cambios activa (los cambios del juego llegan en segundos). Sin triggers (${r.error}): ` +
+              `lo que se cambie a mano en la base de datos llega en la vuelta completa (cada ${min} min)`,
+          );
+      }
+      const ids = await rangos.takeQueue();
+      if (!ids.length) return;
+      for (const guild of client.guilds.cache.values()) {
+        if (process.env.RANGOS_GUILD && guild.id !== process.env.RANGOS_GUILD) continue;
+        const log = await syncPlayers(guild, ids, mode === "dry");
+        if (log.length) console.log(`[rangos al momento${mode === "dry" ? " (prueba, sin cambios)" : ""}] ${guild.name}\n  ` + log.join("\n  "));
+      }
+    } catch (e) {
+      console.log("[rangos]", e);
+    } finally {
+      quickBusy = false;
+    }
+  }
   client.rangosSync = run;
   client.once(Discord.Events.ClientReady, () => {
     if (MODE() !== "on" && MODE() !== "dry") return;
     setTimeout(run, 60000);
     setInterval(run, (parseInt(process.env.RANGOS_SYNC_MINUTES) || 10) * 60000);
+    setInterval(quick, (parseFloat(process.env.RANGOS_COLA_SEGUNDOS) || 2) * 1000);
   });
 };
 module.exports.syncGuild = syncGuild;
+module.exports.syncPlayers = syncPlayers;
+module.exports.orderNames = orderNames;
+module.exports.desiredOrder = desiredOrder;

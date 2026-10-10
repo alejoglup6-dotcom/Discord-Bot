@@ -32,13 +32,57 @@ module.exports = (client) => {
       return me;
     },
 
-    // Jugador por nombre exacto, sin rango mayor que el de quien sanciona (como en el juego)
-    async target(interaction, me) {
-      const name = interaction.options.getString("name");
-      const target = await samp.getPlayerByName(name);
-      if (!target) {
-        client.errNormal({ error: `No existe ninguna cuenta llamada ${name}`, type: "editreply" }, interaction);
+    // Aviso por MD a un usuario de Discord. true = enviado (false si tiene los MD cerrados)
+    async warnUnlinked(userId, detail) {
+      const user = await client.users.fetch(userId).catch(() => null);
+      if (!user) return false;
+      const sent = await user
+        .send({
+          embeds: [
+            {
+              title: "⚠️・Cuenta sin vincular",
+              description:
+                `${detail}\n\nVincúlala con \`/samp link\` (o \`!vincular\`) y el código que te da lo escribes en el juego ` +
+                "con `/vincular`. Si ya pagaste algo, avisa al staff.",
+              color: 0xfee75c,
+            },
+          ],
+        })
+        .catch(() => null);
+      return Boolean(sent);
+    },
+
+    // Jugador por nombre exacto o por @ (usuario de Discord con la cuenta vinculada), sin rango mayor que el de
+    // quien sanciona (como en el juego). Con opts.warnUnlinked ("/juego <sub>") avisa por MD a quien no está vinculado.
+    async target(interaction, me, opts = {}) {
+      const raw = String(interaction.options.getString("name") || "").trim();
+      let discordId = interaction.options.getUser?.("usuario")?.id || null;
+      if (!discordId) discordId = (raw.match(/^<@!?(\d{15,21})>$/) || raw.match(/^(\d{17,21})$/))?.[1] || null;
+
+      let target;
+      if (discordId) {
+        target = await samp.getLinkedPlayer(discordId);
+        if (!target) {
+          let extra = "";
+          if (opts.warnUnlinked) {
+            const sent = await client.samp.warnUnlinked(
+              discordId,
+              `Intentaron aplicarte \`/juego ${opts.warnUnlinked}\`, pero tu cuenta del servidor **no está vinculada** a Discord.`,
+            );
+            extra = sent ? ". Le avisé por MD" : ". No pude avisarle por MD (los tiene cerrados)";
+          }
+          client.errNormal({ error: `<@${discordId}> no tiene la cuenta del servidor vinculada${extra}`, type: "editreply" }, interaction);
+          return null;
+        }
+      } else if (!raw) {
+        client.errNormal({ error: "Indica el jugador: su nombre (Nombre_Apellido) o su @ de Discord", type: "editreply" }, interaction);
         return null;
+      } else {
+        target = await samp.getPlayerByName(raw);
+        if (!target) {
+          client.errNormal({ error: `No existe ninguna cuenta llamada ${raw}`, type: "editreply" }, interaction);
+          return null;
+        }
       }
       if (me && target.admin_level > me.admin_level) {
         client.errNormal({ error: "El rango administrativo de este jugador es superior al tuyo", type: "editreply" }, interaction);

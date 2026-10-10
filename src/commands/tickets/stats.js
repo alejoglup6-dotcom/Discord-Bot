@@ -22,6 +22,11 @@ module.exports = async (client, interaction) => {
     .slice(0, 10)
     .map(([id, n], i) => `${i + 1}. <@${id}> · **${n}**`)
     .join("\n");
+  const pct = (n) => (s.ai.handled ? `${Math.round((n / s.ai.handled) * 100)}%` : "—");
+  const cats = Object.entries(s.ai.byCategory)
+    .sort((a, b) => b[1] - a[1])
+    .map(([k, n]) => `${k}: **${n}**`)
+    .join(" · ");
   const embed = brandEmbed(interaction.guild, {
     title: `TICKETS · ÚLTIMOS ${days} DÍAS`,
     fields: [
@@ -31,6 +36,13 @@ module.exports = async (client, interaction) => {
       { name: "Primera respuesta (media)", value: s.firstResponseMin ? `${Math.round(s.firstResponseMin)} min` : "—", inline: true },
       { name: "Por tipo", value: types || "—" },
       { name: "Quién atiende más", value: staff || "—" },
+      {
+        name: "🤖 IA en tickets",
+        value: s.ai.handled
+          ? `Contestó en **${s.ai.handled}** · resueltos sin staff: **${s.ai.resolved}** (${pct(s.ai.resolved)}) · pidieron al staff: **${s.ai.toStaff}** (${pct(s.ai.toStaff)})`
+          : "Aún no contestó en ningún ticket",
+      },
+      ...(cats ? [{ name: "Categorías (resumen IA)", value: cats.slice(0, 1000) }] : []),
     ],
   });
   return interaction.editReply({ embeds: [embed] }).catch(() => {});

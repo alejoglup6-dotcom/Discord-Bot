@@ -35,6 +35,9 @@ module.exports = (client) => {
 
     const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
+    // El registro global de comandos es el mismo para todos los shards: solo lo hace el shard 0
+    if (client.shard.ids[0] !== 0) return;
+
     (async () => {
         try {
             const embed = new Discord.EmbedBuilder()

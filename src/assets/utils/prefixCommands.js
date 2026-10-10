@@ -2,7 +2,7 @@
  * Comandos con prefijo ("!"): cualquier comando de barra se puede usar escribiendo el prefijo delante.
  *
  *   !samp perfil Lelo_Drok        = /samp profile name:Lelo_Drok
- *   !economia depositar 500       = /economy deposit amount:500
+ *   !casino slots 500             = /casino slots amount:500
  *   !fortuna                      = /fortune overview          (atajos de ALIASES, al estilo SampDroid)
  *   !cauto sultan                 = /fortune buy category:autos item:sultan
  *
@@ -56,24 +56,10 @@ const ALIASES = {
   asaltar: { command: "fortune", sub: "heist" },
   atracar: { command: "fortune", sub: "heist" },
 
-  // Economía
-  banco: { command: "economy", sub: "balance" },
-  saldo: { command: "economy", sub: "balance" },
-  bal: { command: "economy", sub: "balance" },
-  depositar: { command: "economy", sub: "deposit" },
-  dep: { command: "economy", sub: "deposit" },
-  retirar: { command: "economy", sub: "withdraw" },
-  pagar: { command: "economy", sub: "pay" },
-  enviar: { command: "economy", sub: "pay" },
-  transferir: { command: "economy", sub: "pay" },
-  robar: { command: "economy", sub: "rob" },
-  diario: { command: "economy", sub: "daily" },
-  semanal: { command: "economy", sub: "weekly" },
-  mensual: { command: "economy", sub: "monthly" },
-  mendigar: { command: "economy", sub: "beg" },
-  pescar: { command: "economy", sub: "fish" },
-  cazar: { command: "economy", sub: "hunt" },
-  crimen: { command: "economy", sub: "crime" },
+  // Cartera (Fortuna)
+  banco: { command: "fortune", sub: "overview" },
+  saldo: { command: "fortune", sub: "overview" },
+  bal: { command: "fortune", sub: "overview" },
 
   // Otros
   ping: { command: "bot", sub: "ping" },
@@ -84,7 +70,6 @@ const HELP_SECTIONS = [
   ["🎮 Servidor SA-MP", ["cuenta", "vincular", "desvincular", "conectados", "topsamp"]],
   ["🕴️ Fortuna", ["fortuna", "trabajos", "contrato", "renunciar", "trabajar", "cobrar", "asaltar"]],
   ["🏘️ Propiedades", ["autos", "casas", "negocios", "empresas", "armas", "comprar", "vender", "cauto", "ccasa", "cnegocio", "cempresa", "carma", "vauto", "vcasa"]],
-  ["🏦 Economía", ["banco", "depositar", "retirar", "pagar", "robar", "diario", "semanal", "mensual", "pescar", "cazar", "crimen"]],
 ];
 
 function norm(s) {
@@ -137,7 +122,13 @@ function usage(prefix, commandJson, sub, group) {
   const parts = [prefix + shown(commandJson.name)];
   if (group) parts.push(shown(group.name));
   if (sub) parts.push(shown(sub.name));
-  for (const o of sub?.options || []) parts.push(o.required ? `<${shown(o.name)}>` : `[${shown(o.name)}]`);
+  // /juego: el jugador (nombre o @) se escribe siempre primero
+  const target = commandJson.name === "juego" && (sub?.options || []).some((o) => o.name === "usuario");
+  if (target) parts.push("<jugador o @usuario>");
+  for (const o of sub?.options || []) {
+    if (target && (o.name === "usuario" || o.name === "name")) continue;
+    parts.push(o.required ? `<${shown(o.name)}>` : `[${shown(o.name)}]`);
+  }
   return parts.join(" ");
 }
 
@@ -447,7 +438,7 @@ function helpEmbed(client, prefix) {
     name: "⌨️ Todos los comandos",
     value:
       `Cualquier comando de barra también funciona con \`${prefix}\`: \`${prefix}comando subcomando opciones\`, ` +
-      `por ejemplo \`${prefix}samp perfil Lelo_Drok\` o \`${prefix}economia depositar 500\`. ` +
+      `por ejemplo \`${prefix}samp perfil Lelo_Drok\` o \`${prefix}fortuna\`. ` +
       `Para ver los de una categoría: \`/fortuna ayuda\` o \`${prefix}fortuna ayuda\` (igual con las demás).`,
   });
   return { title: "⌨️・Comandos con " + prefix, fields };
@@ -510,8 +501,23 @@ async function runPrefixCommand(client, message, text, prefix = "!") {
     rest = rest.slice(1);
   }
 
-  const specs = (sub ? sub.options : json.options) || [];
+  let specs = (sub ? sub.options : json.options) || [];
+  // /juego: en la barra el jugador son dos opciones opcionales al final (name / usuario); con prefijo va primero,
+  // y si es una mención (@usuario) o un id de Discord es "usuario", si no es el nombre de la cuenta
+  const preset = [];
+  if (json.name === "juego" && specs.some((s) => s.name === "usuario")) {
+    if (!rest[0]) {
+      await reply(`Falta el jugador (nombre o @usuario). Uso: ${usage(prefix, json, sub, group)}`);
+      return true;
+    }
+    const asUser = await parseValue(message, { type: T.User }, rest[0].value);
+    if (asUser) preset.push({ name: "usuario", type: T.User, ...asUser });
+    else preset.push({ name: "name", type: T.String, value: rest[0].value });
+    rest = rest.slice(1);
+    specs = specs.filter((s) => s.name !== "usuario" && s.name !== "name");
+  }
   const parsed = await parseOptions(message, text, rest, specs, alias?.fixed || {});
+  if (!parsed.error) parsed.hoisted = [...preset, ...parsed.hoisted];
   if (parsed.error) {
     const what = parsed.tooLong
       ? `"${shown(parsed.error.name)}" puede tener como máximo ${parsed.tooLong} caracteres`
@@ -545,4 +551,17 @@ async function runPrefixCommand(client, message, text, prefix = "!") {
   return true;
 }
 
-module.exports = { runPrefixCommand, tokenize, ALIASES, PrefixInteraction, PrefixOptions, bothForms, helpList };
+/**
+ * ¿El texto (sin el prefijo) empieza con un comando o atajo que existe? Lo usa la IA para no responder a
+ * "@Bot ping" o "!samp perfil" y dejar que los atienda runPrefixCommand.
+ */
+function isPrefixCommand(client, text) {
+  const tokens = tokenize(text);
+  if (!tokens.length) return false;
+  const first = tokens[0].value;
+  if (["comandos", "cmd", "cmds"].includes(norm(first))) return true;
+  if (ALIASES[norm(first)]) return true;
+  return client.commands.some((c) => sameName(first, c.data.name));
+}
+
+module.exports = { runPrefixCommand, isPrefixCommand, tokenize, ALIASES, PrefixInteraction, PrefixOptions, bothForms, helpList };
