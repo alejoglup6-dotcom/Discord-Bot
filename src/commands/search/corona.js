@@ -1,48 +1,32 @@
-const Discord = require("discord.js");
-const fetch = require("node-fetch");
+const { pedirJson, errorApi } = require("../../assets/utils/apiExterna");
 
+// La API de antes (covid19.mathdro.id) dejo de existir: se usa disease.sh (datos de Worldometers y Johns Hopkins).
 /**
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
-  let countries = interaction.options.getString("country");
+  const country = String(interaction.options.getString("country") || "").trim();
+  if (!country) return client.errNormal({ error: "Escribe un país (en inglés o su código, ej. mexico, MX, spain).", type: "editreply" }, interaction);
 
-  fetch(`https://covid19.mathdro.id/api/countries/${countries}`)
-    .then((response) => response.json())
-    .then((data) => {
-      let confirmed = data.confirmed.value.toLocaleString();
-      let recovered = data.recovered.value.toLocaleString();
-      let deaths = data.deaths.value.toLocaleString();
-
-      return client.embed(
-        {
-          title: `💉・COVID-19 - ${countries}`,
-          fields: [
-            {
-              name: "✅┇Casos confirmados",
-              value: `${confirmed}`,
-              inline: true,
-            },
-            {
-              name: "🤗┇Recuperados",
-              value: `${recovered}`,
-              inline: true,
-            },
-            {
-              name: "💀┇Muertes",
-              value: `${deaths}`,
-              inline: true,
-            },
-          ],
-          type: "editreply",
-        },
-        interaction,
-      );
-    })
-    .catch((e) => {
-      return client.errNormal(
-        { error: `¡El país indicado no es válido!`, type: "editreply" },
-        interaction,
-      );
-    });
+  let data;
+  try {
+    data = await pedirJson(`https://disease.sh/v3/covid-19/countries/${encodeURIComponent(country)}?strict=false`);
+  } catch (e) {
+    if (e.status === 404) return client.errNormal({ error: `No encontré el país "${country}". Prueba en inglés o con su código (ej. mexico, MX).`, type: "editreply" }, interaction);
+    return errorApi(client, interaction, e, "los datos de COVID-19");
+  }
+  const n = (x) => (typeof x === "number" ? x.toLocaleString("es-ES") : "—");
+  return client.embed(
+    {
+      title: `💉・COVID-19 - ${data.country || country}`,
+      thumbnail: data.countryInfo && data.countryInfo.flag ? data.countryInfo.flag : undefined,
+      fields: [
+        { name: "✅┇Casos confirmados", value: n(data.cases), inline: true },
+        { name: "🤗┇Recuperados", value: n(data.recovered), inline: true },
+        { name: "💀┇Muertes", value: n(data.deaths), inline: true },
+      ],
+      type: "editreply",
+    },
+    interaction,
+  );
 };

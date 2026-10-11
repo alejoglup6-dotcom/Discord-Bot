@@ -1,23 +1,28 @@
-const fetch = require("node-fetch");
 const Discord = require("discord.js");
+const { pedirJson, errorApi } = require("../../assets/utils/apiExterna");
+
+// Reddit bloquea a los bots desde 2026 (403): se usa meme-api.com, que trae memes de Reddit (primero en español).
+const SUBS = ["MemesESP", "memes", "dankmemes"];
+
 /**
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
-  fetch(`https://www.reddit.com/r/memes` + `.json?sort=top&t=week&limit=100`)
-    .then((res) => res.json())
-    .then(async (json) => {
-      let i = Math.floor(Math.random() * json.data.children.length);
-      let image = json.data.children[i].data.url;
-      let caption = json.data.children[i].data.title;
-      let embed = new Discord.EmbedBuilder()
-        .setTitle(caption)
-        .setImage(image)
+  let ultimo = null;
+  for (const sub of SUBS) {
+    try {
+      const m = await pedirJson(`https://meme-api.com/gimme/${sub}`);
+      if (!m || !m.url || m.nsfw) continue;
+      const embed = new Discord.EmbedBuilder()
+        .setTitle(String(m.title || "Meme").slice(0, 256))
+        .setURL(m.postLink || null)
+        .setImage(m.url)
         .setColor(client.config.colors.normal)
-        .setFooter({
-          text: `👍 ${json.data.children[i].data.ups} | 💬 ${json.data.children[i].data.num_comments}`,
-        });
-      interaction.editReply({ embeds: [embed] });
-    })
-    .catch({});
+        .setFooter({ text: `👍 ${m.ups ?? 0} | r/${m.subreddit || sub}` });
+      return interaction.editReply({ embeds: [embed] });
+    } catch (e) {
+      ultimo = e;
+    }
+  }
+  return errorApi(client, interaction, ultimo || new Error("no llegó ningún meme"), "un meme");
 };

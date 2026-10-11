@@ -121,11 +121,8 @@ module.exports = async (client, interaction, args) => {
                             )
                             .then((i) => {
                               wait(200);
-                              fetch(
-                                `https://some-random-api.com/bottoken?${user.id}`,
-                              )
-                                .then((res) => res.json())
-                                .catch({})
+                              // token de broma armado aqui (la API de antes, some-random-api /bottoken, ya no existe)
+                              Promise.resolve({ token: tokenDeBroma(user.id) })
                                 .then(async (json) => {
                                   client
                                     .embed(

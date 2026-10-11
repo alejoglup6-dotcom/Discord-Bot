@@ -1,26 +1,17 @@
-const fetch = require("node-fetch");
+const Discord = require("discord.js");
+const { tweetCard } = require("../../assets/utils/tweetCard");
 
+// Parodia: la imagen lleva la etiqueta "PARODIA" para que no pase por un tuit real.
 /**
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
-  let tweet = interaction.options.getString("text");
-
-  if (tweet.length > 68) tweet = tweet.slice(0, 65) + "...";
-
-  const res = await fetch(
-    "https://nekobot.xyz/api/imagegen?type=trumptweet&text=" +
-      encodeURIComponent(tweet),
-  );
-
-  const img = (await res.json()).message;
-
-  client.embed(
-    {
-      title: `🖼・Tuit de Trump`,
-      image: img,
-      type: "editreply",
-    },
-    interaction,
-  );
+  const text = String(interaction.options.getString("text") || "").slice(0, 280);
+  try {
+    const png = await tweetCard({ nombre: "Donald J. Trump", usuario: "realDonaldTrump", avatar: null, texto: text, verificado: true, etiqueta: "PARODIA" });
+    const file = new Discord.AttachmentBuilder(png, { name: "tuit.png" });
+    return client.embed({ title: `🖼・Tuit de Trump (parodia)`, image: "attachment://tuit.png", files: [file], type: "editreply" }, interaction);
+  } catch (e) {
+    return client.errNormal({ error: `No pude crear la imagen: ${e.message}`, type: "editreply" }, interaction);
+  }
 };

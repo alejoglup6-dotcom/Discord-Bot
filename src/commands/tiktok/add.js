@@ -31,23 +31,31 @@ module.exports = async (client, interaction, args) => {
   }
 
   // Comprueba que la cuenta exista y sea pública antes de guardarla
+  // Si TikTok solo esta bloqueando o fallando (e.temporal), la cuenta se guarda igual y se lee en la proxima vuelta:
+  // solo se rechaza si TikTok confirma que no existe o que es privada.
   let profile;
+  let pendiente = null;
   try {
     profile = await tools.verifyCreator(user);
   } catch (e) {
-    return client.errNormal(
-      { error: `No pude leer a @${user}: ${e.message}. Revisa que esté bien escrito y que la cuenta sea pública.`, type: "editreply" },
-      interaction,
-    );
+    if (!e.temporal) {
+      return client.errNormal(
+        { error: `No pude agregar a @${user}: ${e.message}. Revisa que esté bien escrito y que la cuenta sea pública.`, type: "editreply" },
+        interaction,
+      );
+    }
+    pendiente = e;
+    profile = e.info ? { info: e.info } : null;
   }
 
   await new tiktokCreators({ Guild: interaction.guild.id, User: user, Member: member ? member.id : undefined, AddedBy: interaction.user.id, Date: Date.now() }).save();
 
-  // Lectura inmediata de ese creador
-  const r = await client.checkTikTokMentions({ only: [user] });
+  // Lectura inmediata de ese creador (si TikTok no esta bloqueando)
+  const r = pendiente ? null : await client.checkTikTokMentions({ only: [user] });
 
   let detail;
-  if (r.skipped) detail = "El aviso de menciones está apagado (TIKTOK_MENTIONS=0) o ya había una lectura en curso; se leerá en la próxima vuelta.";
+  if (pendiente) detail = `${pendiente.message}. ${pendiente.info ? "La cuenta existe; " : ""}se leerán sus videos en la próxima vuelta (cada 10 min).`;
+  else if (r.skipped) detail = "El aviso de menciones está apagado (TIKTOK_MENTIONS=0) o ya había una lectura en curso; se leerá en la próxima vuelta.";
   else if (!r.read) detail = "Se guardó, pero esta vez TikTok no me dejó leer sus videos; se reintenta en la próxima vuelta (cada 10 min).";
   else if (!r.scanned) detail = "Todavía no tiene videos públicos: se avisarán cuando suba alguno que mencione a la cuenta.";
   else detail = `Leí ${r.scanned} videos recientes: ${r.matched} mencionan a @${tools.mainUser}, ${r.posted} publicados ahora en el canal de TikTok.`;

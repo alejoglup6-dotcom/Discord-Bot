@@ -1,22 +1,14 @@
-const Discord = require("discord.js");
-const fetch = require("node-fetch");
+const { pedirJson, errorApi } = require("../../assets/utils/apiExterna");
 
 /**
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
-  fetch(`https://some-random-api.com/facts/bird`)
-    .then((res) => res.json())
-    .catch({})
-    .then(async (json) => {
-      client.embed(
-        {
-          title: `💡・Dato aleatorio sobre aves`,
-          desc: json.fact,
-          type: "editreply",
-        },
-        interaction,
-      );
-    })
-    .catch({});
+  try {
+    const json = await pedirJson("https://some-random-api.com/facts/bird");
+    if (!json || !json.fact) throw new Error("el servicio externo no mandó el dato");
+    return client.embed({ title: `💡・Dato aleatorio sobre aves`, desc: json.fact, type: "editreply" }, interaction);
+  } catch (e) {
+    return errorApi(client, interaction, e, "un dato sobre aves");
+  }
 };
