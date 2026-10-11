@@ -97,32 +97,101 @@ function coverOf(v) {
   return found;
 }
 
-// Perfil: { info: {uniqueId, nickname, privateAccount...}, videos: [...] }. Lanza un error con el motivo si no se puede leer.
-async function fetchProfile(user = USER) {
-  const res = await fetch(`https://www.tiktok.com/embed/@${user}`, { headers: { "User-Agent": UA, "Accept-Language": "es-ES,es;q=0.9" }, signal: AbortSignal.timeout(30000) });
-  if (res.status === 429 || res.status >= 500) throw new Error(`TikTok respondió ${res.status}, se reintenta luego`);
-  const html = await res.text();
-  const m = html.match(/<script id="__FRONTITY_CONNECT_STATE__"[^>]*>([\s\S]*?)<\/script>/);
-  if (!m) throw new Error(res.ok ? "TikTok cambió la página de incrustar perfil" : `TikTok respondió ${res.status}`);
-  let list = null;
-  let info = null;
-  (function walk(o) {
-    if (!o || typeof o !== "object") return;
-    if (!list && Array.isArray(o.videoList)) list = o.videoList;
-    if (!info && o.userInfo && typeof o.userInfo === "object") info = o.userInfo;
-    for (const v of Object.values(o)) walk(v);
-  })(JSON.parse(m[1]));
-  if (!list) {
-    if (info && info.privateAccount) throw new Error("la cuenta es privada");
-    if (!res.ok || !info || !info.nickname) throw new Error("la cuenta no existe");
-    list = []; // cuenta pública sin videos todavía
+// TikTok a veces contesta 503/429 o una pagina de verificacion (sin los datos) a las IP de servidores: se reintenta con
+// otro navegador y, si sigue sin dejar, se mira si la cuenta existe por la pagina del perfil y por oEmbed. Asi un bloqueo
+// pasajero no se confunde con "la cuenta no existe" (11-oct-2026: /tiktok add rechazaba cuentas que si existian).
+const UAS = [
+  UA,
+  "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0",
+];
+
+async function pedir(url, ua) {
+  return fetch(url, { headers: { "User-Agent": ua, "Accept-Language": "es-ES,es;q=0.9", Accept: "text/html,application/json;q=0.9,*/*;q=0.8" }, signal: AbortSignal.timeout(20000) });
+}
+
+// Existencia de la cuenta sin la lista de videos: { existe: true, info } | { existe: false } | null (no se pudo saber)
+async function existencia(user) {
+  try {
+    const res = await pedir(`https://www.tiktok.com/@${user}`, UAS[0]);
+    if (res.ok) {
+      const m = (await res.text()).match(/<script id="__UNIVERSAL_DATA_FOR_REHYDRATION__"[^>]*>([\s\S]*?)<\/script>/);
+      const d = m && JSON.parse(m[1])?.__DEFAULT_SCOPE__?.["webapp.user-detail"];
+      if (d) {
+        const u = d.userInfo && d.userInfo.user;
+        if (u && u.uniqueId) return { existe: true, info: { uniqueId: u.uniqueId, nickname: u.nickname, privateAccount: !!u.privateAccount } };
+        if (d.statusCode === 10221 || d.statusCode === 10202) return { existe: false };
+      }
+    }
+  } catch {
+    /* se prueba oEmbed */
   }
-  // más antiguos primero (los ids de TikTok crecen con el tiempo)
-  const videos = list
-    .filter((v) => v && /^\d+$/.test(String(v.id)))
-    .map((v) => ({ id: String(v.id), desc: String(v.desc || ""), tags: videoTags(v), cover: coverOf(v), keys: Object.keys(v) }))
-    .sort((a, b) => (BigInt(a.id) < BigInt(b.id) ? -1 : 1));
-  return { info, videos };
+  try {
+    const res = await pedir(`https://www.tiktok.com/oembed?url=${encodeURIComponent(`https://www.tiktok.com/@${user}`)}`, UAS[0]);
+    if (res.ok) {
+      const j = await res.json();
+      if (j && j.author_name) return { existe: true, info: { uniqueId: user, nickname: j.author_name } };
+    } else if (res.status === 400) return { existe: false }; // 400 = no existe; un 403/404/429 es TikTok bloqueando, no prueba nada
+  } catch {
+    /* no se sabe */
+  }
+  return null;
+}
+
+// Perfil: { info: {uniqueId, nickname, privateAccount...}, videos: [...] }. Lanza un error con el motivo si no se puede leer;
+// si el motivo es pasajero (TikTok bloquea o falla), el error lleva temporal = true (y info si se supo que la cuenta existe).
+async function fetchProfile(user = USER) {
+  let motivo = "";
+  for (let i = 0; i < UAS.length; i++) {
+    if (i) await sleep(i * 2500);
+    let res, html;
+    try {
+      res = await pedir(`https://www.tiktok.com/embed/@${user}`, UAS[i]);
+      html = await res.text();
+    } catch (e) {
+      motivo = e.name === "TimeoutError" ? "no contestó a tiempo" : e.message;
+      continue;
+    }
+    const m = html.match(/<script id="__FRONTITY_CONNECT_STATE__"[^>]*>([\s\S]*?)<\/script>/);
+    if (!m) {
+      motivo = res.ok ? "devolvió una página de verificación" : `respondió ${res.status}`;
+      continue;
+    }
+    let list = null;
+    let info = null;
+    (function walk(o) {
+      if (!o || typeof o !== "object") return;
+      if (!list && Array.isArray(o.videoList)) list = o.videoList;
+      if (!info && o.userInfo && typeof o.userInfo === "object") info = o.userInfo;
+      for (const v of Object.values(o)) walk(v);
+    })(JSON.parse(m[1]));
+    if (!list) {
+      if (info && info.privateAccount) throw new Error("la cuenta es privada");
+      if (!info || !info.nickname) {
+        // la pagina de incrustar a veces viene vacia: se confirma antes de decir que no existe
+        const e = await existencia(user);
+        if (e && e.existe === false) throw new Error("la cuenta no existe");
+        if (e && e.info && e.info.privateAccount) throw new Error("la cuenta es privada");
+        if (e && e.existe) return { info: e.info, videos: [] };
+        motivo = "no mandó los datos del perfil";
+        continue;
+      }
+      list = []; // cuenta pública sin videos todavía
+    }
+    // más antiguos primero (los ids de TikTok crecen con el tiempo)
+    const videos = list
+      .filter((v) => v && /^\d+$/.test(String(v.id)))
+      .map((v) => ({ id: String(v.id), desc: String(v.desc || ""), tags: videoTags(v), cover: coverOf(v), keys: Object.keys(v) }))
+      .sort((a, b) => (BigInt(a.id) < BigInt(b.id) ? -1 : 1));
+    return { info, videos };
+  }
+  const e = await existencia(user);
+  if (e && e.existe === false) throw new Error("la cuenta no existe");
+  if (e && e.info && e.info.privateAccount) throw new Error("la cuenta es privada");
+  const err = new Error(`TikTok no dejó leer sus videos ahora (${motivo})`);
+  err.temporal = true;
+  err.info = e && e.info ? e.info : null;
+  throw err;
 }
 
 async function fetchVideos(user = USER) {
@@ -319,12 +388,16 @@ async function fetchCreatorMentions(creators) {
 
 module.exports = (client) => {
   let running = false;
+  let retryTimer = null;
+  // Lo que pasó en la última revisión de la cuenta oficial (lo enseña /tiktok check)
+  const estado = { at: 0, okAt: 0, error: null, leidos: 0, anunciados: 0, ultimo: null };
 
   // Devuelve cuántos videos se anunciaron
   async function check() {
     if (running) return 0;
     running = true;
     let posted = 0;
+    estado.at = Date.now();
     try {
       const profile = await fetchProfile();
       setOfficialNick(profile.info);
@@ -350,14 +423,24 @@ module.exports = (client) => {
         }
       }
       console.log(`[tiktok] videos de @${USER}: ${videos.length} leídos, ${posted} anunciados (canales: ${channels})`);
+      Object.assign(estado, { okAt: Date.now(), error: null, leidos: videos.length, anunciados: posted, ultimo: videos.length ? videos[videos.length - 1] : null });
     } catch (e) {
       console.log("[tiktok]", e.message);
+      estado.error = e.message;
+      // TikTok bloquea a ratos al hosting (503 o página de verificación): reintentar a los 2 min, no esperar 10.
+      // La cuenta oficial existe siempre: cualquier fallo se reintenta.
+      if (!retryTimer) {
+        retryTimer = setTimeout(() => { retryTimer = null; check(); }, 2 * 60000);
+        retryTimer.unref?.();
+        console.log("[tiktok] se reintenta en 2 min");
+      }
     } finally {
       running = false;
     }
     return posted;
   }
   client.checkTikTok = check;
+  client.tiktokEstado = estado;
 
   let runningMentions = false;
 
@@ -449,3 +532,4 @@ module.exports = (client) => {
 module.exports.normalizeCreator = normalizeCreator;
 module.exports.textMentions = textMentions;
 module.exports.setOfficialNick = setOfficialNick;
+module.exports.fetchProfile = fetchProfile;

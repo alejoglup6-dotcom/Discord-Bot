@@ -45,7 +45,7 @@ function randomText(length = 6) {
 }
 
 function drawImage(value) {
-  const { createCanvas } = require("canvas");
+  const { createCanvas } = require("./canvasLib");
   const canvas = createCanvas(400, 150);
   const ctx = canvas.getContext("2d");
 

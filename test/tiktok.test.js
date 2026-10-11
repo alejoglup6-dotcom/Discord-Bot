@@ -14,6 +14,8 @@ const tiktokCreators = require("../src/database/models/tiktokCreators");
 const handler = require("../src/handlers/functions/tiktok");
 const add = require("../src/commands/tiktok/add");
 const remove = require("../src/commands/tiktok/remove");
+const list = require("../src/commands/tiktok/list");
+const checkCmd = require("../src/commands/tiktok/check");
 
 const GUILD = "test-guild-tiktok";
 const STAFF = "900000000000000101";
@@ -38,11 +40,13 @@ const pageCalls = [];
 function html(id, state) {
   return `<html><script id="${id}" type="application/json">${JSON.stringify(state)}</script></html>`;
 }
+let bloqueado = false; // TikTok bloqueando al hosting (503)
 const realFetch = global.fetch;
 global.fetch = async (url) => {
   url = String(url);
   const res = (status, body) => ({ ok: status === 200, status, text: async () => body, json: async () => JSON.parse(body), headers: new Map() });
   let m = url.match(/tiktok\.com\/embed\/@([^/?]+)/);
+  if (m && bloqueado) return res(503, "");
   if (m) {
     const p = profiles[decodeURIComponent(m[1])];
     if (!p) return res(400, html("__FRONTITY_CONNECT_STATE__", { source: { data: { x: { userInfo: { code: 10221 } } } } }));
@@ -58,7 +62,12 @@ global.fetch = async (url) => {
     const item = { id: v.id, desc: v.desc, textExtra: v.tags.map((t) => ({ type: 0, userUniqueId: t })), contents: [] };
     return res(200, html("__UNIVERSAL_DATA_FOR_REHYDRATION__", { __DEFAULT_SCOPE__: { "webapp.video-detail": { itemInfo: { itemStruct: item } } } }));
   }
-  return res(404, ""); // miniaturas y oembed: sin imagen
+  m = url.match(/oembed\?url=.*%40([^&]+)/);
+  if (m && !bloqueado) {
+    const u = decodeURIComponent(m[1]);
+    return profiles[u] ? res(200, JSON.stringify({ author_name: profiles[u].nickname })) : res(400, ""); // como TikTok: 400 si no existe
+  }
+  return res(404, ""); // miniaturas, perfil y oembed bloqueado
 };
 
 // ---------------------------------------------------------------- Discord falso
@@ -70,6 +79,7 @@ handler(client);
 const replies = [];
 client.errNormal = async ({ error }) => replies.push({ ok: false, text: error });
 client.succNormal = async ({ text, fields }) => replies.push({ ok: true, text, fields });
+client.embed = async ({ title, desc }) => replies.push({ ok: true, text: `${title}\n${desc}` });
 
 async function run(cmd, options) {
   const interaction = {
@@ -149,4 +159,28 @@ test("/tiktok remove", async () => {
   assert.ok((await run(remove, { user: "creador.uno" })).ok);
   assert.strictEqual(await tiktokCreators.findOne({ Guild: GUILD, User: "creador.uno" }), null);
   assert.strictEqual((await run(remove, { user: "creador.uno" })).ok, false);
+});
+
+test("/tiktok list: muestra los creadores y no pone en cursiva los nombres con _", async () => {
+  await new tiktokCreators({ Guild: GUILD, User: "juan_becker_", AddedBy: STAFF, Date: Date.now() }).save();
+  const r = await run(list, {});
+  assert.ok(r.ok, r.text);
+  assert.ok(r.text.includes("[@juan\\_becker\\_](https://www.tiktok.com/@juan_becker_)"), r.text);
+  await tiktokCreators.deleteMany({ Guild: GUILD });
+  assert.match((await run(list, {})).text, /Todavía no hay creadores/);
+});
+
+test("/tiktok check: anuncia el video nuevo de la cuenta oficial y dice el motivo si TikTok bloquea", async () => {
+  profiles["sampcity.oficial"].videos.push({ id: "7695416279930260756", desc: "Estamos creando nuestra PROPIA app", tags: [] });
+  let r = await run(checkCmd, {});
+  assert.ok(r.ok, r.text);
+  assert.match(r.text, /1 anunciados ahora/);
+  assert.match(r.fields[0].value, /Ya está anunciado/);
+  assert.ok(sent.some((m) => JSON.stringify(m).includes("7695416279930260756")));
+
+  bloqueado = true;
+  r = await run(checkCmd, {});
+  bloqueado = false;
+  assert.strictEqual(r.ok, false);
+  assert.match(r.text, /No pude leer @sampcity\.oficial: .*503/);
 });

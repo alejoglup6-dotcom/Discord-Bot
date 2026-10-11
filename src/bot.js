@@ -1,3 +1,6 @@
+// Antes que nada: más hilos para DNS/archivos y caché de DNS (el DNS del hosting falla a ratos; ver dnsCache.js)
+process.env.UV_THREADPOOL_SIZE = process.env.UV_THREADPOOL_SIZE || "16";
+require("./assets/utils/dnsCache");
 const Discord = require("discord.js");
 require("./assets/utils/webhooks");
 const fs = require("fs");

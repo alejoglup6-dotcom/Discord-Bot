@@ -100,9 +100,11 @@ module.exports = async (client, interaction, args) => {
 
   await fetch(
     `https://opentdb.com/api.php?amount=1&type=multiple&difficulty=hard`,
+    { signal: AbortSignal.timeout(12000) },
   )
     .then((res) => res.json())
     .then(async (res) => {
+      if (!res || !Array.isArray(res.results) || !res.results[0]) return;
       const q = [];
       q.push(res.results[0]);
       question.question = res.results[0].question;
@@ -111,7 +113,12 @@ module.exports = async (client, interaction, args) => {
       const shuffledArray = shuffleArray(q[0].incorrect_answers);
       question.correct = shuffledArray.indexOf(res.results[0].correct_answer);
       question.options = shuffledArray;
-    });
+    })
+    .catch(() => {});
+  // si opentdb no contesta (o limita: responde 5 si se piden muchas seguidas) se avisa en vez de quedarse sin responder
+  if (!question.options) {
+    return client.errNormal({ error: "No pude traer una pregunta: el servicio de trivia no contestó. Prueba de nuevo en unos segundos.", type: "editreply" }, interaction);
+  }
 
   let winningID;
   if (question.correct === 0) {

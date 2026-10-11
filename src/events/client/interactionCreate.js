@@ -44,10 +44,15 @@ module.exports = async (client, interaction) => {
       interaction.isChatInputCommand() &&
       client.commands.has(interaction.commandName)
     ) {
+      const llegada = Date.now() - interaction.createdTimestamp;
       const deferred = await interaction
         .deferReply({ withResponse: true })
         .then(() => true)
-        .catch(() => false);
+        .catch((err) => {
+          // Pasó el plazo de 3 s de Discord o se cortó la red del hosting: Discord muestra "La aplicación no respondió"
+          console.log(`[comandos] /${interaction.commandName} no se pudo aplazar a tiempo (llegó a los ${llegada} ms, falló a los ${Date.now() - interaction.createdTimestamp} ms): ${err.code || ""} ${err.message}`);
+          return false;
+        });
       if (!deferred) return;
       interaction.deferReply = async () => {};
     }

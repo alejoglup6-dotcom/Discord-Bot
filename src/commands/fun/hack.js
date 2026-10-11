@@ -1,5 +1,11 @@
 const fetch = require("node-fetch");
 const generator = require("generate-password");
+const crypto = require("crypto");
+
+// Token falso con la forma de uno de Discord (la API que lo daba ya no existe)
+const b64url = (s) => Buffer.from(String(s)).toString("base64").replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
+const aleatorio = (n) => crypto.randomBytes(n).toString("base64").replace(/[^A-Za-z0-9_-]/g, "").slice(0, n);
+const tokenDeBroma = (id) => `${b64url(id)}.${aleatorio(6)}.${aleatorio(27)}`;
 
 /**
  * @type {import("../../typings.d").Command}
@@ -121,11 +127,8 @@ module.exports = async (client, interaction, args) => {
                             )
                             .then((i) => {
                               wait(200);
-                              fetch(
-                                `https://some-random-api.com/bottoken?${user.id}`,
-                              )
-                                .then((res) => res.json())
-                                .catch({})
+                              // token de broma armado aqui (la API de antes, some-random-api /bottoken, ya no existe)
+                              Promise.resolve({ token: tokenDeBroma(user.id) })
                                 .then(async (json) => {
                                   client
                                     .embed(

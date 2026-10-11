@@ -1,22 +1,14 @@
-const Discord = require("discord.js");
-const fetch = require("node-fetch");
+const { pedirJson, errorApi } = require("../../assets/utils/apiExterna");
 
 /**
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
-  fetch(`https://some-random-api.com/img/red_panda`)
-    .then((res) => res.json())
-    .catch({})
-    .then(async (json) => {
-      client.embed(
-        {
-          title: `🔴・Panda rojo aleatorio`,
-          image: json.link,
-          type: "editreply",
-        },
-        interaction,
-      );
-    })
-    .catch({});
+  try {
+    const json = await pedirJson("https://some-random-api.com/img/red_panda");
+    if (!json || !json.link) throw new Error("el servicio externo no mandó la imagen");
+    return client.embed({ title: `🔴・Panda rojo aleatorio`, image: json.link, type: "editreply" }, interaction);
+  } catch (e) {
+    return errorApi(client, interaction, e, "un panda rojo");
+  }
 };

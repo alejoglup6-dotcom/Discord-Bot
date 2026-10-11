@@ -1,24 +1,20 @@
 const Discord = require("discord.js");
-const { Canvas } = require("canvacord");
+const img = require("../../assets/utils/imagenesDivertidas");
 
+// Imagen dibujada en el bot (src/assets/utils/imagenesDivertidas.js); antes dependía de node-canvas o canvacord
 /**
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
-  const member = interaction.options.getUser("user");
+  const member = interaction.options.getUser("user") || interaction.user;
 
-  const userAvatar = member.displayAvatarURL({
-    dynamic: false,
-    size: 1024,
-    extension: "png",
-  });
-
-  const img = await Canvas.bed(
-    interaction.user.avatarURL({ size: 1024, extension: "png" }),
-    userAvatar,
-  );
-
-  let attach = new Discord.AttachmentBuilder(img, { name: "bed.png" });
-  const embed = client.templateEmbed().setImage("attachment://bed.png");
-  interaction.editReply({ files: [attach], embeds: [embed] });
+  try {
+    const buffer = await img.cama(interaction.user.displayAvatarURL({ size: 512, extension: "png", forceStatic: true }), member.displayAvatarURL({ size: 512, extension: "png", forceStatic: true }), interaction.user.username, member.username);
+    const attach = new Discord.AttachmentBuilder(buffer, { name: "bed.png" });
+    const embed = client.templateEmbed().setImage("attachment://bed.png");
+    return interaction.editReply({ files: [attach], embeds: [embed] });
+  } catch (e) {
+    console.log(`[images] bed: ${e.message}`);
+    return client.errNormal({ error: "No pude hacer la imagen ahora. Prueba de nuevo en un rato.", type: "editreply" }, interaction);
+  }
 };

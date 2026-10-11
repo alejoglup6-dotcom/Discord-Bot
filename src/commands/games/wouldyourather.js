@@ -45,11 +45,20 @@ module.exports = async (client, interaction, args) => {
                 "-" +
                 getRandomString(20);
 
-            const response = await axios.get(
-                `https://io.wyr.app/api/v1/statements/en/daily?pageOffset=${pageOffset}&pageSize=1`,
-            );
-            const statements = response.data.statements;
-            const statement = statements[0];
+            let response;
+            try {
+                response = await axios.get(
+                    `https://io.wyr.app/api/v1/statements/en/daily?pageOffset=${pageOffset}&pageSize=1`,
+                    { timeout: 12000 },
+                );
+            } catch (e) {
+                return client.errNormal({ error: "No pude traer una pregunta: el servicio externo no contestó. Prueba de nuevo en un rato.", type: "editreply" }, interaction);
+            }
+            const statements = response.data && response.data.statements;
+            const statement = statements && statements[0];
+            if (!statement || !Array.isArray(statement.phrase)) {
+                return client.errNormal({ error: "No pude traer una pregunta. Prueba de nuevo en un rato.", type: "editreply" }, interaction);
+            }
             pageOffset =
                 (pageOffset + 1) % (response.data.pageCount || pageOffset + 2);
             const totalVotes = statement.phrase.reduce(

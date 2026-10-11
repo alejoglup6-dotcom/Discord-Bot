@@ -47,14 +47,21 @@ function rules(guild, ch) {
         "• Las facciones y bandas siguen además sus propias normas internas.",
     ],
     [
-      "5 · SANCIONES",
+      "5 · REALISMO EN EL ROL",
+      "• **Nombres**: Nombre_Apellido creíbles. Nada de nombres de famosos, de broma o con palabras sueltas.\n" +
+        "• **Chirp** (redes del juego) es solo IC: lo que publiques lo dice tu personaje. Lo OOC va por /b o /mp.\n" +
+        "• **Tuneos** realistas: nada de alerones en motos, neones en coches de trabajo ni piezas imposibles.\n" +
+        "• **Accesorios** (/prendas) colocados como los llevaría una persona: nada flotando ni atravesando el cuerpo.",
+    ],
+    [
+      "6 · SANCIONES",
       "• Hay **advertencias** (1, 2 y 3; cada una dura 30 días), **silencio**, **jail** administrativo y **ban** temporal o permanente.\n" +
         "• Las sanciones se ven en tus roles de Discord y en el juego.\n" +
         "• Según la gravedad el staff puede saltarse pasos.\n" +
         "• ¿Crees que una sanción es injusta? Abre un ticket de **Apelar una sanción**; discutirla en los canales públicos empeora la sanción.",
     ],
     [
-      "6 · EL STAFF",
+      "7 · EL STAFF",
       "• El staff está para ayudar: trátalo como te gustaría que te trataran.\n" +
         "• Nadie del staff te pedirá nunca tu contraseña ni pagos fuera de la tienda oficial.\n" +
         "• Las decisiones se revisan por ticket, no por mensaje privado.",
@@ -67,7 +74,7 @@ function rules(guild, ch) {
     color: COLORS.dark,
     desc: "Al quedarte en el servidor aceptas estas normas. El staff puede actualizarlas; los cambios se avisan en " + link(ch, "anuncios", "anuncios") + ".",
   });
-  return [{ embeds: [intro, ...body.slice(0, 3)] }, { embeds: [...body.slice(3), outro] }];
+  return [{ embeds: [intro, ...body.slice(0, 4)] }, { embeds: [...body.slice(4), outro] }];
 }
 
 function guide(guild, ch) {
