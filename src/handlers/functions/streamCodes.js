@@ -5,8 +5,8 @@ const { COLORS, brandEmbed } = require("../../assets/utils/brand");
 const { textChannel } = require("../../assets/utils/guildLookup");
 
 /*
- * Códigos del stream de TikTok (12-oct-2026). En el juego, Lelo_Drok usa /codigo stream y el código sale en la pantalla
- * de todos; el primero que escribe /reclamar codigo [CÓDIGO] gana $10.000 (gamemodes/src/stream_codigo.pwn del repo
+ * Códigos del stream de TikTok (12-oct-2026). En el juego, Lelo_Drok usa /codigo stream y el código sale solo en SU pantalla
+ * (los que ven su directo lo leen ahí); el primero que escribe en el juego /reclamar codigo [CÓDIGO] gana $10.000 (gamemodes/src/stream_codigo.pwn del repo
  * Backup, tabla stream_codes). Aquí, cada 10 segundos, se anuncia en Discord quién lo reclamó y se marca announced = 1.
  *
  * .env (opcional):
