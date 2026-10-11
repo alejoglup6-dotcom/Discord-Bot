@@ -1,55 +1,25 @@
-const Discord = require("discord.js");
-const axios = require("axios");
-
 /**
+ * Banner del usuario (o su color de acento si no tiene). Se pide a Discord con discord.js (force: el banner no viene en caché).
  * @type {import("../../typings.d").Command}
  */
 module.exports = async (client, interaction, args) => {
   const user = interaction.options.getUser("user") || interaction.user;
 
-  axios
-    .get(`https://discord.com/api/users/${user.id}`, {
-      headers: {
-        Authorization: `Bot ${client.token}`,
-      },
-    })
-    .then((res) => {
-      const { banner, accent_color } = res.data;
+  let full;
+  try {
+    full = await client.users.fetch(user.id, { force: true });
+  } catch (e) {
+    console.log(`[images] banner: ${e.message}`);
+    return client.errNormal({ error: "No pude consultar el perfil ahora. Prueba de nuevo en un rato.", type: "editreply" }, interaction);
+  }
 
-      if (banner) {
-        const extension = banner.startsWith("a_") ? ".gif" : ".png";
-        const url = `https://cdn.discordapp.com/banners/${user.id}/${banner}${extension}?size=1024`;
-
-        client.embed(
-          {
-            title: `🖼・Banner del usuario`,
-            image: url,
-            type: "editreply",
-          },
-          interaction,
-        );
-      } else {
-        if (accent_color) {
-          client.embed(
-            {
-              title: `🖼・Banner del usuario`,
-              desc: `${user} no tiene banner, pero sí tiene un color de acento`,
-              color: accent_color,
-              type: "editreply",
-            },
-            interaction,
-          );
-        } else {
-          client.embed(
-            {
-              title: `🖼・Banner del usuario`,
-              desc: `${user} no tiene banner, pero sí tiene un color de acento`,
-              color: accent_color,
-              type: "editreply",
-            },
-            interaction,
-          );
-        }
-      }
-    });
+  const url = full.bannerURL({ size: 1024 });
+  if (url) return client.embed({ title: `🖼・Banner del usuario`, image: url, type: "editreply" }, interaction);
+  if (full.accentColor) {
+    return client.embed(
+      { title: `🖼・Banner del usuario`, desc: `${user} no tiene banner, pero sí un color de acento: \`#${full.accentColor.toString(16).padStart(6, "0")}\``, color: full.accentColor, type: "editreply" },
+      interaction,
+    );
+  }
+  return client.embed({ title: `🖼・Banner del usuario`, desc: `${user} no tiene banner.`, type: "editreply" }, interaction);
 };

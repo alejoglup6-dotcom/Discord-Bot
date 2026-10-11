@@ -1,6 +1,6 @@
-const { pedirJson, errorApi } = require("../../assets/utils/apiExterna");
+const { gifAccion } = require("../../assets/utils/gifs");
 
-// some-random-api ya no tiene /animu/hug (404): se usa nekos.best (gifs de anime, pide User-Agent)
+// El gif sale de varias páginas en orden (src/assets/utils/gifs.js): si una bloquea al bot, se usa la siguiente
 /**
  * @type {import("../../typings.d").Command}
  */
@@ -9,11 +9,10 @@ module.exports = async (client, interaction, args) => {
   if (!user) return client.errUsage({ usage: "hug [mencionar usuario]", type: "editreply" }, interaction);
 
   try {
-    const data = await pedirJson("https://nekos.best/api/v2/hug");
-    const gif = data && data.results && data.results[0] && data.results[0].url;
-    if (!gif) throw new Error("el servicio externo no mandó el gif");
-    return client.embed({ title: `${interaction.user.tag} abraza a ${user.tag}`, image: gif, type: "editreply" }, interaction);
+    const gif = await gifAccion("hug");
+    return client.embed({ title: `${interaction.user.username} abraza a ${user.username}`, image: gif, type: "editreply" }, interaction);
   } catch (e) {
-    return errorApi(client, interaction, e, "el gif");
+    console.log(`[gifs] hug: ${e.message}`);
+    return client.errNormal({ error: "No pude traer el gif: las páginas de gifs no contestan ahora. Prueba de nuevo en un rato.", type: "editreply" }, interaction);
   }
 };
