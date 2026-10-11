@@ -1,3 +1,4 @@
+const { escapeMarkdown: md } = require("discord.js");
 const tiktokCreators = require("../../database/models/tiktokCreators");
 
 /**
@@ -16,7 +17,7 @@ module.exports = async (client, interaction, args) => {
     return client.errNormal({ error: "Ese usuario de TikTok no es válido. Ejemplo: /tiktok add user:@usuario", type: "editreply" }, interaction);
   }
   if (user === tools.mainUser.toLowerCase()) {
-    return client.errNormal({ error: `@${user} es la cuenta del servidor: sus videos ya se avisan todos, no hace falta agregarla.`, type: "editreply" }, interaction);
+    return client.errNormal({ error: `@${md(user)} es la cuenta del servidor: sus videos ya se avisan todos, no hace falta agregarla.`, type: "editreply" }, interaction);
   }
   const member = interaction.options.getUser("miembro");
 
@@ -24,10 +25,10 @@ module.exports = async (client, interaction, args) => {
   if (exists && member && exists.Member !== member.id) {
     exists.Member = member.id;
     await exists.save();
-    return client.succNormal({ text: `@${user} ya estaba en la lista: ahora sus avisos muestran a ${member}.`, type: "editreply" }, interaction);
+    return client.succNormal({ text: `@${md(user)} ya estaba en la lista: ahora sus avisos muestran a ${member}.`, type: "editreply" }, interaction);
   }
   if (exists || tools.envCreators.includes(user)) {
-    return client.errNormal({ error: `@${user} ya está en la lista.`, type: "editreply" }, interaction);
+    return client.errNormal({ error: `@${md(user)} ya está en la lista.`, type: "editreply" }, interaction);
   }
 
   // Comprueba que la cuenta exista y sea pública antes de guardarla
@@ -40,7 +41,7 @@ module.exports = async (client, interaction, args) => {
   } catch (e) {
     if (!e.temporal) {
       return client.errNormal(
-        { error: `No pude agregar a @${user}: ${e.message}. Revisa que esté bien escrito y que la cuenta sea pública.`, type: "editreply" },
+        { error: `No pude agregar a @${md(user)}: ${e.message}. Revisa que esté bien escrito y que la cuenta sea pública.`, type: "editreply" },
         interaction,
       );
     }
@@ -60,10 +61,10 @@ module.exports = async (client, interaction, args) => {
   else if (!r.scanned) detail = "Todavía no tiene videos públicos: se avisarán cuando suba alguno que mencione a la cuenta.";
   else detail = `Leí ${r.scanned} videos recientes: ${r.matched} mencionan a @${tools.mainUser}, ${r.posted} publicados ahora en el canal de TikTok.`;
 
-  const name = profile && profile.info && profile.info.nickname ? ` (${profile.info.nickname})` : "";
+  const name = profile && profile.info && profile.info.nickname ? ` (${md(profile.info.nickname)})` : "";
   return client.succNormal(
     {
-      text: `Agregué a **@${user}**${name}${member ? ` · ${member}` : ""}. A partir de ahora se avisan sus videos que mencionen a @${tools.mainUser}.`,
+      text: `Agregué a **@${md(user)}**${name}${member ? ` · ${member}` : ""}. A partir de ahora se avisan sus videos que mencionen a @${tools.mainUser}.`,
       fields: [{ name: "🎵┆Lectura", value: detail }],
       type: "editreply",
     },

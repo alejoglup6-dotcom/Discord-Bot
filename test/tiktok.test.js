@@ -14,6 +14,7 @@ const tiktokCreators = require("../src/database/models/tiktokCreators");
 const handler = require("../src/handlers/functions/tiktok");
 const add = require("../src/commands/tiktok/add");
 const remove = require("../src/commands/tiktok/remove");
+const list = require("../src/commands/tiktok/list");
 
 const GUILD = "test-guild-tiktok";
 const STAFF = "900000000000000101";
@@ -70,6 +71,7 @@ handler(client);
 const replies = [];
 client.errNormal = async ({ error }) => replies.push({ ok: false, text: error });
 client.succNormal = async ({ text, fields }) => replies.push({ ok: true, text, fields });
+client.embed = async ({ title, desc }) => replies.push({ ok: true, text: `${title}\n${desc}` });
 
 async function run(cmd, options) {
   const interaction = {
@@ -149,4 +151,13 @@ test("/tiktok remove", async () => {
   assert.ok((await run(remove, { user: "creador.uno" })).ok);
   assert.strictEqual(await tiktokCreators.findOne({ Guild: GUILD, User: "creador.uno" }), null);
   assert.strictEqual((await run(remove, { user: "creador.uno" })).ok, false);
+});
+
+test("/tiktok list: muestra los creadores y no pone en cursiva los nombres con _", async () => {
+  await new tiktokCreators({ Guild: GUILD, User: "juan_becker_", AddedBy: STAFF, Date: Date.now() }).save();
+  const r = await run(list, {});
+  assert.ok(r.ok, r.text);
+  assert.ok(r.text.includes("[@juan\\_becker\\_](https://www.tiktok.com/@juan_becker_)"), r.text);
+  await tiktokCreators.deleteMany({ Guild: GUILD });
+  assert.match((await run(list, {})).text, /Todavía no hay creadores/);
 });
