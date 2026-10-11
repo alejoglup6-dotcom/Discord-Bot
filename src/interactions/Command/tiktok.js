@@ -35,6 +35,11 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand
+        .setName("check")
+        .setDescription("Revisa ahora la cuenta oficial y anuncia los videos nuevos (dice el motivo si TikTok no deja)"),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("list")
         .setDescription("Muestra los creadores de TikTok que se están vigilando"),
     ),

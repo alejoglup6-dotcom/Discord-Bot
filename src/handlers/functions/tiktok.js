@@ -131,7 +131,7 @@ async function existencia(user) {
     if (res.ok) {
       const j = await res.json();
       if (j && j.author_name) return { existe: true, info: { uniqueId: user, nickname: j.author_name } };
-    } else if (res.status === 400 || res.status === 404) return { existe: false };
+    } else if (res.status === 400) return { existe: false }; // 400 = no existe; un 403/404/429 es TikTok bloqueando, no prueba nada
   } catch {
     /* no se sabe */
   }
@@ -388,12 +388,16 @@ async function fetchCreatorMentions(creators) {
 
 module.exports = (client) => {
   let running = false;
+  let retryTimer = null;
+  // Lo que pasó en la última revisión de la cuenta oficial (lo enseña /tiktok check)
+  const estado = { at: 0, okAt: 0, error: null, leidos: 0, anunciados: 0, ultimo: null };
 
   // Devuelve cuántos videos se anunciaron
   async function check() {
     if (running) return 0;
     running = true;
     let posted = 0;
+    estado.at = Date.now();
     try {
       const profile = await fetchProfile();
       setOfficialNick(profile.info);
@@ -419,14 +423,24 @@ module.exports = (client) => {
         }
       }
       console.log(`[tiktok] videos de @${USER}: ${videos.length} leídos, ${posted} anunciados (canales: ${channels})`);
+      Object.assign(estado, { okAt: Date.now(), error: null, leidos: videos.length, anunciados: posted, ultimo: videos.length ? videos[videos.length - 1] : null });
     } catch (e) {
       console.log("[tiktok]", e.message);
+      estado.error = e.message;
+      // TikTok bloquea a ratos al hosting (503 o página de verificación): reintentar a los 2 min, no esperar 10.
+      // La cuenta oficial existe siempre: cualquier fallo se reintenta.
+      if (!retryTimer) {
+        retryTimer = setTimeout(() => { retryTimer = null; check(); }, 2 * 60000);
+        retryTimer.unref?.();
+        console.log("[tiktok] se reintenta en 2 min");
+      }
     } finally {
       running = false;
     }
     return posted;
   }
   client.checkTikTok = check;
+  client.tiktokEstado = estado;
 
   let runningMentions = false;
 
